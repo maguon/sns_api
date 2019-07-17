@@ -1,6 +1,6 @@
 *.log
 config/SystemConfig.js
-public/docs/json/index.json
+public/docs/index.json
 .idea/*
 uploads/*
 node_modules

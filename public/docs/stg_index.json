@@ -1,0 +1,216 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This a api docs",
+    "version": "0.0.1",
+    "title": "Driver api docs",
+    "contact": {
+      "email": "info@myxxjs.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:9901/api/",
+
+  "tags": [
+    {
+      "name": "app",
+      "description": "App version and url management api"
+
+    },
+    {
+      "name": "user",
+      "description": "User base info api"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/app": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Add a new app info",
+        "description": "",
+        "operationId": "AddApp",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name":"body",
+            "description": "App object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/App"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Query app info",
+        "description": "",
+        "operationId": "getApp",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appType",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "device_type",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/app/{appId}": {
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Finds app and update",
+        "description": "update app info",
+        "operationId": "update app info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "app unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "App object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/App"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/App"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "App": {
+      "type": "object",
+      "required": [
+        "app_type",
+        "device_type",
+        "version",
+        "low_version",
+        "force_flag",
+        "url"
+      ],
+      "properties": {
+        "app_type": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "device_type": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "version": {
+          "type": "string"
+        },
+        "version_num": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "min_version_num": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "force_update": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "url": {
+          "type": "string",
+          "description": "pet status in the store"
+        }
+      },
+      "xml": {
+        "name": "App"
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+exports.AppController = require('./AppController');
