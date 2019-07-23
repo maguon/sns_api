@@ -6,7 +6,7 @@
 let serializer = require('serializer');
 let serverLogger = require('./ServerLogger.js');
 let logger = serverLogger.createLogger('OAuthUtil.js');
-let systemConfig = require('../config/SystemConfig.js');
+let systemConfig = require('../config/Stg_SystemConfig.js');
 let httpUtil = require('./HttpUtil.js');
 
 let options ={
