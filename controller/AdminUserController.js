@@ -128,11 +128,11 @@ const adminUserLogin = (req, res, next) => {
             }
             query.exec((error, rows) => {
                 if (error) {
-                    logger.error(' adminUserLogin ' + error.message);
+                    logger.error(' adminUserLogin getAdmin ' + error.message);
                     reject({err: error});
                 } else {
                     if (rows.length != 0) {
-                        logger.info(' adminUserLogin ' + 'success');
+                        logger.info(' adminUserLogin getAdmin ' + 'success');
                         resolve(rows[0]);
                     } else {
                         logger.warn(' adminUserLogin username or password' + 'not verified!');
@@ -151,14 +151,14 @@ const adminUserLogin = (req, res, next) => {
                 status : adminInfo.status,
                 type: adminInfo.type
             }
-            console.log(admin);
+            logger.info(admin.adminId );
             admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.adminId,admin.status);
             oAuthUtil.saveToken(admin,function(error,result){
                 if(error){
-                    logger.error('adminUserLogin adminLogin ' + error.stack);
+                    logger.error('adminUserLogin loginSaveToken ' + error.stack);
                     return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
                 }else{
-                    logger.info('adminUserLogin adminLogin ' + admin.adminId + " success");
+                    logger.info('adminUserLogin loginSaveToken ' + admin.adminId + " success");
                     resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
