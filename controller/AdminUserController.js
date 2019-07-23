@@ -151,8 +151,8 @@ const adminUserLogin = (req, res, next) => {
                 status : adminInfo.status,
                 type: adminInfo.type
             }
-            logger.info(admin.adminId );
             admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.adminId,admin.status);
+            logger.info(admin.adminId );
             oAuthUtil.saveToken(admin,function(error,result){
                 if(error){
                     logger.error('adminUserLogin loginSaveToken ' + error.stack);
