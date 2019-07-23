@@ -314,7 +314,7 @@
             "in": "query",
             "description": "用户ID",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },{
             "name": "phone",
             "in": "query",
