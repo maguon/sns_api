@@ -108,7 +108,6 @@ const createServer=()=>{
     server.get('/api/userDetail', UserDetailController.getUserDetail);
     // server.post({path:'/api/userDetail',contentType: 'application/json'}, UserDetailController.createUserDetail);
     server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
 
     /**
      app
