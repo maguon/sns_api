@@ -59,8 +59,8 @@ const getUserDetail = (req, res, next) => {
 const  createUserDetail = (req, res, next) => {
     let bodyParams = req.body;
     let userObj = bodyParams;
-
     let userModel = new UserDetailModel(userObj);
+
     userModel.save(function(error,result){
         if (error) {
             logger.error(' createUserDetail ' + error.message);
@@ -76,13 +76,12 @@ const  createUserDetail = (req, res, next) => {
 //根据用户详细信息ID，对信息进行修改
 const  updateUserDetailInfo = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = UserDetailModel.find({});
     let params = req.params;
+
     if(params.userDetailId){
         query.where('_id').equals(params.userDetailId);
     }
-
 
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
@@ -99,20 +98,19 @@ const  updateUserDetailInfo = (req, res, next) => {
 //根据用户ID，对信息进行修改
 const  updateAccordingToUserID = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = UserDetailModel.find({});
     let params = req.params;
-    if(params.userDetailId){
-        query.where('_id').equals(params.userDetailId);
-    }
 
+    if(params.userId){
+        query.where('_userId').equals(params.userId);
+    }
 
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateUserDetailInfo ' + error.message);
+            logger.error(' updateAccordingToUserID ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateUserDetailInfo ' + 'success');
+            logger.info(' updateAccordingToUserID ' + 'success');
             console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
@@ -122,6 +120,7 @@ const  updateAccordingToUserID = (req, res, next) => {
 const  deleteUserDetailInfo = (req, res, next) => {
     let query = UserDetailModel.find({});
     let params = req.params;
+
     if(params.userId){
         query.where('_id').equals(params.userId);
     }
@@ -142,5 +141,7 @@ module.exports = {
     getUserDetail,
     createUserDetail,
     updateUserDetailInfo,
+    updateAccordingToUserID,
     deleteUserDetailInfo
+
 };
