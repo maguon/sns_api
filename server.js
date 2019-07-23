@@ -34,6 +34,22 @@ const createServer=()=>{
     server.pre(restify.pre.sanitizePath());
     server.pre(restify.pre.userAgentConnection());
 
+    const corsAllowHeadersArray =[]
+    corsAllowHeadersArray.push('auth-token');
+    corsAllowHeadersArray.push('user-name');
+    corsAllowHeadersArray.push('user-type');
+    corsAllowHeadersArray.push('user-id');
+    corsAllowHeadersArray.push("Access-Control-Allow-Origin");
+    corsAllowHeadersArray.push("Access-Control-Allow-Credentials");
+    corsAllowHeadersArray.push("GET","POST","PUT","DELETE");
+    corsAllowHeadersArray.push("Access-Control-Allow-Headers","accept","api-version", "content-length", "content-md5","x-requested-with","content-type", "date", "request-id", "response-time");
+    const cors = corsMiddleware({
+
+        allowHeaders:corsAllowHeadersArray
+    })
+    server.pre(cors.preflight);
+    server.use(cors.actual);
+
     server.use(restify.plugins.throttle({
         burst: 100,
         rate: 50,
@@ -53,20 +69,7 @@ const createServer=()=>{
 
 
 
-    const corsAllowHeadersArray =[]
-    corsAllowHeadersArray.push('auth-token');
-    corsAllowHeadersArray.push('user-name');
-    corsAllowHeadersArray.push('user-type');
-    corsAllowHeadersArray.push('user-id');
-    corsAllowHeadersArray.push("Access-Control-Allow-Origin");
-    corsAllowHeadersArray.push("Access-Control-Allow-Credentials");
-    corsAllowHeadersArray.push("GET","POST","PUT","DELETE");
-    corsAllowHeadersArray.push("Access-Control-Allow-Headers","accept","api-version", "content-length", "content-md5","x-requested-with","content-type", "date", "request-id", "response-time");
-    const cors = corsMiddleware({
 
-        allowHeaders:corsAllowHeadersArray
-    })
-    server.use(cors.actual);
     /*var STATIS_FILE_RE = /\.(css|js|jpe?g|png|gif|less|eot|svg|bmp|tiff|ttf|otf|woff|pdf|ico|json|wav|ogg|mp3?|xml|woff2|map)$/i;
     server.get('/'+STATIS_FILE_RE, restify.plugins.serveStaticFiles('./public/docs',{ default: 'index.html', maxAge: 0 }));
 
