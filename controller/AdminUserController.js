@@ -136,7 +136,7 @@ const adminUserLogin = (req, res, next) => {
                         resolve(rows[0]);
                     } else {
                         logger.warn(' adminUserLogin username or password' + 'not verified!');
-                        // reject({msg:' adminUserLogin username or password not verified!'});
+                        reject({msg:' adminUserLogin username or password not verified!'});
                     }
 
                 }
