@@ -61,7 +61,7 @@ const createServer=()=>{
     corsAllowHeadersArray.push("Access-Control-Allow-Origin");
     corsAllowHeadersArray.push("Access-Control-Allow-Credentials");
     corsAllowHeadersArray.push("GET","POST","PUT","DELETE");
-    corsAllowHeadersArray.push("Access-Control-Allow-Headers","accept,api-version, content-length, content-md5,x-requested-with,content-type, date, request-id, response-time");
+    corsAllowHeadersArray.push("Access-Control-Allow-Headers","accept","api-version", "content-length", "content-md5","x-requested-with","content-type", "date", "request-id", "response-time");
     const cors = corsMiddleware({
 
         allowHeaders:corsAllowHeadersArray
