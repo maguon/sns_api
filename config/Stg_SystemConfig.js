@@ -19,6 +19,11 @@ const mongoConfig = {
     debug : true
 }
 
+const hosts = {
+    auth:{
+        host :"stg.myxxjs.com",
+        port : 9009
+    }
+}
 
-
-module.exports = { loggerConfig, logLevel , mongoConfig}
+module.exports = { loggerConfig, logLevel , mongoConfig,hosts}
