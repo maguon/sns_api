@@ -519,53 +519,6 @@
             "description": "UserDetailId not found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "userDetail"
-        ],
-        "summary": "Finds userDetail Info and update",
-        "description": "update userDetail info",
-        "operationId": "update userDetail info by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "User unique id",
-            "required": true,
-            "type": "string"
-
-          },
-          {
-            "name": "userDetailInfo",
-            "in": "body",
-            "description": "UserDetail object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserDetail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserDetail"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserDetailId not found"
-          }
-        }
       }
     },
     "/app": {
