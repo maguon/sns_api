@@ -400,8 +400,8 @@
         "tags": [
           "user"
         ],
-        "summary": "Delete user",
-        "description": "delete user info",
+        "summary": "Delete user and userDetail",
+        "description": "delete user info and userDetail",
         "operationId": "delete user info by id",
         "produces": [
           "application/json"

@@ -3,6 +3,7 @@
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt.js');
 const serverLogger = require('../util/ServerLogger');
+const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('UserController');
 
 const {UserModel} = require('../modules');
@@ -56,7 +57,7 @@ const  createUser = (req, res, next) => {
         } else {
             logger.info(' createUser ' + 'success');
             if (result._doc) {
-                console.log('_doc._id:',result._doc._id);
+                // console.log('_doc._id:',result._doc._id);
                 let userDetailModel = new UserDetailModel(userObj);
                 userDetailModel._userId = result._doc._id;//将新创建的用户ID，添加到新建的用户详细信息中
                 userDetailModel.save(); // 很重要 不save则没有数据
@@ -88,24 +89,67 @@ const  updateUserInfo = (req, res, next) => {
         }
     })
 }
+//删除用户信息时，同时删除用户详细信息
 const  deleteUserInfo = (req, res, next) => {
-    let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        query.where('_id').equals(params.userId);
+    let userId;
+
+    const deleteUser = () =>{
+        return new Promise((resolve, reject)=> {
+            let query = UserModel.find({});
+            let params = req.params;
+
+            if(params.userId){
+                userId = params.userId;
+                query.where('_id').equals(params.userId);
+            }
+
+            UserModel.deleteOne(query,function(error,result){
+                if (error) {
+                    logger.error(' deleteUserInfo deleteUser ' + error.message);
+                    reject({err:error});
+                    // resUtil.resInternalError(error);
+                } else {
+                    logger.info(' deleteUserInfo deleteUser ' + 'success');
+                    resolve();
+                    // console.log('rows:',result);
+                    // resUstil.resetQueryRes(res,result,null);
+                    // return next();
+                }
+            })
+        });
     }
 
-    UserModel.deleteOne(query,function(error,result){
-        if (error) {
-            logger.error(' deleteUserInfo ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' deleteUserInfo ' + 'success');
-            console.log('rows:',result);
-            resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
+    const deleteUserDetail = () => {
+        return new Promise((resolve, reject) => {
+            let query = UserDetailModel.find({});
+
+            if(userId){
+                query.where('_userId').equals(userId);
+            }
+
+            UserDetailModel.deleteOne(query,function(error,result){
+                if (error) {
+                    logger.error(' deleteUserInfo deleteUserDetail ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' deleteUserInfo deleteUserDetail ' + 'success');
+                    resUtil.resetQueryRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+
+    deleteUser()
+        .then(deleteUserDetail)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,systemMsg.USER_DELETE_INFO);
+            }
+        })
+
 }
 module.exports = {
     getUser,

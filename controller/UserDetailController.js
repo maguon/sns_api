@@ -117,31 +117,10 @@ const  updateAccordingToUserID = (req, res, next) => {
         }
     })
 }
-const  deleteUserDetailInfo = (req, res, next) => {
-    let query = UserDetailModel.find({});
-    let params = req.params;
 
-    if(params.userId){
-        query.where('_id').equals(params.userId);
-    }
-
-    UserModel.deleteOne(query,function(error,result){
-        if (error) {
-            logger.error(' deleteUserDetailInfo ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' deleteUserDetailInfo ' + 'success');
-            console.log('rows:',result);
-            resUtil.resetQueryRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     getUserDetail,
     createUserDetail,
     updateUserDetailInfo,
-    updateAccordingToUserID,
-    deleteUserDetailInfo
-
+    updateAccordingToUserID
 };
