@@ -8,27 +8,566 @@
       "email": "info@myxxjs.com"
     },
     "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "name": "View source at github",
+      "url": "https://github.com/maguon/sns_api"
     }
   },
-  "host": "localhost:9901/api/",
+  "host": "stg.myxxjs.com:9901/api/",
 
   "tags": [
     {
-      "name": "app",
-      "description": "App version and url management api"
-
+      "name": "adminUser",
+      "description": "adminUser of log api"
     },
     {
       "name": "user",
       "description": "User base info api"
+    },
+    {
+      "name": "userDetail",
+      "description": "UserDetail base info api"
+    },
+    {
+      "name": "app",
+      "description": "App version and url management api"
+
     }
   ],
   "schemes": [
     "http"
   ],
   "paths": {
+    "/adminUser": {
+      "post": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Add a new adminUser info",
+        "description": "",
+        "operationId": "AddAdminUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name":"adminInfo",
+            "description": "AdminUser object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminUser"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Select adminUser Info",
+        "description": "Get admin user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "name",
+            "in": "query",
+            "description": "管理员名称",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "realname",
+            "in": "query",
+            "description": "真实姓名",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "phone",
+            "in": "query",
+            "description": "电话",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "password",
+            "in": "query",
+            "description": "密码",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "gender",
+            "in": "query",
+            "description": "0:女 1:男",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态(0-停用,1-可用)",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "start",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}": {
+      "put": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Finds adminUserInfo and update",
+        "description": "update adminUser info",
+        "operationId": "update adminUser info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "path",
+            "description": "adminUser unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "adminUserInfo",
+            "in": "body",
+            "description": "AdminUser object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AdminUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Delete adminUser",
+        "description": "delete adminUser info",
+        "operationId": "delete adminUser info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "path",
+            "description": "adminUser unique id",
+            "required": true,
+            "type": "string"
+
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Add a new user info and null userDetail info",
+        "description": "",
+        "operationId": "AddUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Select user Info",
+        "description": "Get user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "phone",
+            "in": "query",
+            "description": "用户电话",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "password",
+            "in": "query",
+            "description": "用户密码",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "nikename",
+            "in": "query",
+            "description": "用户昵称",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "验证状态",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Finds userInfo and update",
+        "description": "update user info",
+        "operationId": "update user info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userInfo",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "description": "delete user info",
+        "operationId": "delete user info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId not found"
+          }
+        }
+      }
+    },
+    "/userDetail": {
+      "get": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Select userDetail Info",
+        "description": "Get userDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userDetailId",
+            "in": "query",
+            "description": "用户详细信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "_userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "sex",
+            "in": "query",
+            "description": "性别0:女 1:男",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "birthday",
+            "in": "query",
+            "description": "生日(格式：YYYY_MM_DD)",
+            "required": false,
+            "type": "date"
+          },{
+            "name": "realmname",
+            "in": "query",
+            "description": "个性域名",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "intro",
+            "in": "query",
+            "description": "简介",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "label",
+            "in": "query",
+            "description": "标签",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "truename",
+            "in": "query",
+            "description": "真实姓名",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "avatar",
+            "in": "query",
+            "description": "用户头像",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "drivingtype",
+            "in": "query",
+            "description": "驾驶证类型",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/userDetail/{userDetailId}": {
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Finds userDetail Info and update",
+        "description": "update userDetail info",
+        "operationId": "update userDetail info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userDetailId",
+            "in": "path",
+            "description": "UserDetail unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userDetailInfo",
+            "in": "body",
+            "description": "UserDetail object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDetailId not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Finds userDetail Info and update",
+        "description": "update userDetail info",
+        "operationId": "update userDetail info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userDetailInfo",
+            "in": "body",
+            "description": "UserDetail object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDetailId not found"
+          }
+        }
+      }
+    },
     "/app": {
       "post": {
         "tags": [
@@ -161,6 +700,135 @@
     }
   },
   "definitions": {
+    "AdminUser": {
+      "type": "object",
+      "required": [
+        "name",
+        "realname",
+        "phone",
+        "password",
+        "status",
+        "gender",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "realname": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "admin"
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "phone",
+        "password",
+        "nikename",
+        "status"
+      ],
+      "properties": {
+        "phone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        },
+        "nikename": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "user"
+      }
+    },
+    "UserDetail": {
+      "type": "object",
+      "required": [
+        "sex",
+        "birthday",
+        "realmname",
+        "intro",
+        "label",
+        "truename",
+        "avatar",
+        "drivingtype"
+      ],
+      "properties": {
+        "sex": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "birthday": {
+          "type": "String",
+          "format": "YYYY_MM_DD"
+        },
+        "realmname": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "truename": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "drivingtype": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "userDetail"
+      }
+    },
     "App": {
       "type": "object",
       "required": [
