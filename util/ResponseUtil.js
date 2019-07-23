@@ -14,8 +14,8 @@ const resetCreateRes = (res,result,errMsg) =>{
 }
 
 const resetUpdateRes = (res,result,errMsg)=>{
-    if(result && result.affectedRows>0){
-        res.send(200,{success : true});
+    if(result && result !=null){
+        res.send(200,{success : true,n:result.valueOf().n,ok:result.valueOf().ok});
     }else{
         res.send(200,{success : false,msg:errMsg});
     }
@@ -27,12 +27,14 @@ const resetFailedRes = (res,errMsg)=>{
 
 const resInternalError = (error,res ,next) => {
     const internalError = Errors.InternalServerError();
-
-
     res.send(internalError);
     return next();
 }
 
 module.exports = {
-    resetQueryRes,resetCreateRes,resetUpdateRes ,resetFailedRes ,resInternalError
+    resetQueryRes,
+    resetCreateRes,
+    resetUpdateRes ,
+    resetFailedRes ,
+    resInternalError
 }

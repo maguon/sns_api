@@ -229,6 +229,41 @@
         }
       }
     },
+    "/adminLogin": {
+      "post": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "AadminUser login",
+        "description": "",
+        "operationId": "AadminUser login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "adminInfo",
+            "description": "Admin base info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminLogin"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
     "/user": {
       "post": {
         "tags": [
@@ -700,6 +735,24 @@
       },
       "xml": {
         "name": "admin"
+      }
+    },
+    "AdminLogin": {
+      "type": "object",
+      "required": [
+        "userName",
+        "password"
+      ],
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AdminLogin"
       }
     },
     "User": {

@@ -93,6 +93,7 @@ const createServer=()=>{
     server.post({path:'/api/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
     server.put({path:'/api/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
     server.del('/api/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
+    server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
 
     /**
      user

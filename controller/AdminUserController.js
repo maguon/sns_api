@@ -1,8 +1,10 @@
 "use strict"
-
+const Errors = require('restify-errors');
 const resUtil = require('../util/ResponseUtil');
-const encrypt = require('../util/Encrypt.js');
+const encrypt = require('../util/Encrypt');
+const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
+const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('AdminUserController');
 
 const {AdminUserModel} = require('../modules');
@@ -46,10 +48,10 @@ const getAdminUser = (req, res, next) => {
         } else {
             logger.info(' getAdminUser ' + 'success');
             resUtil.resetQueryRes(res, rows);
+            return next();
         }
     });
 }
-
 const  createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
     let adminUserObj = bodyParams;
@@ -67,11 +69,10 @@ const  createAdminUser = (req, res, next) => {
         } else {
             logger.info(' createAdminUser ' + 'success');
             resUtil.resetCreateRes(res, result);
+            return next();
         }
     })
 }
-
-
 const  updateAdminUserInfo = (req, res, next) => {
     let bodyParams = req.body;
 
@@ -112,9 +113,76 @@ const  deleteAdminUserInfo = (req, res, next) => {
         }
     })
 }
+const adminUserLogin = (req, res, next) => {
+    let bodyParams = req.body;
+
+    const getAdmin = () =>{
+        return new Promise((resolve,reject)=> {
+            let query = AdminUserModel.find({});
+            if (bodyParams.userName) {
+                query.where('name').equals(bodyParams.userName);
+            }
+            if (bodyParams.password) {
+                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+                query.where('password').equals(bodyParams.password);
+            }
+            query.exec((error, rows) => {
+                if (error) {
+                    logger.error(' adminUserLogin ' + error.message);
+                    reject({err: error});
+                } else {
+                    if (rows.length != 0) {
+                        logger.info(' adminUserLogin ' + 'success');
+                        resolve(rows[0]);
+                    } else {
+                        logger.warn(' adminUserLogin username or password' + 'not verified!');
+                        reject({msg:' adminUserLogin username or password not verified!'});
+                    }
+
+                }
+            });
+        });
+    }
+
+    const loginSaveToken = (adminInfo) =>{
+        return new Promise(()=>{
+            let admin = {
+                adminId : adminInfo._doc._id.toString(),
+                status : adminInfo.status,
+                type: adminInfo.type
+            }
+            console.log(admin);
+            admin.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.admin,admin.adminId,admin.status);
+            oAuthUtil.saveToken(admin,function(error,result){
+                if(error){
+                    logger.error('adminUserLogin adminLogin ' + error.stack);
+                    return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
+                }else{
+                    logger.info('adminUserLogin adminLogin ' + admin.adminId + " success");
+                    resUtil.resetQueryRes(res,admin,null);
+                    return next();
+                }
+            })
+
+        });
+    }
+
+    getAdmin()
+        .then(loginSaveToken)
+        .catch((reject)=>{
+            // resUtil.resetFailedRes(res, reject.msg);
+            if(reject.err) {
+                resUtil.resetFailedRes(res, reject.err);
+            }else{
+                resUtil.resetFailedRes(res, systemMsg.CUST_LOGIN_USER_PSWD_ERROR);
+            }
+        })
+
+}
 module.exports = {
     getAdminUser,
     createAdminUser,
     updateAdminUserInfo,
-    deleteAdminUserInfo
+    deleteAdminUserInfo,
+    adminUserLogin
 };
