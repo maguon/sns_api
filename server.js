@@ -7,6 +7,12 @@ const resUtil = require('./util/ResponseUtil');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
+// const AdminUserController = require('./controller/AdminUserController');
+// const UserController = require('./controller/UserController');
+import {AdminUserController} from './controller';
+import {UserController} from './controller';
+import {UserDetailController} from './controller';
+
 import {AppController} from './controller';
 
 /**
@@ -80,6 +86,33 @@ const createServer=()=>{
         restify.plugins.serveStaticFiles('./public/docs')
     );
 
+    /**
+     admin_info
+     */
+    server.get('/api/adminUser', AdminUserController.getAdminUser);
+    server.post({path:'/api/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
+    server.put({path:'/api/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
+    server.del('/api/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
+
+    /**
+     user
+     */
+    server.get('/api/user', UserController.getUser);
+    server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
+    server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.del('/api/user/:userId' ,UserController.deleteUserInfo);
+
+    /**
+     user_detail
+     */
+    server.get('/api/userDetail', UserDetailController.getUserDetail);
+    // server.post({path:'/api/userDetail',contentType: 'application/json'}, UserDetailController.createUserDetail);
+    server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
+    server.put({path:'/api/userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
+
+    /**
+     app
+     */
     server.get('/api/app', AppController.getApp);
     server.post({path:'/api/app',contentType: 'application/json'}, AppController.createApp);
 
