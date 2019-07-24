@@ -55,24 +55,6 @@ const getUserDetail = (req, res, next) => {
     });
 }
 
-//暂不适用！ 用户详细信息在创建用户时同时创建
-const  createUserDetail = (req, res, next) => {
-    let bodyParams = req.body;
-    let userObj = bodyParams;
-    let userModel = new UserDetailModel(userObj);
-
-    userModel.save(function(error,result){
-        if (error) {
-            logger.error(' createUserDetail ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createUserDetail ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
-}
-
 //根据用户详细信息ID，对信息进行修改
 const  updateUserDetailInfo = (req, res, next) => {
     let bodyParams = req.body;
@@ -120,7 +102,6 @@ const  updateAccordingToUserID = (req, res, next) => {
 
 module.exports = {
     getUserDetail,
-    createUserDetail,
     updateUserDetailInfo,
     updateAccordingToUserID
 };
