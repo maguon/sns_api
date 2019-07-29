@@ -156,15 +156,20 @@ const  deleteMessage = (req, res, next) => {
 
 }
 //根据坐标和半径，进行半径查询
+//分页查询
 const SearchByRadius = (req, res, next) => {
     let params = req.query;
     let arr =[];
     let str=params.address.slice(1,params.address.length-1);
-    arr=str.split(',');
+    arr = str.split(',');
     console.log(typeof arr);
 
-    //let query = MessageModel.find({ address : { $near : arr }});
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ]  }}});
+    let  pageSize = Number(params.pageSize);                   //一页多少条
+    let currentPage = Number(params.currentPage);                //当前第几页
+    let sort = {'updated_at':-1};        //排序（按登录时间倒序）
+    let skipnum = (currentPage - 1) * pageSize;   //跳过数
+
+    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).skip(skipnum).limit(pageSize).sort(sort);
 
     query.exec((error, rows)=> {
         if (error) {

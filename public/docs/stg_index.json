@@ -742,6 +742,18 @@
             "description": "查询半径(单位：KM)",
             "required": true,
             "type": "number"
+          },{
+            "name": "pageSize",
+            "in": "query",
+            "description": "一页显示条数",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "currentPage",
+            "in": "query",
+            "description": "当前第几页",
+            "required": true,
+            "type": "integer"
           }
         ],
         "responses": {
