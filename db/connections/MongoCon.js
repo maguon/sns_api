@@ -8,7 +8,7 @@ const logger = serverLogger.createLogger('MongoCon');
 
 
 try{
-    mongoose.connect(sysConfig.mongoConfig.connect,{useNewUrlParser: true});
+    mongoose.connect(sysConfig.mongoConfig.connect,{useNewUrlParser: true,useCreateIndex:true});
     logger.info('Connect Mongodb Success');
 }catch(err){
     logger.error('Connect mongodb error :' +err.stack)
