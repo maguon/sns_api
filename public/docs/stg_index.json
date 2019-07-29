@@ -28,6 +28,10 @@
       "description": "UserDetail base info api"
     },
     {
+      "name": "messages",
+      "description": "Messages base info api"
+    },
+    {
       "name": "app",
       "description": "App version and url management api"
 
@@ -763,6 +767,61 @@
         }
       }
     },
+    "/admin/{adminId}/messages/{messagesId}/status/{status}":{
+      "put": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Finds messages Info and update",
+        "description": "update messages info",
+        "operationId": "update messages info by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "Messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Status"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
     "/app": {
       "post": {
         "tags": [
@@ -1104,6 +1163,25 @@
       },
       "xml": {
         "name": "messages"
+      }
+    },
+    "Status": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "status"
       }
     },
     "App": {

@@ -9,7 +9,7 @@ const {MessageModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
-    let query = MessageModel.find({});
+    let query = MessageModel.find({status:1});
 
     if(params.messagesId){
         query.where('_id').equals(params.messagesId);
@@ -72,21 +72,30 @@ const  createMessage = (req, res, next) => {
         }
     })
 }
-const  updateMessage = (req, res, next) => {
+const  updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
 
     let query = MessageModel.find({});
     let params = req.params;
-    if(params.userId){
-        query.where('_id').equals(params.userId);
+    let statusValue;
+
+    //判断此管理员是否有权限修改
+    if(params.adminId){
+        console.log(params.adminId);
+    }
+    if(params.messagesId){
+        query.where('_id').equals(params.messagesId);
+    }
+    if(params.status){
+        statusValue = Number(params.status);
     }
 
     MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateUserInfo ' + error.message);
+            logger.error(' updateMessageStatusToAdmin ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateUserInfo ' + 'success');
+            logger.info(' updateMessageStatusToAdmin ' + 'success');
             console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
@@ -155,8 +164,7 @@ const  deleteMessage = (req, res, next) => {
         })
 
 }
-//根据坐标和半径，进行半径查询
-//分页查询
+//根据坐标和半径，进行半径查询(分页查询)
 const SearchByRadius = (req, res, next) => {
     let params = req.query;
     let arr =[];
@@ -186,7 +194,7 @@ const SearchByRadius = (req, res, next) => {
 module.exports = {
     getMessage,
     createMessage,
-    updateMessage,
     deleteMessage,
+    updateMessageStatusToAdmin,
     SearchByRadius
 };
