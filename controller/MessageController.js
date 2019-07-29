@@ -1,29 +1,45 @@
 "use strict"
 
 const resUtil = require('../util/ResponseUtil');
-const encrypt = require('../util/Encrypt.js');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
-const logger = serverLogger.createLogger('UserController');
+const logger = serverLogger.createLogger('MessageController');
 
-const {UserModel} = require('../modules');
-const {UserDetailModel} = require('../modules');
+const {MessageModel} = require('../modules');
 
-const getUser = (req, res, next) => {
+const getMessage = (req, res, next) => {
     let params = req.query;
-    let query = UserModel.find({},{password:0});
+    let query = MessageModel.find({});
 
+    if(params.messagesId){
+        query.where('_id').equals(params.messagesId);
+    }
     if(params.userId){
-        query.where('_id').equals(params.userId);
+        query.where('_userId').equals(params.userId);
     }
-    if(params.phone){
-        query.where('phone').equals(params.phone);
+    if(params.type){
+        query.where('type').equals(params.type);
     }
-    if(params.password){
-        query.where('password').equals(params.password);
+    if(params.info){
+        query.where('info').equals(params.info);
     }
-    if(params.nikename){
-        query.where('nikename').equals(params.nikename);
+    if(params.collectnum){
+        query.where('collectnum').equals(params.collectnum);
+    }
+    if(params.commentnum){
+        query.where('commentnum').equals(params.commentnum);
+    }
+    if(params.agreenum){
+        query.where('agreenum').equals(params.agreenum);
+    }
+    if(params.readnum){
+        query.where('readnum').equals(params.readnum);
+    }
+    if(params.label){
+        query.where('label').equals(params.label);
+    }
+    if(params.Multi_Media){
+        query.where('Multi_Media').equals(params.Multi_Media);
     }
     if(params.status){
         query.where('status').equals(params.status);
@@ -31,55 +47,41 @@ const getUser = (req, res, next) => {
 
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUser ' + error.message);
+            logger.error(' getMessage ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUser ' + 'success');
+            logger.info(' getMessage ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-
-const  createUser = (req, res, next) => {
+const  createMessage = (req, res, next) => {
     let bodyParams = req.body;
-    let userObj = bodyParams;
+    let messageObj = bodyParams;
 
-    if(bodyParams.password){
-        console.log(bodyParams.password);
-        bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
-    }
-
-    let userModel = new UserModel(userObj);
-    userModel.save(function(error,result){
+    let messageModel = new MessageModel(messageObj);
+    messageModel.save(function(error,result){
         if (error) {
-            logger.error(' createUser ' + error.message);
+            logger.error(' createMessage ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' createUser ' + 'success');
-            if (result._doc) {
-                // console.log('_doc._id:',result._doc._id);
-                let userDetailModel = new UserDetailModel(userObj);
-                userDetailModel._userId = result._doc._id;//将新创建的用户ID，添加到新建的用户详细信息中
-                userDetailModel.save(); // 很重要 不save则没有数据
-            }
+            logger.info(' createMessage ' + 'success');
             resUtil.resetCreateRes(res, result);
             return next();
         }
     })
 }
-
-
-const  updateUserInfo = (req, res, next) => {
+const  updateMessage = (req, res, next) => {
     let bodyParams = req.body;
 
-    let query = UserModel.find({});
+    let query = MessageModel.find({});
     let params = req.params;
     if(params.userId){
         query.where('_id').equals(params.userId);
     }
 
-    UserModel.updateOne(query,bodyParams,function(error,result){
+    MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateUserInfo ' + error.message);
             resUtil.resInternalError(error);
@@ -92,12 +94,12 @@ const  updateUserInfo = (req, res, next) => {
     })
 }
 //删除用户信息时，同时删除用户详细信息
-const  deleteUserInfo = (req, res, next) => {
+const  deleteMessage = (req, res, next) => {
     let userId;
 
     const deleteUser = () =>{
         return new Promise((resolve, reject)=> {
-            let query = UserModel.find({});
+            let query = MessageModel.find({});
             let params = req.params;
 
             if(params.userId){
@@ -105,7 +107,7 @@ const  deleteUserInfo = (req, res, next) => {
                 query.where('_id').equals(params.userId);
             }
 
-            UserModel.deleteOne(query,function(error,result){
+            MessageModel.deleteOne(query,function(error,result){
                 if (error) {
                     logger.error(' deleteUserInfo deleteUser ' + error.message);
                     reject({err:error});
@@ -153,9 +155,33 @@ const  deleteUserInfo = (req, res, next) => {
         })
 
 }
+//根据坐标和半径，进行半径查询
+const SearchByRadius = (req, res, next) => {
+    let params = req.query;
+    let arr =[];
+    let str=params.address.slice(1,params.address.length-1);
+    arr=str.split(',');
+    console.log(typeof arr);
+
+    //let query = MessageModel.find({ address : { $near : arr }});
+    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ]  }}});
+
+    query.exec((error, rows)=> {
+        if (error) {
+            logger.error(' SearchByRadius ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' SearchByRadius ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+
+}
 module.exports = {
-    getUser,
-    createUser,
-    updateUserInfo,
-    deleteUserInfo
+    getMessage,
+    createMessage,
+    updateMessage,
+    deleteMessage,
+    SearchByRadius
 };

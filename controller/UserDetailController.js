@@ -1,7 +1,6 @@
 "use strict"
 
 const resUtil = require('../util/ResponseUtil');
-const encrypt = require('../util/Encrypt.js');
 const serverLogger = require('../util/ServerLogger');
 const logger = serverLogger.createLogger('UserDetailController');
 

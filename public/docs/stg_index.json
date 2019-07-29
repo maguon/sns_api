@@ -514,7 +514,7 @@
         ],
         "summary": "Finds userDetail Info and update",
         "description": "update userDetail info",
-        "operationId": "update userDetail info by id",
+        "operationId": "update userDetail info by userDetailId",
         "produces": [
           "application/json"
         ],
@@ -601,6 +601,152 @@
           },
           "404": {
             "description": "UserDetailId not found"
+          }
+        }
+      }
+    },
+    "/user/messages": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Add a new messages info",
+        "description": "",
+        "operationId": "AddMessages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "Messages object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Messages"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Select messages Info",
+        "description": "Get messages info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "user_id",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "消息类型",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "info",
+            "in": "query",
+            "description": "消息内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "collectnum",
+            "in": "query",
+            "description": "收藏次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "commentnum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "readnum",
+            "in": "query",
+            "description": "阅读次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "label",
+            "in": "query",
+            "description": "消息标签",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "multi_media",
+            "in": "query",
+            "description": "图片/视频",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/SearchByRadius": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Select searchByRadius Info",
+        "description": "Get searchByRadius info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "description": "地理位置（格式： [纬度，经度]）",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "radius",
+            "in": "query",
+            "description": "查询半径(单位：KM)",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
@@ -882,6 +1028,70 @@
       },
       "xml": {
         "name": "userDetail"
+      }
+    },
+    "Messages": {
+      "type": "object",
+      "required": [
+        "_userId",
+        "type",
+        "info",
+        "address",
+        "collectnum",
+        "commentnum",
+        "agreenum",
+        "readnum",
+        "label",
+        "Multi_Media",
+        "status"
+      ],
+      "properties": {
+        "_userId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "info": {
+          "type": "string"
+        },
+        "address": {
+          "type": "Array"
+        },
+        "collectnum": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "commentnum": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "agreenum": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "readnum": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "label": {
+          "type": "string"
+        },
+        "Multi_Media": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "messages"
       }
     },
     "App": {

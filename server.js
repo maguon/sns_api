@@ -7,11 +7,10 @@ const resUtil = require('./util/ResponseUtil');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
-// const AdminUserController = require('./controller/AdminUserController');
-// const UserController = require('./controller/UserController');
 import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
+import {MessageController} from './controller';
 
 import {AppController} from './controller';
 
@@ -113,6 +112,13 @@ const createServer=()=>{
     // server.post({path:'/api/userDetail',contentType: 'application/json'}, UserDetailController.createUserDetail);
     server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+
+    /**
+     messages
+     */
+    server.get('/api/user/messages', MessageController.getMessage);
+    server.post({path:'/api/user/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/user/SearchByRadius', MessageController.SearchByRadius);
 
     /**
      app
