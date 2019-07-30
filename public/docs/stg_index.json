@@ -17,19 +17,19 @@
   "tags": [
     {
       "name": "adminUser",
-      "description": "adminUser of log api"
+      "description": "adminUser info api"
     },
     {
       "name": "user",
-      "description": "User base info api"
+      "description": "User info api"
     },
     {
       "name": "userDetail",
-      "description": "UserDetail base info api"
+      "description": "UserDetail info api"
     },
     {
       "name": "messages",
-      "description": "Messages base info api"
+      "description": "Messages info api"
     },
     {
       "name": "app",
@@ -48,7 +48,7 @@
         ],
         "summary": "Add a new adminUser info",
         "description": "",
-        "operationId": "AddAdminUser",
+        "operationId": "addAdminUser",
         "consumes": [
           "application/json"
         ],
@@ -80,7 +80,7 @@
         "tags": [
           "adminUser"
         ],
-        "summary": "Select adminUser Info",
+        "summary": "Select adminUser info",
         "description": "Get admin user info",
         "produces": [
           "application/json"
@@ -160,8 +160,8 @@
         "tags": [
           "adminUser"
         ],
-        "summary": "Finds adminUserInfo and update",
-        "description": "update adminUser info",
+        "summary": "Finds adminUser info and update",
+        "description": "Update adminUser info",
         "operationId": "update adminUser info by id",
         "produces": [
           "application/json"
@@ -207,8 +207,8 @@
         "tags": [
           "adminUser"
         ],
-        "summary": "Delete adminUser",
-        "description": "delete adminUser info",
+        "summary": "Delete adminUser info",
+        "description": "Delete adminUser info",
         "operationId": "delete adminUser info by id",
         "produces": [
           "application/json"
@@ -238,9 +238,9 @@
         "tags": [
           "adminUser"
         ],
-        "summary": "AadminUser login",
+        "summary": "AdminUser login",
         "description": "",
-        "operationId": "AadminUser login",
+        "operationId": "adminUser login",
         "consumes": [
           "application/json"
         ],
@@ -275,7 +275,7 @@
         ],
         "summary": "Add a new user info and null userDetail info",
         "description": "",
-        "operationId": "AddUser",
+        "operationId": "addUser",
         "consumes": [
           "application/json"
         ],
@@ -358,7 +358,7 @@
           "user"
         ],
         "summary": "Finds userInfo and update",
-        "description": "update user info",
+        "description": "Update user info",
         "operationId": "update user info by id",
         "produces": [
           "application/json"
@@ -405,7 +405,7 @@
           "user"
         ],
         "summary": "Delete user and userDetail",
-        "description": "delete user info and userDetail",
+        "description": "Delete user info and userDetail",
         "operationId": "delete user info by id",
         "produces": [
           "application/json"
@@ -435,7 +435,7 @@
         "tags": [
           "userDetail"
         ],
-        "summary": "Select userDetail Info",
+        "summary": "Select userDetail info",
         "description": "Get userDetail info",
         "produces": [
           "application/json"
@@ -516,8 +516,8 @@
         "tags": [
           "userDetail"
         ],
-        "summary": "Finds userDetail Info and update",
-        "description": "update userDetail info",
+        "summary": "Finds userDetail info and update",
+        "description": "Update userDetail info",
         "operationId": "update userDetail info by userDetailId",
         "produces": [
           "application/json"
@@ -565,8 +565,8 @@
         "tags": [
           "userDetail"
         ],
-        "summary": "Finds userDetail Info and update",
-        "description": "update userDetail info",
+        "summary": "Finds userDetail info and update",
+        "description": "Update userDetail info",
         "operationId": "update userDetail info by userId",
         "produces": [
           "application/json"
@@ -616,7 +616,7 @@
         ],
         "summary": "Add a new messages info",
         "description": "",
-        "operationId": "AddMessages",
+        "operationId": "addMessages",
         "consumes": [
           "application/json"
         ],
@@ -649,7 +649,7 @@
           "messages"
         ],
         "summary": "Select messages Info",
-        "description": "Get messages info",
+        "description": "get messages info",
         "produces": [
           "application/json"
         ],
@@ -723,7 +723,7 @@
         }
       }
     },
-    "/user/SearchByRadius": {
+    "/user/searchByRadius": {
       "get": {
         "tags": [
           "messages"
@@ -767,14 +767,14 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/status/{status}":{
+    "/admin/{adminId}/messages/{messagesId}/status":{
       "put": {
         "tags": [
           "messages"
         ],
-        "summary": "Finds messages Info and update",
-        "description": "update messages info",
-        "operationId": "update messages info by userId",
+        "summary": "Finds messages status and update",
+        "description": "Update messages status",
+        "operationId": "update messages status by adminId",
         "produces": [
           "application/json"
         ],
@@ -809,10 +809,102 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Status"
+                "$ref": "#/definitions/StatusResponse"
               }
             }
           },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/messages/{messagesId}/status":{
+      "put": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Finds messages status and update",
+        "description": "Update messages status",
+        "operationId": "update messages status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "Messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/messages/{messagesId}": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Delete messages and userDetail",
+        "description": "Delete messages info and userDetail",
+        "operationId": "delete messages info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
           "400": {
             "description": "Invalid params "
           },
@@ -1178,6 +1270,29 @@
             0,
             1
           ]
+        }
+      },
+      "xml": {
+        "name": "status"
+      }
+    },
+    "StatusResponse": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "success": {
+          "type": "integer",
+          "default": "true"
+        },
+        "n": {
+          "type": "integer",
+          "default": "1"
+        },
+        "ok": {
+          "type": "integer",
+          "default": "1"
         }
       },
       "xml": {
