@@ -9,7 +9,7 @@ const adminUserSchema = new Schema({
         password      : {type:String,default:'',trim:true,display: '密码'},
         status        : {type:Number,default:0,min:0,max:3,display: '状态'},
         gender        : {type:Number,default:0,min:0,max:3,display: '性别'},
-        type          : {type:String,default:0,display: '标签'}
+        type          : {type:String,default:0,display: '管理员类型(99-超级管理员)'}
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
