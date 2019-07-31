@@ -6,7 +6,6 @@ const logger = serverLogger.createLogger('UserDetailController');
 
 const {UserDetailModel} = require('../modules');
 
-
 const getUserDetail = (req, res, next) => {
     let params = req.query;
     let query = UserDetailModel.find({});
@@ -53,46 +52,37 @@ const getUserDetail = (req, res, next) => {
         }
     });
 }
-
-//根据用户详细信息ID，对信息进行修改
-const  updateUserDetailInfo = (req, res, next) => {
+const updateUserDetailInfo = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDetailModel.find({});
     let params = req.params;
-
     if(params.userDetailId){
         query.where('_id').equals(params.userDetailId);
     }
-
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateUserDetailInfo ' + error.message);
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateUserDetailInfo ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
-//根据用户ID，对信息进行修改
-const  updateAccordingToUserID = (req, res, next) => {
+const updateAccordingToUserID = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDetailModel.find({});
     let params = req.params;
-
     if(params.userId){
         query.where('_userId').equals(params.userId);
     }
-
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateAccordingToUserID ' + error.message);
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateAccordingToUserID ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
