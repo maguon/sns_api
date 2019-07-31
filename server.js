@@ -91,10 +91,10 @@ const createServer=()=>{
     /**
      admin_info   -管理员管理
      */
-    server.get('/api/admin/:loginUserId/adminUser', AdminUserController.getAdminUser);
-    server.post({path:'/api/admin/:loginUserId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
-    server.put({path:'/api/admin/:loginUserId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
-    server.del('/api/admin/:loginUserId/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
+    server.get('/api/admin/:adminId/adminUser', AdminUserController.getAdminUser);
+    server.post({path:'/api/admin/:adminId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
+    server.put({path:'/api/admin/:adminId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
+    server.del('/api/admin/:adminId/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
 
     /**
@@ -107,11 +107,11 @@ const createServer=()=>{
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
 
-    server.get('/api/adminUser/:adminUserId/user', UserController.getUser);
-    server.post({path:'/api/adminUser/:adminUserId/user',contentType: 'application/json'}, UserController.createUser);
-    server.put({path:'/api/adminUser/:adminUserId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
-    server.del('/api/adminUser/:adminUserId/user/:userId' ,UserController.deleteUserInfo);
-    server.get('/api/adminUser/:adminUserId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
+    server.get('/api/admin/:adminId/user', UserController.getUser);
+    server.post({path:'/api/admin/:adminId/user',contentType: 'application/json'}, UserController.createUser);
+    server.put({path:'/api/admin/:adminId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.del('/api/admin/:adminId/user/:userId' ,UserController.deleteUserInfo);
+    server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     /**
      user_detail    -用户详细信息
      */
@@ -119,9 +119,9 @@ const createServer=()=>{
     server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
 
-    server.get('/api/adminUser/:adminUserId/userDetail', UserDetailController.getUserDetail);
-    server.put({path:'/api/adminUser/:adminUserId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/adminUser/:adminUserId/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+    server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
+    server.put({path:'/api/admin/:adminId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
+    server.put({path:'/api/admin/:adminId/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
     /**
      messages    -微博动态
      */
@@ -131,11 +131,11 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
 
-    server.get('/api/adminUser/:adminUserId/messages', MessageController.getMessage);
-    server.post({path:'/api/adminUser/:adminUserId/messages',contentType: 'application/json'}, MessageController.createMessage);
-    server.get('/api/adminUser/:adminUserId/searchByRadius', MessageController.searchByRadius);
+    server.get('/api/admin/:adminId/messages', MessageController.getMessage);
+    server.post({path:'/api/admin/:adminId/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
-    server.del('/api/adminUser/:adminUserId/messages/:messagesId' ,MessageController.deleteMessageToUser);
+    server.del('/api/admin/:adminId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
      Comments   -评论
      */

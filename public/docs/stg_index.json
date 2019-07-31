@@ -41,7 +41,7 @@
     "http"
   ],
   "paths": {
-    "/admin/{loginUserId}/adminUser": {
+    "/admin/{adminId}/adminUser": {
       "post": {
         "tags": [
           "adminUser"
@@ -157,7 +157,7 @@
         }
       }
     },
-    "/admin/{loginUserId}/adminUser/{adminUserId}": {
+    "/admin/{adminId}/adminUser/{adminUserId}": {
       "put": {
         "tags": [
           "adminUser"
@@ -533,7 +533,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user": {
+    "/admin/{adminId}/user": {
       "post": {
         "tags": [
           "user"
@@ -653,7 +653,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user/{userId}": {
+    "/admin/{adminId}/user/{userId}": {
       "put": {
         "tags": [
           "user"
@@ -745,7 +745,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user/{userId}/userInfoAndDetail": {
+    "/admin/{adminId}/user/{userId}/userInfoAndDetail": {
       "get": {
         "tags": [
           "user"
@@ -957,7 +957,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/userDetail": {
+    "/admin/{adminId}/userDetail": {
       "get": {
         "tags": [
           "userDetail"
@@ -1045,7 +1045,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/userDetail/{userDetailId}": {
+    "/admin/{adminId}/userDetail/{userDetailId}": {
       "put": {
         "tags": [
           "userDetail"
@@ -1101,7 +1101,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/userId_userDetail/{userId}": {
+    "/admin/{adminId}/userId_userDetail/{userId}": {
       "put": {
         "tags": [
           "userDetail"
@@ -1407,7 +1407,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/messages": {
+    "/admin/{adminId}/messages": {
       "post": {
         "tags": [
           "messages"
@@ -1535,7 +1535,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/searchByRadius": {
+    "/admin/{adminId}/searchByRadius": {
       "get": {
         "tags": [
           "messages"
@@ -1586,7 +1586,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/messages/{messagesId}/status":{
+    "/admin/{adminId}/messages/{messagesId}/status":{
       "put": {
         "tags": [
           "messages"
@@ -1641,7 +1641,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/messages/{messagesId}": {
+    "/admin/{adminId}/messages/{messagesId}": {
       "delete": {
         "tags": [
           "messages"
