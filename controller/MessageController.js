@@ -56,7 +56,7 @@ const getMessage = (req, res, next) => {
         }
     });
 }
-const  createMessage = (req, res, next) => {
+const createMessage = (req, res, next) => {
     let bodyParams = req.body;
     let messageObj = bodyParams;
 
@@ -72,11 +72,9 @@ const  createMessage = (req, res, next) => {
         }
     })
 }
-const  deleteMessageToUser = (req, res, next) => {
+const deleteMessageToUser = (req, res, next) => {
     let params = req.params;
-
     let query = MessageModel.find({});
-
     if(params.userId){
         query.where('_userId').equals(params.userId);
     }
@@ -95,49 +93,38 @@ const  deleteMessageToUser = (req, res, next) => {
     })
 
 }
-const  updateMessageStatusToAdmin = (req, res, next) => {
+const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = MessageModel.find({});
     let params = req.params;
-    let statusValue;
-
-    //判断此管理员是否有权限修改
+    //判断此管理员是否有权限修改----暂无
     if(params.adminId){
         console.log(params.adminId);
     }
     if(params.messagesId){
         query.where('_id').equals(params.messagesId);
     }
-    if(params.status){
-        statusValue = Number(params.status);
-    }
-
     MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateMessageStatusToAdmin ' + error.message);
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateMessageStatusToAdmin ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
-const  updateMessageStatusToUser = (req, res, next) => {
+const updateMessageStatusToUser = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = MessageModel.find({});
     let params = req.params;
-
     if(params.userId){
         query.where('_userId').equals(params.userId);
     }
     if(params.messagesId){
         query.where('_id').equals(params.messagesId);
     }
-
     MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateMessageStatusToUser ' + error.message);
@@ -150,21 +137,16 @@ const  updateMessageStatusToUser = (req, res, next) => {
         }
     })
 }
-//根据坐标和半径，进行半径查询(分页查询)
-const SearchByRadius = (req, res, next) => {
+const searchByRadius = (req, res, next) => {
     let params = req.query;
     let arr =[];
     let str=params.address.slice(1,params.address.length-1);
     arr = str.split(',');
-    console.log(typeof arr);
-
     let  pageSize = Number(params.pageSize);                   //一页多少条
-    let currentPage = Number(params.currentPage);                //当前第几页
-    let sort = {'updated_at':-1};        //排序（按登录时间倒序）
-    let skipnum = (currentPage - 1) * pageSize;   //跳过数
-
+    let currentPage = Number(params.currentPage);              //当前第几页
+    let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
+    let skipnum = (currentPage - 1) * pageSize;                 //跳过数
     let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).skip(skipnum).limit(pageSize).sort(sort);
-
     query.exec((error, rows)=> {
         if (error) {
             logger.error(' SearchByRadius ' + error.message);
@@ -175,7 +157,6 @@ const SearchByRadius = (req, res, next) => {
             return next();
         }
     });
-
 }
 module.exports = {
     getMessage,
@@ -183,5 +164,5 @@ module.exports = {
     deleteMessageToUser,
     updateMessageStatusToAdmin,
     updateMessageStatusToUser,
-    SearchByRadius
+    searchByRadius
 };
