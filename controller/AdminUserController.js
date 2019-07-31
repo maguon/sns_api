@@ -52,7 +52,7 @@ const getAdminUser = (req, res, next) => {
         }
     });
 }
-const  createAdminUser = (req, res, next) => {
+const createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
     let adminUserObj = bodyParams;
 
@@ -73,7 +73,7 @@ const  createAdminUser = (req, res, next) => {
         }
     })
 }
-const  updateAdminUserInfo = (req, res, next) => {
+const updateAdminUserInfo = (req, res, next) => {
     let bodyParams = req.body;
 
     let query = AdminUserModel.find({});
@@ -88,13 +88,12 @@ const  updateAdminUserInfo = (req, res, next) => {
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateAdminUserInfo ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
-const  deleteAdminUserInfo = (req, res, next) => {
+const deleteAdminUserInfo = (req, res, next) => {
     let query = AdminUserModel.find({});
     let params = req.params;
     if(params.adminUserId){
@@ -107,7 +106,6 @@ const  deleteAdminUserInfo = (req, res, next) => {
             resUtil.resInternalError(error);
         } else {
             logger.info(' deleteAdminUserInfo ' + 'success');
-            console.log('rows:',result);
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
