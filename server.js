@@ -106,24 +106,36 @@ const createServer=()=>{
     server.del('/api/user/:userId' ,UserController.deleteUserInfo);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
+
+    server.get('/api/adminUser/:adminUserId/user', UserController.getUser);
+    server.post({path:'/api/adminUser/:adminUserId/user',contentType: 'application/json'}, UserController.createUser);
+    server.put({path:'/api/adminUser/:adminUserId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.del('/api/adminUser/:adminUserId/user/:userId' ,UserController.deleteUserInfo);
+    server.get('/api/adminUser/:adminUserId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     /**
      user_detail    -用户详细信息
      */
     server.get('/api/userDetail', UserDetailController.getUserDetail);
-    // server.post({path:'/api/userDetail',contentType: 'application/json'}, UserDetailController.createUserDetail);
     server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
 
+    server.get('/api/adminUser/:adminUserId/userDetail', UserDetailController.getUserDetail);
+    server.put({path:'/api/adminUser/:adminUserId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
+    server.put({path:'/api/adminUser/:adminUserId/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
     /**
      messages    -微博动态
      */
     server.get('/api/user/messages', MessageController.getMessage);
     server.post({path:'/api/user/messages',contentType: 'application/json'}, MessageController.createMessage);
     server.get('/api/user/searchByRadius', MessageController.searchByRadius);
-    server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
 
+    server.get('/api/adminUser/:adminUserId/user/messages', MessageController.getMessage);
+    server.post({path:'/api/adminUser/:adminUserId/user/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/adminUser/:adminUserId/user/searchByRadius', MessageController.searchByRadius);
+    server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
+    server.del('/api/adminUser/:adminUserId/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
      Comments   -评论
      */

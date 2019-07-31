@@ -503,6 +503,251 @@
         }
       }
     },
+    "/adminUser/{adminUserId}/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators add a new user info and null userDetail info",
+        "description": "",
+        "operationId": "administrator adds users",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },{
+            "in": "body",
+            "name":"userInfo",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators select user Info",
+        "description": "Administrators get user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "userDetailId",
+            "in": "query",
+            "description": "用户详细信息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "phone",
+            "in": "query",
+            "description": "用户电话",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "password",
+            "in": "query",
+            "description": "用户密码",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "nikename",
+            "in": "query",
+            "description": "用户昵称",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态（1-使用 0-禁用）",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "auth_status",
+            "in": "query",
+            "description": "认证状态(0-未认证,1-已认证)",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "用户类型（1-普通，2-会员）",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "last_login_on",
+            "in": "query",
+            "description": "最后一次登录时间",
+            "required": false,
+            "type": "date"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/user/{userId}": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators finds userInfo and update",
+        "description": "Administrators updates user info",
+        "operationId": "administrator updates user information by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userInfo",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators deletes user and userDetail",
+        "description": "Administrators deletes user info and userDetail",
+        "operationId": "administrator Deletes User Information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId not found"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/user/{userId}/userInfoAndDetail": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators select userInfo and userDetail",
+        "description": "Administrators get userInfo and userDetail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/userDetail": {
       "get": {
         "tags": [
@@ -645,6 +890,206 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserDetail unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userDetailInfo",
+            "in": "body",
+            "description": "UserDetail object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDetailId not found"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/userDetail": {
+      "get": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Administrators select userDetail info",
+        "description": "Administrators get userDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userDetailId",
+            "in": "query",
+            "description": "用户详细信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "_userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "sex",
+            "in": "query",
+            "description": "性别0:女 1:男",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "birthday",
+            "in": "query",
+            "description": "生日(格式：YYYY_MM_DD)",
+            "required": false,
+            "type": "date"
+          },{
+            "name": "realmname",
+            "in": "query",
+            "description": "个性域名",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "intro",
+            "in": "query",
+            "description": "简介",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "label",
+            "in": "query",
+            "description": "标签",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "truename",
+            "in": "query",
+            "description": "真实姓名",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "avatar",
+            "in": "query",
+            "description": "用户头像",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "drivingtype",
+            "in": "query",
+            "description": "驾驶证类型",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/userDetail/{userDetailId}": {
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Administrators finds userDetail info and update",
+        "description": "Administrators update userDetail info",
+        "operationId": "administrators update userdetail information by userdetailid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userDetailId",
+            "in": "path",
+            "description": "UserDetail unique id",
+            "required": true,
+            "type": "string"
+
+          },
+          {
+            "name": "userDetailInfo",
+            "in": "body",
+            "description": "UserDetail object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDetailId not found"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/userId_userDetail/{userId}": {
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Administrators finds userDetail info and update",
+        "description": "Administrators update userDetail info",
+        "operationId": "administrators update userDetail info by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -840,61 +1285,6 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/status":{
-      "put": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Finds messages status and update",
-        "description": "Update messages status",
-        "operationId": "update messages status by adminId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "Messages unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessagesId not found"
-          }
-        }
-      }
-    },
     "/user/{userId}/messages/{messagesId}/status":{
       "put": {
         "tags": [
@@ -962,6 +1352,284 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/user/messages": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator adds a new messages info",
+        "description": "",
+        "operationId": "administrator add Messages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "Messages object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Messages"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator selects messages Info",
+        "description": "administrator get messages info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "user_id",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "消息类型",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "info",
+            "in": "query",
+            "description": "消息内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "collectnum",
+            "in": "query",
+            "description": "收藏次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "commentnum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "readnum",
+            "in": "query",
+            "description": "阅读次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "label",
+            "in": "query",
+            "description": "消息标签",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "multi_media",
+            "in": "query",
+            "description": "图片/视频",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/user/searchByRadius": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator select searchByRadius Info",
+        "description": "administrator get searchByRadius info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "管理员Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "地理位置（格式： [纬度，经度]）",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "radius",
+            "in": "query",
+            "description": "查询半径(单位：KM)",
+            "required": true,
+            "type": "number"
+          },{
+            "name": "pageSize",
+            "in": "query",
+            "description": "一页显示条数",
+            "required": true,
+            "type": "integer"
+          },{
+            "name": "currentPage",
+            "in": "query",
+            "description": "当前第几页",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/messages/{messagesId}/status":{
+      "put": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator finds messages status and update",
+        "description": "Administrator updates messages status",
+        "operationId": "administrator update messages status by adminId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "Messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+    "/adminUser/{adminUserId}/user/{userId}/messages/{messagesId}": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator deletes messages and userDetail",
+        "description": "Administrator deletes messages info and userDetail",
+        "operationId": "administrator delete messages info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminUserId",
+            "in": "query",
+            "description": "adminUserId",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -1231,9 +1899,6 @@
             1,
             2
           ]
-        },
-        "last_login_on": {
-          "type": "date"
         }
       },
       "xml": {
