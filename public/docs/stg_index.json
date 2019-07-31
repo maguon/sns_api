@@ -1157,8 +1157,7 @@
         "phone",
         "password",
         "nikename",
-        "status",
-        "userDetailId"
+        "status"
       ],
       "properties": {
         "phone": {
@@ -1178,9 +1177,6 @@
             0,
             1
           ]
-        },
-        "userDetailId": {
-          "type": "string"
         }
       },
       "xml": {
@@ -1197,8 +1193,7 @@
         "label",
         "truename",
         "avatar",
-        "drivingtype",
-        "userId"
+        "drivingtype"
       ],
       "properties": {
         "sex": {
@@ -1229,9 +1224,6 @@
           "type": "string"
         },
         "drivingtype": {
-          "type": "string"
-        },
-        "userId": {
           "type": "string"
         }
       },
