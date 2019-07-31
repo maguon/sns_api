@@ -1377,7 +1377,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user/messages": {
+    "/adminUser/{adminUserId}/messages": {
       "post": {
         "tags": [
           "messages"
@@ -1505,7 +1505,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user/searchByRadius": {
+    "/adminUser/{adminUserId}/searchByRadius": {
       "get": {
         "tags": [
           "messages"
@@ -1611,7 +1611,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}/user/{userId}/messages/{messagesId}": {
+    "/adminUser/{adminUserId}/messages/{messagesId}": {
       "delete": {
         "tags": [
           "messages"
@@ -1627,13 +1627,6 @@
             "name": "adminUserId",
             "in": "query",
             "description": "adminUserId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "messages unique id",
             "required": true,
             "type": "string"
           },

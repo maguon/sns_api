@@ -131,11 +131,11 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
 
-    server.get('/api/adminUser/:adminUserId/user/messages', MessageController.getMessage);
-    server.post({path:'/api/adminUser/:adminUserId/user/messages',contentType: 'application/json'}, MessageController.createMessage);
-    server.get('/api/adminUser/:adminUserId/user/searchByRadius', MessageController.searchByRadius);
+    server.get('/api/adminUser/:adminUserId/messages', MessageController.getMessage);
+    server.post({path:'/api/adminUser/:adminUserId/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/adminUser/:adminUserId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
-    server.del('/api/adminUser/:adminUserId/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
+    server.del('/api/adminUser/:adminUserId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
      Comments   -评论
      */
