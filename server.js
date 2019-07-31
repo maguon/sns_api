@@ -89,7 +89,7 @@ const createServer=()=>{
     );
 
     /**
-     admin_info
+     admin_info   -管理员管理
      */
     server.get('/api/adminUser', AdminUserController.getAdminUser);
     server.post({path:'/api/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
@@ -98,7 +98,7 @@ const createServer=()=>{
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
 
     /**
-     user
+     user   -用户管理
      */
     server.get('/api/user', UserController.getUser);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
@@ -107,7 +107,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     /**
-     user_detail
+     user_detail    -用户详细信息
      */
     server.get('/api/userDetail', UserDetailController.getUserDetail);
     // server.post({path:'/api/userDetail',contentType: 'application/json'}, UserDetailController.createUserDetail);
@@ -115,14 +115,19 @@ const createServer=()=>{
     server.put({path:'/api/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
 
     /**
-     messages
+     messages    -微博动态
      */
     server.get('/api/user/messages', MessageController.getMessage);
     server.post({path:'/api/user/messages',contentType: 'application/json'}, MessageController.createMessage);
-    server.get('/api/user/searchByRadius', MessageController.SearchByRadius);
+    server.get('/api/user/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
+
+    /**
+     Comments   -评论
+     */
+
 
     /**
      app
