@@ -14,7 +14,7 @@ const userDetailSchema = new Schema({
         drivingtype   : {type:String,default:'',trim:true,display: '驾驶证类型'},
         _userId: {
             type: Schema.Types.ObjectId,
-            ref: 'UserModel',
+            ref: 'user',
             display: '用户信息ID'
         },
     },
