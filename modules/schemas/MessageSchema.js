@@ -15,7 +15,7 @@ const messageSchema = new Schema({
         status        : {type:Number,default:0,min:0,max:3,display: '状态'},
         _userId: {
             type: Schema.Types.ObjectId,
-            ref: 'UserModel',
+            ref: 'user',
             display: '用户信息ID'
         },
     },
