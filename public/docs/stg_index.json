@@ -131,19 +131,7 @@
           },{
             "name": "type",
             "in": "query",
-            "description": "type",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "start",
-            "in": "query",
-            "description": "",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "size",
-            "in": "query",
-            "description": "size",
+            "description": "管理员类型",
             "required": false,
             "type": "integer"
           }
@@ -346,15 +334,27 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "验证状态",
+            "description": "状态（1-使用 0-禁用）",
             "required": false,
             "type": "integer"
           },{
-            "name": "_userDetailId",
+            "name": "auth_status",
             "in": "query",
-            "description": "用户详细信息ID",
+            "description": "认证状态(0-未认证,1-已认证)",
             "required": false,
-            "type": "string"
+            "type": "integer"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "用户类型（1-普通，2-会员）",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "last_login_on",
+            "in": "query",
+            "description": "最后一次登录时间",
+            "required": false,
+            "type": "date"
           }
         ],
         "responses": {
@@ -464,6 +464,41 @@
         "responses": {
           "400": {
             "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/userLogin": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User login",
+        "description": "",
+        "operationId": "user login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userInfo",
+            "description": "User base info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
           }
         }
       }
@@ -1157,7 +1192,10 @@
         "phone",
         "password",
         "nikename",
-        "status"
+        "status",
+        "auth_status",
+        "type",
+        "last_login_on"
       ],
       "properties": {
         "phone": {
@@ -1177,10 +1215,47 @@
             0,
             1
           ]
+        },
+        "auth_status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "last_login_on": {
+          "type": "date"
         }
       },
       "xml": {
         "name": "user"
+      }
+    },
+    "UserLogin": {
+      "type": "object",
+      "required": [
+        "userName",
+        "password"
+      ],
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserLogin"
       }
     },
     "UserDetail": {

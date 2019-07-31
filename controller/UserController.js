@@ -2,6 +2,7 @@
 
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt.js');
+const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('UserController');
@@ -16,6 +17,9 @@ const getUser = (req, res, next) => {
     if(params.userId){
         query.where('_id').equals(params.userId);
     }
+    if(params.userDetailId){
+        query.where('_userDetailId').equals(params.userDetailId);
+    }
     if(params.phone){
         query.where('phone').equals(params.phone);
     }
@@ -28,8 +32,14 @@ const getUser = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
-    if(params.userDetailId){
-        query.where('_userDetailId').equals(params.userDetailId);
+    if(params.auth_status){
+        query.where('auth_status').equals(params.auth_status);
+    }
+    if(params.type){
+        query.where('type').equals(params.type);
+    }
+    if(params.last_login_on){
+        query.where('last_login_on').equals(params.last_login_on);
     }
 
     query.exec((error,rows)=> {
@@ -43,7 +53,6 @@ const getUser = (req, res, next) => {
         }
     });
 }
-//根据userId查出用户信息和用户详细信息
 const getUserInfoAndDetail = (req, res, next) => {
     let params = req.query;
     let query = UserModel.find({},{password:0});
@@ -65,8 +74,7 @@ const getUserInfoAndDetail = (req, res, next) => {
         }
     });
 }
-
-const  createUser = (req, res, next) => {
+const createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userObj = bodyParams;
     let userId;
@@ -145,7 +153,7 @@ const  createUser = (req, res, next) => {
             }
         });
 }
-const  updateUserInfo = (req, res, next) => {
+const updateUserInfo = (req, res, next) => {
     let bodyParams = req.body;
 
     let query = UserModel.find({});
@@ -166,8 +174,7 @@ const  updateUserInfo = (req, res, next) => {
         }
     })
 }
-//删除用户信息时，同时删除用户详细信息
-const  deleteUserInfo = (req, res, next) => {
+const deleteUserInfo = (req, res, next) => {
     let userId;
 
     const deleteUser = () =>{
@@ -224,10 +231,76 @@ const  deleteUserInfo = (req, res, next) => {
         })
 
 }
+const userLogin = (req, res, next) => {
+    let bodyParams = req.body;
+
+    const getUser = () =>{
+        return new Promise((resolve,reject)=> {
+            let query = UserModel.find({});
+            if (bodyParams.userName) {
+                query.where('phone').equals(bodyParams.userName);
+            }
+            if (bodyParams.password) {
+                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+                query.where('password').equals(bodyParams.password);
+            }
+            query.exec((error, rows) => {
+                if (error) {
+                    logger.error(' userLogin getUser ' + error.message);
+                    reject({err: error});
+                } else {
+                    if (rows.length != 0) {
+                        logger.info(' userLogin getUser ' + 'success');
+                        resolve(rows[0]);
+                    } else {
+                        logger.warn(' userLogin username or password' + 'not verified!');
+                        reject({msg:systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
+                    }
+
+                }
+            });
+        });
+    }
+
+    const loginSaveToken = (userInfo) =>{
+        return new Promise(()=>{
+            let user = {
+                userId : userInfo._doc._id.toString(),
+                userName : userInfo.nikename,
+                status : userInfo.status,
+                type: userInfo.type
+            }
+            user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
+            oAuthUtil.saveToken(user,function(error,result){
+                if(error){
+                    logger.error('userLogin loginSaveToken ' + error.stack);
+                    return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
+                }else{
+                    logger.info('userLogin loginSaveToken ' + user.userId + " success");
+                    resUtil.resetQueryRes(res,user,null);
+                    return next();
+                }
+            })
+
+        });
+    }
+
+    getUser()
+        .then(loginSaveToken)
+        .catch((reject)=>{
+            if(reject.err) {
+                resUtil.resetFailedRes(res, reject.err);
+            }else{
+                resUtil.resetFailedRes(res, reject.msg);
+            }
+        })
+
+}
 module.exports = {
     getUser,
     getUserInfoAndDetail,
     createUser,
     updateUserInfo,
-    deleteUserInfo
+    deleteUserInfo,
+    userLogin
 };

@@ -105,7 +105,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.del('/api/user/:userId' ,UserController.deleteUserInfo);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
-
+    server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     /**
      user_detail
      */
