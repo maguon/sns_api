@@ -28,6 +28,9 @@ const getUser = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
+    if(params.userDetailId){
+        query.where('_userDetailId').equals(params.userDetailId);
+    }
 
     query.exec((error,rows)=> {
         if (error) {
@@ -40,36 +43,108 @@ const getUser = (req, res, next) => {
         }
     });
 }
+//根据userId查出用户信息和用户详细信息
+const getUserInfoAndDetail = (req, res, next) => {
+    let params = req.query;
+    let query = UserModel.find({},{password:0});
+    // let queryUserDetail = UserDetailModel.find();
+
+    if(params.userId){
+        query.where('_id').equals(params.userId);
+        console.log(params.userId);
+    }
+    query.populate({path:'_userDetailId'}).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserInfoAndDetail ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            console.log('rows:',rows);
+            logger.info(' getUserInfoAndDetail ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 
 const  createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userObj = bodyParams;
+    let userId;
 
     if(bodyParams.password){
         console.log(bodyParams.password);
         bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
     }
 
-    let userModel = new UserModel(userObj);
-    userModel.save(function(error,result){
-        if (error) {
-            logger.error(' createUser ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createUser ' + 'success');
-            if (result._doc) {
-                // console.log('_doc._id:',result._doc._id);
-                let userDetailModel = new UserDetailModel(userObj);
-                userDetailModel._userId = result._doc._id;//将新创建的用户ID，添加到新建的用户详细信息中
-                userDetailModel.save(); // 很重要 不save则没有数据
+    const createUserInfo = () =>{
+        return new Promise(((resolve, reject) => {
+            let userModel = new UserModel(userObj);
+            userModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUser createUserInfo ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' createUser createUserInfo ' + 'success');
+                    if (result._doc) {
+                        userId = result._doc._id
+                        resolve();
+                    }else{
+                        reject({msg:systemMsg.USER_CREATE_ERROR});
+                    }
+                }
+            })
+        }));
+    }
+
+    const createUserDetail = () =>{
+        return new Promise((resolve,reject)=>{
+            let userDetailModel = new UserDetailModel();
+            userDetailModel._userId = userId;
+            userDetailModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUser createUserDetail ' + error.message);
+                    reject({err:error});
+                } else {
+                    if (result._doc) {
+                        resolve(result._doc._id);
+                    }else{
+                        reject({msg:systemMsg.USER_CREATE_DETAIL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+
+    const updateUserInfo = (userDetailId) =>{
+        return new Promise((() => {
+            let query = UserModel.find({});
+            if(userId){
+                query.where('_id').equals(userId);
             }
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+
+            UserModel.updateOne(query,{_userDetailId:userDetailId},function(error,result){
+                if (error) {
+                    logger.error(' createUser updateUserInfo ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' createUser updateUserInfo ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        }));
+    }
+    createUserInfo()
+        .then(createUserDetail)
+        .then(updateUserInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        });
 }
-
-
 const  updateUserInfo = (req, res, next) => {
     let bodyParams = req.body;
 
@@ -109,13 +184,9 @@ const  deleteUserInfo = (req, res, next) => {
                 if (error) {
                     logger.error(' deleteUserInfo deleteUser ' + error.message);
                     reject({err:error});
-                    // resUtil.resInternalError(error);
                 } else {
                     logger.info(' deleteUserInfo deleteUser ' + 'success');
                     resolve();
-                    // console.log('rows:',result);
-                    // resUstil.resetQueryRes(res,result,null);
-                    // return next();
                 }
             })
         });
@@ -155,6 +226,7 @@ const  deleteUserInfo = (req, res, next) => {
 }
 module.exports = {
     getUser,
+    getUserInfoAndDetail,
     createUser,
     updateUserInfo,
     deleteUserInfo

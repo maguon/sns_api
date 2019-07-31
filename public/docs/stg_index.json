@@ -320,6 +320,12 @@
             "required": false,
             "type": "string"
           },{
+            "name": "userDetailId",
+            "in": "query",
+            "description": "用户详细信息ID",
+            "required": false,
+            "type": "string"
+          },{
             "name": "phone",
             "in": "query",
             "description": "用户电话",
@@ -343,6 +349,12 @@
             "description": "验证状态",
             "required": false,
             "type": "integer"
+          },{
+            "name": "_userDetailId",
+            "in": "query",
+            "description": "用户详细信息ID",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -426,6 +438,32 @@
           },
           "404": {
             "description": "UserId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userInfoAndDetail": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Select userInfo and userDetail",
+        "description": "Get userInfo and userDetail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
@@ -1119,7 +1157,8 @@
         "phone",
         "password",
         "nikename",
-        "status"
+        "status",
+        "userDetailId"
       ],
       "properties": {
         "phone": {
@@ -1139,6 +1178,9 @@
             0,
             1
           ]
+        },
+        "userDetailId": {
+          "type": "string"
         }
       },
       "xml": {
@@ -1155,7 +1197,8 @@
         "label",
         "truename",
         "avatar",
-        "drivingtype"
+        "drivingtype",
+        "userId"
       ],
       "properties": {
         "sex": {
@@ -1186,6 +1229,9 @@
           "type": "string"
         },
         "drivingtype": {
+          "type": "string"
+        },
+        "userId": {
           "type": "string"
         }
       },
