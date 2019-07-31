@@ -41,7 +41,7 @@
     "http"
   ],
   "paths": {
-    "/adminUser": {
+    "/admin/{loginUserId}/adminUser": {
       "post": {
         "tags": [
           "adminUser"
@@ -56,6 +56,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "admin",
+            "in": "query",
+            "description": "loginUserId",
+            "required": true,
+            "type": "string"
+          },
           {
             "in": "body",
             "name":"adminInfo",
@@ -86,6 +93,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "admin",
+            "in": "query",
+            "description": "当前登录管理员Id",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "adminUserId",
             "in": "query",
@@ -143,7 +157,7 @@
         }
       }
     },
-    "/adminUser/{adminUserId}": {
+    "/admin/{loginUserId}/adminUser/{adminUserId}": {
       "put": {
         "tags": [
           "adminUser"
@@ -155,6 +169,14 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "admin",
+            "in": "path",
+            "description": "loginUserId",
+            "required": true,
+            "type": "string"
+
+          },
           {
             "name": "adminUserId",
             "in": "path",
@@ -202,6 +224,14 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "admin",
+            "in": "path",
+            "description": "loginUserId",
+            "required": true,
+            "type": "string"
+
+          },
           {
             "name": "adminUserId",
             "in": "path",
@@ -1822,7 +1852,8 @@
           ]
         },
         "type": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         }
       },
       "xml": {
@@ -1887,11 +1918,7 @@
         },
         "type": {
           "type": "integer",
-          "format": "int64",
-          "enum": [
-            1,
-            2
-          ]
+          "format": "int64"
         }
       },
       "xml": {

@@ -91,10 +91,10 @@ const createServer=()=>{
     /**
      admin_info   -管理员管理
      */
-    server.get('/api/adminUser', AdminUserController.getAdminUser);
-    server.post({path:'/api/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
-    server.put({path:'/api/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
-    server.del('/api/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
+    server.get('/api/admin/:loginUserId/adminUser', AdminUserController.getAdminUser);
+    server.post({path:'/api/admin/:loginUserId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
+    server.put({path:'/api/admin/:loginUserId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
+    server.del('/api/admin/:loginUserId/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
 
     /**
