@@ -90,7 +90,7 @@ const updateAdminUserInfo = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
         }else{
             logger.info('updateAdminUserInfo  ID format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
