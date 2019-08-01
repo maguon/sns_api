@@ -82,7 +82,6 @@ const createAdminUser = (req, res, next) => {
 }
 const updateAdminUserInfo = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = AdminUserModel.find({});
     let params = req.params;
     if(params.adminUserId){
@@ -94,7 +93,6 @@ const updateAdminUserInfo = (req, res, next) => {
             return next();
         }
     }
-
     AdminUserModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateAdminUserInfo ' + error.message);
@@ -106,24 +104,26 @@ const updateAdminUserInfo = (req, res, next) => {
         }
     })
 }
-const deleteAdminUserInfo = (req, res, next) => {
+const updateAdminUserStatus = (req, res, next) => {
+    let bodyParams = req.body;
     let query = AdminUserModel.find({});
     let params = req.params;
     if(params.adminUserId){
         if(params.adminUserId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
         }else{
-            return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
+            logger.info('updateAdminUserStatus  ID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
         }
     }
-
-    AdminUserModel.deleteOne(query,function(error,result){
+    AdminUserModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' deleteAdminUserInfo ' + error.message);
+            logger.error(' updateAdminUserStatus ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' deleteAdminUserInfo ' + 'success');
-            resUtil.resetQueryRes(res,result,null);
+            logger.info(' updateAdminUserStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
@@ -198,6 +198,6 @@ module.exports = {
     getAdminUser,
     createAdminUser,
     updateAdminUserInfo,
-    deleteAdminUserInfo,
+    updateAdminUserStatus,
     adminUserLogin
 };

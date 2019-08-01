@@ -11,6 +11,7 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {MessageController} from './controller';
+import {PraiseRecordController} from './controller';
 
 import {AppController} from './controller';
 
@@ -94,6 +95,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/adminUser', AdminUserController.getAdminUser);
     server.post({path:'/api/admin/:adminId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
+    server.put({path:'/api/admin/:adminId/adminUser/:adminUserId/status',contentType: 'application/json'} ,AdminUserController.updateAdminUserStatus);
     // server.del('/api/admin/:adminId/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
 
@@ -140,6 +142,11 @@ const createServer=()=>{
      Comments   -评论
      */
 
+    /**
+     PraiseRecord   -点赞记录
+     */
+    server.get('/api/user/:userId/messages', PraiseRecordController.getPraiseRecord);
+    server.post({path:'/api/user/:userId/praiseRecord',contentType: 'application/json'}, PraiseRecordController.createPraiseRecord);
 
     /**
      app

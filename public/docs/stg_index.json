@@ -17,19 +17,23 @@
   "tags": [
     {
       "name": "adminUser",
-      "description": "adminUser info api"
+      "description": "adminUser version and url management api"
     },
     {
       "name": "user",
-      "description": "User info api"
+      "description": "User version and url management api"
     },
     {
       "name": "userDetail",
-      "description": "UserDetail info api"
+      "description": "UserDetail version and url management api"
     },
     {
       "name": "messages",
-      "description": "Messages info api"
+      "description": "Messages version and url management api"
+    },
+    {
+      "name": "praiseRecord",
+      "description": "PraiseRecord version and url management api"
     },
     {
       "name": "app",
@@ -41,6 +45,41 @@
     "http"
   ],
   "paths": {
+    "/adminLogin": {
+      "post": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "AdminUser login",
+        "description": "",
+        "operationId": "adminUser login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "adminInfo",
+            "description": "Admin base info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminLogin"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/adminUser": {
       "post": {
         "tags": [
@@ -213,14 +252,70 @@
         }
       }
     },
-    "/adminLogin": {
-      "post": {
+    "/admin/{adminId}/adminUser/{adminUserId}/status":{
+      "put": {
         "tags": [
           "adminUser"
         ],
-        "summary": "AdminUser login",
+        "summary": "Administrator finds messages status and update",
+        "description": "Administrator updates messages status",
+        "operationId": "administrator update adminUser status by adminId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "adminUserId",
+            "in": "path",
+            "description": "AdminUser unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+
+    "/userLogin": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User login",
         "description": "",
-        "operationId": "adminUser login",
+        "operationId": "user login",
         "consumes": [
           "application/json"
         ],
@@ -230,11 +325,11 @@
         "parameters": [
           {
             "in": "body",
-            "name": "adminInfo",
-            "description": "Admin base info",
+            "name": "userInfo",
+            "description": "User base info",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AdminLogin"
+              "$ref": "#/definitions/UserLogin"
             }
           }
         ],
@@ -456,41 +551,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/userLogin": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "User login",
-        "description": "",
-        "operationId": "user login",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "userInfo",
-            "description": "User base info",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserLogin"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
           }
         }
       }
@@ -742,6 +802,8 @@
         }
       }
     },
+
+
     "/userDetail": {
       "get": {
         "tags": [
@@ -1121,6 +1183,7 @@
         }
       }
     },
+
     "/user/messages": {
       "post": {
         "tags": [
@@ -1642,6 +1705,129 @@
         }
       }
     },
+
+    "/user/{userId}/praiseRecord": {
+      "post": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Add a new praiseRecord info",
+        "description": "",
+        "operationId": "user add PraiseRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name":"praiseRecordInfo",
+            "description": "PraiseRecord object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PraiseRecord"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Select praiseRecord Info",
+        "description": "get praiseRecord info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "当前登录用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "点赞记录ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "user_id",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "消息类型",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "info",
+            "in": "query",
+            "description": "消息内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "collectnum",
+            "in": "query",
+            "description": "收藏次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "commentnum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "readnum",
+            "in": "query",
+            "description": "阅读次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "label",
+            "in": "query",
+            "description": "消息标签",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "multi_media",
+            "in": "query",
+            "description": "图片/视频",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
     "/app": {
       "post": {
         "tags": [
