@@ -211,42 +211,6 @@
             "description": "AdminUserId not found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "adminUser"
-        ],
-        "summary": "Delete adminUser info",
-        "description": "Delete adminUser info",
-        "operationId": "delete adminUser info by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "adminUserId",
-            "in": "path",
-            "description": "adminUser unique id",
-            "required": true,
-            "type": "string"
-
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminUserId not found"
-          }
-        }
       }
     },
     "/adminLogin": {
