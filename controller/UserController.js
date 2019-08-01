@@ -285,6 +285,11 @@ const userLogin = (req, res, next) => {
         });
     }
 
+    //更新最后登录时间
+    const updateLastLogin = () =>{
+        return
+    }
+
     getUser()
         .then(loginSaveToken)
         .catch((reject)=>{
