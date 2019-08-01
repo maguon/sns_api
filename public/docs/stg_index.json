@@ -59,7 +59,7 @@
           {
             "name": "admin",
             "in": "query",
-            "description": "loginUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -96,7 +96,7 @@
           {
             "name": "admin",
             "in": "query",
-            "description": "当前登录管理员Id",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
           },
@@ -171,11 +171,10 @@
         "parameters": [
           {
             "name": "admin",
-            "in": "path",
-            "description": "loginUserId",
+            "in": "query",
+            "description": "adminId",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "adminUserId",
@@ -226,11 +225,10 @@
         "parameters": [
           {
             "name": "admin",
-            "in": "path",
-            "description": "loginUserId",
+            "in": "query",
+            "description": "adminId",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "adminUserId",
@@ -549,12 +547,13 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
-          },{
+          },
+          {
             "in": "body",
             "name":"userInfo",
             "description": "User object that needs to be added to the store",
@@ -585,12 +584,13 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "管理员ID",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
-          },{
+          },
+          {
             "name": "userId",
             "in": "query",
             "description": "用户ID",
@@ -666,9 +666,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -720,9 +720,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -757,9 +757,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "管理员ID",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
           },
@@ -969,9 +969,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "管理员ID",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
           },
@@ -1058,9 +1058,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -1114,9 +1114,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -1423,9 +1423,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -1460,9 +1460,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "管理员Id",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
           },
@@ -1547,9 +1547,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "管理员Id",
+            "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
           },
@@ -1599,9 +1599,9 @@
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId unique id",
+            "name": "admin",
+            "in": "query",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -1654,9 +1654,9 @@
         ],
         "parameters": [
           {
-            "name": "adminUserId",
+            "name": "admin",
             "in": "query",
-            "description": "adminUserId",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
