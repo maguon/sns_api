@@ -4,3 +4,4 @@ exports.AdminUserModel = require('./schemas/AdminUserSchema').AdminUserModel;
 exports.UserModel = require('./schemas/UserSchema').UserModel;
 exports.UserDetailModel = require('./schemas/UserDetailSchema').UserDetailModel;
 exports.MessageModel = require('./schemas/MessageSchema').MessageModel;
+exports.PraiseRecordModel = require('./schemas/PraiseRecordSchema').PraiseRecordModel;
