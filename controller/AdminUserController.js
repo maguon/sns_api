@@ -19,7 +19,10 @@ const getAdminUser = (req, res, next) => {
         if(params.adminUserId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
         }else{
-            return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
+            logger.info('getAdminUser  ID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+            // return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
         }
         // query.where('_id').equals(params.adminUserId);
     }
