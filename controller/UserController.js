@@ -1,5 +1,5 @@
 "use strict"
-
+const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt.js');
 const oAuthUtil = require('../util/OAuthUtil');
@@ -15,10 +15,23 @@ const getUser = (req, res, next) => {
     let query = UserModel.find({},{password:0});
 
     if(params.userId){
-        query.where('_id').equals(params.userId);
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('getUser userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
     }
     if(params.userDetailId){
-        query.where('_userDetailId').equals(params.userDetailId);
+        if(params.userDetailId.length == 24){
+            query.where('_userDetailId').equals(mongoose.mongo.ObjectId(params.userDetailId));
+        }else{
+            logger.info('getUser userDetailID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+
     }
     if(params.phone){
         query.where('phone').equals(params.phone);
@@ -56,11 +69,14 @@ const getUser = (req, res, next) => {
 const getUserInfoAndDetail = (req, res, next) => {
     let params = req.query;
     let query = UserModel.find({},{password:0});
-    // let queryUserDetail = UserDetailModel.find();
-
     if(params.userId){
-        query.where('_id').equals(params.userId);
-        console.log(params.userId);
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('getUserInfoAndDetail userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
     }
     query.populate({path:'_userDetailId'}).exec((error,rows)=> {
         if (error) {
@@ -159,7 +175,13 @@ const updateUserInfo = (req, res, next) => {
     let query = UserModel.find({});
     let params = req.params;
     if(params.userId){
-        query.where('_id').equals(params.userId);
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserInfo userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
     }
 
     UserModel.updateOne(query,bodyParams,function(error,result){
@@ -183,8 +205,13 @@ const deleteUserInfo = (req, res, next) => {
             let params = req.params;
 
             if(params.userId){
-                userId = params.userId;
-                query.where('_id').equals(params.userId);
+                if(params.userId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+                }else{
+                    logger.info('deleteUserInfo userID format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
             }
 
             UserModel.deleteOne(query,function(error,result){
@@ -233,6 +260,7 @@ const deleteUserInfo = (req, res, next) => {
 }
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
+    let UserId;
 
     const getUser = () =>{
         return new Promise((resolve,reject)=> {
@@ -263,7 +291,8 @@ const userLogin = (req, res, next) => {
     }
 
     const loginSaveToken = (userInfo) =>{
-        return new Promise(()=>{
+        return new Promise((resolve, reject)=>{
+            UserId = userInfo._doc._id.toString();
             let user = {
                 userId : userInfo._doc._id.toString(),
                 userName : userInfo.nikename,
@@ -277,21 +306,45 @@ const userLogin = (req, res, next) => {
                     return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
                 }else{
                     logger.info('userLogin loginSaveToken ' + user.userId + " success");
-                    resUtil.resetQueryRes(res,user,null);
-                    return next();
+                    resolve(user);
+                    // resUtil.resetQueryRes(res,user,null);
+                    // return next();
                 }
             })
 
         });
     }
 
-    //更新最后登录时间
-    const updateLastLogin = () =>{
-        return
+    const updateLastLogin = (user) =>{
+        return new Promise((() => {
+            let query = UserModel.find({});
+            if(UserId){
+                if(UserId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(UserId));
+                }else{
+                    logger.info('userLogin updateLastLogin userID format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
+            }
+
+            UserModel.updateOne(query,{last_login_on:new Date()},function(error,result){
+                if (error) {
+                    logger.error(' userLogin updateLastLogin ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' userLogin updateLastLogin ' + 'success');
+                    console.log('rows:',result);
+                    resUtil.resetUpdateRes(res,user,null);
+                    return next();
+                }
+            })
+        }));
     }
 
     getUser()
         .then(loginSaveToken)
+        .then(updateLastLogin)
         .catch((reject)=>{
             if(reject.err) {
                 resUtil.resetFailedRes(res, reject.err);
