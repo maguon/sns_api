@@ -58,7 +58,7 @@
         "parameters": [
           {
             "name": "admin",
-            "in": "query",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -94,8 +94,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -170,8 +170,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -224,8 +224,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -547,8 +547,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -584,8 +584,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -666,8 +666,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -720,8 +720,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -757,8 +757,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -969,8 +969,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -1058,8 +1058,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -1114,8 +1114,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -1423,8 +1423,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -1460,8 +1460,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -1547,8 +1547,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "当前登录管理员ID",
             "required": true,
             "type": "string"
@@ -1599,8 +1599,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"
@@ -1654,8 +1654,8 @@
         ],
         "parameters": [
           {
-            "name": "admin",
-            "in": "query",
+            "name": "adminId",
+            "in": "path",
             "description": "adminId",
             "required": true,
             "type": "string"

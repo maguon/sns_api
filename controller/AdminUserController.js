@@ -1,4 +1,5 @@
 "use strict"
+const mongoose = require('mongoose');
 const Errors = require('restify-errors');
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt');
@@ -15,7 +16,12 @@ const getAdminUser = (req, res, next) => {
     let query = AdminUserModel.find({},{password:0});
 
     if(params.adminUserId){
-        query.where('_id').equals(params.adminUserId);
+        if(params.adminUserId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
+        }else{
+            return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
+        }
+        // query.where('_id').equals(params.adminUserId);
     }
     if(params.name){
         query.where('name').equals(params.name);
@@ -79,7 +85,11 @@ const updateAdminUserInfo = (req, res, next) => {
     let query = AdminUserModel.find({});
     let params = req.params;
     if(params.adminUserId){
-        query.where('_id').equals(params.adminUserId);
+        if(params.adminUserId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
+        }else{
+            return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
+        }
     }
 
     AdminUserModel.updateOne(query,bodyParams,function(error,result){
@@ -97,7 +107,11 @@ const deleteAdminUserInfo = (req, res, next) => {
     let query = AdminUserModel.find({});
     let params = req.params;
     if(params.adminUserId){
-        query.where('_id').equals(params.adminUserId);
+        if(params.adminUserId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
+        }else{
+            return resUtil.resetFailedRes(res, systemMsg.SYS_OBJECT_ID_ERROR);
+        }
     }
 
     AdminUserModel.deleteOne(query,function(error,result){
