@@ -1,5 +1,6 @@
 'use strict';
 let SYS_AUTH_TOKEN_ERROR ="当前用户级别，不能完成此操作" ;
+let SYS_OBJECT_ID_ERROR ="输入的ID格式不正确！" ;
 /**
  * The module for admin
  */
@@ -18,6 +19,8 @@ let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user inf
 let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
+    SYS_OBJECT_ID_ERROR,
+
     CUST_LOGIN_USER_PSWD_ERROR,
     CUST_SIGNUP_REGISTERED,
     CUST_LOGIN_PSWD_ERROR,
