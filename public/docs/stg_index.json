@@ -804,7 +804,7 @@
       }
     },
 
-    "/userDetail": {
+    "/user/{userId}/userDetail": {
       "get": {
         "tags": [
           "userDetail"
@@ -816,6 +816,13 @@
         ],
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userDetailId",
             "in": "query",
             "description": "用户详细信息ID",
@@ -823,12 +830,6 @@
             "type": "string"
           },
           {
-            "name": "_userId",
-            "in": "query",
-            "description": "用户ID",
-            "required": false,
-            "type": "string"
-          },{
             "name": "sex",
             "in": "query",
             "description": "性别0:女 1:男",
@@ -885,7 +886,7 @@
         }
       }
     },
-    "/userDetail/{userDetailId}": {
+    "/user/{userId}/userDetail/{userDetailId}": {
       "put": {
         "tags": [
           "userDetail"
@@ -898,12 +899,18 @@
         ],
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userDetailId",
             "in": "path",
             "description": "UserDetail unique id",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "userDetailInfo",
@@ -934,7 +941,7 @@
         }
       }
     },
-    "/userId_userDetail/{userId}": {
+    "/user/{userId}/updateDetail": {
       "put": {
         "tags": [
           "userDetail"
@@ -952,7 +959,6 @@
             "description": "UserDetail unique id",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "userDetailInfo",
@@ -1127,7 +1133,7 @@
         }
       }
     },
-    "/admin/{adminId}/userId_userDetail/{userId}": {
+    "/admin/{adminId}/user/{userId}/updateDetail": {
       "put": {
         "tags": [
           "userDetail"

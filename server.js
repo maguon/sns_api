@@ -104,7 +104,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
-    server.get('/api/user/:user', UserController.getUser);
+    server.get('/api/user/:userId', UserController.getUser);
     server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.del('/api/user/:userId' ,UserController.deleteUserInfo);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
@@ -117,13 +117,13 @@ const createServer=()=>{
     /**
      user_detail    -用户详细信息
      */
-    server.get('/api/userDetail', UserDetailController.getUserDetail);
-    server.put({path:'/api/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+    server.get('/api/user/:userId/userDetail', UserDetailController.getUserDetail);
+    server.put({path:'/api/user/:userId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
+    server.put({path:'/api/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
 
     server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/admin/:adminId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/admin/:adminId/userId_userDetail/:userId',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+    server.put({path:'/api/admin/:adminId/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
     /**
      messages    -微博动态
      */

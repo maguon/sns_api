@@ -1,5 +1,6 @@
 "use strict"
-
+const mongoose = require('mongoose');
+const systemMsg = require('../util/SystemMsg');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const logger = serverLogger.createLogger('UserDetailController');
@@ -7,14 +8,26 @@ const logger = serverLogger.createLogger('UserDetailController');
 const {UserDetailModel} = require('../modules');
 
 const getUserDetail = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
     let query = UserDetailModel.find({});
-
-    if(params.userDetailId){
-        query.where('_id').equals(params.userDetailId);
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getUserDetail  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
-    if(params._userId){
-        query.where('_userId').equals(params._userId);
+    if(params.userDetailId){
+        if(params.userDetailId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
+        }else{
+            logger.info('getUserDetail  userDetailID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
     if(params.sex){
         query.where('sex').equals(params.sex);
@@ -40,7 +53,6 @@ const getUserDetail = (req, res, next) => {
     if(params.drivingtype){
         query.where('drivingtype').equals(params.drivingtype);
     }
-
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getUserDetail ' + error.message);
@@ -56,8 +68,23 @@ const updateUserDetailInfo = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDetailModel.find({});
     let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserDetailInfo  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.userDetailId){
-        query.where('_id').equals(params.userDetailId);
+        if(params.userDetailId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
+        }else{
+            logger.info('updateUserDetailInfo  userDetailID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
@@ -75,7 +102,13 @@ const updateAccordingToUserID = (req, res, next) => {
     let query = UserDetailModel.find({});
     let params = req.params;
     if(params.userId){
-        query.where('_userId').equals(params.userId);
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateAccordingToUserID  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
