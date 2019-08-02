@@ -12,7 +12,7 @@ const userDetailSchema = new Schema({
         truename      : {type:String,default:'',trim:true,display: '真实姓名'},
         avatar        : {type:String,default:'',trim:true,display: '用户头像'},
         drivingtype   : {type:String,default:'',trim:true,display: '驾驶证类型'},
-        status        : {type:Number,default:0,min:0,max:3,display: '状态'},
+        status        : {type:Number,default:1,min:0,max:3,display: '状态'},
         _userId: {
             type: Schema.Types.ObjectId,
             ref: 'user',
