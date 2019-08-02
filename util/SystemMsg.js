@@ -18,6 +18,7 @@ let USER_ID_NULL_ERROR ="该用户详细信息不存在！" ;
  * The module for messages
  */
 let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
+let MESSAGE_ID_NULL_ERROR ="该动态不存在！" ;
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
 
@@ -31,5 +32,6 @@ module.exports = {
     USER_DELETE_INFO,
     USER_ID_NULL_ERROR,
 
-    MESSAGE_DELETE_ADMIN_ERROR
+    MESSAGE_DELETE_ADMIN_ERROR,
+    MESSAGE_ID_NULL_ERROR
 }

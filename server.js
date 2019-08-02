@@ -127,8 +127,8 @@ const createServer=()=>{
     /**
      messages    -微博动态
      */
-    server.get('/api/user/:userId/messages', MessageController.getMessage);
     server.post({path:'/api/user/:userId/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/user/:userId/messages', MessageController.getMessage);
     server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
