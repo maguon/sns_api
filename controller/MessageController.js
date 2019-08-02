@@ -10,7 +10,7 @@ const {MessageModel} = require('../modules');
 const getMessage = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = MessageModel.find({status:1});
+    let query = MessageModel.find({status:1,del_status:0});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -99,7 +99,7 @@ const deleteMessageToUser = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateMessageStatusToUser  userID format incorrect!');
+            logger.info('deleteMessageToUser  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -108,25 +108,37 @@ const deleteMessageToUser = (req, res, next) => {
         if(params.messagesId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
-            logger.info('updateMessageStatusToUser  messagesId format incorrect!');
+            logger.info('deleteMessageToUser  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageModel.deleteOne(query,function(error,result){
+    MessageModel.updateOne(query,{del_status:1},function(error,result){
         if (error) {
             logger.error(' deleteMessageToUser ' + error.message);
             resUtil.resInternalError(error);
         } else {
             logger.info(' deleteMessageToUser ' + 'success');
-            resUtil.resetQueryRes(res,result,null);
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
+
+    // MessageModel.deleteOne(query,function(error,result){
+    //     if (error) {
+    //         logger.error(' deleteMessageToUser ' + error.message);
+    //         resUtil.resInternalError(error);
+    //     } else {
+    //         logger.info(' deleteMessageToUser ' + 'success');
+    //         resUtil.resetQueryRes(res,result,null);
+    //         return next();
+    //     }
+    // })
 }
 const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({});
+    let query = MessageModel.find({del_status:0});
     let params = req.params;
     //判断此管理员是否有权限修改----暂无
     if(params.adminId){
@@ -148,7 +160,7 @@ const updateMessageStatusToAdmin = (req, res, next) => {
 }
 const updateMessageStatusToUser = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({});
+    let query = MessageModel.find({del_status:1});
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
@@ -189,7 +201,7 @@ const searchByRadius = (req, res, next) => {
     let currentPage = Number(params.currentPage);              //当前第几页
     let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
     let skipnum = (currentPage - 1) * pageSize;                 //跳过数
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).skip(skipnum).limit(pageSize).sort(sort);
+    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1,del_status:0}).skip(skipnum).limit(pageSize).sort(sort);
     query.exec((error, rows)=> {
         if (error) {
             logger.error(' SearchByRadius ' + error.message);

@@ -377,9 +377,7 @@
           }
         }
 
-      }
-    },
-    "/user/{userId}": {
+      },
       "get": {
         "tags": [
           "user"
@@ -394,7 +392,7 @@
             "name": "userId",
             "in": "path",
             "description": "用户ID",
-            "required": true,
+            "required": false,
             "type": "string"
           },{
             "name": "userDetailId",
@@ -451,7 +449,9 @@
             "description": "Invalid params"
           }
         }
-      },
+      }
+    },
+    "/user/{userId}": {
       "put": {
         "tags": [
           "user"
