@@ -1,5 +1,5 @@
 "use strict"
-
+const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
@@ -9,13 +9,25 @@ const {MessageModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
+    let path = req.params;
     let query = MessageModel.find({status:1});
-
-    if(params.messagesId){
-        query.where('_id').equals(params.messagesId);
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getMessage  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
-    if(params.userId){
-        query.where('_userId').equals(params.userId);
+    if(params.messagesId){
+        if(params.messagesId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+        }else{
+            logger.info('getMessage  messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
     }
     if(params.type){
         query.where('type').equals(params.type);
@@ -44,7 +56,6 @@ const getMessage = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
-
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getMessage ' + error.message);
@@ -57,9 +68,18 @@ const getMessage = (req, res, next) => {
     });
 }
 const createMessage = (req, res, next) => {
+    let path = req.params;
     let bodyParams = req.body;
     let messageObj = bodyParams;
-
+    if(path.userId){
+        if(path.userId.length == 24){
+            messageObj._userId = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('createMessage  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
     let messageModel = new MessageModel(messageObj);
     messageModel.save(function(error,result){
         if (error) {
@@ -76,10 +96,22 @@ const deleteMessageToUser = (req, res, next) => {
     let params = req.params;
     let query = MessageModel.find({});
     if(params.userId){
-        query.where('_userId').equals(params.userId);
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateMessageStatusToUser  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
     if(params.messagesId){
-        query.where('_id').equals(params.messagesId);
+        if(params.messagesId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+        }else{
+            logger.info('updateMessageStatusToUser  messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
     }
     MessageModel.deleteOne(query,function(error,result){
         if (error) {
@@ -91,7 +123,6 @@ const deleteMessageToUser = (req, res, next) => {
             return next();
         }
     })
-
 }
 const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
@@ -120,10 +151,22 @@ const updateMessageStatusToUser = (req, res, next) => {
     let query = MessageModel.find({});
     let params = req.params;
     if(params.userId){
-        query.where('_userId').equals(params.userId);
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateMessageStatusToUser  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
     }
     if(params.messagesId){
-        query.where('_id').equals(params.messagesId);
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+        }else{
+            logger.info('updateMessageStatusToUser  messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
     }
     MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
