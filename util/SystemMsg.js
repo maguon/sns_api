@@ -13,6 +13,7 @@ let CUST_LOGIN_PSWD_ERROR = "登录密码错误" ; // Customer enter a wrong pas
 let USER_CREATE_ERROR = "创建用户信息失败！" ; //Failed to create user information
 let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to create user details
 let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
+let USER_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 /**
  * The module for messages
  */
@@ -28,6 +29,7 @@ module.exports = {
     USER_CREATE_ERROR,
     USER_CREATE_DETAIL_ERROR,
     USER_DELETE_INFO,
+    USER_ID_NULL_ERROR,
 
     MESSAGE_DELETE_ADMIN_ERROR
 }
