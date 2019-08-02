@@ -11,12 +11,12 @@ const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
 const getUser = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
     let query = UserModel.find({},{password:0});
-
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    if(path.user){
+        if(path.user.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.user));
         }else{
             logger.info('getUser userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -31,7 +31,6 @@ const getUser = (req, res, next) => {
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
-
     }
     if(params.phone){
         query.where('phone').equals(params.phone);
@@ -54,7 +53,6 @@ const getUser = (req, res, next) => {
     if(params.last_login_on){
         query.where('last_login_on').equals(params.last_login_on);
     }
-
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getUser ' + error.message);
@@ -67,7 +65,7 @@ const getUser = (req, res, next) => {
     });
 }
 const getUserInfoAndDetail = (req, res, next) => {
-    let params = req.query;
+    let params = req.params;
     let query = UserModel.find({},{password:0});
     if(params.userId){
         if(params.userId.length == 24){
@@ -94,12 +92,10 @@ const createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userObj = bodyParams;
     let userId;
-
     if(bodyParams.password){
         console.log(bodyParams.password);
         bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
     }
-
     const createUserInfo = () =>{
         return new Promise(((resolve, reject) => {
             let userModel = new UserModel(userObj);
@@ -119,7 +115,6 @@ const createUser = (req, res, next) => {
             })
         }));
     }
-
     const createUserDetail = () =>{
         return new Promise((resolve,reject)=>{
             let userDetailModel = new UserDetailModel();
@@ -138,7 +133,6 @@ const createUser = (req, res, next) => {
             });
         });
     }
-
     const updateUserInfo = (userDetailId) =>{
         return new Promise((() => {
             let query = UserModel.find({});
@@ -171,7 +165,6 @@ const createUser = (req, res, next) => {
 }
 const updateUserInfo = (req, res, next) => {
     let bodyParams = req.body;
-
     let query = UserModel.find({});
     let params = req.params;
     if(params.userId){
@@ -183,7 +176,6 @@ const updateUserInfo = (req, res, next) => {
             return next();
         }
     }
-
     UserModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateUserInfo ' + error.message);
@@ -198,12 +190,10 @@ const updateUserInfo = (req, res, next) => {
 }
 const deleteUserInfo = (req, res, next) => {
     let userId;
-
     const deleteUser = () =>{
         return new Promise((resolve, reject)=> {
             let query = UserModel.find({});
             let params = req.params;
-
             if(params.userId){
                 if(params.userId.length == 24){
                     query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
@@ -213,7 +203,6 @@ const deleteUserInfo = (req, res, next) => {
                     return next();
                 }
             }
-
             UserModel.deleteOne(query,function(error,result){
                 if (error) {
                     logger.error(' deleteUserInfo deleteUser ' + error.message);
@@ -225,15 +214,12 @@ const deleteUserInfo = (req, res, next) => {
             })
         });
     }
-
     const deleteUserDetail = () => {
         return new Promise((resolve, reject) => {
             let query = UserDetailModel.find({});
-
             if(userId){
                 query.where('_userId').equals(userId);
             }
-
             UserDetailModel.deleteOne(query,function(error,result){
                 if (error) {
                     logger.error(' deleteUserInfo deleteUserDetail ' + error.message);
@@ -246,7 +232,6 @@ const deleteUserInfo = (req, res, next) => {
             })
         });
     }
-
     deleteUser()
         .then(deleteUserDetail)
         .catch((reject)=>{
@@ -256,12 +241,10 @@ const deleteUserInfo = (req, res, next) => {
                 resUtil.resetFailedRes(res,systemMsg.USER_DELETE_INFO);
             }
         })
-
 }
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
     let UserId;
-
     const getUser = () =>{
         return new Promise((resolve,reject)=> {
             let query = UserModel.find({});
@@ -289,7 +272,6 @@ const userLogin = (req, res, next) => {
             });
         });
     }
-
     const loginSaveToken = (userInfo) =>{
         return new Promise((resolve, reject)=>{
             UserId = userInfo._doc._id.toString();
@@ -314,7 +296,6 @@ const userLogin = (req, res, next) => {
 
         });
     }
-
     const updateLastLogin = (user) =>{
         return new Promise((() => {
             let query = UserModel.find({});
@@ -327,7 +308,6 @@ const userLogin = (req, res, next) => {
                     return next();
                 }
             }
-
             UserModel.updateOne(query,{last_login_on:new Date()},function(error,result){
                 if (error) {
                     logger.error(' userLogin updateLastLogin ' + error.message);
@@ -341,7 +321,6 @@ const userLogin = (req, res, next) => {
             })
         }));
     }
-
     getUser()
         .then(loginSaveToken)
         .then(updateLastLogin)
@@ -352,7 +331,6 @@ const userLogin = (req, res, next) => {
                 resUtil.resetFailedRes(res, reject.msg);
             }
         })
-
 }
 module.exports = {
     getUser,

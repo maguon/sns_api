@@ -102,12 +102,12 @@ const createServer=()=>{
     /**
      user   -用户管理
      */
-    server.get('/api/user', UserController.getUser);
+    server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
+    server.get('/api/user/:user', UserController.getUser);
     server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.del('/api/user/:userId' ,UserController.deleteUserInfo);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
-    server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
 
     server.get('/api/admin/:adminId/user', UserController.getUser);
     server.post({path:'/api/admin/:adminId/user',contentType: 'application/json'}, UserController.createUser);
@@ -127,9 +127,9 @@ const createServer=()=>{
     /**
      messages    -微博动态
      */
-    server.get('/api/user/messages', MessageController.getMessage);
-    server.post({path:'/api/user/messages',contentType: 'application/json'}, MessageController.createMessage);
-    server.get('/api/user/searchByRadius', MessageController.searchByRadius);
+    server.get('/api/user/:userId/messages', MessageController.getMessage);
+    server.post({path:'/api/user/:userId/messages',contentType: 'application/json'}, MessageController.createMessage);
+    server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
     server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
 
@@ -145,7 +145,7 @@ const createServer=()=>{
     /**
      PraiseRecord   -点赞记录
      */
-    server.get('/api/user/:userId/messages', PraiseRecordController.getPraiseRecord);
+    server.get('/api/user/:userId/praiseRecord', PraiseRecordController.getPraiseRecord);
     server.post({path:'/api/user/:userId/praiseRecord',contentType: 'application/json'}, PraiseRecordController.createPraiseRecord);
 
     /**
