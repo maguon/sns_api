@@ -451,6 +451,32 @@
         }
       }
     },
+    "/user/{userId}/userInfoAndDetail": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Select userInfo and userDetail",
+        "description": "Get userInfo and userDetail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/user/{userId}": {
       "put": {
         "tags": [
@@ -527,32 +553,6 @@
           }
         },
         "deprecated": "true"
-      }
-    },
-    "/user/{userId}/userInfoAndDetail": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Select userInfo and userDetail",
-        "description": "Get userInfo and userDetail",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
       }
     },
     "/admin/{adminId}/user": {
@@ -677,6 +677,39 @@
         }
       }
     },
+    "/admin/{adminId}/user/{userId}/userInfoAndDetail": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators select userInfo and userDetail",
+        "description": "Administrators get userInfo and userDetail",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/user/{userId}": {
       "put": {
         "tags": [
@@ -770,39 +803,7 @@
         "deprecated": "true"
       }
     },
-    "/admin/{adminId}/user/{userId}/userInfoAndDetail": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Administrators select userInfo and userDetail",
-        "description": "Administrators get userInfo and userDetail",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
+
 
     "/user/{userId}/userDetail": {
       "get": {
