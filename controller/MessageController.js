@@ -147,9 +147,10 @@ const updateMessageStatusToAdmin = (req, res, next) => {
     if(params.messagesId){
         if(params.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-        }else{
+        }else {
             logger.info('updateMessageStatusToAdmin  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res, null, systemMsg.MESSAGE_ID_NULL_ERROR);
+        }
     }
     MessageModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
