@@ -140,16 +140,14 @@ const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
     let query = MessageModel.find({del_status:0});
     let params = req.params;
-    //判断此管理员是否有权限修改----暂无
-    if(params.adminId){
-        console.log(params.adminId);
-    }
+
     if(params.messagesId){
-        if(params.userId.length == 24){
+        if(params.messagesId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-        }else {
+        }else{
             logger.info('updateMessageStatusToAdmin  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res, null, systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
         }
     }
     MessageModel.updateOne(query,bodyParams,function(error,result){
@@ -158,6 +156,7 @@ const updateMessageStatusToAdmin = (req, res, next) => {
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateMessageStatusToAdmin ' + 'success');
+            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -165,7 +164,7 @@ const updateMessageStatusToAdmin = (req, res, next) => {
 }
 const updateMessageStatusToUser = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({del_status:1});
+    let query = MessageModel.find({del_status:0});
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
@@ -177,7 +176,7 @@ const updateMessageStatusToUser = (req, res, next) => {
         }
     }
     if(params.messagesId){
-        if(params.userId.length == 24){
+        if(params.messagesId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('updateMessageStatusToUser  messagesId format incorrect!');
