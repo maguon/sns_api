@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
@@ -10,7 +11,7 @@ const {MessageModel} = require('../modules');
 const getMessage = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = MessageModel.find({status:1,del_status:0});
+    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -113,7 +114,7 @@ const deleteMessageToUser = (req, res, next) => {
             return next();
         }
     }
-    MessageModel.updateOne(query,{del_status:1},function(error,result){
+    MessageModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
         if (error) {
             logger.error(' deleteMessageToUser ' + error.message);
             resUtil.resInternalError(error);
@@ -138,7 +139,7 @@ const deleteMessageToUser = (req, res, next) => {
 }
 const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({del_status:0});
+    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
     let params = req.params;
 
     if(params.messagesId){
@@ -164,7 +165,7 @@ const updateMessageStatusToAdmin = (req, res, next) => {
 }
 const updateMessageStatusToUser = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({del_status:0});
+    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
