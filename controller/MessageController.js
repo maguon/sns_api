@@ -224,11 +224,11 @@ const searchByRadius = (req, res, next) => {
     let arr =[];
     let str=params.address.slice(1,params.address.length-1);
     arr = str.split(',');
-    let  pageSize = Number(params.pageSize);                   //一页多少条
-    let currentPage = Number(params.currentPage);              //当前第几页
     let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
-    let skipnum = (currentPage - 1) * pageSize;                 //跳过数
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1,del_status:0}).skip(skipnum).limit(pageSize).sort(sort);
+    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1,del_status:0}).sort(sort);
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
     query.exec((error, rows)=> {
         if (error) {
             logger.error(' SearchByRadius ' + error.message);
