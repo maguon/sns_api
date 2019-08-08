@@ -1,21 +1,24 @@
 "use strict"
 
+const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
-
 const serverLogger = require('../util/ServerLogger');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('AppController');
-
 const {AppModel} = require('../modules');
-
-
-
 
 const getApp = (req, res, next) => {
     let params = req.query;
     let query = AppModel.find({});
 
     if(params.appId){
-        query.where('_id').equals(params.appId);
+        if(params.appId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.appId));
+        }else{
+            logger.info('updateApp appId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
     }
     if(params.appType){
         query.where('app_type').equals(params.appType);
@@ -36,8 +39,7 @@ const getApp = (req, res, next) => {
         }
     });
 }
-
-const  createApp = (req, res, next) => {
+const createApp = (req, res, next) => {
     let bodyParams = req.body;
     let appObj = bodyParams
 
@@ -52,8 +54,34 @@ const  createApp = (req, res, next) => {
         }
     })
 }
-
+const updateApp = (req, res, next) =>{
+    let bodyParams = req.body;
+    let query = AppModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let params = req.params;
+    if(params.appId){
+        if(params.appId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.appId));
+        }else{
+            logger.info('updateApp appId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    AppModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateApp ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateApp ' + 'success');
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 
 module.exports = {
-    getApp,createApp
+    getApp,
+    createApp,
+    updateApp
 };

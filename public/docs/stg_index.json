@@ -2448,37 +2448,6 @@
     },
 
     "/app": {
-      "post": {
-        "tags": [
-          "app"
-        ],
-        "summary": "Add a new app info",
-        "description": "",
-        "operationId": "AddApp",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name":"body",
-            "description": "App object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/App"
-            }
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "app"
@@ -2494,14 +2463,65 @@
         ],
         "parameters": [
           {
+            "name": "appId",
+            "in": "path",
+            "description": "appID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "in": "query",
             "name": "appType",
+            "description": "app类型(1-司机之家)",
             "required": false,
             "type": "integer"
           },
           {
             "in": "query",
             "name": "device_type",
+            "description": "系统类型(1-安卓 2-苹果)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "description": "版本号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "version_num",
+            "description": "版本序号",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "min_version_num",
+            "description": "最小支持版本",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "force_update",
+            "description": "是否强制更新(0-不更新 1-更新)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "url",
+            "description": "下载地址",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "remarks",
+            "description": "备注",
             "required": false,
             "type": "integer"
           },
@@ -2531,7 +2551,47 @@
         }
       }
     },
-    "/app/{appId}": {
+    "/admin/{adminId}/app": {
+      "post": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Add a new app info",
+        "description": "",
+        "operationId": "AddApp",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"body",
+            "description": "App object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/App"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+
+      }
+    },
+    "/admin/{adminId}/app/{appId}": {
       "put": {
         "tags": [
           "app"
@@ -2543,6 +2603,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "appId",
             "in": "path",
@@ -2882,9 +2949,12 @@
         "app_type",
         "device_type",
         "version",
-        "low_version",
-        "force_flag",
-        "url"
+        "version_num",
+        "min_version_num",
+        "force_update",
+        "url",
+        "remarks",
+        "status"
       ],
       "properties": {
         "app_type": {
@@ -2920,7 +2990,14 @@
         },
         "url": {
           "type": "string",
-          "description": "pet status in the store"
+          "description": "app download address"
+        },
+        "remarks": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "xml": {
