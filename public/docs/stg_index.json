@@ -1426,7 +1426,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Delete messages and userDetail",
+        "summary": "Delete messages info and reviews",
         "description": "Delete messages info and reviews",
         "operationId": "delete messages info by id",
         "produces": [
@@ -1697,7 +1697,7 @@
         "tags": [
           "messages"
         ],
-        "summary": "Administrator deletes messages and userDetail",
+        "summary": "Administrator deletes messages info and reviews",
         "description": "Administrator deletes messages info and reviews",
         "operationId": "administrator delete messages info by id",
         "produces": [
