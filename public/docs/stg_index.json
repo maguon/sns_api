@@ -1427,7 +1427,7 @@
           "messages"
         ],
         "summary": "Delete messages and userDetail",
-        "description": "Delete messages info and userDetail",
+        "description": "Delete messages info and reviews",
         "operationId": "delete messages info by id",
         "produces": [
           "application/json"
@@ -1698,7 +1698,7 @@
           "messages"
         ],
         "summary": "Administrator deletes messages and userDetail",
-        "description": "Administrator deletes messages info and userDetail",
+        "description": "Administrator deletes messages info and reviews",
         "operationId": "administrator delete messages info by id",
         "produces": [
           "application/json"
@@ -1735,7 +1735,7 @@
         "tags": [
           "reviews"
         ],
-        "summary": "Add a new reviews info",
+        "summary": "Add a new reviews info and update messages info",
         "description": "",
         "operationId": "addReviews",
         "consumes": [

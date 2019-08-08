@@ -7,6 +7,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
+const {ReviewsModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
@@ -36,23 +37,23 @@ const getMessage = (req, res, next) => {
     if(params.info){
         query.where('info').equals(params.info);
     }
-    if(params.collectnum){
-        query.where('collectnum').equals(params.collectnum);
+    if(params.collectNum){
+        query.where('collectNum').equals(params.collectNum);
     }
-    if(params.commentnum){
-        query.where('commentnum').equals(params.commentnum);
+    if(params.commentNum){
+        query.where('commentNum').equals(params.commentNum);
     }
-    if(params.agreenum){
-        query.where('agreenum').equals(params.agreenum);
+    if(params.agreeNum){
+        query.where('agreeNum').equals(params.agreeNum);
     }
-    if(params.readnum){
-        query.where('readnum').equals(params.readnum);
+    if(params.readNum){
+        query.where('readNum').equals(params.readNum);
     }
     if(params.label){
         query.where('label').equals(params.label);
     }
-    if(params.Multi_Media){
-        query.where('Multi_Media').equals(params.Multi_Media);
+    if(params.multi_media){
+        query.where('multi_media').equals(params.multi_media);
     }
     if(params.status){
         query.where('status').equals(params.status);
@@ -95,10 +96,11 @@ const createMessage = (req, res, next) => {
 }
 const deleteMessageToUser = (req, res, next) => {
     let params = req.params;
-    let query = MessageModel.find({});
+    let queryMessge = MessageModel.find({});
+    let queryReviews = ReviewsModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+            queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('deleteMessageToUser  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -107,35 +109,52 @@ const deleteMessageToUser = (req, res, next) => {
     }
     if(params.messagesId){
         if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+            queryReviews.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('deleteMessageToUser  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
-        if (error) {
-            logger.error(' deleteMessageToUser ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' deleteMessageToUser ' + 'success');
-            console.log('rows:',result);
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
 
-    // MessageModel.deleteOne(query,function(error,result){
-    //     if (error) {
-    //         logger.error(' deleteMessageToUser ' + error.message);
-    //         resUtil.resInternalError(error);
-    //     } else {
-    //         logger.info(' deleteMessageToUser ' + 'success');
-    //         resUtil.resetQueryRes(res,result,null);
-    //         return next();
-    //     }
-    // })
+    const updateMessage = ()=>{
+        return new Promise(((resolve, reject) => {
+            MessageModel.updateOne(queryMessge,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+                if (error) {
+                    logger.error(' deleteMessageToUser ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' deleteMessageToUser ' + 'success');
+                    console.log('rows:',result);
+                    resolve(result);
+                }
+            })
+        }));
+    }
+    const updateReview = (resultInfo)=>{
+        return new Promise((() => {
+            //同时删除该消息下的所有评论
+            ReviewsModel.updateMany(queryReviews,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+                if (error) {
+                    logger.error(' deleteReviews updateOne ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' deleteReviews updateOne ' + 'success');
+                    console.log('rows:',result);
+                    resUtil.resetUpdateRes(res,resultInfo,null);
+                    return next();
+                }
+            })
+        }));
+    }
+    updateMessage()
+        .then(updateReview)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
 }
 const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
