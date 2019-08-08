@@ -58,6 +58,9 @@ const getMessage = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getMessage ' + error.message);

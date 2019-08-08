@@ -40,7 +40,9 @@ const getPraiseRecord = (req, res, next) => {
     if(params.last_login_on){
         query.where('last_login_on').equals(params.last_login_on);
     }
-
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getUser ' + error.message);

@@ -53,6 +53,9 @@ const getUserDetail = (req, res, next) => {
     if(params.drivingtype){
         query.where('drivingtype').equals(params.drivingtype);
     }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
     query.exec((error,rows)=> {
         if (error) {
             logger.error(' getUserDetail ' + error.message);

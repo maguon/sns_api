@@ -190,6 +190,18 @@
             "description": "管理员类型",
             "required": false,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -445,6 +457,18 @@
             "description": "最后一次登录时间",
             "required": false,
             "type": "date"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -471,6 +495,18 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -671,6 +707,18 @@
             "description": "最后一次登录时间",
             "required": false,
             "type": "date"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -704,6 +752,18 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -880,6 +940,18 @@
             "description": "驾驶证类型",
             "required": false,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1071,6 +1143,18 @@
             "description": "驾驶证类型",
             "required": false,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1304,6 +1388,18 @@
             "name": "status",
             "in": "query",
             "description": "状态",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
             "required": false,
             "type": "integer"
           }
@@ -1575,6 +1671,18 @@
             "name": "status",
             "in": "query",
             "description": "状态",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
             "required": false,
             "type": "integer"
           }
