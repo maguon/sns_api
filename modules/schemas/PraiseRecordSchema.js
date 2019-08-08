@@ -24,7 +24,7 @@ const praiseRecordSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const PraiseRecordModel = mongoose.model('praiseRecord',praiseRecordSchema)
+const PraiseRecordModel = mongoose.model('praiseRecord',praiseRecordSchema);
 module.exports = {
     PraiseRecordModel
 }
