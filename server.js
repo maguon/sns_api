@@ -145,8 +145,12 @@ const createServer=()=>{
     server.get('/api/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
     server.get('/api/user/:userId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
     server.post({path:'/api/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
-    server.del('/api/user/:userId/reviews/:reviewsId' ,ReviewsController.deleteReviews);
+    server.del('/api/user/:userId/reviews/:reviewsId' ,ReviewsController.deleteUserReviews);
 
+    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
+    server.get('/api/admin/:adminId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
+    server.del('/api/admin/:adminId/reviews/:reviewsId' ,ReviewsController.deleteAdminReviews);
     /**
      PraiseRecord   -点赞记录
      */

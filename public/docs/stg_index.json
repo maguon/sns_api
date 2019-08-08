@@ -2087,6 +2087,269 @@
         }
       }
     },
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/reviews": {
+      "post": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Administrator add a new reviews info and update messages info",
+        "description": "",
+        "operationId": "administrator add reviews",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messagesId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"reviewsInfo",
+            "description": "reviews object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Reviews"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userReviews": {
+      "get": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Administrator select reviews Info",
+        "description": "Administrator get reviews info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "消息ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentNum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/messages/{messagesId}/allReviews": {
+      "get": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Administrator select reviews Info",
+        "description": "Administrator get reviews info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "消息ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentNum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/reviews/{reviewsId}":{
+      "delete": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Administrator delete reviews info",
+        "description": "Administrator delete reviews info",
+        "operationId": "administrator delete reviews info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewsId",
+            "in": "path",
+            "description": "reviewsId unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or reviewsId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/praiseRecord": {
       "post": {
