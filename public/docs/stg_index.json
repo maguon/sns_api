@@ -2055,7 +2055,7 @@
         "tags": [
           "reviews"
         ],
-        "summary": "Delete reviews info",
+        "summary": "Delete reviews info and update message info",
         "description": "Delete reviews info",
         "operationId": "delete reviews info by id",
         "produces": [
@@ -2318,7 +2318,7 @@
         "tags": [
           "reviews"
         ],
-        "summary": "Administrator delete reviews info",
+        "summary": "Administrator delete reviews info and update message info",
         "description": "Administrator delete reviews info",
         "operationId": "administrator delete reviews info by id",
         "produces": [
