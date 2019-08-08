@@ -11,6 +11,7 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {MessageController} from './controller';
+import {ReviewsController} from './controller';
 import {PraiseRecordController} from './controller';
 
 import {AppController} from './controller';
@@ -139,14 +140,18 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
     server.del('/api/admin/:adminId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
-     Comments   -评论
+     Reviews   -评论
      */
+    server.get('/api/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
+    server.get('/api/user/:userId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
+    server.post({path:'/api/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
+    server.del('/api/user/:userId/reviews/:reviewsId' ,ReviewsController.deleteReviews);
 
     /**
      PraiseRecord   -点赞记录
      */
-    server.get('/api/user/:userId/praiseRecord', PraiseRecordController.getPraiseRecord);
-    server.post({path:'/api/user/:userId/praiseRecord',contentType: 'application/json'}, PraiseRecordController.createPraiseRecord);
+    server.get('/api/user/:userId/messages/:messagesId/praiseRecord', PraiseRecordController.getPraiseRecord);
+    server.post({path:'/api/user/:userId/messages/:messagesId/praiseRecord',contentType: 'application/json'}, PraiseRecordController.createPraiseRecord);
 
     /**
      app
@@ -164,8 +169,6 @@ const createServer=()=>{
     return (server);
 
 }
-
-
 
 ///--- Exports
 

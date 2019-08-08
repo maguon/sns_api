@@ -17,28 +17,31 @@
   "tags": [
     {
       "name": "adminUser",
-      "description": "adminUser version and url management api"
+      "description": "adminUser version and url management api (操作员管理)"
     },
     {
       "name": "user",
-      "description": "User version and url management api"
+      "description": "User version and url management api (用户基本管理)"
     },
     {
       "name": "userDetail",
-      "description": "UserDetail version and url management api"
+      "description": "UserDetail version and url management api (用户详细信息管理)"
     },
     {
       "name": "messages",
-      "description": "Messages version and url management api"
+      "description": "Messages version and url management api (消息动态管理)"
+    },
+    {
+      "name": "reviews",
+      "description": "reviews version and url management api (评论管理)"
     },
     {
       "name": "praiseRecord",
-      "description": "PraiseRecord version and url management api"
+      "description": "PraiseRecord version and url management api (用户点赞记录管理)"
     },
     {
       "name": "app",
-      "description": "App version and url management api"
-
+      "description": "App version and url management api (版本管理)"
     }
   ],
   "schemes": [
@@ -804,7 +807,6 @@
       }
     },
 
-
     "/user/{userId}/userDetail": {
       "get": {
         "tags": [
@@ -1269,19 +1271,19 @@
             "required": false,
             "type": "string"
           },{
-            "name": "collectnum",
+            "name": "collectNum",
             "in": "query",
             "description": "收藏次数",
             "required": false,
             "type": "integer"
           },{
-            "name": "commentnum",
+            "name": "commentNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
             "type": "integer"
           },{
-            "name": "readnum",
+            "name": "readNum",
             "in": "query",
             "description": "阅读次数",
             "required": false,
@@ -1540,19 +1542,19 @@
             "required": false,
             "type": "string"
           },{
-            "name": "collectnum",
+            "name": "collectNum",
             "in": "query",
             "description": "收藏次数",
             "required": false,
             "type": "integer"
           },{
-            "name": "commentnum",
+            "name": "commentNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
             "type": "integer"
           },{
-            "name": "readnum",
+            "name": "readNum",
             "in": "query",
             "description": "阅读次数",
             "required": false,
@@ -1723,6 +1725,256 @@
           },
           "404": {
             "description": "UserId or MessagesId not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/messages/{messagesId}/reviews": {
+      "post": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Add a new reviews info",
+        "description": "",
+        "operationId": "addReviews",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messagesId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"reviewsInfo",
+            "description": "reviews object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Reviews"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/messages/{messagesId}/userReviews": {
+      "get": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Select reviews Info",
+        "description": "get reviews info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "消息ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentNum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/messages/{messagesId}/allReviews": {
+      "get": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Select reviews Info",
+        "description": "get reviews info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "消息ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentNum",
+            "in": "query",
+            "description": "评论次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/reviews/{reviewsId}":{
+      "delete": {
+        "tags": [
+          "reviews"
+        ],
+        "summary": "Delete reviews info",
+        "description": "Delete reviews info",
+        "operationId": "delete reviews info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewsId",
+            "in": "path",
+            "description": "reviewsId unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or reviewsId not found"
           }
         }
       }
@@ -2143,12 +2395,12 @@
         "type",
         "info",
         "address",
-        "collectnum",
-        "commentnum",
-        "agreenum",
-        "readnum",
+        "collectNum",
+        "commentNum",
+        "agreeNum",
+        "readNum",
         "label",
-        "Multi_Media",
+        "multi_media",
         "status"
       ],
       "properties": {
@@ -2162,15 +2414,15 @@
         "address": {
           "type": "Array"
         },
-        "collectnum": {
+        "collectNum": {
           "type": "integer",
           "format": "int64"
         },
-        "commentnum": {
+        "commentNum": {
           "type": "integer",
           "format": "int64"
         },
-        "agreenum": {
+        "agreeNum": {
           "type": "integer",
           "format": "int64"
         },
@@ -2181,7 +2433,7 @@
         "label": {
           "type": "string"
         },
-        "Multi_Media": {
+        "multi_media": {
           "type": "string"
         },
         "status": {
@@ -2237,6 +2489,34 @@
       },
       "xml": {
         "name": "status"
+      }
+    },
+    "Reviews": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "reviewsMsg": {
+          "type": "String"
+        },
+        "reviewsNum": {
+          "type": "integer"
+        },
+        "agreeNum": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "reviews"
       }
     },
     "PraiseRecord": {
