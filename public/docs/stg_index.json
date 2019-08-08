@@ -2579,6 +2579,24 @@
     }
   },
   "definitions": {
+    "AdminLogin": {
+      "type": "object",
+      "required": [
+        "userName",
+        "password"
+      ],
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AdminLogin"
+      }
+    },
     "AdminUser": {
       "type": "object",
       "required": [
@@ -2629,7 +2647,7 @@
         "name": "admin"
       }
     },
-    "AdminLogin": {
+    "UserLogin": {
       "type": "object",
       "required": [
         "userName",
@@ -2644,7 +2662,7 @@
         }
       },
       "xml": {
-        "name": "AdminLogin"
+        "name": "UserLogin"
       }
     },
     "User": {
@@ -2692,24 +2710,6 @@
       },
       "xml": {
         "name": "user"
-      }
-    },
-    "UserLogin": {
-      "type": "object",
-      "required": [
-        "userName",
-        "password"
-      ],
-      "properties": {
-        "userName": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "UserLogin"
       }
     },
     "UserDetail": {
@@ -2820,48 +2820,6 @@
         "name": "messages"
       }
     },
-    "Status": {
-      "type": "object",
-      "required": [
-        "status"
-      ],
-      "properties": {
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
-        }
-      },
-      "xml": {
-        "name": "status"
-      }
-    },
-    "StatusResponse": {
-      "type": "object",
-      "required": [
-        "status"
-      ],
-      "properties": {
-        "success": {
-          "type": "integer",
-          "default": "true"
-        },
-        "n": {
-          "type": "integer",
-          "default": "1"
-        },
-        "ok": {
-          "type": "integer",
-          "default": "1"
-        }
-      },
-      "xml": {
-        "name": "status"
-      }
-    },
     "Reviews": {
       "type": "object",
       "required": [
@@ -2967,6 +2925,48 @@
       },
       "xml": {
         "name": "App"
+      }
+    },
+    "Status": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "status"
+      }
+    },
+    "StatusResponse": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "success": {
+          "type": "integer",
+          "default": "true"
+        },
+        "n": {
+          "type": "integer",
+          "default": "1"
+        },
+        "ok": {
+          "type": "integer",
+          "default": "1"
+        }
+      },
+      "xml": {
+        "name": "status"
       }
     }
   }
