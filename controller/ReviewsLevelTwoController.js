@@ -4,21 +4,21 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('ReviewsController');
+const logger = serverLogger.createLogger('ReviewsLevelTwoController');
 
+const {ReviewsLevelTwoModel} = require('../modules');
 const {ReviewsModel} = require('../modules');
-const {MessageModel} = require('../modules');
 
-const getUserReviews = (req, res, next) => {
+const getUserReviewsLevelTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = ReviewsModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = ReviewsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
 
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserReviews  userID format incorrect!');
+            logger.info('getUserReviewsLevelTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -27,22 +27,22 @@ const getUserReviews = (req, res, next) => {
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getUserReviews  messagesId format incorrect!');
+            logger.info('getUserReviewsLevelTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.reviewsId){
         if(path.reviewsId.length == 24){
-            query.where('_Id').equals(mongoose.mongo.ObjectId(path.reviewsId));
+            query.where('_reviewsId').equals(mongoose.mongo.ObjectId(path.reviewsId));
         }else{
-            logger.info('getUserReviews  reviewsId format incorrect!');
+            logger.info('getUserReviewsLevelTwo  reviewsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.REVIEWS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.reviewsMsg){
-        query.where('reviewsMsg').equals(params.reviewsMsg);
+    if(params.reviewsLevelTwoMsg){
+        query.where('reviewsLevelTwoMsg').equals(params.reviewsLevelTwoMsg);
     }
     if(params.reviewsNum){
         query.where('reviewsNum').equals(params.reviewsNum);
@@ -58,40 +58,40 @@ const getUserReviews = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserReviews ' + error.message);
+            logger.error(' getUserReviewsLevelTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserReviews ' + 'success');
+            logger.info(' getUserReviewsLevelTwo ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getAllReviews = (req, res, next) => {
+const getAllReviewsLevelTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = ReviewsModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = ReviewsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
 
     if(path.messagesId){
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getAllReviews  messagesId format incorrect!');
+            logger.info('getAllReviewsLevelTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.reviewsId){
         if(path.reviewsId.length == 24){
-            query.where('_Id').equals(mongoose.mongo.ObjectId(path.reviewsId));
+            query.where('_reviewsId').equals(mongoose.mongo.ObjectId(path.reviewsId));
         }else{
-            logger.info('getAllReviews  reviewsId format incorrect!');
+            logger.info('getAllReviewsLevelTwo  reviewsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.REVIEWS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.reviewsMsg){
-        query.where('reviewsMsg').equals(params.reviewsMsg);
+    if(params.reviewsLevelTwoMsg){
+        query.where('reviewsLevelTwoMsg').equals(params.reviewsLevelTwoMsg);
     }
     if(params.reviewsNum){
         query.where('reviewsNum').equals(params.reviewsNum);
@@ -107,51 +107,60 @@ const getAllReviews = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllReviews ' + error.message);
+            logger.error(' getAllReviewsLevelTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAllReviews ' + 'success');
+            logger.info(' getAllReviewsLevelTwo ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createReviews = (req, res, next) => {
+const createReviewsLevelTwo = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let reviewsObj = bodyParams;
+    let reviewsLevelTwoModelObj = bodyParams;
 
-    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = ReviewsModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
     let reviewsNum = 0;
 
     if(path.userId){
         if(path.userId.length == 24){
-            reviewsObj._userId = mongoose.mongo.ObjectId(path.userId);
+            reviewsLevelTwoModelObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createReviews  userID format incorrect!');
+            logger.info('createReviewsLevelTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.messagesId){
         if(path.messagesId.length == 24){
-            reviewsObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
+            reviewsLevelTwoModelObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
         }else{
-            logger.info('createReviews  messagesId format incorrect!');
+            logger.info('createReviewsLevelTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    const saveReviews = ()=>{
+    if(path.reviewsId){
+        if(path.reviewsId.length == 24){
+            reviewsLevelTwoModelObj._reviewsId = mongoose.mongo.ObjectId(path.reviewsId);
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.reviewsId));
+        }else{
+            logger.info('createReviewsLevelTwo  reviewsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.REVIEWSTWO_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    const saveReviewsLevelTwo = ()=>{
         return new Promise(((resolve, reject) => {
-            let reviewsModel = new ReviewsModel(reviewsObj);
-            reviewsModel.save(function(error,result){
+            let reviewsLevelTwoModel = new ReviewsLevelTwoModel(reviewsLevelTwoModelObj);
+            reviewsLevelTwoModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createReviews saveReviews ' + error.message);
+                    logger.error(' createReviewsLevelTwo saveReviewsLevelTwo ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' createReviews saveReviews ' + 'success');
+                    logger.info(' createReviewsLevelTwo saveReviewsLevelTwo ' + 'success');
                     resolve(result);
                 }
             });
@@ -161,29 +170,28 @@ const createReviews = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createReviews getReviewsNum ' + error.message);
+                    logger.error(' createReviewsLevelTwo getReviewsNum ' + error.message);
                     reject(error);
                 } else {
-                    if(rows.length > 0){
+                    if(rows.length>0){
                         reviewsNum = Number(rows[0]._doc.reviewsNum);
-                        logger.info(' createReviews getReviewsNum ' + 'success');
+                        logger.info(' createReviewsLevelTwo getReviewsNum ' + 'success');
                         resolve(resultInfo);
                     }else{
-                        reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
+                        reject({msg:systemMsg.REVIEWS_ID_NULL_ERROR});
                     }
-
                 }
             });
         }));
     }
     const updateReviewsNum = (resultInfo) =>{
         return new Promise((() => {
-            MessageModel.updateOne(query,{ reviewsNum: reviewsNum +1},function(error,result){
+            ReviewsModel.updateOne(query,{ reviewsNum: reviewsNum +1},function(error,result){
                 if (error) {
-                    logger.error(' createReviews updateReviewsNum ' + error.message);
+                    logger.error(' createReviewsLevelTwo updateReviewsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' createReviews updateReviewsNum ' + 'success');
+                    logger.info(' createReviewsLevelTwo updateReviewsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetCreateRes(res, resultInfo);
                     return next();
@@ -191,7 +199,7 @@ const createReviews = (req, res, next) => {
             })
         }));
     }
-    saveReviews()
+    saveReviewsLevelTwo()
         .then(getReviewsNum)
         .then(updateReviewsNum)
         .catch((reject)=>{
@@ -202,11 +210,11 @@ const createReviews = (req, res, next) => {
             }
         })
 }
-const deleteUserReviews = (req, res, next) => {
+const deleteUserReviewsLevelTwo = (req, res, next) => {
     let params = req.params;
-    let query = ReviewsModel.find({});
+    let query = ReviewsLevelTwoModel.find({});
 
-    let queryMessage = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let queryReviews = ReviewsModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
     let comNum = 0;
 
     if(params.userId){
@@ -218,32 +226,32 @@ const deleteUserReviews = (req, res, next) => {
             return next();
         }
     }
-    if(params.reviewsId){
-        if(params.reviewsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.reviewsId));
+    if(params.reviewsLevelTwoId ){
+        if(params.reviewsLevelTwoId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.reviewsLevelTwoId ));
         }else{
             logger.info('deleteUserReviews  reviewsId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.REVIEWS_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.REVIEWSTWO_ID_NULL_ERROR);
             return next();
         }
     }
     const getReviewsNum = ()=>{
         return new Promise(((resolve, reject) => {
-            query.populate({path:'_messageId'}).exec((error,rows)=> {
+            query.populate({path:'_reviewsId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' deleteUserReviews getReviewsNum ' + error.message);
+                    logger.error(' deleteUserReviewsLevelTwo getReviewsNum ' + error.message);
                     reject({err:error});
                 } else {
-                    if(rows.length){
-                        comNum = rows[0]._doc._messageId._doc.reviewsNum;
+                    if(rows.length > 0){
+                        comNum = rows[0]._doc._reviewsId._doc.reviewsNum;
                         if(comNum){
                             comNum = comNum -1;
                         }
-                        queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
-                        logger.info(' deleteUserReviews getReviewsNum _messageId:' + rows[0]._doc._messageId._id +'success');
+                        queryReviews.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._reviewsId._id));
+                        logger.info(' deleteUserReviewsLevelTwo getReviewsNum _messageId:' + rows[0]._doc._reviewsId._id +'success');
                         resolve();
                     }else{
-                        reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
+                        reject({msg:systemMsg.REVIEWSTWO_ID_NULL_ERROR});
                     }
 
                 }
@@ -252,12 +260,12 @@ const deleteUserReviews = (req, res, next) => {
     }
     const deleteReviews = ()=>{
         return new Promise(((resolve, reject) => {
-            ReviewsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            ReviewsLevelTwoModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
                 if (error) {
-                    logger.error(' deleteUserReviews deleteReviews ' + error.message);
+                    logger.error(' deleteUserReviewsLevelTwo deleteReviews ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' deleteUserReviews deleteReviews ' + 'success');
+                    logger.info(' deleteUserReviewsLevelTwo deleteReviews ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -267,12 +275,12 @@ const deleteUserReviews = (req, res, next) => {
     const updateReviewsNum = (resultInfo) =>{
         return new Promise((() => {
             console.log('comNum:',comNum);
-            MessageModel.updateOne(queryMessage,{ reviewsNum: comNum},function(error,result){
+            ReviewsModel.updateOne(queryReviews,{ reviewsNum: comNum},function(error,result){
                 if (error) {
-                    logger.error(' deleteReviews updateReviewsNum ' + error.message);
+                    logger.error(' deleteReviewsLevelTwo updateReviewsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' deleteReviews updateReviewsNum ' + 'success');
+                    logger.info(' deleteReviewsLevelTwo updateReviewsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
@@ -291,33 +299,33 @@ const deleteUserReviews = (req, res, next) => {
             }
         })
 }
-const deleteAdminReviews = (req, res, next) => {
+const deleteAdminReviewsLevelTwo = (req, res, next) => {
     let params = req.params;
-    let query = ReviewsModel.find({});
-    if(params.reviewsId){
-        if(params.reviewsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.reviewsId));
+    let query = ReviewsLevelTwoModel.find({});
+    if(params.reviewsLevelTwoId){
+        if(params.reviewsLevelTwoId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.reviewsLevelTwoId));
         }else{
-            logger.info('deleteAdminReviews  reviewsId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.REVIEWS_ID_NULL_ERROR);
+            logger.info('deleteAdminReviewsLevelTwo  reviewsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.REVIEWSTWO_ID_NULL_ERROR);
             return next();
         }
     }
-    ReviewsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+    ReviewsLevelTwoModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
         if (error) {
-            logger.error(' updateOne ' + error.message);
+            logger.error(' deleteAdminReviewsLevelTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' updateOne ' + 'success');
+            logger.info(' deleteAdminReviewsLevelTwo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
 module.exports = {
-    getUserReviews,
-    getAllReviews,
-    createReviews,
-    deleteUserReviews,
-    deleteAdminReviews
+    getUserReviewsLevelTwo,
+    getAllReviewsLevelTwo,
+    createReviewsLevelTwo,
+    deleteUserReviewsLevelTwo,
+    deleteAdminReviewsLevelTwo
 };

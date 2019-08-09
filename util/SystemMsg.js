@@ -23,6 +23,10 @@ let MESSAGE_ID_NULL_ERROR ="该动态不存在！" ;
  * The module for reviews
  */
 let REVIEWS_ID_NULL_ERROR ="该评论不存在！" ;
+/**
+ * The module for reviewsLevelTwo
+ */
+let REVIEWSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
 
@@ -39,5 +43,7 @@ module.exports = {
     MESSAGE_DELETE_ADMIN_ERROR,
     MESSAGE_ID_NULL_ERROR,
 
-    REVIEWS_ID_NULL_ERROR
+    REVIEWS_ID_NULL_ERROR,
+
+    REVIEWSTWO_ID_NULL_ERROR
 }

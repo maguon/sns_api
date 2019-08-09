@@ -5,4 +5,5 @@ exports.UserController = require('./UserController');
 exports.UserDetailController = require('./UserDetailController');
 exports.MessageController = require('./MessageController');
 exports.ReviewsController = require('./ReviewsController');
+exports.ReviewsLevelTwoController = require('./ReviewsLevelTwoController');
 exports.PraiseRecordController = require('./PraiseRecordController');

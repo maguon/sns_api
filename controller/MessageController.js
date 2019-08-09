@@ -40,8 +40,8 @@ const getMessage = (req, res, next) => {
     if(params.collectNum){
         query.where('collectNum').equals(params.collectNum);
     }
-    if(params.commentNum){
-        query.where('commentNum').equals(params.commentNum);
+    if(params.reviewsNum){
+        query.where('reviewsNum').equals(params.reviewsNum);
     }
     if(params.agreeNum){
         query.where('agreeNum').equals(params.agreeNum);

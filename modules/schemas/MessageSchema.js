@@ -7,7 +7,7 @@ const messageSchema = new Schema({
         info          : {type:String,default:'',trim:true,display: '内容'},
         address       : {type:Array,index: {type: '2d',sparse: true},display: '地理位置'},
         collectNum    : {type:Number,default:0,display: '收藏次数'},
-        commentNum    : {type:Number,default:0,display: '评论次数'},
+        reviewsNum    : {type:Number,default:0,display: '评论次数'},
         agreeNum      : {type:Number,default:0,display: '点赞次数'},
         readNum       : {type:Number,default:0,display: '阅读次数'},
         label         : {type:String,default:'',trim:true,display: '消息标签'},

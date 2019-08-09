@@ -36,6 +36,10 @@
       "description": "reviews version and url management api (评论管理)"
     },
     {
+      "name": "reviewsLevelTwo",
+      "description": "reviewsⅡ version and url management api (二级评论管理)"
+    },
+    {
       "name": "praiseRecord",
       "description": "PraiseRecord version and url management api (用户点赞记录管理)"
     },
@@ -1361,7 +1365,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -1644,7 +1648,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -1925,7 +1929,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2006,7 +2010,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2188,7 +2192,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2269,7 +2273,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentNum",
+            "name": "reviewsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2318,7 +2322,7 @@
         "tags": [
           "reviews"
         ],
-        "summary": "Administrator delete reviews info and update message info",
+        "summary": "Administrator delete reviews info",
         "description": "Administrator delete reviews info",
         "operationId": "administrator delete reviews info by id",
         "produces": [
@@ -2336,6 +2340,263 @@
             "name": "reviewsId",
             "in": "path",
             "description": "reviewsId unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or reviewsId not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/messages/{messagesId}/reviews/{reviewsId}/reviewsLevelTwo": {
+      "post": {
+        "tags": [
+          "reviewsLevelTwo"
+        ],
+        "summary": "Add a new reviewsLevelTwo info and update reviews info",
+        "description": "",
+        "operationId": "addReviewsLevelTwo",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messagesId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewsId",
+            "in": "path",
+            "description": "reviewsId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"reviewsInfo",
+            "description": "reviews object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReviewsLevelTwo"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/reviews/{reviewsId}/userReviewsLevelTwo": {
+      "get": {
+        "tags": [
+          "reviewsLevelTwo"
+        ],
+        "summary": "Select reviewsLevelTwo Info",
+        "description": "get reviewsLevelTwo info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsLevelTwoId",
+            "in": "query",
+            "description": "二級评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "path",
+            "description": "评论ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsLevelTwoMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/reviews/{reviewsId}/allReviewsLevelTwo": {
+      "get": {
+        "tags": [
+          "reviewsLevelTwo"
+        ],
+        "summary": "Select reviewsLevelTwo Info",
+        "description": "get reviewsLevelTwo info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "reviewsLevelTwoId",
+            "in": "query",
+            "description": "二級评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsId",
+            "in": "path",
+            "description": "评论ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "reviewsLevelTwoMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/reviewsLevelTwo/{reviewsLevelTwoId}":{
+      "delete": {
+        "tags": [
+          "reviewsLevelTwo"
+        ],
+        "summary": "Delete reviewsLevelTwo info and update reviews info",
+        "description": "Delete reviewsLevelTwo info",
+        "operationId": "delete reviewsLevelTwo info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewsLevelTwoId",
+            "in": "path",
+            "description": "reviewsLevelTwoId unique id",
             "required": true,
             "type": "string"
           }
@@ -2425,7 +2686,7 @@
             "type": "string"
           },
           {
-            "name": "_commentsId",
+            "name": "_reviewsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -2834,7 +3095,7 @@
         "info",
         "address",
         "collectNum",
-        "commentNum",
+        "reviewsNum",
         "agreeNum",
         "readNum",
         "label",
@@ -2856,7 +3117,7 @@
           "type": "integer",
           "format": "int64"
         },
-        "commentNum": {
+        "reviewsNum": {
           "type": "integer",
           "format": "int64"
         },
@@ -2915,6 +3176,31 @@
         "name": "reviews"
       }
     },
+    "ReviewsLevelTwo": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "reviewsLevelTwoMsg": {
+          "type": "String"
+        },
+        "agreeNum": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "reviewsLevelTwo"
+      }
+    },
     "PraiseRecord": {
       "type": "object",
       "required": [
@@ -2927,7 +3213,7 @@
         "_messageId": {
           "type": "String"
         },
-        "_commentsId": {
+        "_reviewsId": {
           "type": "String"
         },
         "status": {

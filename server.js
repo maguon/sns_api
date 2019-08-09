@@ -12,6 +12,7 @@ import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {MessageController} from './controller';
 import {ReviewsController} from './controller';
+import {ReviewsLevelTwoController} from './controller';
 import {PraiseRecordController} from './controller';
 
 import {AppController} from './controller';
@@ -140,7 +141,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
     server.del('/api/admin/:adminId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
-     Reviews   -评论
+     Reviews   - 评论
      */
     server.get('/api/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
     server.get('/api/user/:userId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
@@ -151,6 +152,13 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
     server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
     server.del('/api/admin/:adminId/reviews/:reviewsId' ,ReviewsController.deleteAdminReviews);
+    /**
+     ReviewsLevelTwo   - 二級评论
+     */
+    server.get('/api/user/:userId/reviews/:reviewsId/userReviewsLevelTwo', ReviewsLevelTwoController.getUserReviewsLevelTwo);
+    server.get('/api/user/:userId/reviews/:reviewsId/allReviewsLevelTwo', ReviewsLevelTwoController.getAllReviewsLevelTwo);
+    server.post({path:'/api/user/:userId/messages/:messagesId/reviews/:reviewsId/reviewsLevelTwo',contentType: 'application/json'}, ReviewsLevelTwoController.createReviewsLevelTwo);
+    server.del('/api/user/:userId/reviewsLevelTwo/:reviewsLevelTwoId' ,ReviewsLevelTwoController.deleteUserReviewsLevelTwo);
     /**
      PraiseRecord   -点赞记录
      */
