@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
 const {ReviewsModel} = require('../modules');
+const {ReviewsLevelTwoModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
@@ -101,6 +102,7 @@ const deleteMessageToUser = (req, res, next) => {
     let params = req.params;
     let queryMessge = MessageModel.find({});
     let queryReviews = ReviewsModel.find({});
+    let queryReviewsLevelTwo = ReviewsLevelTwoModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
@@ -114,6 +116,7 @@ const deleteMessageToUser = (req, res, next) => {
         if(params.messagesId.length == 24){
             queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
             queryReviews.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+            queryReviewsLevelTwo.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('deleteMessageToUser  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -125,10 +128,10 @@ const deleteMessageToUser = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             MessageModel.updateOne(queryMessge,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
                 if (error) {
-                    logger.error(' deleteMessageToUser ' + error.message);
+                    logger.error(' deleteMessageToUser updateMessage ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' deleteMessageToUser ' + 'success');
+                    logger.info(' deleteMessageToUser updateMessage ' + 'success');
                     console.log('rows:',result);
                     resolve(result);
                 }
@@ -136,23 +139,37 @@ const deleteMessageToUser = (req, res, next) => {
         }));
     }
     const updateReview = (resultInfo)=>{
-        return new Promise((() => {
-            //同时删除该消息下的所有评论
+        return new Promise(((resolve, reject) => {
+            //同时删除该消息下的所有一級评论
             ReviewsModel.updateMany(queryReviews,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
                 if (error) {
-                    logger.error(' deleteReviews updateOne ' + error.message);
+                    logger.error(' deleteMessageToUser updateReview ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' deleteMessageToUser updateReview ' + 'success');
+                    resolve(resultInfo);
+                }
+            })
+        }));
+    }
+    const updateReviewLevelTwo = (resultInfo) =>{
+        return new Promise(()=>{
+            ReviewsLevelTwoModel.updateMany(queryReviewsLevelTwo,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+                if (error) {
+                    logger.error(' deleteMessageToUser updateReviewLevelTwo ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info(' deleteReviews updateOne ' + 'success');
+                    logger.info(' deleteMessageToUser updateReviewLevelTwo ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
                 }
             })
-        }));
+        });
     }
     updateMessage()
         .then(updateReview)
+        .then(updateReviewLevelTwo)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
