@@ -280,10 +280,6 @@ const deleteUserReviews = (req, res, next) => {
 const deleteAdminReviews = (req, res, next) => {
     let params = req.params;
     let query = ReviewsModel.find({});
-
-    let queryMessage = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
-    let comNum = 0;
-
     if(params.reviewsId){
         if(params.reviewsId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.reviewsId));
@@ -293,62 +289,16 @@ const deleteAdminReviews = (req, res, next) => {
             return next();
         }
     }
-    const getCommentNum = ()=>{
-        return new Promise(((resolve, reject) => {
-            query.populate({path:'_messageId'}).exec((error,rows)=> {
-                if (error) {
-                    logger.error(' deleteAdminReviews getCommentNum ' + error.message);
-                    reject({err:error});
-                } else {
-                    comNum = rows[0]._doc._messageId._doc.commentNum;
-                    if(comNum){
-                        comNum = comNum -1;
-                    }
-                    queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
-                    logger.info(' deleteAdminReviews getCommentNum _messageId:' + rows[0]._doc._messageId._id +'success');
-                    resolve();
-                }
-            });
-        }));
-    }
-    const deleteReviews = ()=>{
-        return new Promise(((resolve, reject) => {
-            ReviewsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
-                if (error) {
-                    logger.error(' deleteAdminReviews deleteReviews ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteAdminReviews deleteReviews ' + 'success');
-                    resolve(result);
-                    console.log('result:',result)
-                }
-            })
-        }));
-    }
-    const updateCommentNum = (resultInfo) =>{
-        return new Promise((() => {
-            console.log('comNum:',comNum);
-            MessageModel.updateOne(queryMessage,{ commentNum: comNum},function(error,result){
-                if (error) {
-                    logger.error(' deleteAdminReviews updateCommentNum ' + error.message);
-                    resUtil.resInternalError(error);
-                } else {
-                    logger.info(' deleteAdminReviews updateCommentNum ' + 'success');
-                    console.log('rows:',result);
-                    resUtil.resetUpdateRes(res,resultInfo,null);
-                    return next();
-                }
-            })
-        }));
-    }
-    getCommentNum()
-        .then(deleteReviews)
-        .then(updateCommentNum)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }
-        })
+    ReviewsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+        if (error) {
+            logger.error(' updateOne ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' updateOne ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
 }
 module.exports = {
     getUserReviews,
