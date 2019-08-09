@@ -7,8 +7,8 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
-const {ReviewsModel} = require('../modules');
-const {ReviewsLevelTwoModel} = require('../modules');
+const {CommentsModel} = require('../modules');
+const {CommentsLevelTwoModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
@@ -41,8 +41,8 @@ const getMessage = (req, res, next) => {
     if(params.collectNum){
         query.where('collectNum').equals(params.collectNum);
     }
-    if(params.reviewsNum){
-        query.where('reviewsNum').equals(params.reviewsNum);
+    if(params.commentsNum){
+        query.where('commentsNum').equals(params.commentsNum);
     }
     if(params.agreeNum){
         query.where('agreeNum').equals(params.agreeNum);
@@ -101,8 +101,8 @@ const createMessage = (req, res, next) => {
 const deleteMessageToUser = (req, res, next) => {
     let params = req.params;
     let queryMessge = MessageModel.find({});
-    let queryReviews = ReviewsModel.find({});
-    let queryReviewsLevelTwo = ReviewsLevelTwoModel.find({});
+    let queryComments = CommentsModel.find({});
+    let queryCommentsLevelTwo = CommentsLevelTwoModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
@@ -115,8 +115,8 @@ const deleteMessageToUser = (req, res, next) => {
     if(params.messagesId){
         if(params.messagesId.length == 24){
             queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryReviews.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryReviewsLevelTwo.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+            queryComments.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+            queryCommentsLevelTwo.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('deleteMessageToUser  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -141,7 +141,7 @@ const deleteMessageToUser = (req, res, next) => {
     const updateReview = (resultInfo)=>{
         return new Promise(((resolve, reject) => {
             //同时删除该消息下的所有一級评论
-            ReviewsModel.updateMany(queryReviews,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsModel.updateMany(queryComments,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
                 if (error) {
                     logger.error(' deleteMessageToUser updateReview ' + error.message);
                     reject({err:error});
@@ -154,7 +154,7 @@ const deleteMessageToUser = (req, res, next) => {
     }
     const updateReviewLevelTwo = (resultInfo) =>{
         return new Promise(()=>{
-            ReviewsLevelTwoModel.updateMany(queryReviewsLevelTwo,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsLevelTwoModel.updateMany(queryCommentsLevelTwo,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
                 if (error) {
                     logger.error(' deleteMessageToUser updateReviewLevelTwo ' + error.message);
                     resUtil.resInternalError(error,res);

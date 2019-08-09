@@ -2,9 +2,9 @@
 
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
-const reviewsSchema = new Schema({
-        reviewsMsg    : {type:String,default:'',display: '评论内容'},
-        reviewsNum    : {type:Number,default:0,display: '评论次数'},
+const commentsSchema = new Schema({
+        commentsMsg    : {type:String,default:'',display: '评论内容'},
+        commentsNum    : {type:Number,default:0,display: '评论次数'},
         agreeNum      : {type:Number,default:0,display: '点赞次数'},
         status         : {type:Number,default:1,min:0,max:3,display: '状态'},
         del_status     : {type:Number,default:0,min:0,max:3,display: '删除状态(0-未删除，1-已删除)'},
@@ -22,7 +22,7 @@ const reviewsSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const ReviewsModel = mongoose.model('reviews',reviewsSchema)
+const CommentsModel = mongoose.model('comments',commentsSchema)
 module.exports = {
-    ReviewsModel
+    CommentsModel
 }

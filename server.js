@@ -11,8 +11,8 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {MessageController} from './controller';
-import {ReviewsController} from './controller';
-import {ReviewsLevelTwoController} from './controller';
+import {CommentsController} from './controller';
+import {CommentsLevelTwoController} from './controller';
 import {PraiseRecordController} from './controller';
 
 import {AppController} from './controller';
@@ -141,29 +141,29 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
     server.del('/api/admin/:adminId/messages/:messagesId' ,MessageController.deleteMessageToUser);
     /**
-     Reviews   - 评论
+     Comments   - 评论
      */
-    server.get('/api/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
-    server.get('/api/user/:userId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
-    server.post({path:'/api/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
-    server.del('/api/user/:userId/reviews/:reviewsId' ,ReviewsController.deleteUserReviews);
+    server.get('/api/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);
+    server.get('/api/user/:userId/messages/:messagesId/allComments', CommentsController.getAllComments);
+    server.post({path:'/api/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
+    server.del('/api/user/:userId/comments/:commentsId' ,CommentsController.deleteUserComments);
 
-    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userReviews', ReviewsController.getUserReviews);
-    server.get('/api/admin/:adminId/messages/:messagesId/allReviews', ReviewsController.getAllReviews);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/reviews',contentType: 'application/json'}, ReviewsController.createReviews);
-    server.del('/api/admin/:adminId/reviews/:reviewsId' ,ReviewsController.deleteAdminReviews);
+    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);
+    server.get('/api/admin/:adminId/messages/:messagesId/allComments', CommentsController.getAllComments);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
+    server.del('/api/admin/:adminId/comments/:commentsId' ,CommentsController.deleteAdminComments);
     /**
-     ReviewsLevelTwo   - 二級评论
+     CommentsLevelTwo   - 二級评论
      */
-    server.get('/api/user/:userId/reviews/:reviewsId/userReviewsLevelTwo', ReviewsLevelTwoController.getUserReviewsLevelTwo);
-    server.get('/api/user/:userId/reviews/:reviewsId/allReviewsLevelTwo', ReviewsLevelTwoController.getAllReviewsLevelTwo);
-    server.post({path:'/api/user/:userId/messages/:messagesId/reviews/:reviewsId/reviewsLevelTwo',contentType: 'application/json'}, ReviewsLevelTwoController.createReviewsLevelTwo);
-    server.del('/api/user/:userId/reviewsLevelTwo/:reviewsLevelTwoId' ,ReviewsLevelTwoController.deleteUserReviewsLevelTwo);
+    server.get('/api/user/:userId/comments/:commentsId/userCommentsLevelTwo', CommentsLevelTwoController.getUserCommentsLevelTwo);
+    server.get('/api/user/:userId/comments/:commentsId/allCommentsLevelTwo', CommentsLevelTwoController.getAllCommentsLevelTwo);
+    server.post({path:'/api/user/:userId/messages/:messagesId/comments/:commentsId/commentsLevelTwo',contentType: 'application/json'}, CommentsLevelTwoController.createCommentsLevelTwo);
+    server.del('/api/user/:userId/commentsLevelTwo/:commentsLevelTwoId' ,CommentsLevelTwoController.deleteUserCommentsLevelTwo);
 
-    server.get('/api/admin/:adminId/user/:userId/reviews/:reviewsId/userReviewsLevelTwo', ReviewsLevelTwoController.getUserReviewsLevelTwo);
-    server.get('/api/admin/:adminId/reviews/:reviewsId/allReviewsLevelTwo', ReviewsLevelTwoController.getAllReviewsLevelTwo);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/reviews/:reviewsId/reviewsLevelTwo',contentType: 'application/json'}, ReviewsLevelTwoController.createReviewsLevelTwo);
-    server.del('/api/admin/:adminId//reviewsLevelTwo/:reviewsLevelTwoId' ,ReviewsLevelTwoController.deleteAdminReviewsLevelTwo);
+    server.get('/api/admin/:adminId/user/:userId/comments/:commentsId/userCommentsLevelTwo', CommentsLevelTwoController.getUserCommentsLevelTwo);
+    server.get('/api/admin/:adminId/comments/:commentsId/allCommentsLevelTwo', CommentsLevelTwoController.getAllCommentsLevelTwo);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsLevelTwo',contentType: 'application/json'}, CommentsLevelTwoController.createCommentsLevelTwo);
+    server.del('/api/admin/:adminId/commentsLevelTwo/:commentsLevelTwoId' ,CommentsLevelTwoController.deleteAdminCommentsLevelTwo);
     /**
      PraiseRecord   -点赞记录
      */

@@ -20,13 +20,13 @@ let USER_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
 let MESSAGE_ID_NULL_ERROR ="该动态不存在！" ;
 /**
- * The module for reviews
+ * The module for comments
  */
-let REVIEWS_ID_NULL_ERROR ="该评论不存在！" ;
+let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
 /**
- * The module for reviewsLevelTwo
+ * The module for commentsLevelTwo
  */
-let REVIEWSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
+let COMMENTSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
 
@@ -43,7 +43,7 @@ module.exports = {
     MESSAGE_DELETE_ADMIN_ERROR,
     MESSAGE_ID_NULL_ERROR,
 
-    REVIEWS_ID_NULL_ERROR,
+    COMMENTS_ID_NULL_ERROR,
 
-    REVIEWSTWO_ID_NULL_ERROR
+    COMMENTSTWO_ID_NULL_ERROR
 }

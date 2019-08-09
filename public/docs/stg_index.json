@@ -32,12 +32,12 @@
       "description": "Messages version and url management api (消息动态管理)"
     },
     {
-      "name": "reviews",
-      "description": "reviews version and url management api (评论管理)"
+      "name": "comments",
+      "description": "comments version and url management api (评论管理)"
     },
     {
-      "name": "reviewsLevelTwo",
-      "description": "reviewsⅡ version and url management api (二级评论管理)"
+      "name": "commentsLevelTwo",
+      "description": "commentsⅡ version and url management api (二级评论管理)"
     },
     {
       "name": "praiseRecord",
@@ -1365,7 +1365,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -1526,8 +1526,8 @@
         "tags": [
           "messages"
         ],
-        "summary": "Delete messages info and reviews",
-        "description": "Delete messages info and reviews",
+        "summary": "Delete messages info and comments",
+        "description": "Delete messages info and comments",
         "operationId": "delete messages info by id",
         "produces": [
           "application/json"
@@ -1648,7 +1648,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -1809,8 +1809,8 @@
         "tags": [
           "messages"
         ],
-        "summary": "Administrator deletes messages info and reviews",
-        "description": "Administrator deletes messages info and reviews",
+        "summary": "Administrator deletes messages info and comments",
+        "description": "Administrator deletes messages info and comments",
         "operationId": "administrator delete messages info by id",
         "produces": [
           "application/json"
@@ -1842,14 +1842,14 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/reviews": {
+    "/user/{userId}/messages/{messagesId}/comments": {
       "post": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Add a new reviews info and update messages info",
+        "summary": "Add a new comments info and update messages info",
         "description": "",
-        "operationId": "addReviews",
+        "operationId": "addComments",
         "consumes": [
           "application/json"
         ],
@@ -1873,11 +1873,11 @@
           },
           {
             "in": "body",
-            "name":"reviewsInfo",
-            "description": "reviews object that needs to be added to the store",
+            "name":"commentsInfo",
+            "description": "comments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Reviews"
+              "$ref": "#/definitions/Comments"
             }
           }
         ],
@@ -1892,13 +1892,13 @@
 
       }
     },
-    "/user/{userId}/messages/{messagesId}/userReviews": {
+    "/user/{userId}/messages/{messagesId}/userComments": {
       "get": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Select reviews Info",
-        "description": "get reviews info",
+        "summary": "Select comments Info",
+        "description": "get comments info",
         "produces": [
           "application/json"
         ],
@@ -1917,19 +1917,19 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsMsg",
+            "name": "commentsMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -1973,13 +1973,13 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/allReviews": {
+    "/user/{userId}/messages/{messagesId}/allComments": {
       "get": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Select reviews Info",
-        "description": "get reviews info",
+        "summary": "Select comments Info",
+        "description": "get comments info",
         "produces": [
           "application/json"
         ],
@@ -1998,19 +1998,19 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsMsg",
+            "name": "commentsMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2054,14 +2054,14 @@
         }
       }
     },
-    "/user/{userId}/reviews/{reviewsId}":{
+    "/user/{userId}/comments/{commentsId}":{
       "delete": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Delete reviews info and update message info",
-        "description": "Delete reviews info",
-        "operationId": "delete reviews info by id",
+        "summary": "Delete comments info and update message info",
+        "description": "Delete comments info",
+        "operationId": "delete comments info by id",
         "produces": [
           "application/json"
         ],
@@ -2074,9 +2074,9 @@
             "type": "string"
           },
           {
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "path",
-            "description": "reviewsId unique id",
+            "description": "commentsId unique id",
             "required": true,
             "type": "string"
           }
@@ -2086,19 +2086,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or reviewsId not found"
+            "description": "UserId or commentsId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/reviews": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments": {
       "post": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Administrator add a new reviews info and update messages info",
+        "summary": "Administrator add a new comments info and update messages info",
         "description": "",
-        "operationId": "administrator add reviews",
+        "operationId": "administrator add comments",
         "consumes": [
           "application/json"
         ],
@@ -2129,11 +2129,11 @@
           },
           {
             "in": "body",
-            "name":"reviewsInfo",
-            "description": "reviews object that needs to be added to the store",
+            "name":"commentsInfo",
+            "description": "comments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Reviews"
+              "$ref": "#/definitions/Comments"
             }
           }
         ],
@@ -2148,13 +2148,13 @@
 
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userReviews": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userComments": {
       "get": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Administrator select reviews Info",
-        "description": "Administrator get reviews info",
+        "summary": "Administrator select comments Info",
+        "description": "Administrator get comments info",
         "produces": [
           "application/json"
         ],
@@ -2180,19 +2180,19 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsMsg",
+            "name": "commentsMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2236,13 +2236,13 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/allReviews": {
+    "/admin/{adminId}/messages/{messagesId}/allComments": {
       "get": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Administrator select reviews Info",
-        "description": "Administrator get reviews info",
+        "summary": "Administrator select comments Info",
+        "description": "Administrator get comments info",
         "produces": [
           "application/json"
         ],
@@ -2261,19 +2261,19 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsMsg",
+            "name": "commentsMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsNum",
+            "name": "commentsNum",
             "in": "query",
             "description": "评论次数",
             "required": false,
@@ -2317,14 +2317,14 @@
         }
       }
     },
-    "/admin/{adminId}/reviews/{reviewsId}":{
+    "/admin/{adminId}/comments/{commentsId}":{
       "delete": {
         "tags": [
-          "reviews"
+          "comments"
         ],
-        "summary": "Administrator delete reviews info",
-        "description": "Administrator delete reviews info",
-        "operationId": "administrator delete reviews info by id",
+        "summary": "Administrator delete comments info",
+        "description": "Administrator delete comments info",
+        "operationId": "administrator delete comments info by id",
         "produces": [
           "application/json"
         ],
@@ -2337,9 +2337,9 @@
             "type": "string"
           },
           {
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "path",
-            "description": "reviewsId unique id",
+            "description": "commentsId unique id",
             "required": true,
             "type": "string"
           }
@@ -2349,20 +2349,20 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or reviewsId not found"
+            "description": "UserId or commentsId not found"
           }
         }
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/reviews/{reviewsId}/reviewsLevelTwo": {
+    "/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsLevelTwo": {
       "post": {
         "tags": [
-          "reviewsLevelTwo"
+          "commentsLevelTwo"
         ],
-        "summary": "Add a new reviewsLevelTwo info and update reviews info",
+        "summary": "Add a new commentsLevelTwo info and update comments info",
         "description": "",
-        "operationId": "addReviewsLevelTwo",
+        "operationId": "addCommentsLevelTwo",
         "consumes": [
           "application/json"
         ],
@@ -2385,19 +2385,19 @@
             "type": "string"
           },
           {
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "path",
-            "description": "reviewsId",
+            "description": "commentsId",
             "required": true,
             "type": "string"
           },
           {
             "in": "body",
-            "name":"reviewsInfo",
-            "description": "reviews object that needs to be added to the store",
+            "name":"commentsInfo",
+            "description": "comments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ReviewsLevelTwo"
+              "$ref": "#/definitions/CommentsLevelTwo"
             }
           }
         ],
@@ -2412,13 +2412,13 @@
 
       }
     },
-    "/user/{userId}/reviews/{reviewsId}/userReviewsLevelTwo": {
+    "/user/{userId}/comments/{commentsId}/userCommentsLevelTwo": {
       "get": {
         "tags": [
-          "reviewsLevelTwo"
+          "commentsLevelTwo"
         ],
-        "summary": "Select reviewsLevelTwo Info",
-        "description": "get reviewsLevelTwo info",
+        "summary": "Select commentsLevelTwo Info",
+        "description": "get commentsLevelTwo info",
         "produces": [
           "application/json"
         ],
@@ -2430,13 +2430,13 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsLevelTwoId",
+            "name": "commentsLevelTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
@@ -2449,7 +2449,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsLevelTwoMsg",
+            "name": "commentsLevelTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -2493,13 +2493,13 @@
         }
       }
     },
-    "/user/{userId}/reviews/{reviewsId}/allReviewsLevelTwo": {
+    "/user/{userId}/comments/{commentsId}/allCommentsLevelTwo": {
       "get": {
         "tags": [
-          "reviewsLevelTwo"
+          "commentsLevelTwo"
         ],
-        "summary": "Select reviewsLevelTwo Info",
-        "description": "get reviewsLevelTwo info",
+        "summary": "Select commentsLevelTwo Info",
+        "description": "get commentsLevelTwo info",
         "produces": [
           "application/json"
         ],
@@ -2511,13 +2511,13 @@
             "required": true,
             "type": "string"
           },{
-            "name": "reviewsLevelTwoId",
+            "name": "commentsLevelTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsId",
+            "name": "commentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
@@ -2530,7 +2530,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "reviewsLevelTwoMsg",
+            "name": "commentsLevelTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -2574,14 +2574,14 @@
         }
       }
     },
-    "/user/{userId}/reviewsLevelTwo/{reviewsLevelTwoId}":{
+    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}":{
       "delete": {
         "tags": [
-          "reviewsLevelTwo"
+          "commentsLevelTwo"
         ],
-        "summary": "Delete reviewsLevelTwo info and update reviews info",
-        "description": "Delete reviewsLevelTwo info",
-        "operationId": "delete reviewsLevelTwo info by id",
+        "summary": "Delete commentsLevelTwo info and update comments info",
+        "description": "Delete commentsLevelTwo info",
+        "operationId": "delete commentsLevelTwo info by id",
         "produces": [
           "application/json"
         ],
@@ -2594,9 +2594,9 @@
             "type": "string"
           },
           {
-            "name": "reviewsLevelTwoId",
+            "name": "commentsLevelTwoId",
             "in": "path",
-            "description": "reviewsLevelTwoId unique id",
+            "description": "commentsLevelTwoId unique id",
             "required": true,
             "type": "string"
           }
@@ -2606,7 +2606,291 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or reviewsId not found"
+            "description": "UserId or commentsId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsLevelTwo": {
+      "post": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Administrator add a new commentsLevelTwo info and update comments info",
+        "description": "",
+        "operationId": "administrator addCommentsLevelTwo",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messagesId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsId",
+            "in": "path",
+            "description": "commentsId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"commentsInfo",
+            "description": "comments object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CommentsLevelTwo"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/admin/{adminId}/user/{userId}/comments/{commentsId}/userCommentsLevelTwo": {
+      "get": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Administrator select commentsLevelTwo Info",
+        "description": "Administrator get commentsLevelTwo info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "commentsLevelTwoId",
+            "in": "query",
+            "description": "二級评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentsId",
+            "in": "path",
+            "description": "评论ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentsLevelTwoMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/comments/{commentsId}/allCommentsLevelTwo": {
+      "get": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Administrator select commentsLevelTwo Info",
+        "description": "Administrator get commentsLevelTwo info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },{
+            "name": "commentsLevelTwoId",
+            "in": "query",
+            "description": "二級评论ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentsId",
+            "in": "path",
+            "description": "评论ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "commentsLevelTwoMsg",
+            "in": "query",
+            "description": "评论内容",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "agreeNum",
+            "in": "query",
+            "description": "点赞次数",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "del_status",
+            "in": "query",
+            "description": "删除状态(0-未删除，1-已删除)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}":{
+      "delete": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Administrator delete commentsLevelTwo info and update comments info",
+        "description": "Administrator delete commentsLevelTwo info",
+        "operationId": "administrator delete commentsLevelTwo info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsLevelTwoId",
+            "in": "path",
+            "description": "commentsLevelTwoId unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or commentsId not found"
           }
         }
       }
@@ -2686,7 +2970,7 @@
             "type": "string"
           },
           {
-            "name": "_reviewsId",
+            "name": "_commentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3095,7 +3379,7 @@
         "info",
         "address",
         "collectNum",
-        "reviewsNum",
+        "commentsNum",
         "agreeNum",
         "readNum",
         "label",
@@ -3117,7 +3401,7 @@
           "type": "integer",
           "format": "int64"
         },
-        "reviewsNum": {
+        "commentsNum": {
           "type": "integer",
           "format": "int64"
         },
@@ -3148,16 +3432,16 @@
         "name": "messages"
       }
     },
-    "Reviews": {
+    "Comments": {
       "type": "object",
       "required": [
         "status"
       ],
       "properties": {
-        "reviewsMsg": {
+        "commentsMsg": {
           "type": "String"
         },
-        "reviewsNum": {
+        "commentsNum": {
           "type": "integer"
         },
         "agreeNum": {
@@ -3173,16 +3457,16 @@
         }
       },
       "xml": {
-        "name": "reviews"
+        "name": "comments"
       }
     },
-    "ReviewsLevelTwo": {
+    "CommentsLevelTwo": {
       "type": "object",
       "required": [
         "status"
       ],
       "properties": {
-        "reviewsLevelTwoMsg": {
+        "commentsLevelTwoMsg": {
           "type": "String"
         },
         "agreeNum": {
@@ -3198,7 +3482,7 @@
         }
       },
       "xml": {
-        "name": "reviewsLevelTwo"
+        "name": "commentsLevelTwo"
       }
     },
     "PraiseRecord": {
@@ -3213,7 +3497,7 @@
         "_messageId": {
           "type": "String"
         },
-        "_reviewsId": {
+        "_commentsId": {
           "type": "String"
         },
         "status": {
