@@ -108,15 +108,18 @@ const createServer=()=>{
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
     server.get('/api/user', UserController.getUser);
-    server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
-    server.del('/api/user/:userId' ,UserController.deleteUserInfo);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
+    server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.put({path:'/api/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
+
 
     server.get('/api/admin/:adminId/user', UserController.getUser);
+    server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.post({path:'/api/admin/:adminId/user',contentType: 'application/json'}, UserController.createUser);
     server.put({path:'/api/admin/:adminId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
-    server.del('/api/admin/:adminId/user/:userId' ,UserController.deleteUserInfo);
-    server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
+    server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
+
+
     /**
      user_detail    -用户详细信息
      */

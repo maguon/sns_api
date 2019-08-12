@@ -25,7 +25,7 @@ const getUserDetail = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
         }else{
             logger.info('getUserDetail  userDetailID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.USER_DETAIL_ID_NULL_ERROR);
             return next();
         }
     }

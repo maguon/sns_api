@@ -194,59 +194,30 @@ const updateUserInfo = (req, res, next) => {
         }
     })
 }
-const deleteUserInfo = (req, res, next) => {
-    let userId;
-    const deleteUser = () =>{
-        return new Promise((resolve, reject)=> {
-            let query = UserModel.find({});
-            let params = req.params;
-            if(params.userId){
-                if(params.userId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
-                }else{
-                    logger.info('deleteUserInfo userID format incorrect!');
-                    resUtil.resetQueryRes(res,[],null);
-                    return next();
-                }
-            }
-            UserModel.deleteOne(query,function(error,result){
-                if (error) {
-                    logger.error(' deleteUserInfo deleteUser ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteUserInfo deleteUser ' + 'success');
-                    resolve();
-                }
-            })
-        });
+const updateUserStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserModel.find({});
+    let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserStatus userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
     }
-    const deleteUserDetail = () => {
-        return new Promise((resolve, reject) => {
-            let query = UserDetailModel.find({});
-            if(userId){
-                query.where('_userId').equals(userId);
-            }
-            UserDetailModel.deleteOne(query,function(error,result){
-                if (error) {
-                    logger.error(' deleteUserInfo deleteUserDetail ' + error.message);
-                    resUtil.resInternalError(error);
-                } else {
-                    logger.info(' deleteUserInfo deleteUserDetail ' + 'success');
-                    resUtil.resetQueryRes(res,result,null);
-                    return next();
-                }
-            })
-        });
-    }
-    deleteUser()
-        .then(deleteUserDetail)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }else{
-                resUtil.resetFailedRes(res,systemMsg.USER_DELETE_INFO);
-            }
-        })
+    UserModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateUserStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateUserStatus ' + 'success');
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
 }
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
@@ -343,6 +314,6 @@ module.exports = {
     getUserInfoAndDetail,
     createUser,
     updateUserInfo,
-    deleteUserInfo,
+    updateUserStatus,
     userLogin
 };

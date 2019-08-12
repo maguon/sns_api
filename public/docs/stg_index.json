@@ -570,14 +570,16 @@
             "description": "AdminUserId not found"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/user/{userId}/status":{
+      "put": {
         "tags": [
           "user"
         ],
-        "summary": "Delete user and userDetail",
-        "description": "Delete user info and userDetail",
-        "operationId": "delete user info by id",
+        "summary": "Finds userInfo messages status and update",
+        "description": "Updates userInfo messages status",
+        "operationId": "Update user status",
         "produces": [
           "application/json"
         ],
@@ -585,21 +587,37 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "user unique id",
+            "description": "User unique id",
             "required": true,
             "type": "string"
-
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
             "description": "UserId not found"
           }
-        },
-        "deprecated": "true"
+        }
       }
     },
     "/admin/{adminId}/user": {
@@ -835,14 +853,16 @@
             "description": "AdminUserId not found"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/admin/{adminId}/user/{userId}/status":{
+      "put": {
         "tags": [
           "user"
         ],
-        "summary": "Administrators deletes user and userDetail",
-        "description": "Administrators deletes user info and userDetail",
-        "operationId": "administrator Deletes User Information",
+        "summary": "Administrator finds userInfo messages status and update",
+        "description": "Administrator updates userInfo messages status",
+        "operationId": "administrator update user status by adminId",
         "produces": [
           "application/json"
         ],
@@ -857,21 +877,37 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "user unique id",
+            "description": "User unique id",
             "required": true,
             "type": "string"
-
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
             "description": "UserId not found"
           }
-        },
-        "deprecated": "true"
+        }
       }
     },
 
