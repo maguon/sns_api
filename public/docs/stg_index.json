@@ -28,6 +28,10 @@
       "description": "UserDetail version and url management api (用户详细信息管理)"
     },
     {
+      "name": "relation",
+      "description": "Relation version and url management api (用户关系管理)"
+    },
+    {
       "name": "messages",
       "description": "Messages version and url management api (消息动态管理)"
     },
@@ -185,7 +189,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态(0-停用,1-可用)",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -440,7 +444,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态（1-使用 0-禁用）",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -690,7 +694,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态（1-使用 0-禁用）",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -868,6 +872,404 @@
           }
         },
         "deprecated": "true"
+      }
+    },
+
+    "/user/{userId}/relation": {
+      "post": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Add a new relation info",
+        "description": "",
+        "operationId": "addRelation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Relation"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/follow": {
+      "get": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Select followInfo",
+        "description": "Get followInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },          {
+            "name": "relationId",
+            "in": "query",
+            "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "关系类型（0-关注）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "groupName",
+            "in": "query",
+            "description": "关系组名（0-好友）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/followUserInfo": {
+      "get": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Select followInfo and userInfo",
+        "description": "Get followInfo and userInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },          {
+            "name": "relationId",
+            "in": "query",
+            "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "关系类型（0-关注）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "groupName",
+            "in": "query",
+            "description": "关系组名（0-好友）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/attention": {
+      "get": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Select attentionInfo",
+        "description": "Get attentionInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "被关注用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "query",
+            "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "关系类型（0-关注）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "groupName",
+            "in": "query",
+            "description": "关系组名（0-好友）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/attentionUserInfo": {
+      "get": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Select attentionInfo and userInfo",
+        "description": "Get attentionInfo and userInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "被关注用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "query",
+            "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "关系类型（0-关注）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "groupName",
+            "in": "query",
+            "description": "关系组名（0-好友）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/relation/{relationId}/status": {
+      "put": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Finds relation and update",
+        "description": "Update relation info",
+        "operationId": "update relation info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "path",
+            "description": "relation unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/relation/{relationId}": {
+      "delete": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Delete relation info",
+        "description": "Delete relation info",
+        "operationId": "delete relation info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "path",
+            "description": "relation unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or RelationId not found"
+          }
+        }
       }
     },
 
@@ -1391,7 +1793,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },
@@ -1674,7 +2076,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },
@@ -1943,7 +2345,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2024,7 +2426,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2206,7 +2608,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2287,7 +2689,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2463,7 +2865,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2544,7 +2946,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2733,7 +3135,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -2821,7 +3223,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },{
@@ -3370,6 +3772,39 @@
       },
       "xml": {
         "name": "userDetail"
+      }
+    },
+    "Relation": {
+      "type": "object",
+      "required": [
+        "_userById",
+        "type",
+        "groupName",
+        "status"
+      ],
+      "properties": {
+        "_userById": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "groupName": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "relation"
       }
     },
     "Messages": {

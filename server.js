@@ -10,6 +10,7 @@ const logger = serverLogger.createLogger('Server');
 import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
+import {RelationController} from './controller';
 import {MessageController} from './controller';
 import {CommentsController} from './controller';
 import {CommentsLevelTwoController} from './controller';
@@ -126,6 +127,17 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/admin/:adminId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/admin/:adminId/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+    /**
+     Relation    -用户关系
+     */
+    server.post({path:'/api/user/:userId/relation',contentType: 'application/json'}, RelationController.createRelation);
+    server.get('/api/user/:userId/follow', RelationController.getFollow);
+    server.get('/api/user/:userId/followUserInfo', RelationController.getFollowUserInfo);
+    server.get('/api/user/:userId/attention', RelationController.getAttention);
+    server.get('/api/user/:userId/attentionUserInfo', RelationController.getAttentionUserInfo);
+    server.put({path:'/api/user/:userId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatus);
+    server.del('/api/user/:userId/relation/:relation' ,RelationController.deleteRelation);
+
     /**
      messages    -微博动态
      */

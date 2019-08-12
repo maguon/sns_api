@@ -15,6 +15,10 @@ let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to
 let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
 let USER_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 /**
+ * The module for relation
+ */
+let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
+/**
  * The module for messages
  */
 let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
@@ -39,6 +43,8 @@ module.exports = {
     USER_CREATE_DETAIL_ERROR,
     USER_DELETE_INFO,
     USER_ID_NULL_ERROR,
+
+    RELATION_ID_NULL_ERROR,
 
     MESSAGE_DELETE_ADMIN_ERROR,
     MESSAGE_ID_NULL_ERROR,
