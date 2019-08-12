@@ -246,6 +246,30 @@ const updateRelationStatus = (req, res, next) => {
         }
     })
 }
+const updateRelationStatusByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = RelationModel.find({});
+    let params = req.params;
+    if(params.relationId) {
+        if (params.relationId.length == 24) {
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
+        } else {
+            logger.info('updateRelationStatusByAdmin relationId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    RelationModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateRelationStatusByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateRelationStatusByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const deleteRelation = (req, res, next) => {
     let query = RelationModel.find({});
     let params = req.params;
@@ -262,7 +286,7 @@ const deleteRelation = (req, res, next) => {
         if (params.relationId.length == 24) {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
         } else {
-            logger.info('updateRelationStatus relationId format incorrect!');
+            logger.info('deleteRelation relationId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
@@ -278,6 +302,29 @@ const deleteRelation = (req, res, next) => {
         }
     })
 }
+const deleteRelationByAdmin = (req, res, next) => {
+    let query = RelationModel.find({});
+    let params = req.params;
+    if(params.relationId) {
+        if (params.relationId.length == 24) {
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
+        } else {
+            logger.info('deleteRelationByAdmin relationId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    RelationModel.deleteOne(query,function(error,result){
+        if (error) {
+            logger.error(' deleteRelationByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' deleteRelationByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getFollow,
     getFollowUserInfo,
@@ -285,5 +332,7 @@ module.exports = {
     getAttentionUserInfo,
     createRelation,
     updateRelationStatus,
-    deleteRelation
+    updateRelationStatusByAdmin,
+    deleteRelation,
+    deleteRelationByAdmin
 };

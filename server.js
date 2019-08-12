@@ -141,6 +141,13 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatus);
     server.del('/api/user/:userId/relation/:relation' ,RelationController.deleteRelation);
 
+    server.post({path:'/api/admin/:adminId/user/:userId/relation',contentType: 'application/json'}, RelationController.createRelation);
+    server.get('/api/admin/:adminId/user/:userId/follow', RelationController.getFollow);
+    server.get('/api/admin/:adminId/user/:userId/followUserInfo', RelationController.getFollowUserInfo);
+    server.get('/api/admin/:adminId/user/:userId/attention', RelationController.getAttention);
+    server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', RelationController.getAttentionUserInfo);
+    server.put({path:'/api/admin/:adminId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatusByAdmin);
+    server.del('/api/admin/:adminId/relation/:relation' ,RelationController.deleteRelationByAdmin);
     /**
      messages    -微博动态
      */
