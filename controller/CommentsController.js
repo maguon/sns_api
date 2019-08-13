@@ -53,6 +53,9 @@ const getUserComments = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
+    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -101,6 +104,9 @@ const getAllComments = (req, res, next) => {
     }
     if(params.status){
         query.where('status').equals(params.status);
+    }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -201,6 +207,40 @@ const createComments = (req, res, next) => {
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
+}
+const updateReadStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let params = req.params;
+    let query = CommentsModel.find({});
+
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateReadStatus  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.commentsId){
+        if(params.commentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
+        }else{
+            logger.info('updateReadStatus  commentsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    CommentsModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateReadStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateReadStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
 }
 const deleteUserComments = (req, res, next) => {
     let params = req.params;
@@ -318,6 +358,7 @@ module.exports = {
     getUserComments,
     getAllComments,
     createComments,
+    updateReadStatus,
     deleteUserComments,
     deleteAdminComments
 };
