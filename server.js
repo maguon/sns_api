@@ -11,11 +11,12 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {RelationController} from './controller';
+import {MessagePraiseRecordController} from './controller';
+import {CommentsPraiseRecordController} from './controller';
+import {CommentsLevelTwoPraiseRecordController} from './controller';
 import {MessageController} from './controller';
 import {CommentsController} from './controller';
 import {CommentsLevelTwoController} from './controller';
-import {PraiseRecordController} from './controller';
-
 import {AppController} from './controller';
 
 /**
@@ -99,9 +100,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId/status',contentType: 'application/json'} ,AdminUserController.updateAdminUserStatus);
-    // server.del('/api/admin/:adminId/adminUser/:adminUserId' ,AdminUserController.deleteAdminUserInfo);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
-
     /**
      user   -用户管理
      */
@@ -112,14 +111,11 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.put({path:'/api/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
 
-
     server.get('/api/admin/:adminId/user', UserController.getUser);
     server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.post({path:'/api/admin/:adminId/user',contentType: 'application/json'}, UserController.createUser);
     server.put({path:'/api/admin/:adminId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
-
-
     /**
      user_detail    -用户详细信息
      */
@@ -148,6 +144,15 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', RelationController.getAttentionUserInfo);
     server.put({path:'/api/admin/:adminId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatusByAdmin);
     server.del('/api/admin/:adminId/relation/:relationId' ,RelationController.deleteRelationByAdmin);
+    /**
+     PraiseRecord   -点赞记录
+     */
+    server.post({path:'/api/user/:userId/messages/:messagesId/praiseRecord',contentType: 'application/json'}, MessagePraiseRecordController.createMessagePraiseRecord);
+    server.post({path:'/api/user/:userId/comments/:commentsId/praiseRecord',contentType: 'application/json'}, CommentsPraiseRecordController.createCommentsPraiseRecord);
+    server.post({path:'/api/user/:userId/commentsLevelTwo/:commentsLevelTwoId/praiseRecord',contentType: 'application/json'}, CommentsLevelTwoPraiseRecordController.createCommentsLevelTwoPraiseRecord);
+    server.get('/api/user/:userId/messagesPraiseRecord', MessagePraiseRecordController.getMessagePraiseRecord);
+    server.get('/api/user/:userId/commentsPraiseRecord', CommentsPraiseRecordController.getCommentsPraiseRecord);
+    server.get('/api/user/:userId/commentsLevelTwoPraiseRecord', CommentsLevelTwoPraiseRecordController.getCommentsLevelTwoPraiseRecord);
     /**
      messages    -微博动态
      */
@@ -186,11 +191,6 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/comments/:commentsId/allCommentsLevelTwo', CommentsLevelTwoController.getAllCommentsLevelTwo);
     server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsLevelTwo',contentType: 'application/json'}, CommentsLevelTwoController.createCommentsLevelTwo);
     server.del('/api/admin/:adminId/commentsLevelTwo/:commentsLevelTwoId' ,CommentsLevelTwoController.deleteAdminCommentsLevelTwo);
-    /**
-     PraiseRecord   -点赞记录
-     */
-    server.get('/api/user/:userId/messages/:messagesId/praiseRecord', PraiseRecordController.getPraiseRecord);
-    server.post({path:'/api/user/:userId/messages/:messagesId/praiseRecord',contentType: 'application/json'}, PraiseRecordController.createPraiseRecord);
 
     /**
      app

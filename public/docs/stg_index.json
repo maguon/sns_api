@@ -32,6 +32,10 @@
       "description": "Relation version and url management api (用户关系管理)"
     },
     {
+      "name": "praiseRecord",
+      "description": "PraiseRecord version and url management api (用户点赞记录管理)"
+    },
+    {
       "name": "messages",
       "description": "Messages version and url management api (消息动态管理)"
     },
@@ -43,10 +47,7 @@
       "name": "commentsLevelTwo",
       "description": "commentsⅡ version and url management api (二级评论管理)"
     },
-    {
-      "name": "praiseRecord",
-      "description": "PraiseRecord version and url management api (用户点赞记录管理)"
-    },
+
     {
       "name": "app",
       "description": "App version and url management api (版本管理)"
@@ -2151,6 +2152,354 @@
       }
     },
 
+    "/user/{userId}/messages/{messagesId}/praiseRecord": {
+      "post": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Add a new messagesPraiseRecord info",
+        "description": "",
+        "operationId": "user add messagesPraiseRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"praiseRecordInfo",
+            "description": "PraiseRecord object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/comments/{commentsId}/praiseRecord": {
+      "post": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Add a new commentsPraiseRecord info",
+        "description": "",
+        "operationId": "user add commentsPraiseRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsId",
+            "in": "path",
+            "description": "comments unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"praiseRecordInfo",
+            "description": "PraiseRecord object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/praiseRecord": {
+      "post": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Add a new commentsLevelTwoPraiseRecord info",
+        "description": "",
+        "operationId": "user add commentsLevelTwoPraiseRecord",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsLevelTwoId",
+            "in": "path",
+            "description": "commentsLevelTwo unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"praiseRecordInfo",
+            "description": "PraiseRecord object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/messagesPraiseRecord": {
+      "get": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Select messagePraiseRecord Info",
+        "description": "Get messagePraiseRecord Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "点赞记录Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/commentsPraiseRecord": {
+      "get": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Select commentsPraiseRecord Info",
+        "description": "Get commentsPraiseRecord Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsId",
+            "in": "query",
+            "description": "评论Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "点赞记录Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/commentsLevelTwoPraiseRecord": {
+      "get": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Select commentsLevelTwo PraiseRecord Info",
+        "description": "Get commentsLevelTwo PraiseRecord Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsLevelTwoId",
+            "in": "query",
+            "description": "二级评论Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "点赞记录Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/messages": {
       "post": {
@@ -3767,101 +4116,6 @@
       }
     },
 
-    "/user/{userId}/praiseRecord": {
-      "post": {
-        "tags": [
-          "praiseRecord"
-        ],
-        "summary": "Add a new praiseRecord info",
-        "description": "",
-        "operationId": "user add PraiseRecord",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name":"praiseRecordInfo",
-            "description": "PraiseRecord object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PraiseRecord"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
-      "get": {
-        "tags": [
-          "praiseRecord"
-        ],
-        "summary": "Select praiseRecord Info",
-        "description": "get praiseRecord info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "当前登录用户ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "praiseRecordId",
-            "in": "query",
-            "description": "点赞记录ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "_userId",
-            "in": "query",
-            "description": "用户ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "_messageId",
-            "in": "query",
-            "description": "动态ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "_commentsId",
-            "in": "query",
-            "description": "评论ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
 
     "/app": {
       "get": {
@@ -4387,34 +4641,6 @@
       },
       "xml": {
         "name": "commentsLevelTwo"
-      }
-    },
-    "PraiseRecord": {
-      "type": "object",
-      "required": [
-        "status"
-      ],
-      "properties": {
-        "_userId": {
-          "type": "String"
-        },
-        "_messageId": {
-          "type": "String"
-        },
-        "_commentsId": {
-          "type": "String"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
-        }
-      },
-      "xml": {
-        "name": "praiseRecord"
       }
     },
     "App": {

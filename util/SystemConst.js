@@ -5,7 +5,6 @@ const INFO_STATUS = {
         available:1//可用
     }
 }
-
 const DEL_STATIS = {
     Status: {
         not_deleted:0,//未删除
@@ -22,9 +21,15 @@ const USER_ADDRESS ={
         enable:1//启用地址
     }
 }
-
+const READ_STATUS ={
+    Status:{
+        not_read:0,//未读
+        read:1//已读
+    }
+}
 module.exports = {
     INFO_STATUS,
     DEL_STATIS,
-    USER_ADDRESS
+    USER_ADDRESS,
+    READ_STATUS
 }
