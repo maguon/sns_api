@@ -270,6 +270,63 @@ const updateRelationStatusByAdmin = (req, res, next) => {
         }
     })
 }
+const updateRelationReadStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = RelationModel.find({});
+    let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userById').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateRelationReadStatus userById format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.relationId) {
+        if (params.relationId.length == 24) {
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
+        } else {
+            logger.info('updateRelationReadStatus relationId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    RelationModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateRelationReadStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateRelationReadStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateRelationReadStatusByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = RelationModel.find({});
+    let params = req.params;
+    if(params.relationId) {
+        if (params.relationId.length == 24) {
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
+        } else {
+            logger.info('updateRelationReadStatusByAdmin relationId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    RelationModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateRelationReadStatusByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateRelationReadStatusByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const deleteRelation = (req, res, next) => {
     let query = RelationModel.find({});
     let params = req.params;
@@ -333,6 +390,8 @@ module.exports = {
     createRelation,
     updateRelationStatus,
     updateRelationStatusByAdmin,
+    updateRelationReadStatus,
+    updateRelationReadStatusByAdmin,
     deleteRelation,
     deleteRelationByAdmin
 };

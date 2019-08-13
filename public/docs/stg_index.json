@@ -1411,6 +1411,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1472,6 +1479,13 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
             "required": false,
             "type": "integer"
           },
@@ -1542,6 +1556,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1608,6 +1629,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1660,6 +1688,61 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/relation/{relationId}/readStatus": {
+      "put": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Finds relation readStatus and update",
+        "description": "Update relation readStatus ",
+        "operationId": "update relation readStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "path",
+            "description": "relation unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
             }
           }
         ],
@@ -1822,6 +1905,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1890,6 +1980,13 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
             "required": false,
             "type": "integer"
           },
@@ -1967,6 +2064,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2040,6 +2144,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2064,9 +2175,9 @@
         "tags": [
           "relation"
         ],
-        "summary": "Administrators finds relation and update",
-        "description": "Administrators update relation info",
-        "operationId": "Administrators update relation info by id",
+        "summary": "Administrators finds relation status and update",
+        "description": "Administrators update relation status",
+        "operationId": "Administrators update relation status by id",
         "produces": [
           "application/json"
         ],
@@ -2092,6 +2203,61 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminUserId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/relation/{relationId}/readStatus": {
+      "put": {
+        "tags": [
+          "relation"
+        ],
+        "summary": "Administrators finds relation readStatus and update",
+        "description": "Administrators update relation readStatus info",
+        "operationId": "Administrators update relation readStatus info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "relationId",
+            "in": "path",
+            "description": "relation unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
             }
           }
         ],
@@ -4711,6 +4877,25 @@
       ],
       "properties": {
         "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      },
+      "xml": {
+        "name": "status"
+      }
+    },
+    "Read_Status": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "read_status": {
           "type": "integer",
           "format": "int64",
           "enum": [

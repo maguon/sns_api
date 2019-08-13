@@ -135,6 +135,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/attention', RelationController.getAttention);
     server.get('/api/user/:userId/attentionUserInfo', RelationController.getAttentionUserInfo);
     server.put({path:'/api/user/:userId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatus);
+    server.put({path:'/api/user/:userId/relation/:relationId/readStatus',contentType: 'application/json'} ,RelationController.updateRelationReadStatus);
     server.del('/api/user/:userId/relation/:relationId' ,RelationController.deleteRelation);
 
     server.post({path:'/api/admin/:adminId/user/:userId/relation',contentType: 'application/json'}, RelationController.createRelation);
@@ -143,6 +144,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/user/:userId/attention', RelationController.getAttention);
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', RelationController.getAttentionUserInfo);
     server.put({path:'/api/admin/:adminId/relation/:relationId/status',contentType: 'application/json'} ,RelationController.updateRelationStatusByAdmin);
+    server.put({path:'/api/admin/:adminId/relation/:relationId/readStatus',contentType: 'application/json'} ,RelationController.updateRelationReadStatusByAdmin);
     server.del('/api/admin/:adminId/relation/:relationId' ,RelationController.deleteRelationByAdmin);
     /**
      PraiseRecord   -点赞记录
