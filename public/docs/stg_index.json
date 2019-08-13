@@ -504,18 +504,6 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -779,18 +767,6 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -985,18 +961,6 @@
             "description": "驾驶证类型",
             "required": false,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -1188,18 +1152,6 @@
             "description": "驾驶证类型",
             "required": false,
             "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {

@@ -79,9 +79,6 @@ const getUserInfoAndDetail = (req, res, next) => {
             return next();
         }
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
     query.populate({path:'_userDetailId'}).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserInfoAndDetail ' + error.message);
