@@ -41,6 +41,15 @@ const getUserCommentsLevelTwo = (req, res, next) => {
             return next();
         }
     }
+    if(params.commentsLevelTwoId){
+        if(path.commentsLevelTwoId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
+        }else{
+            logger.info('getUserCommentsLevelTwo  commentsLevelTwoId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.commentsLevelTwoMsg){
         query.where('commentsLevelTwoMsg').equals(params.commentsLevelTwoMsg);
     }
