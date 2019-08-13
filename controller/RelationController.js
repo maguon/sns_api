@@ -39,6 +39,9 @@ const getFollow = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
+    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -83,6 +86,9 @@ const getFollowUserInfo = (req, res, next) => {
     }
     if(params.status){
         query.where('status').equals(params.status);
+    }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -129,6 +135,9 @@ const getAttention = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
+    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -173,6 +182,9 @@ const getAttentionUserInfo = (req, res, next) => {
     }
     if(params.status){
         query.where('status').equals(params.status);
+    }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
