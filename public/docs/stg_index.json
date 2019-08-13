@@ -3473,9 +3473,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "commentsId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "comments unique id",
             "required": true,
             "type": "string"
           },
@@ -3503,7 +3503,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or RelationId not found"
+            "description": "UserId or CommentsId not found"
           }
         }
       }
@@ -3805,9 +3805,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "commentsId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "comments unique id",
             "required": true,
             "type": "string"
           },
@@ -3835,7 +3835,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or RelationId not found"
+            "description": "UserId or CommentsId not found"
           }
         }
       }
@@ -3997,6 +3997,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -4078,6 +4085,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -4093,6 +4107,61 @@
         "responses": {
           "400": {
             "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/readStatus": {
+      "put": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Finds commentsLevelTwo readStatus and update",
+        "description": "Update commentsLevelTwo readStatus ",
+        "operationId": "update commentsLevelTwo readStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsLevelTwoId",
+            "in": "path",
+            "description": "commentsLevelTwo unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or CommentsLevelTwoId not found"
           }
         }
       }
@@ -4267,6 +4336,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -4355,6 +4431,13 @@
             "type": "integer"
           },
           {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -4370,6 +4453,61 @@
         "responses": {
           "400": {
             "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}/readStatus": {
+      "put": {
+        "tags": [
+          "commentsLevelTwo"
+        ],
+        "summary": "Administrator finds commentsLevelTwo readStatus and update",
+        "description": "Administrator update commentsLevelTwo readStatus ",
+        "operationId": "administrator update commentsLevelTwo readStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "commentsLevelTwoId",
+            "in": "path",
+            "description": "commentsLevelTwo unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or CommentsLevelTwoId not found"
           }
         }
       }
@@ -4418,7 +4556,6 @@
         }
       }
     },
-
 
     "/app": {
       "get": {
