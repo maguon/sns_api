@@ -34,7 +34,7 @@ const getUserComments = (req, res, next) => {
     }
     if(path.commentsId){
         if(path.commentsId.length == 24){
-            query.where('_Id').equals(mongoose.mongo.ObjectId(path.commentsId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.commentsId));
         }else{
             logger.info('getUserComments  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -83,7 +83,7 @@ const getAllComments = (req, res, next) => {
     }
     if(path.commentsId){
         if(path.commentsId.length == 24){
-            query.where('_Id').equals(mongoose.mongo.ObjectId(path.commentsId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.commentsId));
         }else{
             logger.info('getAllComments  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
