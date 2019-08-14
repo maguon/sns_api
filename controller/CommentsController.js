@@ -7,6 +7,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('CommentsController');
 
 const {CommentsModel} = require('../modules');
+const {CommentsLevelTwoModel} = require('../modules');
 const {MessageModel} = require('../modules');
 
 const getUserComments = (req, res, next) => {
@@ -242,10 +243,10 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
-const deleteUserComments = (req, res, next) => {
+const updateUserCommentsStatus = (req, res, next) => {
     let params = req.params;
     let query = CommentsModel.find({});
-
+    let queryCommentsLevelTwo = CommentsLevelTwoModel.find({});
     let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let comNum = 0;
 
@@ -253,7 +254,7 @@ const deleteUserComments = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('deleteUserComments  userID format incorrect!');
+            logger.info('updateUserCommentsStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -261,8 +262,9 @@ const deleteUserComments = (req, res, next) => {
     if(params.commentsId){
         if(params.commentsId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
+            queryCommentsLevelTwo.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
         }else{
-            logger.info('deleteUserComments  commentsId format incorrect!');
+            logger.info('updateUserCommentsStatus  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -271,7 +273,7 @@ const deleteUserComments = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.populate({path:'_messageId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' deleteUserComments getCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsStatus getCommentsNum ' + error.message);
                     reject({err:error});
                 } else {
                     if(rows.length){
@@ -280,7 +282,7 @@ const deleteUserComments = (req, res, next) => {
                             comNum = comNum -1;
                         }
                         queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
-                        logger.info(' deleteUserComments getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
+                        logger.info(' updateUserCommentsStatus getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
                         resolve();
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -290,14 +292,28 @@ const deleteUserComments = (req, res, next) => {
             });
         }));
     }
-    const deleteComments = ()=>{
+    const updateComments = ()=>{
         return new Promise(((resolve, reject) => {
             CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' deleteUserComments deleteComments ' + error.message);
+                    logger.error(' updateUserCommentsStatus updateComments ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' deleteUserComments deleteComments ' + 'success');
+                    logger.info(' deleteUserComments updateComments ' + 'success');
+                    resolve(result);
+                    console.log('result:',result)
+                }
+            })
+        }));
+    }
+    const updateCommentsLevelTwo = ()=>{
+        return new Promise(((resolve, reject) => {
+            CommentsLevelTwoModel.updateOne(queryCommentsLevelTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+                if (error) {
+                    logger.error(' updateUserCommentsStatus updateCommentsLevelTwo ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' updateUserCommentsStatus updateCommentsLevelTwo ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -309,10 +325,10 @@ const deleteUserComments = (req, res, next) => {
             console.log('comNum:',comNum);
             MessageModel.updateOne(queryMessage,{ commentsNum: comNum},function(error,result){
                 if (error) {
-                    logger.error(' deleteComments updateCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsStatus updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' deleteComments updateCommentsNum ' + 'success');
+                    logger.info(' updateUserCommentsStatus updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
@@ -321,7 +337,8 @@ const deleteUserComments = (req, res, next) => {
         }));
     }
     getCommentsNum()
-        .then(deleteComments)
+        .then(updateComments)
+        .then(updateCommentsLevelTwo)
         .then(updateCommentsNum)
         .catch((reject)=>{
             if(reject.err){
@@ -331,7 +348,7 @@ const deleteUserComments = (req, res, next) => {
             }
         })
 }
-const deleteAdminComments = (req, res, next) => {
+const updateAdminCommentsStatus = (req, res, next) => {
     let params = req.params;
     let query = CommentsModel.find({});
     if(params.commentsId){
@@ -359,6 +376,6 @@ module.exports = {
     getAllComments,
     createComments,
     updateReadStatus,
-    deleteUserComments,
-    deleteAdminComments
+    updateUserCommentsStatus,
+    updateAdminCommentsStatus
 };

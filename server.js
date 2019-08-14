@@ -172,13 +172,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/messages/:messagesId/allComments', CommentsController.getAllComments);
     server.post({path:'/api/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
     server.put({path:'/api/user/:userId/comments/:commentsId/readStatus',contentType: 'application/json'} ,CommentsController.updateReadStatus);
-    server.del('/api/user/:userId/comments/:commentsId' ,CommentsController.deleteUserComments);
+    server.put({path:'/api/user/:userId/comments/:commentsId/status',contentType: 'application/json'} ,CommentsController.updateUserCommentsStatus);
 
     server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);
     server.get('/api/admin/:adminId/messages/:messagesId/allComments', CommentsController.getAllComments);
     server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
     server.put({path:'/api/admin/:adminId/comments/:commentsId/readStatus',contentType: 'application/json'} ,CommentsController.updateReadStatus);
-    server.del('/api/admin/:adminId/comments/:commentsId' ,CommentsController.deleteAdminComments);
+    server.put({path:'/api/admin/:adminId/comments/:commentsId/status',contentType: 'application/json'} ,CommentsController.updateAdminCommentsStatus);
     /**
      CommentsLevelTwo   - 二級评论
      */

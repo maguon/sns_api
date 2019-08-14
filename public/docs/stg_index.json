@@ -3312,14 +3312,14 @@
         }
       }
     },
-    "/user/{userId}/comments/{commentsId}":{
-      "delete": {
+    "/user/{userId}/comments/{commentsId}/status":{
+      "put": {
         "tags": [
           "comments"
         ],
-        "summary": "Delete comments info and update message info",
-        "description": "Delete comments info",
-        "operationId": "delete comments info by id",
+        "summary": "Finds comments status and update",
+        "description": "Update comments status ",
+        "operationId": "update comments status by id",
         "produces": [
           "application/json"
         ],
@@ -3327,24 +3327,42 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "userId unique id",
+            "description": "user unique id",
             "required": true,
             "type": "string"
           },
           {
             "name": "commentsId",
             "in": "path",
-            "description": "commentsId unique id",
+            "description": "comments unique id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or commentsId not found"
+            "description": "UserId or CommentsId not found"
           }
         }
       }
@@ -3639,19 +3657,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsId not found"
+            "description": "CommentsId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/comments/{commentsId}":{
-      "delete": {
+    "/admin/{adminId}/comments/{commentsId}/status":{
+      "put": {
         "tags": [
           "comments"
         ],
-        "summary": "Administrator delete comments info",
-        "description": "Administrator delete comments info",
-        "operationId": "administrator delete comments info by id",
+        "summary": "Administrator finds comments status and update",
+        "description": "Administrator update comments status ",
+        "operationId": "Administrator update comments status by id",
         "produces": [
           "application/json"
         ],
@@ -3666,17 +3684,35 @@
           {
             "name": "commentsId",
             "in": "path",
-            "description": "commentsId unique id",
+            "description": "comments unique id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or commentsId not found"
+            "description": "CommentsId not found"
           }
         }
       }
