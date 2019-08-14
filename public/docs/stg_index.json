@@ -2544,6 +2544,336 @@
         }
       }
     },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/messagesPraiseRecordReadStatus": {
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds comments messagesPraiseRecordReadStatus and update",
+        "description": "Update comments messagesPraiseRecordReadStatus ",
+        "operationId": "update comments messagesPraiseRecordReadStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsPraiseRecordReadStatus": {
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds comments commentsPraiseRecordReadStatus and update",
+        "description": "Update comments commentsPraiseRecordReadStatus ",
+        "operationId": "update comments commentsPraiseRecordReadStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsLevelTwoPraiseRecordReadStatus": {
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds comments commentsLevelTwo PraiseRecord ReadStatus and update",
+        "description": "Update comments commentsLevelTwo PraiseRecord ReadStatus ",
+        "operationId": "update comments commentsLevelTwo PraiseRecord ReadStatus by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Read_Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/messagesPraiseRecordStatus":{
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds messages messages PraiseRecord Status and update",
+        "description": "Update messages PraiseRecord status",
+        "operationId": "update messages PraiseRecord Status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsPraiseRecordStatus":{
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds comments PraiseRecord status and update",
+        "description": "Update comments PraiseRecord status",
+        "operationId": "update comments PraiseRecord Status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsLevelTwoPraiseRecordStatus":{
+      "put": {
+        "tags": [
+          "praiseRecord"
+        ],
+        "summary": "Finds commentsLevelTwo PraiseRecord Status and update",
+        "description": "Update commentsLevelTwo PraiseRecord Status",
+        "operationId": "update commentsLevelTwo PraiseRecord Status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseRecordId",
+            "in": "query",
+            "description": "praiseRecordId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseRecordId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/messages": {
       "post": {

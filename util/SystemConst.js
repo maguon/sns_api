@@ -5,14 +5,13 @@ const INFO_STATUS = {
         available:1//可用
     }
 }
-const USER_ADDRESS ={
+const MESSAGE_TYPE ={
     type:{
-        departure:1,
-        parking:0
-    },
-    status:{
-        disabled:0,//停用地址
-        enable:1//启用地址
+        text:1,//文字
+        pictures:2,//图片
+        video:3,//视频
+        help:4,//求助
+        voting:5//投票
     }
 }
 const READ_STATUS ={
@@ -21,8 +20,9 @@ const READ_STATUS ={
         read:1//已读
     }
 }
+
 module.exports = {
     INFO_STATUS,
-    USER_ADDRESS,
+    MESSAGE_TYPE,
     READ_STATUS
 }

@@ -31,6 +31,11 @@ let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
  * The module for commentsLevelTwo
  */
 let COMMENTSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
+/**
+ * The module for praiseRecord
+ */
+let PRAISE_RECORD_ID_NULL_ERROR ="该点赞记录不存在！" ;
+
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
 
@@ -51,5 +56,7 @@ module.exports = {
 
     COMMENTS_ID_NULL_ERROR,
 
-    COMMENTSTWO_ID_NULL_ERROR
+    COMMENTSTWO_ID_NULL_ERROR,
+
+    PRAISE_RECORD_ID_NULL_ERROR
 }

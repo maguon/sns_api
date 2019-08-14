@@ -33,7 +33,15 @@ const getCommentsLevelTwoPraiseRecord = (req, res, next) => {
             return next();
         }
     }
-
+    if(params.praiseRecordId){
+        if(params.praiseRecordId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+        }else{
+            logger.info('updateReadStatus  praiseRecordId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -89,7 +97,75 @@ const createCommentsLevelTwoPraiseRecord = (req, res, next) => {
         }
     })
 }
+const updateReadStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let params = req.params;
+    let query = CommentsLevelTwoPraiseRecordModel.find({});
+
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateReadStatus  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.praiseRecordId){
+        if(params.praiseRecordId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+        }else{
+            logger.info('updateReadStatus  praiseRecordId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    CommentsLevelTwoPraiseRecordModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateReadStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateReadStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+const updateStatus = (req, res, next) => {
+    let params = req.params;
+    let query = CommentsLevelTwoPraiseRecordModel.find({});
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateStatus  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.praiseRecordId){
+        if(params.praiseRecordId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+        }else{
+            logger.info('updateStatus  praiseRecordId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    CommentsLevelTwoPraiseRecordModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+        if (error) {
+            logger.error(' updateStatus ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' updateStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getCommentsLevelTwoPraiseRecord,
-    createCommentsLevelTwoPraiseRecord
+    createCommentsLevelTwoPraiseRecord,
+    updateReadStatus,
+    updateStatus
 };
