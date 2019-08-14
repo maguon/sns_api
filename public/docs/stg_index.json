@@ -2785,43 +2785,6 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}": {
-      "delete": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Delete messages info and comments",
-        "description": "Delete messages info and comments",
-        "operationId": "delete messages info by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "messages unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messages unique id",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessagesId not found"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/messages": {
       "post": {
         "tags": [
@@ -3059,43 +3022,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessagesId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messages/{messagesId}": {
-      "delete": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Administrator deletes messages info and comments",
-        "description": "Administrator deletes messages info and comments",
-        "operationId": "administrator delete messages info by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messages unique id",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
           "400": {
             "description": "Invalid params "
           },

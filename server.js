@@ -159,15 +159,13 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/messages',contentType: 'application/json'}, MessageController.createMessage);
     server.get('/api/user/:userId/messages', MessageController.getMessage);
     server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
-    server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToUser);
-    server.del('/api/user/:userId/messages/:messagesId' ,MessageController.deleteMessageToUser);
+    server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
 
     server.get('/api/admin/:adminId/messages', MessageController.getMessage);
     server.post({path:'/api/admin/:adminId/messages',contentType: 'application/json'}, MessageController.createMessage);
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
-    server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatusToAdmin);
-    server.del('/api/admin/:adminId/messages/:messagesId' ,MessageController.deleteMessageToUser);
-    /**
+    server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
+     /**
      Comments   - 评论
      */
     server.get('/api/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);

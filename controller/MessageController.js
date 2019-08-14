@@ -98,7 +98,7 @@ const createMessage = (req, res, next) => {
         }
     })
 }
-const deleteMessageToUser = (req, res, next) => {
+const updateMessageStatus = (req, res, next) => {
     let params = req.params;
     let queryMessge = MessageModel.find({});
     let queryComments = CommentsModel.find({});
@@ -176,66 +176,6 @@ const deleteMessageToUser = (req, res, next) => {
             }
         })
 }
-const updateMessageStatusToAdmin = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = MessageModel.find();
-    let params = req.params;
-
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-        }else{
-            logger.info('updateMessageStatusToAdmin  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    MessageModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateMessageStatusToAdmin ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateMessageStatusToAdmin ' + 'success');
-            console.log('rows:',result);
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
-const updateMessageStatusToUser = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = MessageModel.find();
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('updateMessageStatusToUser  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-        }else{
-            logger.info('updateMessageStatusToUser  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    MessageModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateMessageStatusToUser ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateMessageStatusToUser ' + 'success');
-            console.log('rows:',result);
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 const searchByRadius = (req, res, next) => {
     let params = req.query;
     let arr =[];
@@ -260,8 +200,6 @@ const searchByRadius = (req, res, next) => {
 module.exports = {
     getMessage,
     createMessage,
-    deleteMessageToUser,
-    updateMessageStatusToAdmin,
-    updateMessageStatusToUser,
+    updateMessageStatus,
     searchByRadius
 };
