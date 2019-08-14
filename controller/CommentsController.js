@@ -12,7 +12,7 @@ const {MessageModel} = require('../modules');
 const getUserComments = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
@@ -73,7 +73,7 @@ const getUserComments = (req, res, next) => {
 const getAllComments = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.messagesId){
         if(path.messagesId.length == 24){
@@ -127,7 +127,7 @@ const createComments = (req, res, next) => {
     let bodyParams = req.body;
     let commentsObj = bodyParams;
 
-    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let commentsNum = 0;
 
     if(path.userId){
@@ -246,7 +246,7 @@ const deleteUserComments = (req, res, next) => {
     let params = req.params;
     let query = CommentsModel.find({});
 
-    let queryMessage = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let comNum = 0;
 
     if(params.userId){
@@ -292,7 +292,7 @@ const deleteUserComments = (req, res, next) => {
     }
     const deleteComments = ()=>{
         return new Promise(((resolve, reject) => {
-            CommentsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' deleteUserComments deleteComments ' + error.message);
                     reject({err:error});
@@ -343,7 +343,7 @@ const deleteAdminComments = (req, res, next) => {
             return next();
         }
     }
-    CommentsModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+    CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
             logger.error(' updateOne ' + error.message);
             resUtil.resInternalError(error,res);
