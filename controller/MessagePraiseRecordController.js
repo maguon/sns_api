@@ -90,7 +90,7 @@ const createMessagePraiseRecord = (req, res, next) => {
         }
     }
     const savePraiseRecord = ()=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let messagePraiseRecordModel = new MessagePraiseRecordModel(messagePraiseRecordObj);
             messagePraiseRecordModel.save(function(error,result){
                 if (error) {
@@ -101,10 +101,10 @@ const createMessagePraiseRecord = (req, res, next) => {
                     resolve(result);
                 }
             })
-        }));
+        });
     }
     const getCommentsNum = (resultInfo)=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
                     logger.error(' createMessagePraiseRecord getCommentsNum ' + error.message);
@@ -119,10 +119,10 @@ const createMessagePraiseRecord = (req, res, next) => {
                     }
                 }
             });
-        }));
+        });
     }
     const updateAgreeNum = (resultInfo)=>{
-        return new Promise((() => {
+        return new Promise(() => {
             MessageModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                 if (error) {
                     logger.error(' createMessagePraiseRecord updateCommentsNum ' + error.message);
@@ -134,7 +134,7 @@ const createMessagePraiseRecord = (req, res, next) => {
                     return next();
                 }
             })
-        }));
+        });
     }
     savePraiseRecord()
         .then(getCommentsNum)
@@ -179,6 +179,92 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
+const updateStatusByUser = (req, res, next) => {
+    let params = req.params;
+    let query = MessagePraiseRecordModel.find({});
+
+    let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let agreeNum = 0;
+
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateStatusByUser  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.praiseRecordId){
+        if(params.praiseRecordId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+        }else{
+            logger.info('updateStatusByUser  praiseRecordId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    const getAgreeNum = ()=>{
+        return new Promise((resolve, reject) => {
+            query.populate({path:'_messageId'}).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' updateStatusByUser getCommentsNum ' + error.message);
+                    reject({err:error});
+                } else {
+                    if(rows.length){
+                        agreeNum = rows[0]._doc._messageId._doc.agreeNum;
+                        if(agreeNum){
+                            agreeNum = agreeNum -1;
+                        }
+                        queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
+                        logger.info(' updateStatusByUser getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
+                        resolve();
+                    }else{
+                        reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    const updateMessagePraiseRecord =()=>{
+        return new Promise((resolve, reject) => {
+            MessagePraiseRecordModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+                if (error) {
+                    logger.error(' updateStatus ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' updateStatus ' + 'success');
+                    resolve(result);
+                }
+            })
+        });
+    }
+    const updateAgreeNum = (resultInfo)=>{
+        return new Promise(() => {
+            MessageModel.updateOne(queryMessage,{ agreeNum: agreeNum},function(error,result){
+                if (error) {
+                    logger.error(' updateStatusByUser updateAgreeNum ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' updateStatusByUser updateAgreeNum ' + 'success');
+                    console.log('rows:',result);
+                    resUtil.resetUpdateRes(res,resultInfo,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getAgreeNum()
+        .then(updateMessagePraiseRecord)
+        .then(updateAgreeNum)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 const updateStatus = (req, res, next) => {
     let params = req.params;
     let query = MessagePraiseRecordModel.find({});
@@ -215,5 +301,6 @@ module.exports = {
     getMessagePraiseRecord,
     createMessagePraiseRecord,
     updateReadStatus,
+    updateStatusByUser,
     updateStatus
 };
