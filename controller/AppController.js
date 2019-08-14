@@ -56,7 +56,7 @@ const createApp = (req, res, next) => {
 }
 const updateApp = (req, res, next) =>{
     let bodyParams = req.body;
-    let query = AppModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = AppModel.find();
     let params = req.params;
     if(params.appId){
         if(params.appId.length == 24){

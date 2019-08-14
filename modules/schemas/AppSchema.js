@@ -12,7 +12,6 @@ const appSchema = new Schema({
         url            : {type:String,default:'',display: '下载地址'},
         remarks        : {type:String,default:'',display: '备注'},
         status         : {type:Number,default:1,min:0,max:3,display: '状态(0:启用,1:停用)'},
-        del_status     : {type:Number,default:0,min:0,max:3,display: '删除状态(0-未删除，1-已删除)'},
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
