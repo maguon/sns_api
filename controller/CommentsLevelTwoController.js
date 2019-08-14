@@ -12,7 +12,7 @@ const {CommentsModel} = require('../modules');
 const getUserCommentsLevelTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
@@ -82,7 +82,7 @@ const getUserCommentsLevelTwo = (req, res, next) => {
 const getAllCommentsLevelTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.messagesId){
         if(path.messagesId.length == 24){
@@ -136,7 +136,7 @@ const createCommentsLevelTwo = (req, res, next) => {
     let bodyParams = req.body;
     let commentsLevelTwoModelObj = bodyParams;
 
-    let query = CommentsModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = CommentsModel.find();
     let commentsNum = 0;
 
     if(path.userId){
@@ -263,7 +263,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
     let params = req.params;
     let query = CommentsLevelTwoModel.find({});
 
-    let queryComments = CommentsModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let queryComments = CommentsModel.find();
     let comNum = 0;
 
     if(params.userId){
@@ -309,7 +309,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
     }
     const deleteComments = ()=>{
         return new Promise(((resolve, reject) => {
-            CommentsLevelTwoModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' deleteUserCommentsLevelTwo deleteComments ' + error.message);
                     reject({err:error});
@@ -360,7 +360,7 @@ const deleteAdminCommentsLevelTwo = (req, res, next) => {
             return next();
         }
     }
-    CommentsLevelTwoModel.updateOne(query,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+    CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
             logger.error(' deleteAdminCommentsLevelTwo ' + error.message);
             resUtil.resInternalError(error,res);
