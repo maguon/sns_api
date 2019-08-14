@@ -13,7 +13,7 @@ const {CommentsLevelTwoModel} = require('../modules');
 const getMessage = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available,del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -126,7 +126,7 @@ const deleteMessageToUser = (req, res, next) => {
 
     const updateMessage = ()=>{
         return new Promise(((resolve, reject) => {
-            MessageModel.updateOne(queryMessge,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            MessageModel.updateOne(queryMessge,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' deleteMessageToUser updateMessage ' + error.message);
                     reject({err:error});
@@ -141,7 +141,7 @@ const deleteMessageToUser = (req, res, next) => {
     const updateReview = (resultInfo)=>{
         return new Promise(((resolve, reject) => {
             //同时删除该消息下的所有一級评论
-            CommentsModel.updateMany(queryComments,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsModel.updateMany(queryComments,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' deleteMessageToUser updateReview ' + error.message);
                     reject({err:error});
@@ -154,7 +154,7 @@ const deleteMessageToUser = (req, res, next) => {
     }
     const updateReviewLevelTwo = (resultInfo) =>{
         return new Promise(()=>{
-            CommentsLevelTwoModel.updateMany(queryCommentsLevelTwo,{del_status:sysConsts.DEL_STATIS.Status.delete},function(error,result){
+            CommentsLevelTwoModel.updateMany(queryCommentsLevelTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' deleteMessageToUser updateReviewLevelTwo ' + error.message);
                     resUtil.resInternalError(error,res);
@@ -178,7 +178,7 @@ const deleteMessageToUser = (req, res, next) => {
 }
 const updateMessageStatusToAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = MessageModel.find();
     let params = req.params;
 
     if(params.messagesId){
@@ -204,7 +204,7 @@ const updateMessageStatusToAdmin = (req, res, next) => {
 }
 const updateMessageStatusToUser = (req, res, next) => {
     let bodyParams = req.body;
-    let query = MessageModel.find({del_status:sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = MessageModel.find();
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
@@ -242,7 +242,7 @@ const searchByRadius = (req, res, next) => {
     let str=params.address.slice(1,params.address.length-1);
     arr = str.split(',');
     let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1,del_status:0}).sort(sort);
+    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }

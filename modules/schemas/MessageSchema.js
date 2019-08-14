@@ -13,7 +13,7 @@ const messageSchema = new Schema({
         label         : {type:String,default:'',trim:true,display: '消息标签'},
         multi_media   : {type:String,default:'',trim:true,display: '图片/视频'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（0-停用，1-启用）'},
-        del_status    : {type:Number,default:0,min:0,max:3,display: '删除状态(0-未删除，1-已删除)'},
+        comment_status    : {type:Number,default:0,min:0,max:3,display: '评论状态(0-允许评论，1-不允许评论)'},
         _userId: {
             type: Schema.Types.ObjectId,
             ref: 'user',
