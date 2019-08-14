@@ -24,9 +24,9 @@ const getMessagePraiseRecord = (req, res, next) => {
             return next();
         }
     }
-    if(path.messagesId){
-        if(path.messagesId.length == 24){
-            query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
+    if(params.messagesId){
+        if(params.messagesId.length == 24){
+            query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('getMessagePraiseRecord  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);

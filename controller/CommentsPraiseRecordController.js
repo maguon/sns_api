@@ -24,9 +24,9 @@ const getCommentsPraiseRecord = (req, res, next) => {
             return next();
         }
     }
-    if(path.commentsId){
-        if(path.commentsId.length == 24){
-            query.where('_commentsId').equals(mongoose.mongo.ObjectId(path.commentsId));
+    if(params.commentsId){
+        if(params.commentsId.length == 24){
+            query.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
         }else{
             logger.info('getCommentsPraiseRecord  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);

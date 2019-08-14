@@ -24,9 +24,9 @@ const getCommentsLevelTwoPraiseRecord = (req, res, next) => {
             return next();
         }
     }
-    if(path.commentsLevelTwoId){
+    if(params.commentsLevelTwoId){
         if(path.commentsLevelTwoId.length == 24){
-            query.where('_commentsLevelTwoId').equals(mongoose.mongo.ObjectId(path.commentsLevelTwoId));
+            query.where('_commentsLevelTwoId').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
         }else{
             logger.info('getUserCommentsLevelTwo  commentsLevelTwoId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
