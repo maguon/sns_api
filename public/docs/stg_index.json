@@ -3135,12 +3135,6 @@
             "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "read_status",
@@ -3221,12 +3215,6 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
             "required": false,
             "type": "integer"
           },
@@ -3485,12 +3473,6 @@
             "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "read_status",
@@ -3571,12 +3553,6 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
             "required": false,
             "type": "integer"
           },
@@ -3829,12 +3805,6 @@
             "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "read_status",
@@ -3915,12 +3885,6 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
             "required": false,
             "type": "integer"
           },
@@ -4186,12 +4150,6 @@
             "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "read_status",
@@ -4279,12 +4237,6 @@
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "del_status",
-            "in": "query",
-            "description": "删除状态(0-未删除，1-已删除)",
             "required": false,
             "type": "integer"
           },
