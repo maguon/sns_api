@@ -4006,14 +4006,14 @@
         }
       }
     },
-    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}":{
-      "delete": {
+    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/status":{
+      "put": {
         "tags": [
           "commentsLevelTwo"
         ],
-        "summary": "Delete commentsLevelTwo info and update comments info",
-        "description": "Delete commentsLevelTwo info",
-        "operationId": "delete commentsLevelTwo info by id",
+        "summary": "Finds commentsLevelTwo status and update",
+        "description": "Update commentsLevelTwo status ",
+        "operationId": "update commentsLevelTwo status by id",
         "produces": [
           "application/json"
         ],
@@ -4021,24 +4021,42 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "userId unique id",
+            "description": "user unique id",
             "required": true,
             "type": "string"
           },
           {
             "name": "commentsLevelTwoId",
             "in": "path",
-            "description": "commentsLevelTwoId unique id",
+            "description": "commentsLevelTwo unique id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or commentsId not found"
+            "description": "UserId or CommentsLevelTwoId not found"
           }
         }
       }
@@ -4352,46 +4370,57 @@
         }
       }
     },
-    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}":{
-      "delete": {
+    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}/status":{
+      "put": {
         "tags": [
           "commentsLevelTwo"
         ],
-        "summary": "Administrator delete commentsLevelTwo info and update comments info",
-        "description": "Administrator delete commentsLevelTwo info",
-        "operationId": "administrator delete commentsLevelTwo info by id",
+        "summary": "Administrator finds commentsLevelTwo status and update",
+        "description": "Administrator update commentsLevelTwo status ",
+        "operationId": "administrator update commentsLevelTwo status by id",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "userId",
             "in": "path",
-            "description": "userId unique id",
+            "description": "user unique id",
             "required": true,
             "type": "string"
           },
           {
             "name": "commentsLevelTwoId",
             "in": "path",
-            "description": "commentsLevelTwoId unique id",
+            "description": "commentsLevelTwo unique id",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or commentsId not found"
+            "description": "CommentsLevelTwoId not found"
           }
         }
       }

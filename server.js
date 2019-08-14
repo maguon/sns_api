@@ -186,13 +186,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/comments/:commentsId/allCommentsLevelTwo', CommentsLevelTwoController.getAllCommentsLevelTwo);
     server.post({path:'/api/user/:userId/messages/:messagesId/comments/:commentsId/commentsLevelTwo',contentType: 'application/json'}, CommentsLevelTwoController.createCommentsLevelTwo);
     server.put({path:'/api/user/:userId/commentsLevelTwo/:commentsLevelTwoId/readStatus',contentType: 'application/json'} ,CommentsLevelTwoController.updateReadStatus);
-    server.del('/api/user/:userId/commentsLevelTwo/:commentsLevelTwoId' ,CommentsLevelTwoController.deleteUserCommentsLevelTwo);
+    server.put({path:'/api/user/:userId/commentsLevelTwo/:commentsLevelTwoId/status',contentType: 'application/json'} ,CommentsLevelTwoController.updateUserCommentsLevelTwo);
 
     server.get('/api/admin/:adminId/user/:userId/comments/:commentsId/userCommentsLevelTwo', CommentsLevelTwoController.getUserCommentsLevelTwo);
     server.get('/api/admin/:adminId/comments/:commentsId/allCommentsLevelTwo', CommentsLevelTwoController.getAllCommentsLevelTwo);
     server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsLevelTwo',contentType: 'application/json'}, CommentsLevelTwoController.createCommentsLevelTwo);
     server.put({path:'/api/admin/:adminId/commentsLevelTwo/:commentsLevelTwoId/readStatus',contentType: 'application/json'} ,CommentsLevelTwoController.updateReadStatus);
-    server.del('/api/admin/:adminId/commentsLevelTwo/:commentsLevelTwoId' ,CommentsLevelTwoController.deleteAdminCommentsLevelTwo);
+    server.put({path:'/api/admin/:adminId/commentsLevelTwo/:commentsLevelTwoId/status',contentType: 'application/json'} ,CommentsLevelTwoController.updateAdminCommentsLevelTwo);
 
     /**
      app

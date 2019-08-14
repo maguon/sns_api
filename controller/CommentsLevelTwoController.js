@@ -259,7 +259,7 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
-const deleteUserCommentsLevelTwo = (req, res, next) => {
+const updateUserCommentsLevelTwo = (req, res, next) => {
     let params = req.params;
     let query = CommentsLevelTwoModel.find({});
 
@@ -270,7 +270,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('deleteUserComments  userID format incorrect!');
+            logger.info('updateUserCommentsLevelTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -279,7 +279,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
         if(params.commentsLevelTwoId .length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId ));
         }else{
-            logger.info('deleteUserComments  commentsId format incorrect!');
+            logger.info('updateUserCommentsLevelTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
@@ -288,7 +288,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.populate({path:'_commentsId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' deleteUserCommentsLevelTwo getCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsLevelTwo getCommentsNum ' + error.message);
                     reject({err:error});
                 } else {
                     if(rows.length > 0){
@@ -297,7 +297,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
                             comNum = comNum -1;
                         }
                         queryComments.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._commentsId._id));
-                        logger.info(' deleteUserCommentsLevelTwo getCommentsNum _messageId:' + rows[0]._doc._commentsId._id +'success');
+                        logger.info(' updateUserCommentsLevelTwo getCommentsNum _messageId:' + rows[0]._doc._commentsId._id +'success');
                         resolve();
                     }else{
                         reject({msg:systemMsg.COMMENTSTWO_ID_NULL_ERROR});
@@ -307,14 +307,14 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
             });
         }));
     }
-    const deleteComments = ()=>{
+    const updataComments = ()=>{
         return new Promise(((resolve, reject) => {
             CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' deleteUserCommentsLevelTwo deleteComments ' + error.message);
+                    logger.error(' updateUserCommentsLevelTwo updataComments ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' deleteUserCommentsLevelTwo deleteComments ' + 'success');
+                    logger.info(' updateUserCommentsLevelTwo updataComments ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -326,10 +326,10 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
             console.log('comNum:',comNum);
             CommentsModel.updateOne(queryComments,{ commentsNum: comNum},function(error,result){
                 if (error) {
-                    logger.error(' deleteCommentsLevelTwo updateCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsLevelTwo updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' deleteCommentsLevelTwo updateCommentsNum ' + 'success');
+                    logger.info(' updateUserCommentsLevelTwo updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
@@ -338,7 +338,7 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
         }));
     }
     getCommentsNum()
-        .then(deleteComments)
+        .then(updataComments)
         .then(updateCommentsNum)
         .catch((reject)=>{
             if(reject.err){
@@ -348,24 +348,24 @@ const deleteUserCommentsLevelTwo = (req, res, next) => {
             }
         })
 }
-const deleteAdminCommentsLevelTwo = (req, res, next) => {
+const updateAdminCommentsLevelTwo = (req, res, next) => {
     let params = req.params;
     let query = CommentsLevelTwoModel.find({});
     if(params.commentsLevelTwoId){
         if(params.commentsLevelTwoId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
         }else{
-            logger.info('deleteAdminCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('updateAdminCommentsLevelTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
     }
     CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
-            logger.error(' deleteAdminCommentsLevelTwo ' + error.message);
+            logger.error(' updateAdminCommentsLevelTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' deleteAdminCommentsLevelTwo ' + 'success');
+            logger.info(' updateAdminCommentsLevelTwo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -376,6 +376,6 @@ module.exports = {
     getAllCommentsLevelTwo,
     createCommentsLevelTwo,
     updateReadStatus,
-    deleteUserCommentsLevelTwo,
-    deleteAdminCommentsLevelTwo
+    updateUserCommentsLevelTwo,
+    updateAdminCommentsLevelTwo
 };
