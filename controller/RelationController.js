@@ -11,7 +11,7 @@ const {RelationModel} = require('../modules');
 const getFollow = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available,del_status : sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -59,7 +59,7 @@ const getFollow = (req, res, next) => {
 const getFollowUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available,del_status : sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -107,7 +107,7 @@ const getFollowUserInfo = (req, res, next) => {
 const getAttention = (req, res, next) => {
     let path = req.params;
     let params = req.params;
-    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available,del_status : sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
@@ -155,7 +155,7 @@ const getAttention = (req, res, next) => {
 const getAttentionUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.params;
-    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available,del_status : sysConsts.DEL_STATIS.Status.not_deleted});
+    let query = RelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
@@ -339,61 +339,6 @@ const updateRelationReadStatusByAdmin = (req, res, next) => {
         }
     })
 }
-const deleteRelation = (req, res, next) => {
-    let query = RelationModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('deleteRelation userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.relationId) {
-        if (params.relationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
-        } else {
-            logger.info('deleteRelation relationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    RelationModel.deleteOne(query,function(error,result){
-        if (error) {
-            logger.error(' deleteRelation ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' deleteRelation ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
-const deleteRelationByAdmin = (req, res, next) => {
-    let query = RelationModel.find({});
-    let params = req.params;
-    if(params.relationId) {
-        if (params.relationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.relationId));
-        } else {
-            logger.info('deleteRelationByAdmin relationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    RelationModel.deleteOne(query,function(error,result){
-        if (error) {
-            logger.error(' deleteRelationByAdmin ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' deleteRelationByAdmin ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     getFollow,
     getFollowUserInfo,
@@ -404,6 +349,4 @@ module.exports = {
     updateRelationStatusByAdmin,
     updateRelationReadStatus,
     updateRelationReadStatusByAdmin,
-    deleteRelation,
-    deleteRelationByAdmin
 };
