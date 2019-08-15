@@ -156,8 +156,8 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/messagesPraiseRecordReadStatus',contentType: 'application/json'} ,MessagePraiseRecordController.updateReadStatus);
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsPraiseRecordReadStatus',contentType: 'application/json'} ,CommentsPraiseRecordController.updateReadStatus);
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsLevelTwoPraiseRecordReadStatus',contentType: 'application/json'} ,CommentsLevelTwoPraiseRecordController.updateReadStatus);
-    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/messagesPraiseRecordStatus',contentType: 'application/json'} ,MessagePraiseRecordController.updateStatus);
-    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsPraiseRecordStatus',contentType: 'application/json'} ,CommentsPraiseRecordController.updateStatus);
+    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/messagesPraiseRecordStatus',contentType: 'application/json'} ,MessagePraiseRecordController.updateStatusByUser);
+    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsPraiseRecordStatus',contentType: 'application/json'} ,CommentsPraiseRecordController.updateStatusByUser);
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsLevelTwoPraiseRecordStatus',contentType: 'application/json'} ,CommentsLevelTwoPraiseRecordController.updateStatus);
      /**
      messages    -微博动态
