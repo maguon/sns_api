@@ -191,7 +191,7 @@ const updateStatusByUser = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateStatus  userID format incorrect!');
+            logger.info('updateStatusByUser  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -200,7 +200,7 @@ const updateStatusByUser = (req, res, next) => {
         if(params.praiseRecordId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
         }else{
-            logger.info('updateStatus  praiseRecordId format incorrect!');
+            logger.info('updateStatusByUser  praiseRecordId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
@@ -209,7 +209,7 @@ const updateStatusByUser = (req, res, next) => {
         return new Promise((resolve, reject) => {
             query.populate({path:'_commentsId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' updateStatusByUser getCommentsNum ' + error.message);
+                    logger.error(' updateStatusByUser getAgreeNum ' + error.message);
                     reject({err:error});
                 } else {
                     if(rows.length){
@@ -218,7 +218,7 @@ const updateStatusByUser = (req, res, next) => {
                             agreeNum = agreeNum -1;
                         }
                         queryComments.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._commentsId._id));
-                        logger.info(' updateStatusByUser getCommentsNum _messageId:' + rows[0]._doc._commentsId._id +'success');
+                        logger.info(' updateStatusByUser getAgreeNum _commentsId:' + rows[0]._doc._commentsId._id +'success');
                         resolve();
                     }else{
                         reject({msg:systemMsg.COMMENTS_ID_NULL_ERROR});
@@ -231,10 +231,10 @@ const updateStatusByUser = (req, res, next) => {
         return new Promise((resolve, reject) =>{
             CommentsPraiseRecordModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' updateStatus ' + error.message);
+                    logger.error(' updateStatusByUser updateCommentsPraiseRecord ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' updateStatus ' + 'success');
+                    logger.info(' updateStatusByUser updateCommentsPraiseRecord ' + 'success');
                     resolve(result);
                 }
             })
