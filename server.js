@@ -158,7 +158,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsLevelTwoPraiseRecordReadStatus',contentType: 'application/json'} ,CommentsLevelTwoPraiseRecordController.updateReadStatus);
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/messagesPraiseRecordStatus',contentType: 'application/json'} ,MessagePraiseRecordController.updateStatusByUser);
     server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsPraiseRecordStatus',contentType: 'application/json'} ,CommentsPraiseRecordController.updateStatusByUser);
-    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsLevelTwoPraiseRecordStatus',contentType: 'application/json'} ,CommentsLevelTwoPraiseRecordController.updateStatus);
+    server.put({path:'/api/user/:userId/praiseRecord/:praiseRecordId/commentsLevelTwoPraiseRecordStatus',contentType: 'application/json'} ,CommentsLevelTwoPraiseRecordController.updateStatusByUser);
      /**
      messages    -微博动态
      */
