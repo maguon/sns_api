@@ -83,6 +83,7 @@ const createMessagePraiseRecord = (req, res, next) => {
     if(params.messagesId){
         if(params.messagesId.length == 24){
             messagePraiseRecordObj._messageId = mongoose.mongo.ObjectId(params.messagesId);
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
             logger.info('createMessagePraiseRecord  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -103,16 +104,16 @@ const createMessagePraiseRecord = (req, res, next) => {
             })
         });
     }
-    const getCommentsNum = (resultInfo)=>{
+    const getAgreeNum = (resultInfo)=>{
         return new Promise((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createMessagePraiseRecord getCommentsNum ' + error.message);
+                    logger.error(' createMessagePraiseRecord getAgreeNum ' + error.message);
                     reject(error);
                 } else {
                     if(rows.length > 0){
                         agreeNum = Number(rows[0]._doc.agreeNum);
-                        logger.info(' createMessagePraiseRecord getCommentsNum ' + 'success');
+                        logger.info(' createMessagePraiseRecord getAgreeNum ' + 'success');
                         resolve(resultInfo);
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -125,10 +126,10 @@ const createMessagePraiseRecord = (req, res, next) => {
         return new Promise(() => {
             MessageModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                 if (error) {
-                    logger.error(' createMessagePraiseRecord updateCommentsNum ' + error.message);
+                    logger.error(' createMessagePraiseRecord updateAgreeNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' createMessagePraiseRecord updateCommentsNum ' + 'success');
+                    logger.info(' createMessagePraiseRecord updateAgreeNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetCreateRes(res, resultInfo);
                     return next();
@@ -137,7 +138,7 @@ const createMessagePraiseRecord = (req, res, next) => {
         });
     }
     savePraiseRecord()
-        .then(getCommentsNum)
+        .then(getAgreeNum)
         .then(updateAgreeNum)
         .catch((reject)=>{
             if(reject.err){
