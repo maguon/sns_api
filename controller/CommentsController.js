@@ -270,7 +270,7 @@ const updateUserCommentsStatus = (req, res, next) => {
         }
     }
     const getCommentsNum = ()=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             query.populate({path:'_messageId'}).exec((error,rows)=> {
                 if (error) {
                     logger.error(' updateUserCommentsStatus getCommentsNum ' + error.message);
@@ -287,13 +287,12 @@ const updateUserCommentsStatus = (req, res, next) => {
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
                     }
-
                 }
             });
-        }));
+        });
     }
     const updateComments = ()=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' updateUserCommentsStatus updateComments ' + error.message);
@@ -304,10 +303,10 @@ const updateUserCommentsStatus = (req, res, next) => {
                     console.log('result:',result)
                 }
             })
-        }));
+        });
     }
     const updateCommentsLevelTwo = ()=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             CommentsLevelTwoModel.updateOne(queryCommentsLevelTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' updateUserCommentsStatus updateCommentsLevelTwo ' + error.message);
@@ -318,10 +317,10 @@ const updateUserCommentsStatus = (req, res, next) => {
                     console.log('result:',result)
                 }
             })
-        }));
+        });
     }
     const updateCommentsNum = (resultInfo) =>{
-        return new Promise((() => {
+        return new Promise(() => {
             console.log('comNum:',comNum);
             MessageModel.updateOne(queryMessage,{ commentsNum: comNum},function(error,result){
                 if (error) {
@@ -334,7 +333,7 @@ const updateUserCommentsStatus = (req, res, next) => {
                     return next();
                 }
             })
-        }));
+        });
     }
     getCommentsNum()
         .then(updateComments)
