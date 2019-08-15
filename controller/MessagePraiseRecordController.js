@@ -14,7 +14,7 @@ const {MessageModel} = require('../modules');
 const getMessagePraiseRecord = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = MessagePraiseRecordModel.find();
+    let query = MessagePraiseRecordModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
