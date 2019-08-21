@@ -17,40 +17,55 @@
   "tags": [
     {
       "name": "adminUser",
-      "description": "adminUser version and url management api (操作员管理)"
+      "description": "adminUser version and url management api (操作员)"
     },
     {
       "name": "user",
-      "description": "User version and url management api (用户基本管理)"
+      "description": "User version and url management api (用户基本信息)"
     },
     {
       "name": "userDetail",
-      "description": "UserDetail version and url management api (用户详细信息管理)"
+      "description": "UserDetail version and url management api (用户详细信息)"
     },
     {
       "name": "relation",
-      "description": "Relation version and url management api (用户关系管理)"
+      "description": "Relation version and url management api (用户关注关系)"
     },
     {
       "name": "praiseRecord",
-      "description": "PraiseRecord version and url management api (用户点赞记录管理)"
+      "description": "PraiseRecord version and url management api (用户点赞记录)"
+    },
+    {
+      "name": "addressCollection",
+      "description": "addressCollection version and url management api (用户地理位置收藏)"
+    },
+    {
+      "name": "messageCollection",
+      "description": "messageCollection version and url management api (用户微博收藏)"
     },
     {
       "name": "messages",
-      "description": "Messages version and url management api (消息动态管理)"
+      "description": "Messages version and url management api (消息动态)"
     },
     {
       "name": "comments",
-      "description": "comments version and url management api (评论管理)"
+      "description": "comments version and url management api (评论)"
     },
     {
       "name": "commentsLevelTwo",
-      "description": "commentsⅡ version and url management api (二级评论管理)"
+      "description": "commentsⅡ version and url management api (二级评论)"
     },
-
+    {
+      "name": "vote",
+      "description": "Vote version and url management api (投票信息)"
+    },
+    {
+      "name": "userVote",
+      "description": "UserVote version and url management api (用户投票信息)"
+    },
     {
       "name": "app",
-      "description": "App version and url management api (版本管理)"
+      "description": "App version and url management api (APP版本)"
     }
   ],
   "schemes": [
