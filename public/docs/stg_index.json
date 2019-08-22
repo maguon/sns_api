@@ -428,12 +428,6 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "password",
-            "in": "query",
-            "description": "用户密码",
-            "required": false,
-            "type": "string"
-          },{
             "name": "nikename",
             "in": "query",
             "description": "用户昵称",
@@ -457,12 +451,6 @@
             "description": "用户类型（1-普通，2-会员）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "last_login_on",
-            "in": "query",
-            "description": "最后一次登录时间",
-            "required": false,
-            "type": "date"
           },
           {
             "in": "query",
@@ -678,18 +666,6 @@
             "required": false,
             "type": "string"
           },{
-            "name": "phone",
-            "in": "query",
-            "description": "用户电话",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "password",
-            "in": "query",
-            "description": "用户密码",
-            "required": false,
-            "type": "string"
-          },{
             "name": "nikename",
             "in": "query",
             "description": "用户昵称",
@@ -713,12 +689,6 @@
             "description": "用户类型（1-普通，2-会员）",
             "required": false,
             "type": "integer"
-          },{
-            "name": "last_login_on",
-            "in": "query",
-            "description": "最后一次登录时间",
-            "required": false,
-            "type": "date"
           },
           {
             "in": "query",
@@ -5081,7 +5051,6 @@
         "phone",
         "password",
         "nikename",
-        "status",
         "auth_status",
         "type",
         "last_login_on"
@@ -5096,14 +5065,6 @@
         },
         "nikename": {
           "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         },
         "auth_status": {
           "type": "integer",

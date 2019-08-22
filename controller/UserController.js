@@ -5,6 +5,7 @@ const encrypt = require('../util/Encrypt.js');
 const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserController');
 
 const {UserModel} = require('../modules');
@@ -35,9 +36,6 @@ const getUser = (req, res, next) => {
     if(params.phone){
         query.where('phone').equals(params.phone);
     }
-    if(params.password){
-        query.where('password').equals(params.password);
-    }
     if(params.nikename){
         query.where('nikename').equals(params.nikename);
     }
@@ -49,9 +47,6 @@ const getUser = (req, res, next) => {
     }
     if(params.type){
         query.where('type').equals(params.type);
-    }
-    if(params.last_login_on){
-        query.where('last_login_on').equals(params.last_login_on);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -94,6 +89,7 @@ const getUserInfoAndDetail = (req, res, next) => {
 const createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userObj = bodyParams;
+    userObj.status = sysConsts.INFO_STATUS.Status.available;
     let userId;
     if(bodyParams.password){
         console.log(bodyParams.password);
