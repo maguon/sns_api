@@ -191,27 +191,9 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "password",
-            "in": "query",
-            "description": "密码",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "gender",
-            "in": "query",
-            "description": "0:女 1:男",
-            "required": false,
-            "type": "integer"
-          },{
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "type",
-            "in": "query",
-            "description": "管理员类型",
             "required": false,
             "type": "integer"
           },
@@ -5041,7 +5023,6 @@
         "realname",
         "phone",
         "password",
-        "status",
         "gender",
         "type"
       ],
@@ -5058,14 +5039,6 @@
         },
         "password": {
           "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         },
         "gender": {
           "type": "integer",

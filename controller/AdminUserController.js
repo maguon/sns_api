@@ -6,6 +6,7 @@ const encrypt = require('../util/Encrypt');
 const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('AdminUserController');
 
 const {AdminUserModel} = require('../modules');
@@ -33,17 +34,8 @@ const getAdminUser = (req, res, next) => {
     if(params.phone){
         query.where('phone').equals(params.phone);
     }
-    if(params.password){
-        query.where('password').equals(params.password);
-    }
     if(params.status){
         query.where('status').equals(params.status);
-    }
-    if(params.gender){
-        query.where('gender').equals(params.gender);
-    }
-    if(params.type){
-        query.where('type').equals(params.type);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -62,12 +54,11 @@ const getAdminUser = (req, res, next) => {
 const createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
     let adminUserObj = bodyParams;
-
+    adminUserObj.status = sysConsts.INFO_STATUS.Status.available;
     if(bodyParams.password){
         console.log(bodyParams.password);
         bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
     }
-
     let adminUserModel = new AdminUserModel(adminUserObj);
     adminUserModel.save(function(error,result){
         if (error) {
