@@ -12,7 +12,7 @@ const userSchema = new Schema({
         last_login_on : {type:Date,default:new Date(),display: '最后登录时间'},
         _userDetailId: {
             type: Schema.Types.ObjectId,
-            ref: 'userDetail',
+            ref: 'user_detail',
             display: '用户详细信息ID'
         },
     },

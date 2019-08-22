@@ -32,8 +32,8 @@
       "description": "Relation version and url management api (用户关注关系)"
     },
     {
-      "name": "praiseRecord",
-      "description": "PraiseRecord version and url management api (用户点赞记录)"
+      "name": "praise",
+      "description": "Praise version and url management api (用户点赞记录)"
     },
     {
       "name": "addressCollection",
@@ -52,7 +52,7 @@
       "description": "comments version and url management api (评论)"
     },
     {
-      "name": "commentsLevelTwo",
+      "name": "commentsTwo",
       "description": "commentsⅡ version and url management api (二级评论)"
     },
     {
@@ -2211,14 +2211,14 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/praiseRecord": {
+    "/user/{userId}/messages/{messagesId}/praise": {
       "post": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Add a new messagesPraiseRecord info",
+        "summary": "Add a new messagesPraise info",
         "description": "",
-        "operationId": "user add messagesPraiseRecord",
+        "operationId": "user add messagesPraise",
         "consumes": [
           "application/json"
         ],
@@ -2242,8 +2242,8 @@
           },
           {
             "in": "body",
-            "name":"praiseRecordInfo",
-            "description": "PraiseRecord object that needs to be added to the store",
+            "name":"praiseInfo",
+            "description": "Praise object that needs to be added to the store",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
@@ -2261,14 +2261,14 @@
 
       }
     },
-    "/user/{userId}/comments/{commentsId}/praiseRecord": {
+    "/user/{userId}/comments/{commentsId}/praise": {
       "post": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Add a new commentsPraiseRecord info",
+        "summary": "Add a new commentsPraise info",
         "description": "",
-        "operationId": "user add commentsPraiseRecord",
+        "operationId": "user add commentsPraise",
         "consumes": [
           "application/json"
         ],
@@ -2292,8 +2292,8 @@
           },
           {
             "in": "body",
-            "name":"praiseRecordInfo",
-            "description": "PraiseRecord object that needs to be added to the store",
+            "name":"praiseInfo",
+            "description": "Praise object that needs to be added to the store",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
@@ -2311,14 +2311,14 @@
 
       }
     },
-    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/praiseRecord": {
+    "/user/{userId}/commentsTwo/{commentsTwoId}/praise": {
       "post": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Add a new commentsLevelTwoPraiseRecord info",
+        "summary": "Add a new commentsTwoPraise info",
         "description": "",
-        "operationId": "user add commentsLevelTwoPraiseRecord",
+        "operationId": "user add commentsTwoPraise",
         "consumes": [
           "application/json"
         ],
@@ -2334,16 +2334,16 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "path",
-            "description": "commentsLevelTwo unique id",
+            "description": "commentsTwo unique id",
             "required": true,
             "type": "string"
           },
           {
             "in": "body",
-            "name":"praiseRecordInfo",
-            "description": "PraiseRecord object that needs to be added to the store",
+            "name":"praiseInfo",
+            "description": "Praise object that needs to be added to the store",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
@@ -2361,13 +2361,13 @@
 
       }
     },
-    "/user/{userId}/messagesPraiseRecord": {
+    "/user/{userId}/messagesPraise": {
       "get": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Select messagePraiseRecord Info",
-        "description": "Get messagePraiseRecord Info",
+        "summary": "Select messagePraise Info",
+        "description": "Get messagePraise Info",
         "produces": [
           "application/json"
         ],
@@ -2387,7 +2387,7 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "query",
             "description": "点赞记录Id",
             "required": false,
@@ -2427,13 +2427,13 @@
         }
       }
     },
-    "/user/{userId}/commentsPraiseRecord": {
+    "/user/{userId}/commentsPraise": {
       "get": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Select commentsPraiseRecord Info",
-        "description": "Get commentsPraiseRecord Info",
+        "summary": "Select commentsPraise Info",
+        "description": "Get commentsPraise Info",
         "produces": [
           "application/json"
         ],
@@ -2453,7 +2453,7 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "query",
             "description": "点赞记录Id",
             "required": false,
@@ -2493,13 +2493,13 @@
         }
       }
     },
-    "/user/{userId}/commentsLevelTwoPraiseRecord": {
+    "/user/{userId}/commentsTwoPraise": {
       "get": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Select commentsLevelTwo PraiseRecord Info",
-        "description": "Get commentsLevelTwo PraiseRecord Info",
+        "summary": "Select commentsTwo Praise Info",
+        "description": "Get commentsTwo Praise Info",
         "produces": [
           "application/json"
         ],
@@ -2512,14 +2512,14 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "query",
             "description": "二级评论Id",
             "required": false,
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "query",
             "description": "点赞记录Id",
             "required": false,
@@ -2559,14 +2559,14 @@
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/messagesPraiseRecordReadStatus": {
+    "/user/{userId}/praise/{praiseId}/messagesPraiseReadStatus": {
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds comments messagesPraiseRecordReadStatus and update",
-        "description": "Update comments messagesPraiseRecordReadStatus ",
-        "operationId": "update comments messagesPraiseRecordReadStatus by id",
+        "summary": "Finds comments messagesPraiseReadStatus and update",
+        "description": "Update comments messagesPraiseReadStatus ",
+        "operationId": "update comments messagesPraiseReadStatus by id",
         "produces": [
           "application/json"
         ],
@@ -2579,9 +2579,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2609,19 +2609,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsPraiseRecordReadStatus": {
+    "/user/{userId}/praise/{praiseId}/commentsPraiseReadStatus": {
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds comments commentsPraiseRecordReadStatus and update",
-        "description": "Update comments commentsPraiseRecordReadStatus ",
-        "operationId": "update comments commentsPraiseRecordReadStatus by id",
+        "summary": "Finds comments commentsPraiseReadStatus and update",
+        "description": "Update comments commentsPraiseReadStatus ",
+        "operationId": "update comments commentsPraiseReadStatus by id",
         "produces": [
           "application/json"
         ],
@@ -2634,9 +2634,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2664,19 +2664,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsLevelTwoPraiseRecordReadStatus": {
+    "/user/{userId}/praise/{praiseId}/commentsTwoPraiseReadStatus": {
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds comments commentsLevelTwo PraiseRecord ReadStatus and update",
-        "description": "Update comments commentsLevelTwo PraiseRecord ReadStatus ",
-        "operationId": "update comments commentsLevelTwo PraiseRecord ReadStatus by id",
+        "summary": "Finds comments commentsTwo Praise ReadStatus and update",
+        "description": "Update comments commentsTwo Praise ReadStatus ",
+        "operationId": "update comments commentsTwo Praise ReadStatus by id",
         "produces": [
           "application/json"
         ],
@@ -2689,9 +2689,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2719,19 +2719,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/messagesPraiseRecordStatus":{
+    "/user/{userId}/praise/{praiseId}/messagesPraiseStatus":{
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds messages messages PraiseRecord Status and update",
-        "description": "Update messages PraiseRecord status",
-        "operationId": "update messages PraiseRecord Status by userId",
+        "summary": "Finds messages messages Praise Status and update",
+        "description": "Update messages Praise status",
+        "operationId": "update messages Praise Status by userId",
         "produces": [
           "application/json"
         ],
@@ -2744,9 +2744,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2774,19 +2774,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsPraiseRecordStatus":{
+    "/user/{userId}/praise/{praiseId}/commentsPraiseStatus":{
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds comments PraiseRecord status and update",
-        "description": "Update comments PraiseRecord status",
-        "operationId": "update comments PraiseRecord Status by userId",
+        "summary": "Finds comments Praise status and update",
+        "description": "Update comments Praise status",
+        "operationId": "update comments Praise Status by userId",
         "produces": [
           "application/json"
         ],
@@ -2799,9 +2799,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2829,19 +2829,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praiseRecord/{praiseRecordId}/commentsLevelTwoPraiseRecordStatus":{
+    "/user/{userId}/praise/{praiseId}/commentsTwoPraiseStatus":{
       "put": {
         "tags": [
-          "praiseRecord"
+          "praise"
         ],
-        "summary": "Finds commentsLevelTwo PraiseRecord Status and update",
-        "description": "Update commentsLevelTwo PraiseRecord Status",
-        "operationId": "update commentsLevelTwo PraiseRecord Status by userId",
+        "summary": "Finds commentsTwo Praise Status and update",
+        "description": "Update commentsTwo Praise Status",
+        "operationId": "update commentsTwo Praise Status by userId",
         "produces": [
           "application/json"
         ],
@@ -2854,9 +2854,9 @@
             "type": "string"
           },
           {
-            "name": "praiseRecordId",
+            "name": "praiseId",
             "in": "path",
-            "description": "praiseRecordId",
+            "description": "praiseId",
             "required": true,
             "type": "string"
           },
@@ -2884,7 +2884,101 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseRecordId not found"
+            "description": "UserId or praiseId not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/addressCollection": {
+      "post": {
+        "tags": [
+          "addressCollection"
+        ],
+        "summary": "Add a new addressCollection info",
+        "description": "",
+        "operationId": "addAddressCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "AddressCollection object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddressCollection"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "addressCollection"
+        ],
+        "summary": "Select addressCollection Info",
+        "description": "get addressCollection info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "addressCollectionsId",
+            "in": "query",
+            "description": "收藏信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
@@ -4039,14 +4133,14 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsLevelTwo": {
+    "/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsTwo": {
       "post": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Add a new commentsLevelTwo info and update comments info",
+        "summary": "Add a new commentsTwo info and update comments info",
         "description": "",
-        "operationId": "addCommentsLevelTwo",
+        "operationId": "addCommentsTwo",
         "consumes": [
           "application/json"
         ],
@@ -4081,7 +4175,7 @@
             "description": "comments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CommentsLevelTwo"
+              "$ref": "#/definitions/CommentsTwo"
             }
           }
         ],
@@ -4096,13 +4190,13 @@
 
       }
     },
-    "/user/{userId}/comments/{commentsId}/userCommentsLevelTwo": {
+    "/user/{userId}/comments/{commentsId}/userCommentsTwo": {
       "get": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Select commentsLevelTwo Info",
-        "description": "get commentsLevelTwo info",
+        "summary": "Select commentsTwo Info",
+        "description": "get commentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -4114,7 +4208,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4133,7 +4227,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentsLevelTwoMsg",
+            "name": "commentsTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -4178,13 +4272,13 @@
         }
       }
     },
-    "/user/{userId}/comments/{commentsId}/allCommentsLevelTwo": {
+    "/user/{userId}/comments/{commentsId}/allCommentsTwo": {
       "get": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Select commentsLevelTwo Info",
-        "description": "get commentsLevelTwo info",
+        "summary": "Select commentsTwo Info",
+        "description": "get commentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -4196,7 +4290,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4215,7 +4309,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentsLevelTwoMsg",
+            "name": "commentsTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -4260,14 +4354,14 @@
         }
       }
     },
-    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/readStatus": {
+    "/user/{userId}/commentsTwo/{commentsTwoId}/readStatus": {
       "put": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Finds commentsLevelTwo readStatus and update",
-        "description": "Update commentsLevelTwo readStatus ",
-        "operationId": "update commentsLevelTwo readStatus by id",
+        "summary": "Finds commentsTwo readStatus and update",
+        "description": "Update commentsTwo readStatus ",
+        "operationId": "update commentsTwo readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -4280,9 +4374,9 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "path",
-            "description": "commentsLevelTwo unique id",
+            "description": "commentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4310,19 +4404,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsLevelTwoId not found"
+            "description": "UserId or CommentsTwoId not found"
           }
         }
       }
     },
-    "/user/{userId}/commentsLevelTwo/{commentsLevelTwoId}/status":{
+    "/user/{userId}/commentsTwo/{commentsTwoId}/status":{
       "put": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Finds commentsLevelTwo status and update",
-        "description": "Update commentsLevelTwo status ",
-        "operationId": "update commentsLevelTwo status by id",
+        "summary": "Finds commentsTwo status and update",
+        "description": "Update commentsTwo status ",
+        "operationId": "update commentsTwo status by id",
         "produces": [
           "application/json"
         ],
@@ -4335,9 +4429,9 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "path",
-            "description": "commentsLevelTwo unique id",
+            "description": "commentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4365,19 +4459,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsLevelTwoId not found"
+            "description": "UserId or CommentsTwoId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsLevelTwo": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsTwo": {
       "post": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Administrator add a new commentsLevelTwo info and update comments info",
+        "summary": "Administrator add a new commentsTwo info and update comments info",
         "description": "",
-        "operationId": "administrator addCommentsLevelTwo",
+        "operationId": "administrator addCommentsTwo",
         "consumes": [
           "application/json"
         ],
@@ -4419,7 +4513,7 @@
             "description": "comments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CommentsLevelTwo"
+              "$ref": "#/definitions/CommentsTwo"
             }
           }
         ],
@@ -4434,13 +4528,13 @@
 
       }
     },
-    "/admin/{adminId}/user/{userId}/comments/{commentsId}/userCommentsLevelTwo": {
+    "/admin/{adminId}/user/{userId}/comments/{commentsId}/userCommentsTwo": {
       "get": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Administrator select commentsLevelTwo Info",
-        "description": "Administrator get commentsLevelTwo info",
+        "summary": "Administrator select commentsTwo Info",
+        "description": "Administrator get commentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -4459,7 +4553,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4478,7 +4572,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentsLevelTwoMsg",
+            "name": "commentsTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -4523,13 +4617,13 @@
         }
       }
     },
-    "/admin/{adminId}/comments/{commentsId}/allCommentsLevelTwo": {
+    "/admin/{adminId}/comments/{commentsId}/allCommentsTwo": {
       "get": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Administrator select commentsLevelTwo Info",
-        "description": "Administrator get commentsLevelTwo info",
+        "summary": "Administrator select commentsTwo Info",
+        "description": "Administrator get commentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -4548,7 +4642,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4567,7 +4661,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentsLevelTwoMsg",
+            "name": "commentsTwoMsg",
             "in": "query",
             "description": "评论内容",
             "required": false,
@@ -4612,14 +4706,14 @@
         }
       }
     },
-    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}/readStatus": {
+    "/admin/{adminId}/commentsTwo/{commentsTwoId}/readStatus": {
       "put": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Administrator finds commentsLevelTwo readStatus and update",
-        "description": "Administrator update commentsLevelTwo readStatus ",
-        "operationId": "administrator update commentsLevelTwo readStatus by id",
+        "summary": "Administrator finds commentsTwo readStatus and update",
+        "description": "Administrator update commentsTwo readStatus ",
+        "operationId": "administrator update commentsTwo readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -4632,9 +4726,9 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "path",
-            "description": "commentsLevelTwo unique id",
+            "description": "commentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4662,19 +4756,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsLevelTwoId not found"
+            "description": "UserId or CommentsTwoId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/commentsLevelTwo/{commentsLevelTwoId}/status":{
+    "/admin/{adminId}/commentsTwo/{commentsTwoId}/status":{
       "put": {
         "tags": [
-          "commentsLevelTwo"
+          "commentsTwo"
         ],
-        "summary": "Administrator finds commentsLevelTwo status and update",
-        "description": "Administrator update commentsLevelTwo status ",
-        "operationId": "administrator update commentsLevelTwo status by id",
+        "summary": "Administrator finds commentsTwo status and update",
+        "description": "Administrator update commentsTwo status ",
+        "operationId": "administrator update commentsTwo status by id",
         "produces": [
           "application/json"
         ],
@@ -4687,9 +4781,9 @@
             "type": "string"
           },
           {
-            "name": "commentsLevelTwoId",
+            "name": "commentsTwoId",
             "in": "path",
-            "description": "commentsLevelTwo unique id",
+            "description": "commentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4717,7 +4811,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "CommentsLevelTwoId not found"
+            "description": "CommentsTwoId not found"
           }
         }
       }
@@ -5136,6 +5230,33 @@
         "name": "relation"
       }
     },
+    "AddressCollection": {
+      "type": "object",
+      "required": [
+        "address",
+        "status",
+        "remarks"
+      ],
+      "properties": {
+        "address": {
+          "type": "Array"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "remarks": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "addressCollection"
+      }
+    },
     "Messages": {
       "type": "object",
       "required": [
@@ -5224,13 +5345,13 @@
         "name": "comments"
       }
     },
-    "CommentsLevelTwo": {
+    "CommentsTwo": {
       "type": "object",
       "required": [
         "status"
       ],
       "properties": {
-        "commentsLevelTwoMsg": {
+        "commentsTwoMsg": {
           "type": "String"
         },
         "agreeNum": {
@@ -5246,7 +5367,7 @@
         }
       },
       "xml": {
-        "name": "commentsLevelTwo"
+        "name": "commentsTwo"
       }
     },
     "App": {

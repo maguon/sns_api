@@ -4,21 +4,21 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('CommentsLevelTwoController');
+const logger = serverLogger.createLogger('CommentsTwoController');
 
-const {CommentsLevelTwoModel} = require('../modules');
+const {CommentsTwoModel} = require('../modules');
 const {CommentsModel} = require('../modules');
 
-const getUserCommentsLevelTwo = (req, res, next) => {
+const getUserCommentsTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = CommentsTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserCommentsLevelTwo  userID format incorrect!');
+            logger.info('getUserCommentsTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -27,7 +27,7 @@ const getUserCommentsLevelTwo = (req, res, next) => {
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getUserCommentsLevelTwo  messagesId format incorrect!');
+            logger.info('getUserCommentsTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -36,22 +36,22 @@ const getUserCommentsLevelTwo = (req, res, next) => {
         if(path.commentsId.length == 24){
             query.where('_commentsId').equals(mongoose.mongo.ObjectId(path.commentsId));
         }else{
-            logger.info('getUserCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('getUserCommentsTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.commentsLevelTwoId){
-        if(path.commentsLevelTwoId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
+    if(params.commentsTwoId){
+        if(path.commentsTwoId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsTwoId));
         }else{
-            logger.info('getUserCommentsLevelTwo  commentsLevelTwoId format incorrect!');
+            logger.info('getUserCommentsTwo  commentsTwoId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.commentsLevelTwoMsg){
-        query.where('commentsLevelTwoMsg').equals(params.commentsLevelTwoMsg);
+    if(params.commentsTwoMsg){
+        query.where('commentsTwoMsg').equals(params.commentsTwoMsg);
     }
     if(params.commentsNum){
         query.where('commentsNum').equals(params.commentsNum);
@@ -70,25 +70,25 @@ const getUserCommentsLevelTwo = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserCommentsLevelTwo ' + error.message);
+            logger.error(' getUserCommentsTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserCommentsLevelTwo ' + 'success');
+            logger.info(' getUserCommentsTwo ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getAllCommentsLevelTwo = (req, res, next) => {
+const getAllCommentsTwo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsLevelTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = CommentsTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.messagesId){
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getAllCommentsLevelTwo  messagesId format incorrect!');
+            logger.info('getAllCommentsTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -97,13 +97,13 @@ const getAllCommentsLevelTwo = (req, res, next) => {
         if(path.commentsId.length == 24){
             query.where('_commentsId').equals(mongoose.mongo.ObjectId(path.commentsId));
         }else{
-            logger.info('getAllCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('getAllCommentsTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.commentsLevelTwoMsg){
-        query.where('commentsLevelTwoMsg').equals(params.commentsLevelTwoMsg);
+    if(params.commentsTwoMsg){
+        query.where('commentsTwoMsg').equals(params.commentsTwoMsg);
     }
     if(params.commentsNum){
         query.where('commentsNum').equals(params.commentsNum);
@@ -122,60 +122,60 @@ const getAllCommentsLevelTwo = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllCommentsLevelTwo ' + error.message);
+            logger.error(' getAllCommentsTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAllCommentsLevelTwo ' + 'success');
+            logger.info(' getAllCommentsTwo ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createCommentsLevelTwo = (req, res, next) => {
+const createCommentsTwo = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let commentsLevelTwoModelObj = bodyParams;
+    let commentsTwoModelObj = bodyParams;
 
     let query = CommentsModel.find();
     let commentsNum = 0;
 
     if(path.userId){
         if(path.userId.length == 24){
-            commentsLevelTwoModelObj._userId = mongoose.mongo.ObjectId(path.userId);
+            commentsTwoModelObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createCommentsLevelTwo  userID format incorrect!');
+            logger.info('createCommentsTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.messagesId){
         if(path.messagesId.length == 24){
-            commentsLevelTwoModelObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
+            commentsTwoModelObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
         }else{
-            logger.info('createCommentsLevelTwo  messagesId format incorrect!');
+            logger.info('createCommentsTwo  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.commentsId){
         if(path.commentsId.length == 24){
-            commentsLevelTwoModelObj._commentsId = mongoose.mongo.ObjectId(path.commentsId);
+            commentsTwoModelObj._commentsId = mongoose.mongo.ObjectId(path.commentsId);
             query.where('_id').equals(mongoose.mongo.ObjectId(path.commentsId));
         }else{
-            logger.info('createCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('createCommentsTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
     }
-    const saveCommentsLevelTwo = ()=>{
+    const saveCommentsTwo = ()=>{
         return new Promise(((resolve, reject) => {
-            let commentsLevelTwoModel = new CommentsLevelTwoModel(commentsLevelTwoModelObj);
-            commentsLevelTwoModel.save(function(error,result){
+            let commentsTwoModel = new CommentsTwoModel(commentsTwoModelObj);
+            commentsTwoModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createCommentsLevelTwo saveCommentsLevelTwo ' + error.message);
+                    logger.error(' createCommentsTwo saveCommentsTwo ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' createCommentsLevelTwo saveCommentsLevelTwo ' + 'success');
+                    logger.info(' createCommentsTwo saveCommentsTwo ' + 'success');
                     resolve(result);
                 }
             });
@@ -185,12 +185,12 @@ const createCommentsLevelTwo = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createCommentsLevelTwo getCommentsNum ' + error.message);
+                    logger.error(' createCommentsTwo getCommentsNum ' + error.message);
                     reject(error);
                 } else {
                     if(rows.length>0){
                         commentsNum = Number(rows[0]._doc.commentsNum);
-                        logger.info(' createCommentsLevelTwo getCommentsNum ' + 'success');
+                        logger.info(' createCommentsTwo getCommentsNum ' + 'success');
                         resolve(resultInfo);
                     }else{
                         reject({msg:systemMsg.COMMENTS_ID_NULL_ERROR});
@@ -203,10 +203,10 @@ const createCommentsLevelTwo = (req, res, next) => {
         return new Promise((() => {
             CommentsModel.updateOne(query,{ commentsNum: commentsNum +1},function(error,result){
                 if (error) {
-                    logger.error(' createCommentsLevelTwo updateCommentsNum ' + error.message);
+                    logger.error(' createCommentsTwo updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' createCommentsLevelTwo updateCommentsNum ' + 'success');
+                    logger.info(' createCommentsTwo updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetCreateRes(res, resultInfo);
                     return next();
@@ -214,7 +214,7 @@ const createCommentsLevelTwo = (req, res, next) => {
             })
         }));
     }
-    saveCommentsLevelTwo()
+    saveCommentsTwo()
         .then(getCommentsNum)
         .then(updateCommentsNum)
         .catch((reject)=>{
@@ -228,7 +228,7 @@ const createCommentsLevelTwo = (req, res, next) => {
 const updateReadStatus = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
-    let query = CommentsLevelTwoModel.find({});
+    let query = CommentsTwoModel.find({});
 
     if(params.userId){
         if(params.userId.length == 24){
@@ -239,16 +239,16 @@ const updateReadStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsLevelTwoId){
-        if(params.commentsLevelTwoId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
+    if(params.commentsTwoId){
+        if(params.commentsTwoId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsTwoId));
         }else{
-            logger.info('updateReadStatus  commentsLevelTwoId format incorrect!');
+            logger.info('updateReadStatus  commentsTwoId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    CommentsLevelTwoModel.updateOne(query,bodyParams,function(error,result){
+    CommentsTwoModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -259,9 +259,9 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
-const updateUserCommentsLevelTwo = (req, res, next) => {
+const updateUserCommentsTwo = (req, res, next) => {
     let params = req.params;
-    let query = CommentsLevelTwoModel.find({});
+    let query = CommentsTwoModel.find({});
 
     let queryComments = CommentsModel.find();
     let comNum = 0;
@@ -270,16 +270,16 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateUserCommentsLevelTwo  userID format incorrect!');
+            logger.info('updateUserCommentsTwo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.commentsLevelTwoId ){
-        if(params.commentsLevelTwoId .length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId ));
+    if(params.commentsTwoId ){
+        if(params.commentsTwoId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsTwoId ));
         }else{
-            logger.info('updateUserCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('updateUserCommentsTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
@@ -288,7 +288,7 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.populate({path:'_commentsId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' updateUserCommentsLevelTwo getCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsTwo getCommentsNum ' + error.message);
                     reject({err:error});
                 } else {
                     if(rows.length > 0){
@@ -297,7 +297,7 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
                             comNum = comNum -1;
                         }
                         queryComments.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._commentsId._id));
-                        logger.info(' updateUserCommentsLevelTwo getCommentsNum _messageId:' + rows[0]._doc._commentsId._id +'success');
+                        logger.info(' updateUserCommentsTwo getCommentsNum _messageId:' + rows[0]._doc._commentsId._id +'success');
                         resolve();
                     }else{
                         reject({msg:systemMsg.COMMENTSTWO_ID_NULL_ERROR});
@@ -309,12 +309,12 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
     }
     const updataComments = ()=>{
         return new Promise(((resolve, reject) => {
-            CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+            CommentsTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsLevelTwo updataComments ' + error.message);
+                    logger.error(' updateUserCommentsTwo updataComments ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' updateUserCommentsLevelTwo updataComments ' + 'success');
+                    logger.info(' updateUserCommentsTwo updataComments ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -326,10 +326,10 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
             console.log('comNum:',comNum);
             CommentsModel.updateOne(queryComments,{ commentsNum: comNum},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsLevelTwo updateCommentsNum ' + error.message);
+                    logger.error(' updateUserCommentsTwo updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' updateUserCommentsLevelTwo updateCommentsNum ' + 'success');
+                    logger.info(' updateUserCommentsTwo updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
@@ -348,34 +348,34 @@ const updateUserCommentsLevelTwo = (req, res, next) => {
             }
         })
 }
-const updateAdminCommentsLevelTwo = (req, res, next) => {
+const updateAdminCommentsTwo = (req, res, next) => {
     let params = req.params;
-    let query = CommentsLevelTwoModel.find({});
-    if(params.commentsLevelTwoId){
-        if(params.commentsLevelTwoId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsLevelTwoId));
+    let query = CommentsTwoModel.find({});
+    if(params.commentsTwoId){
+        if(params.commentsTwoId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsTwoId));
         }else{
-            logger.info('updateAdminCommentsLevelTwo  commentsId format incorrect!');
+            logger.info('updateAdminCommentsTwo  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
     }
-    CommentsLevelTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+    CommentsTwoModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
-            logger.error(' updateAdminCommentsLevelTwo ' + error.message);
+            logger.error(' updateAdminCommentsTwo ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' updateAdminCommentsLevelTwo ' + 'success');
+            logger.info(' updateAdminCommentsTwo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
 module.exports = {
-    getUserCommentsLevelTwo,
-    getAllCommentsLevelTwo,
-    createCommentsLevelTwo,
+    getUserCommentsTwo,
+    getAllCommentsTwo,
+    createCommentsTwo,
     updateReadStatus,
-    updateUserCommentsLevelTwo,
-    updateAdminCommentsLevelTwo
+    updateUserCommentsTwo,
+    updateAdminCommentsTwo
 };

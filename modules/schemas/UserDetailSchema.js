@@ -22,7 +22,7 @@ const userDetailSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserDetailModel = mongoose.model('userDetail',userDetailSchema)
+const UserDetailModel = mongoose.model('user_detail',userDetailSchema)
 module.exports = {
     UserDetailModel
 }

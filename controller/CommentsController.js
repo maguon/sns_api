@@ -7,7 +7,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('CommentsController');
 
 const {CommentsModel} = require('../modules');
-const {CommentsLevelTwoModel} = require('../modules');
+const {CommentsTwoModel} = require('../modules');
 const {MessageModel} = require('../modules');
 
 const getUserComments = (req, res, next) => {
@@ -246,7 +246,7 @@ const updateReadStatus = (req, res, next) => {
 const updateUserCommentsStatus = (req, res, next) => {
     let params = req.params;
     let query = CommentsModel.find({});
-    let queryCommentsLevelTwo = CommentsLevelTwoModel.find({});
+    let queryCommentsTwo = CommentsTwoModel.find({});
     let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let comNum = 0;
 
@@ -262,7 +262,7 @@ const updateUserCommentsStatus = (req, res, next) => {
     if(params.commentsId){
         if(params.commentsId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
-            queryCommentsLevelTwo.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
+            queryCommentsTwo.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
         }else{
             logger.info('updateUserCommentsStatus  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -305,14 +305,14 @@ const updateUserCommentsStatus = (req, res, next) => {
             })
         });
     }
-    const updateCommentsLevelTwo = ()=>{
+    const updateCommentsTwo = ()=>{
         return new Promise((resolve, reject) => {
-            CommentsLevelTwoModel.updateOne(queryCommentsLevelTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+            CommentsTwoModel.updateOne(queryCommentsTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsStatus updateCommentsLevelTwo ' + error.message);
+                    logger.error(' updateUserCommentsStatus updateCommentsTwo ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' updateUserCommentsStatus updateCommentsLevelTwo ' + 'success');
+                    logger.info(' updateUserCommentsStatus updateCommentsTwo ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -337,7 +337,7 @@ const updateUserCommentsStatus = (req, res, next) => {
     }
     getCommentsNum()
         .then(updateComments)
-        .then(updateCommentsLevelTwo)
+        .then(updateCommentsTwo)
         .then(updateCommentsNum)
         .catch((reject)=>{
             if(reject.err){

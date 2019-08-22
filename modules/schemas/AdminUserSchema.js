@@ -14,7 +14,7 @@ const adminUserSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const AdminUserModel = mongoose.model('adminUser',adminUserSchema)
+const AdminUserModel = mongoose.model('admin_user',adminUserSchema)
 module.exports = {
     AdminUserModel
 }

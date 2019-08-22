@@ -4,57 +4,31 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('MessageController');
+const logger = serverLogger.createLogger('AddressCollectionsController');
 
-const {MessageModel} = require('../modules');
-const {CommentsModel} = require('../modules');
-const {CommentsTwoModel} = require('../modules');
+const {AddressCollectionsModel} = require('../modules');
 
-const getMessage = (req, res, next) => {
+const getAddressCollections = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = AddressCollectionsModel.find({status:sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getMessage  userID format incorrect!');
+            logger.info('getAddressCollections  userId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(params.addressCollectionsId){
+        if(params.addressCollectionsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.addressCollectionsId));
         }else{
-            logger.info('getMessage  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            logger.info('getAddressCollections  addressCollectionsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.ADDRESS_COLLECTIONS_ID_NULL);
             return next();
         }
-    }
-    if(params.type){
-        query.where('type').equals(params.type);
-    }
-    if(params.info){
-        query.where('info').equals(params.info);
-    }
-    if(params.collectNum){
-        query.where('collectNum').equals(params.collectNum);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
-    if(params.readNum){
-        query.where('readNum').equals(params.readNum);
-    }
-    if(params.label){
-        query.where('label').equals(params.label);
-    }
-    if(params.multi_media){
-        query.where('multi_media').equals(params.multi_media);
     }
     if(params.status){
         query.where('status').equals(params.status);
@@ -64,35 +38,35 @@ const getMessage = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessage ' + error.message);
+            logger.error(' getAddressCollections ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMessage ' + 'success');
+            logger.info(' getAddressCollections ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createMessage = (req, res, next) => {
+const createAddressCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let messageObj = bodyParams;
+    let addressCollectionsObj = bodyParams;
     if(path.userId){
         if(path.userId.length == 24){
-            messageObj._userId = mongoose.mongo.ObjectId(path.userId);
+            addressCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createMessage  userID format incorrect!');
+            logger.info('createAddressCollections  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    let messageModel = new MessageModel(messageObj);
-    messageModel.save(function(error,result){
+    let addressCollectionsModel = new AddressCollectionsModel(addressCollectionsObj);
+    addressCollectionsModel.save(function(error,result){
         if (error) {
-            logger.error(' createMessage ' + error.message);
+            logger.error(' createAddressCollections ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' createMessage ' + 'success');
+            logger.info(' createAddressCollections ' + 'success');
             resUtil.resetCreateRes(res, result);
             return next();
         }
@@ -198,8 +172,8 @@ const searchByRadius = (req, res, next) => {
     });
 }
 module.exports = {
-    getMessage,
-    createMessage,
+    getAddressCollections,
+    createAddressCollections,
     updateMessageStatus,
     searchByRadius
 };

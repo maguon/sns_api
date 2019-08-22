@@ -6,21 +6,21 @@ const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('MessagePraiseRecordController');
+const logger = serverLogger.createLogger('MessagePraiseController');
 
-const {MessagePraiseRecordModel} = require('../modules');
+const {MessagePraiseModel} = require('../modules');
 const {MessageModel} = require('../modules');
 
-const getMessagePraiseRecord = (req, res, next) => {
+const getMessagePraise = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = MessagePraiseRecordModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = MessagePraiseModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getMessagePraiseRecord  userID format incorrect!');
+            logger.info('getMessagePraise  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -29,16 +29,16 @@ const getMessagePraiseRecord = (req, res, next) => {
         if(params.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
-            logger.info('getMessagePraiseRecord  messagesId format incorrect!');
+            logger.info('getMessagePraise  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.praiseRecordId){
-        if(params.praiseRecordId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+    if(params.praiseId){
+        if(params.praiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
         }else{
-            logger.info('updateReadStatus  praiseRecordId format incorrect!');
+            logger.info('updateReadStatus  praiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
@@ -54,51 +54,51 @@ const getMessagePraiseRecord = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessagePraiseRecord ' + error.message);
+            logger.error(' getMessagePraise ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMessagePraiseRecord ' + 'success');
+            logger.info(' getMessagePraise ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createMessagePraiseRecord = (req, res, next) => {
+const createMessagePraise = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
-    let messagePraiseRecordObj = bodyParams;
+    let messagePraiseObj = bodyParams;
 
     let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let agreeNum = 0;
 
     if(params.userId){
         if(params.userId.length == 24){
-            messagePraiseRecordObj._userId = mongoose.mongo.ObjectId(params.userId);
+            messagePraiseObj._userId = mongoose.mongo.ObjectId(params.userId);
         }else{
-            logger.info('createMessagePraiseRecord userID format incorrect!');
+            logger.info('createMessagePraise userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
     if(params.messagesId){
         if(params.messagesId.length == 24){
-            messagePraiseRecordObj._messageId = mongoose.mongo.ObjectId(params.messagesId);
+            messagePraiseObj._messageId = mongoose.mongo.ObjectId(params.messagesId);
             query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
-            logger.info('createMessagePraiseRecord  messagesId format incorrect!');
+            logger.info('createMessagePraise  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    const savePraiseRecord = ()=>{
+    const savePraise = ()=>{
         return new Promise((resolve, reject) => {
-            let messagePraiseRecordModel = new MessagePraiseRecordModel(messagePraiseRecordObj);
-            messagePraiseRecordModel.save(function(error,result){
+            let messagePraiseModel = new MessagePraiseModel(messagePraiseObj);
+            messagePraiseModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createMessagePraiseRecord savePraiseRecord ' + error.message);
+                    logger.error(' createMessagePraise savePraise ' + error.message);
                     reject({err:reject.error});
                 } else {
-                    logger.info(' createMessagePraiseRecord savePraiseRecord ' + 'success');
+                    logger.info(' createMessagePraise savePraise ' + 'success');
                     resolve(result);
                 }
             })
@@ -108,12 +108,12 @@ const createMessagePraiseRecord = (req, res, next) => {
         return new Promise((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createMessagePraiseRecord getAgreeNum ' + error.message);
+                    logger.error(' createMessagePraise getAgreeNum ' + error.message);
                     reject(error);
                 } else {
                     if(rows.length > 0){
                         agreeNum = Number(rows[0]._doc.agreeNum);
-                        logger.info(' createMessagePraiseRecord getAgreeNum ' + 'success');
+                        logger.info(' createMessagePraise getAgreeNum ' + 'success');
                         resolve(resultInfo);
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -126,10 +126,10 @@ const createMessagePraiseRecord = (req, res, next) => {
         return new Promise(() => {
             MessageModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                 if (error) {
-                    logger.error(' createMessagePraiseRecord updateAgreeNum ' + error.message);
+                    logger.error(' createMessagePraise updateAgreeNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' createMessagePraiseRecord updateAgreeNum ' + 'success');
+                    logger.info(' createMessagePraise updateAgreeNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetCreateRes(res, resultInfo);
                     return next();
@@ -137,7 +137,7 @@ const createMessagePraiseRecord = (req, res, next) => {
             })
         });
     }
-    savePraiseRecord()
+    savePraise()
         .then(getAgreeNum)
         .then(updateAgreeNum)
         .catch((reject)=>{
@@ -149,7 +149,7 @@ const createMessagePraiseRecord = (req, res, next) => {
 const updateReadStatus = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
-    let query = MessagePraiseRecordModel.find({});
+    let query = MessagePraiseModel.find({});
 
     if(params.userId){
         if(params.userId.length == 24){
@@ -160,16 +160,16 @@ const updateReadStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseRecordId){
-        if(params.praiseRecordId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+    if(params.praiseId){
+        if(params.praiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
         }else{
-            logger.info('updateReadStatus  praiseRecordId format incorrect!');
+            logger.info('updateReadStatus  praiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
-    MessagePraiseRecordModel.updateOne(query,bodyParams,function(error,result){
+    MessagePraiseModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -182,7 +182,7 @@ const updateReadStatus = (req, res, next) => {
 }
 const updateStatusByUser = (req, res, next) => {
     let params = req.params;
-    let query = MessagePraiseRecordModel.find({});
+    let query = MessagePraiseModel.find({});
 
     let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let agreeNum = 0;
@@ -196,11 +196,11 @@ const updateStatusByUser = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseRecordId){
-        if(params.praiseRecordId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+    if(params.praiseId){
+        if(params.praiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
         }else{
-            logger.info('updateStatusByUser  praiseRecordId format incorrect!');
+            logger.info('updateStatusByUser  praiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
@@ -227,9 +227,9 @@ const updateStatusByUser = (req, res, next) => {
             });
         });
     }
-    const updateMessagePraiseRecord =()=>{
+    const updateMessagePraise =()=>{
         return new Promise((resolve, reject) => {
-            MessagePraiseRecordModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+            MessagePraiseModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
                     logger.error(' updateStatus ' + error.message);
                     reject({err:error});
@@ -256,7 +256,7 @@ const updateStatusByUser = (req, res, next) => {
         });
     }
     getAgreeNum()
-        .then(updateMessagePraiseRecord)
+        .then(updateMessagePraise)
         .then(updateAgreeNum)
         .catch((reject)=>{
             if(reject.err){
@@ -268,7 +268,7 @@ const updateStatusByUser = (req, res, next) => {
 }
 const updateStatus = (req, res, next) => {
     let params = req.params;
-    let query = MessagePraiseRecordModel.find({});
+    let query = MessagePraiseModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
@@ -278,16 +278,16 @@ const updateStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseRecordId){
-        if(params.praiseRecordId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseRecordId));
+    if(params.praiseId){
+        if(params.praiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
         }else{
-            logger.info('updateStatus  praiseRecordId format incorrect!');
+            logger.info('updateStatus  praiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
-    MessagePraiseRecordModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+    MessagePraiseModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
             logger.error(' updateStatus ' + error.message);
             resUtil.resInternalError(error,res);
@@ -299,8 +299,8 @@ const updateStatus = (req, res, next) => {
     })
 }
 module.exports = {
-    getMessagePraiseRecord,
-    createMessagePraiseRecord,
+    getMessagePraise,
+    createMessagePraise,
     updateReadStatus,
     updateStatusByUser,
     updateStatus
