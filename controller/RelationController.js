@@ -30,12 +30,6 @@ const getFollow = (req, res, next) => {
             return next();
         }
     }
-    if(params.type){
-        query.where('type').equals(params.type);
-    }
-    if(params.groupName){
-        query.where('groupName').equals(params.groupName);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -77,12 +71,6 @@ const getFollowUserInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
-    }
-    if(params.type){
-        query.where('type').equals(params.type);
-    }
-    if(params.groupName){
-        query.where('groupName').equals(params.groupName);
     }
     if(params.status){
         query.where('status').equals(params.status);
@@ -204,6 +192,7 @@ const createRelation = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
     let relationObj = bodyParams;
+    relationObj.status = sysConsts.INFO_STATUS.Status.available;
     if(params.userId){
         if(params.userId.length == 24){
             relationObj._userId = mongoose.mongo.ObjectId(params.userId);

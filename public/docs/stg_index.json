@@ -1249,20 +1249,6 @@
             "type": "string"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -1319,20 +1305,6 @@
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "status",
@@ -1394,20 +1366,6 @@
             "type": "string"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -1465,20 +1423,6 @@
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "status",
@@ -1706,20 +1650,6 @@
             "type": "string"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -1777,26 +1707,13 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "relationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "status",
@@ -1865,20 +1782,6 @@
             "type": "string"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -1943,20 +1846,6 @@
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "关系类型（0-关注）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "description": "关系组名（0-好友）",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "status",
@@ -5090,14 +4979,6 @@
         "groupName": {
           "type": "integer",
           "format": "int64"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         }
       },
       "xml": {
