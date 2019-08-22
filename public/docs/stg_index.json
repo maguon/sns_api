@@ -887,39 +887,9 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "birthday",
-            "in": "query",
-            "description": "生日(格式：YYYY_MM_DD)",
-            "required": false,
-            "type": "date"
-          },{
-            "name": "realmname",
-            "in": "query",
-            "description": "个性域名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "intro",
-            "in": "query",
-            "description": "简介",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "label",
-            "in": "query",
-            "description": "标签",
-            "required": false,
-            "type": "string"
-          },{
             "name": "truename",
             "in": "query",
             "description": "真实姓名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "avatar",
-            "in": "query",
-            "description": "用户头像",
             "required": false,
             "type": "string"
           },{
@@ -1078,39 +1048,9 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "birthday",
-            "in": "query",
-            "description": "生日(格式：YYYY_MM_DD)",
-            "required": false,
-            "type": "date"
-          },{
-            "name": "realmname",
-            "in": "query",
-            "description": "个性域名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "intro",
-            "in": "query",
-            "description": "简介",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "label",
-            "in": "query",
-            "description": "标签",
-            "required": false,
-            "type": "string"
-          },{
             "name": "truename",
             "in": "query",
             "description": "真实姓名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "avatar",
-            "in": "query",
-            "description": "用户头像",
             "required": false,
             "type": "string"
           },{

@@ -32,23 +32,8 @@ const getUserDetail = (req, res, next) => {
     if(params.sex){
         query.where('sex').equals(params.sex);
     }
-    if(params.birthday){
-        query.where('birthday').equals(params.birthday);
-    }
-    if(params.realmname){
-        query.where('realmname').equals(params.realmname);
-    }
-    if(params.intro){
-        query.where('intro').equals(params.intro);
-    }
-    if(params.label){
-        query.where('label').equals(params.label);
-    }
     if(params.truename){
         query.where('truename').equals(params.truename);
-    }
-    if(params.avatar){
-        query.where('avatar').equals(params.avatar);
     }
     if(params.drivingtype){
         query.where('drivingtype').equals(params.drivingtype);
