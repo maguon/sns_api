@@ -118,6 +118,7 @@ const createUser = (req, res, next) => {
         return new Promise((resolve,reject)=>{
             let userDetailModel = new UserDetailModel();
             userDetailModel._userId = userId;
+            userDetailModel.status = sysConsts.INFO_STATUS.Status.available;
             userDetailModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDetail ' + error.message);
