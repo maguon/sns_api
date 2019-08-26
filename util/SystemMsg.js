@@ -40,6 +40,10 @@ let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
  * The module for commentsTwo
  */
 let COMMENTSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
+/**
+ * The module for app
+ */
+let APP_ID_NULL_ERROR ="版本信息不存在！" ;
 
 
 module.exports = {
@@ -67,5 +71,7 @@ module.exports = {
 
     COMMENTS_ID_NULL_ERROR,
 
-    COMMENTSTWO_ID_NULL_ERROR
+    COMMENTSTWO_ID_NULL_ERROR,
+
+    APP_ID_NULL_ERROR
 }

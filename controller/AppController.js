@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const sysConsts = require('../util/SystemConst');
+const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('AppController');
 const {AppModel} = require('../modules');
 
@@ -26,6 +27,9 @@ const getApp = (req, res, next) => {
     if(params.deviceType){
         query.where('device_type').equals(params.deviceType);
     }
+    if(params.status){
+        query.where('status').equals(params.status);
+    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -42,7 +46,7 @@ const getApp = (req, res, next) => {
 const createApp = (req, res, next) => {
     let bodyParams = req.body;
     let appObj = bodyParams
-
+    appObj.status = sysConsts.INFO_STATUS.Status.available;
     let appModel = new AppModel(appObj)
     appModel.save(function(error,result){
         if (error) {
@@ -79,9 +83,33 @@ const updateApp = (req, res, next) =>{
         }
     })
 }
-
+const updateStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = AppModel.find({});
+    let params = req.params;
+    if(params.appId){
+        if(params.appId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.appId));
+        }else{
+            logger.info('updateStatus  ID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.APP_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    AppModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getApp,
     createApp,
-    updateApp
+    updateApp,
+    updateStatus
 };

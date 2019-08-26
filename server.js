@@ -208,6 +208,8 @@ const createServer=()=>{
     server.get('/api/app', AppController.getApp);
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'}, AppController.createApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'} ,AppController.updateApp);
+    server.put({path:'/api/admin/:adminId/app/:appId/status',contentType: 'application/json'} ,AppController.updateStatus);
+
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");

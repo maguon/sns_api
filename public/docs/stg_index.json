@@ -4118,9 +4118,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "user unique id",
+            "description": "admin unique id",
             "required": true,
             "type": "string"
           },
@@ -4173,9 +4173,9 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "user unique id",
+            "description": "admin unique id",
             "required": true,
             "type": "string"
           },
@@ -4253,44 +4253,9 @@
             "type": "integer"
           },
           {
+            "name": "status",
             "in": "query",
-            "name": "version",
-            "description": "版本号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "version_num",
-            "description": "版本序号",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "min_version_num",
-            "description": "最小支持版本",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "force_update",
-            "description": "是否强制更新(0-不更新 1-更新)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "url",
-            "description": "下载地址",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "remarks",
-            "description": "备注",
+            "description": "状态（0-停用，1-启用）",
             "required": false,
             "type": "integer"
           },
@@ -4409,6 +4374,61 @@
           },
           "400": {
             "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/app/{appId}/status":{
+      "put": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Administrator finds app status and update",
+        "description": "Administrator update app status ",
+        "operationId": "administrator update app status by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "app unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AppId not found"
           }
         }
       }
@@ -4717,8 +4737,7 @@
         "min_version_num",
         "force_update",
         "url",
-        "remarks",
-        "status"
+        "remarks"
       ],
       "properties": {
         "app_type": {
@@ -4758,10 +4777,6 @@
         },
         "remarks": {
           "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64"
         }
       },
       "xml": {
