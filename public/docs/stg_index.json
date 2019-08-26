@@ -1992,14 +1992,14 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/praise": {
+    "/user/{userId}/praise": {
       "post": {
         "tags": [
           "praise"
         ],
-        "summary": "Add a new messagesPraise info",
+        "summary": "Add a new praise info",
         "description": "",
-        "operationId": "user add messagesPraise",
+        "operationId": "user add praise",
         "consumes": [
           "application/json"
         ],
@@ -2015,19 +2015,12 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messages unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
             "in": "body",
-            "name":"praiseInfo",
-            "description": "Praise object that needs to be added to the store",
+            "name": "PraiseInfo",
+            "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Status"
+              "$ref": "#/definitions/Praise"
             }
           }
         ],
@@ -2042,113 +2035,13 @@
 
       }
     },
-    "/user/{userId}/comments/{commentsId}/praise": {
-      "post": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Add a new commentsPraise info",
-        "description": "",
-        "operationId": "user add commentsPraise",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "commentsId",
-            "in": "path",
-            "description": "comments unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"praiseInfo",
-            "description": "Praise object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
-    "/user/{userId}/commentsTwo/{commentsTwoId}/praise": {
-      "post": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Add a new commentsTwoPraise info",
-        "description": "",
-        "operationId": "user add commentsTwoPraise",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "commentsTwoId",
-            "in": "path",
-            "description": "commentsTwo unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"praiseInfo",
-            "description": "Praise object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
-    "/user/{userId}/messagesPraise": {
+    "/user/{userId}/getPraise": {
       "get": {
         "tags": [
           "praise"
         ],
-        "summary": "Select messagePraise Info",
-        "description": "Get messagePraise Info",
+        "summary": "Select praise Info",
+        "description": "Get praise Info",
         "produces": [
           "application/json"
         ],
@@ -2158,13 +2051,6 @@
             "in": "path",
             "description": "用户ID",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息Id",
-            "required": false,
             "type": "string"
           },
           {
@@ -2175,55 +2061,17 @@
             "type": "string"
           },
           {
-            "name": "status",
+            "name": "type",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "类型（1-消息,2-评论,3-二级评论）",
             "required": false,
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "messagesId",
             "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
+            "description": "消息Id",
             "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/commentsPraise": {
-      "get": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Select commentsPraise Info",
-        "description": "Get commentsPraise Info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
             "type": "string"
           },
           {
@@ -2234,9 +2082,9 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "commentsTwoId",
             "in": "query",
-            "description": "点赞记录Id",
+            "description": "二级评论Id",
             "required": false,
             "type": "string"
           },
@@ -2274,13 +2122,14 @@
         }
       }
     },
-    "/user/{userId}/commentsTwoPraise": {
-      "get": {
+    "/user/{userId}/praise/{praiseId}/readStatus": {
+      "put": {
         "tags": [
           "praise"
         ],
-        "summary": "Select commentsTwo Praise Info",
-        "description": "Get commentsTwo Praise Info",
+        "summary": "Finds readStatus and update",
+        "description": "Update readStatus ",
+        "operationId": "update readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -2288,8 +2137,194 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "用户ID",
+            "description": "user unique id",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseId",
+            "in": "path",
+            "description": "praiseId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/praise/{praiseId}/status":{
+      "put": {
+        "tags": [
+          "praise"
+        ],
+        "summary": "Finds praise status and update",
+        "description": "Update praise status",
+        "operationId": "update praise status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "praiseId",
+            "in": "path",
+            "description": "praiseId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or praiseId not found"
+          }
+        }
+      }
+    },
+
+    "/admin/{adminId}/user/{userId}/praise": {
+      "post": {
+        "tags": [
+          "praise"
+        ],
+        "summary": "Administrators add a new praise info",
+        "description": "",
+        "operationId": "administrators add praise",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "PraiseInfo",
+            "description": "Admin object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Praise"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/admin/{adminId}/getPraise": {
+      "get": {
+        "tags": [
+          "praise"
+        ],
+        "summary": "Administrators select praise Info",
+        "description": "Administrators get praise Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "praiseId",
+            "in": "query",
+            "description": "点赞记录Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "类型（1-消息,2-评论,3-二级评论）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "commentsId",
+            "in": "query",
+            "description": "评论Id",
+            "required": false,
             "type": "string"
           },
           {
@@ -2300,13 +2335,6 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
-            "in": "query",
-            "description": "点赞记录Id",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -2340,22 +2368,22 @@
         }
       }
     },
-    "/user/{userId}/praise/{praiseId}/messagesPraiseReadStatus": {
+    "/admin/{adminId}/praise/{praiseId}/readStatus": {
       "put": {
         "tags": [
           "praise"
         ],
-        "summary": "Finds comments messagesPraiseReadStatus and update",
-        "description": "Update comments messagesPraiseReadStatus ",
-        "operationId": "update comments messagesPraiseReadStatus by id",
+        "summary": "Administrators finds praiseReadStatus and update",
+        "description": "Administrators update praiseReadStatus ",
+        "operationId": "administrators update praiseReadStatus by id",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "user unique id",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -2365,15 +2393,6 @@
             "description": "praiseId",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Read_Status"
-            }
           }
         ],
         "responses": {
@@ -2390,137 +2409,27 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseId not found"
+            "description": "AdminId or praiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praise/{praiseId}/commentsPraiseReadStatus": {
+    "/admin/{adminId}/praise/{praiseId}/status":{
       "put": {
         "tags": [
           "praise"
         ],
-        "summary": "Finds comments commentsPraiseReadStatus and update",
-        "description": "Update comments commentsPraiseReadStatus ",
-        "operationId": "update comments commentsPraiseReadStatus by id",
+        "summary": "Administrators finds praise Status and update",
+        "description": "Administrators update praise status",
+        "operationId": "administrators update praise Status by userId",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "praiseId",
-            "in": "path",
-            "description": "praiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Read_Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or praiseId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/praise/{praiseId}/commentsTwoPraiseReadStatus": {
-      "put": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Finds comments commentsTwo Praise ReadStatus and update",
-        "description": "Update comments commentsTwo Praise ReadStatus ",
-        "operationId": "update comments commentsTwo Praise ReadStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "praiseId",
-            "in": "path",
-            "description": "praiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Read_Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or praiseId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/praise/{praiseId}/messagesPraiseStatus":{
-      "put": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Finds messages messages Praise Status and update",
-        "description": "Update messages Praise status",
-        "operationId": "update messages Praise Status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
+            "description": "adminId",
             "required": true,
             "type": "string"
           },
@@ -2555,117 +2464,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/praise/{praiseId}/commentsPraiseStatus":{
-      "put": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Finds comments Praise status and update",
-        "description": "Update comments Praise status",
-        "operationId": "update comments Praise Status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "praiseId",
-            "in": "path",
-            "description": "praiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or praiseId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/praise/{praiseId}/commentsTwoPraiseStatus":{
-      "put": {
-        "tags": [
-          "praise"
-        ],
-        "summary": "Finds commentsTwo Praise Status and update",
-        "description": "Update commentsTwo Praise Status",
-        "operationId": "update commentsTwo Praise Status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "praiseId",
-            "in": "path",
-            "description": "praiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or praiseId not found"
+            "description": "AdminId or praiseId not found"
           }
         }
       }
@@ -4983,6 +4782,33 @@
       },
       "xml": {
         "name": "relation"
+      }
+    },
+    "Praise": {
+      "type": "object",
+      "required": [
+        "type",
+        "messagesId",
+        "commentsId",
+        "commentsTwoId"
+      ],
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "messagesId": {
+          "type": "string"
+        },
+        "commentsId": {
+          "type": "string"
+        },
+        "commentsTwoId": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "praise"
       }
     },
     "AddressCollection": {

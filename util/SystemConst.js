@@ -15,14 +15,21 @@ const MESSAGE_TYPE ={
     }
 }
 const READ_STATUS ={
-    Status:{
+    status:{
         not_read:0,//未读
         read:1//已读
     }
 }
-
+const PRAISE ={
+    type:{
+        message:1,
+        comments:2,
+        commentsTwo:3
+    }
+}
 module.exports = {
     INFO_STATUS,
     MESSAGE_TYPE,
-    READ_STATUS
+    READ_STATUS,
+    PRAISE
 }
