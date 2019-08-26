@@ -50,15 +50,6 @@ const getUserCommentsTwo = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsTwoMsg){
-        query.where('commentsTwoMsg').equals(params.commentsTwoMsg);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -102,15 +93,6 @@ const getAllCommentsTwo = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsTwoMsg){
-        query.where('commentsTwoMsg').equals(params.commentsTwoMsg);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -135,6 +117,8 @@ const createCommentsTwo = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let commentsTwoModelObj = bodyParams;
+    commentsTwoModelObj.status = sysConsts.INFO_STATUS.Status.available;
+    commentsTwoModelObj.agreeNum = 0;
 
     let query = CommentsModel.find();
     let commentsNum = 0;
