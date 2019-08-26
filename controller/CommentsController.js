@@ -42,15 +42,6 @@ const getUserComments = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsMsg){
-        query.where('commentsMsg').equals(params.commentsMsg);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -94,15 +85,6 @@ const getAllComments = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsMsg){
-        query.where('commentsMsg').equals(params.commentsMsg);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -127,6 +109,9 @@ const createComments = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let commentsObj = bodyParams;
+    commentsObj.status = sysConsts.INFO_STATUS.Status.available;
+    commentsObj.commentsNum = 0;
+    commentsObj.agreeNum = 0;
 
     let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let commentsNum = 0;

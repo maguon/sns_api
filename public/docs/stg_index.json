@@ -3058,24 +3058,6 @@
             "required": false,
             "type": "string"
           },{
-            "name": "commentsMsg",
-            "in": "query",
-            "description": "评论内容",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "commentsNum",
-            "in": "query",
-            "description": "评论次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "agreeNum",
-            "in": "query",
-            "description": "点赞次数",
-            "required": false,
-            "type": "integer"
-          },{
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -3139,24 +3121,6 @@
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },{
-            "name": "commentsMsg",
-            "in": "query",
-            "description": "评论内容",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "commentsNum",
-            "in": "query",
-            "description": "评论次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "agreeNum",
-            "in": "query",
-            "description": "点赞次数",
-            "required": false,
-            "type": "integer"
           },{
             "name": "status",
             "in": "query",
@@ -4790,25 +4754,11 @@
     "Comments": {
       "type": "object",
       "required": [
-        "status"
+        "commentsMsg"
       ],
       "properties": {
         "commentsMsg": {
           "type": "String"
-        },
-        "commentsNum": {
-          "type": "integer"
-        },
-        "agreeNum": {
-          "type": "integer"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         }
       },
       "xml": {
