@@ -4762,10 +4762,6 @@
         "type",
         "info",
         "address",
-        "collectNum",
-        "commentsNum",
-        "agreeNum",
-        "readNum",
         "label",
         "multi_media"
       ],
@@ -4779,22 +4775,6 @@
         },
         "address": {
           "type": "Array"
-        },
-        "collectNum": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "commentsNum": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "agreeNum": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "readnum": {
-          "type": "integer",
-          "format": "int64"
         },
         "label": {
           "type": "string"

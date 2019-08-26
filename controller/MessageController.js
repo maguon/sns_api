@@ -57,6 +57,10 @@ const createMessage = (req, res, next) => {
     let bodyParams = req.body;
     let messageObj = bodyParams;
     messageObj.status = sysConsts.INFO_STATUS.Status.available;
+    messageObj.collectNum = 0;
+    messageObj.commentsNum = 0;
+    messageObj.agreeNum = 0;
+    messageObj.readNum = 0;
     if(path.userId){
         if(path.userId.length == 24){
             messageObj._userId = mongoose.mongo.ObjectId(path.userId);
