@@ -35,27 +35,6 @@ const getMessage = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.info){
-        query.where('info').equals(params.info);
-    }
-    if(params.collectNum){
-        query.where('collectNum').equals(params.collectNum);
-    }
-    if(params.commentsNum){
-        query.where('commentsNum').equals(params.commentsNum);
-    }
-    if(params.agreeNum){
-        query.where('agreeNum').equals(params.agreeNum);
-    }
-    if(params.readNum){
-        query.where('readNum').equals(params.readNum);
-    }
-    if(params.label){
-        query.where('label').equals(params.label);
-    }
-    if(params.multi_media){
-        query.where('multi_media').equals(params.multi_media);
-    }
     if(params.status){
         query.where('status').equals(params.status);
     }
@@ -77,6 +56,7 @@ const createMessage = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let messageObj = bodyParams;
+    messageObj.status = sysConsts.INFO_STATUS.Status.available;
     if(path.userId){
         if(path.userId.length == 24){
             messageObj._userId = mongoose.mongo.ObjectId(path.userId);

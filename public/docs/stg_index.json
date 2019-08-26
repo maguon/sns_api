@@ -2635,42 +2635,6 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "info",
-            "in": "query",
-            "description": "消息内容",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "collectNum",
-            "in": "query",
-            "description": "收藏次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "commentsNum",
-            "in": "query",
-            "description": "评论次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "readNum",
-            "in": "query",
-            "description": "阅读次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "label",
-            "in": "query",
-            "description": "消息标签",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "multi_media",
-            "in": "query",
-            "description": "图片/视频",
-            "required": false,
-            "type": "integer"
-          },{
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -2878,42 +2842,6 @@
             "name": "type",
             "in": "query",
             "description": "消息类型",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "info",
-            "in": "query",
-            "description": "消息内容",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "collectNum",
-            "in": "query",
-            "description": "收藏次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "commentsNum",
-            "in": "query",
-            "description": "评论次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "readNum",
-            "in": "query",
-            "description": "阅读次数",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "label",
-            "in": "query",
-            "description": "消息标签",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "multi_media",
-            "in": "query",
-            "description": "图片/视频",
             "required": false,
             "type": "integer"
           },{
@@ -4839,8 +4767,7 @@
         "agreeNum",
         "readNum",
         "label",
-        "multi_media",
-        "status"
+        "multi_media"
       ],
       "properties": {
         "type": {
@@ -4874,14 +4801,6 @@
         },
         "multi_media": {
           "type": "string"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         }
       },
       "xml": {
