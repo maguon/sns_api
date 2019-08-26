@@ -51,6 +51,7 @@ const createAddressCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let addressCollectionsObj = bodyParams;
+    addressCollectionsObj.status = sysConsts.INFO_STATUS.Status.available;
     if(path.userId){
         if(path.userId.length == 24){
             addressCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);

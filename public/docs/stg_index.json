@@ -2223,7 +2223,6 @@
         }
       }
     },
-
     "/admin/{adminId}/user/{userId}/praise": {
       "post": {
         "tags": [
@@ -4815,20 +4814,11 @@
       "type": "object",
       "required": [
         "address",
-        "status",
         "remarks"
       ],
       "properties": {
         "address": {
           "type": "Array"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         },
         "remarks": {
           "type": "string"
