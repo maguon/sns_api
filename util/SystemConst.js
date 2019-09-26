@@ -5,6 +5,16 @@ const INFO_STATUS = {
         available:1//可用
     }
 }
+const USER ={
+    status: {
+        disable:0,//停用
+        available:1//可用
+    },
+    auth_status:{
+        uncertified:0,//未认证
+        certified:1//已认证
+    }
+}
 const MESSAGE_TYPE ={
     type:{
         text:1,//文字
@@ -22,13 +32,14 @@ const READ_STATUS ={
 }
 const PRAISE ={
     type:{
-        message:1,
-        comments:2,
-        commentsTwo:3
+        message:1,//消息
+        comments:2,//评论
+        commentsTwo:3//二级评论
     }
 }
 module.exports = {
     INFO_STATUS,
+    USER,
     MESSAGE_TYPE,
     READ_STATUS,
     PRAISE

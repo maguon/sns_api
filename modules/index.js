@@ -1,7 +1,7 @@
 exports.AdminUserModel = require('./schemas/AdminUserSchema').AdminUserModel;
 exports.UserModel = require('./schemas/UserSchema').UserModel;
 exports.UserDetailModel = require('./schemas/UserDetailSchema').UserDetailModel;
-exports.RelationModel = require('./schemas/RelationSchema').RelationModel;
+exports.UserRelationModel = require('./schemas/UserRelationSchema').UserRelationModel;
 exports.AddressCollectionsModel = require('./schemas/AddressCollectionsSchema').AddressCollectionsModel;
 exports.MessageModel = require('./schemas/MessageSchema').MessageModel;
 exports.CommentsModel = require('./schemas/CommentsSchema').CommentsModel;

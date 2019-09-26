@@ -28,7 +28,7 @@
       "description": "UserDetail version and url management api (用户详细信息)"
     },
     {
-      "name": "relation",
+      "name": "userRelation",
       "description": "Relation version and url management api (用户关注关系)"
     },
     {
@@ -1181,12 +1181,12 @@
       }
     },
 
-    "/user/{userId}/relation": {
+    "/user/{userId}/userRelation": {
       "post": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Add a new relation info",
+        "summary": "Add a new userRelation info",
         "description": "",
         "operationId": "addRelation",
         "consumes": [
@@ -1227,7 +1227,7 @@
     "/user/{userId}/follow": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Select followInfo",
         "description": "Get followInfo",
@@ -1242,7 +1242,7 @@
             "required": true,
             "type": "string"
           },          {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1285,7 +1285,7 @@
     "/user/{userId}/followUserInfo": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Select followInfo and userInfo",
         "description": "Get followInfo and userInfo",
@@ -1300,7 +1300,7 @@
             "required": true,
             "type": "string"
           },          {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1343,7 +1343,7 @@
     "/user/{userId}/attention": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Select attentionInfo",
         "description": "Get attentionInfo",
@@ -1359,7 +1359,7 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1402,7 +1402,7 @@
     "/user/{userId}/attentionUserInfo": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Select attentionInfo and userInfo",
         "description": "Get attentionInfo and userInfo",
@@ -1418,7 +1418,7 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1458,14 +1458,14 @@
         }
       }
     },
-    "/user/{userId}/relation/{relationId}/status": {
+    "/user/{userId}/userRelation/{userRelationId}/status": {
       "put": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Finds relation and update",
-        "description": "Update relation info",
-        "operationId": "update relation info by id",
+        "summary": "Finds userRelation and update",
+        "description": "Update userRelation info",
+        "operationId": "update userRelation info by id",
         "produces": [
           "application/json"
         ],
@@ -1478,9 +1478,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "userRelation unique id",
             "required": true,
             "type": "string"
           },
@@ -1513,14 +1513,14 @@
         }
       }
     },
-    "/user/{userId}/relation/{relationId}/readStatus": {
+    "/user/{userId}/userRelation/{userRelationId}/readStatus": {
       "put": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Finds relation readStatus and update",
-        "description": "Update relation readStatus ",
-        "operationId": "update relation readStatus by id",
+        "summary": "Finds userRelation readStatus and update",
+        "description": "Update userRelation readStatus ",
+        "operationId": "update userRelation readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -1533,9 +1533,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "userRelation unique id",
             "required": true,
             "type": "string"
           },
@@ -1568,14 +1568,14 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/relation": {
+    "/admin/{adminId}/user/{userId}/userRelation": {
       "post": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Administrators add a new relation info",
+        "summary": "Administrators add a new userRelation info",
         "description": "",
-        "operationId": "Administrators add relation",
+        "operationId": "Administrators add userRelation",
         "consumes": [
           "application/json"
         ],
@@ -1621,7 +1621,7 @@
     "/admin/{adminId}/user/{userId}/follow": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Administrators select followInfo",
         "description": "Administrators get followInfo",
@@ -1643,7 +1643,7 @@
             "required": true,
             "type": "string"
           },          {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1686,7 +1686,7 @@
     "/admin/{adminId}/user/{userId}/followUserInfo": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Administrators select followInfo and userInfo",
         "description": "Administrators get followInfo and userInfo",
@@ -1709,7 +1709,7 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1752,7 +1752,7 @@
     "/admin/{adminId}/user/{userId}/attention": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Administrators select attentionInfo",
         "description": "Administrators get attentionInfo",
@@ -1775,7 +1775,7 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1818,7 +1818,7 @@
     "/admin/{adminId}/user/{userId}/attentionUserInfo": {
       "get": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
         "summary": "Administrators select attentionInfo and userInfo",
         "description": "Administrators get attentionInfo and userInfo",
@@ -1841,7 +1841,7 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
             "required": false,
@@ -1881,14 +1881,14 @@
         }
       }
     },
-    "/admin/{adminId}/relation/{relationId}/status": {
+    "/admin/{adminId}/userRelation/{userRelationId}/status": {
       "put": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Administrators finds relation status and update",
-        "description": "Administrators update relation status",
-        "operationId": "Administrators update relation status by id",
+        "summary": "Administrators finds userRelation status and update",
+        "description": "Administrators update userRelation status",
+        "operationId": "Administrators update userRelation status by id",
         "produces": [
           "application/json"
         ],
@@ -1901,9 +1901,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "userRelation unique id",
             "required": true,
             "type": "string"
           },
@@ -1936,14 +1936,14 @@
         }
       }
     },
-    "/admin/{adminId}/relation/{relationId}/readStatus": {
+    "/admin/{adminId}/userRelation/{userRelationId}/readStatus": {
       "put": {
         "tags": [
-          "relation"
+          "userRelation"
         ],
-        "summary": "Administrators finds relation readStatus and update",
-        "description": "Administrators update relation readStatus info",
-        "operationId": "Administrators update relation readStatus info by id",
+        "summary": "Administrators finds userRelation readStatus and update",
+        "description": "Administrators update userRelation readStatus info",
+        "operationId": "Administrators update userRelation readStatus info by id",
         "produces": [
           "application/json"
         ],
@@ -1956,9 +1956,9 @@
             "type": "string"
           },
           {
-            "name": "relationId",
+            "name": "userRelationId",
             "in": "path",
-            "description": "relation unique id",
+            "description": "userRelation unique id",
             "required": true,
             "type": "string"
           },
@@ -4519,8 +4519,7 @@
         "password",
         "nikename",
         "auth_status",
-        "type",
-        "last_login_on"
+        "type"
       ],
       "properties": {
         "phone": {
@@ -4532,14 +4531,6 @@
         },
         "nikename": {
           "type": "string"
-        },
-        "auth_status": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
         },
         "type": {
           "type": "integer",
@@ -4620,7 +4611,7 @@
         }
       },
       "xml": {
-        "name": "relation"
+        "name": "userRelation"
       }
     },
     "Praise": {

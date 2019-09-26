@@ -2,7 +2,7 @@
 
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
-const relationSchema = new Schema({
+const userRelationSchema = new Schema({
         type          : {type:Number,default:0,min:0,max:3,display: '关系类型（0-关注）'},
         groupName     : {type:Number,default:0,min:0,max:3,display: '关系组名（0-好友）'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（0-停用，1-启用）'},
@@ -21,7 +21,7 @@ const relationSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const RelationModel = mongoose.model('relation',relationSchema)
+const UserRelationModel = mongoose.model('userRelation',userRelationSchema)
 module.exports = {
-    RelationModel
+    UserRelationModel
 }

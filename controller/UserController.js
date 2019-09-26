@@ -88,13 +88,14 @@ const getUserInfoAndDetail = (req, res, next) => {
 }
 const createUser = (req, res, next) => {
     let bodyParams = req.body;
-    let userObj = bodyParams;
-    userObj.status = sysConsts.INFO_STATUS.Status.available;
     let userId;
     if(bodyParams.password){
         console.log(bodyParams.password);
         bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
     }
+    let userObj = bodyParams;
+    userObj.status = sysConsts.USER.status.available;
+    userObj.auth_status = sysConsts.USER.auth_status.uncertified;
     const createUserInfo = () =>{
         return new Promise(((resolve, reject) => {
             let userModel = new UserModel(userObj);
