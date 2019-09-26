@@ -36,32 +36,32 @@
       "description": "UserPraise version and url management api (用户点赞记录)"
     },
     {
+      "name": "userVote",
+      "description": "UserVote version and url management api (用户投票记录)"
+    },
+    {
       "name": "userLocationCollection",
       "description": "userLocationCollection version and url management api (用户地理位置收藏)"
     },
     {
-      "name": "messageCollection",
-      "description": "messageCollection version and url management api (用户微博收藏)"
+      "name": "userMessageCollection",
+      "description": "userMessageCollection version and url management api (用户微博收藏)"
     },
     {
       "name": "messages",
       "description": "Messages version and url management api (消息动态)"
     },
     {
-      "name": "comments",
-      "description": "comments version and url management api (评论)"
+      "name": "messageComments",
+      "description": "messageComments version and url management api (消息评论)"
     },
     {
-      "name": "commentsTwo",
-      "description": "commentsⅡ version and url management api (二级评论)"
+      "name": "messageCommentsTwo",
+      "description": "messageCommentsⅡ version and url management api (消息二级评论)"
     },
     {
       "name": "vote",
       "description": "Vote version and url management api (投票信息)"
-    },
-    {
-      "name": "userVote",
-      "description": "UserVote version and url management api (用户投票信息)"
     },
     {
       "name": "app",
@@ -2075,14 +2075,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论Id",
             "required": false,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二级评论Id",
             "required": false,
@@ -2320,14 +2320,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论Id",
             "required": false,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二级评论Id",
             "required": false,
@@ -2978,14 +2978,14 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/comments": {
+    "/user/{userId}/messages/{messagesId}/messageComments": {
       "post": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Add a new comments info and update messages info",
+        "summary": "Add a new messageComments info and update messages info",
         "description": "",
-        "operationId": "addComments",
+        "operationId": "addMessageComments",
         "consumes": [
           "application/json"
         ],
@@ -3009,11 +3009,11 @@
           },
           {
             "in": "body",
-            "name":"commentsInfo",
-            "description": "comments object that needs to be added to the store",
+            "name":"messageCommentsInfo",
+            "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Comments"
+              "$ref": "#/definitions/MessageComments"
             }
           }
         ],
@@ -3027,13 +3027,13 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/userComments": {
+    "/user/{userId}/messages/{messagesId}/userMessageComments": {
       "get": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Select comments Info",
-        "description": "get comments info",
+        "summary": "Select messageComments Info",
+        "description": "get messageComments info",
         "produces": [
           "application/json"
         ],
@@ -3052,7 +3052,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3091,13 +3091,13 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/allComments": {
+    "/user/{userId}/messages/{messagesId}/allMessageComments": {
       "get": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Select comments Info",
-        "description": "get comments info",
+        "summary": "Select messageComments Info",
+        "description": "get messageComments info",
         "produces": [
           "application/json"
         ],
@@ -3116,7 +3116,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3155,14 +3155,14 @@
         }
       }
     },
-    "/user/{userId}/comments/{commentsId}/readStatus": {
+    "/user/{userId}/messageComments/{messageCommentsId}/readStatus": {
       "put": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Finds comments readStatus and update",
-        "description": "Update comments readStatus ",
-        "operationId": "update comments readStatus by id",
+        "summary": "Finds messageComments readStatus and update",
+        "description": "Update messageComments readStatus ",
+        "operationId": "update messageComments readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -3175,9 +3175,9 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "comments unique id",
+            "description": "messageComments unique id",
             "required": true,
             "type": "string"
           },
@@ -3205,19 +3205,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsId not found"
+            "description": "UserId or MessageCommentsId not found"
           }
         }
       }
     },
-    "/user/{userId}/comments/{commentsId}/status":{
+    "/user/{userId}/messageComments/{messageCommentsId}/status":{
       "put": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Finds comments status and update",
-        "description": "Update comments status ",
-        "operationId": "update comments status by id",
+        "summary": "Finds messageComments status and update",
+        "description": "Update messageComments status ",
+        "operationId": "update messageComments status by id",
         "produces": [
           "application/json"
         ],
@@ -3230,9 +3230,9 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "comments unique id",
+            "description": "messageComments unique id",
             "required": true,
             "type": "string"
           },
@@ -3260,19 +3260,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsId not found"
+            "description": "UserId or MessageCommentsId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/messageComments": {
       "post": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Administrator add a new comments info and update messages info",
+        "summary": "Administrator add a new messageComments info and update messages info",
         "description": "",
-        "operationId": "administrator add comments",
+        "operationId": "administrator add messageComments",
         "consumes": [
           "application/json"
         ],
@@ -3303,11 +3303,11 @@
           },
           {
             "in": "body",
-            "name":"commentsInfo",
-            "description": "comments object that needs to be added to the store",
+            "name":"messageCommentsInfo",
+            "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Comments"
+              "$ref": "#/definitions/MessageComments"
             }
           }
         ],
@@ -3322,13 +3322,13 @@
 
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userComments": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userMessageComments": {
       "get": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Administrator select comments Info",
-        "description": "Administrator get comments info",
+        "summary": "Administrator select messageComments Info",
+        "description": "Administrator get messageComments info",
         "produces": [
           "application/json"
         ],
@@ -3354,7 +3354,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3393,13 +3393,13 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/allComments": {
+    "/admin/{adminId}/messages/{messagesId}/allMessageComments": {
       "get": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Administrator select comments Info",
-        "description": "Administrator get comments info",
+        "summary": "Administrator select messageComments Info",
+        "description": "Administrator get messageComments info",
         "produces": [
           "application/json"
         ],
@@ -3418,7 +3418,7 @@
             "required": true,
             "type": "string"
           },{
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3457,14 +3457,14 @@
         }
       }
     },
-    "/admin/{adminId}/comments/{commentsId}/readStatus": {
+    "/admin/{adminId}/messageComments/{messageCommentsId}/readStatus": {
       "put": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Administrator finds comments readStatus and update",
-        "description": "Administrator update comments readStatus ",
-        "operationId": "Administrator update comments readStatus by id",
+        "summary": "Administrator finds messageComments readStatus and update",
+        "description": "Administrator update messageComments readStatus ",
+        "operationId": "Administrator update messageComments readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -3477,9 +3477,9 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "comments unique id",
+            "description": "messageComments unique id",
             "required": true,
             "type": "string"
           },
@@ -3507,19 +3507,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "CommentsId not found"
+            "description": "MessageCommentsId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/comments/{commentsId}/status":{
+    "/admin/{adminId}/messageComments/{messageCommentsId}/status":{
       "put": {
         "tags": [
-          "comments"
+          "messageComments"
         ],
-        "summary": "Administrator finds comments status and update",
-        "description": "Administrator update comments status ",
-        "operationId": "Administrator update comments status by id",
+        "summary": "Administrator finds messageComments status and update",
+        "description": "Administrator update messageComments status ",
+        "operationId": "Administrator update messageComments status by id",
         "produces": [
           "application/json"
         ],
@@ -3532,9 +3532,9 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "comments unique id",
+            "description": "messageComments unique id",
             "required": true,
             "type": "string"
           },
@@ -3562,20 +3562,20 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "CommentsId not found"
+            "description": "MessageCommentsId not found"
           }
         }
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsTwo": {
+    "/user/{userId}/messages/{messagesId}/messageComments/{messageCommentsId}/messageCommentsTwo": {
       "post": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Add a new commentsTwo info and update comments info",
+        "summary": "Add a new messageCommentsTwo info and update messageComments info",
         "description": "",
-        "operationId": "addCommentsTwo",
+        "operationId": "addMessageCommentsTwo",
         "consumes": [
           "application/json"
         ],
@@ -3598,19 +3598,19 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "commentsId",
+            "description": "messageCommentsId",
             "required": true,
             "type": "string"
           },
           {
             "in": "body",
-            "name":"commentsInfo",
-            "description": "comments object that needs to be added to the store",
+            "name":"messageCommentsInfo",
+            "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CommentsTwo"
+              "$ref": "#/definitions/MessageCommentsTwo"
             }
           }
         ],
@@ -3625,13 +3625,13 @@
 
       }
     },
-    "/user/{userId}/comments/{commentsId}/userCommentsTwo": {
+    "/user/{userId}/messageComments/{messageCommentsId}/userMessageCommentsTwo": {
       "get": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Select commentsTwo Info",
-        "description": "get commentsTwo info",
+        "summary": "Select messageCommentsTwo Info",
+        "description": "get messageCommentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -3651,14 +3651,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -3698,13 +3698,13 @@
         }
       }
     },
-    "/user/{userId}/comments/{commentsId}/allCommentsTwo": {
+    "/user/{userId}/messageComments/{messageCommentsId}/allMessageCommentsTwo": {
       "get": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Select commentsTwo Info",
-        "description": "get commentsTwo info",
+        "summary": "Select messageCommentsTwo Info",
+        "description": "get messageCommentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -3724,14 +3724,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -3771,14 +3771,14 @@
         }
       }
     },
-    "/user/{userId}/commentsTwo/{commentsTwoId}/readStatus": {
+    "/user/{userId}/messageCommentsTwo/{messageCommentsTwoId}/readStatus": {
       "put": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Finds commentsTwo readStatus and update",
-        "description": "Update commentsTwo readStatus ",
-        "operationId": "update commentsTwo readStatus by id",
+        "summary": "Finds messageCommentsTwo readStatus and update",
+        "description": "Update messageCommentsTwo readStatus ",
+        "operationId": "update messageCommentsTwo readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -3791,9 +3791,9 @@
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "path",
-            "description": "commentsTwo unique id",
+            "description": "messageCommentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -3821,19 +3821,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsTwoId not found"
+            "description": "UserId or MessageCommentsTwoId not found"
           }
         }
       }
     },
-    "/user/{userId}/commentsTwo/{commentsTwoId}/status":{
+    "/user/{userId}/messageCommentsTwo/{messageCommentsTwoId}/status":{
       "put": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Finds commentsTwo status and update",
-        "description": "Update commentsTwo status ",
-        "operationId": "update commentsTwo status by id",
+        "summary": "Finds messageCommentsTwo status and update",
+        "description": "Update messageCommentsTwo status ",
+        "operationId": "update messageCommentsTwo status by id",
         "produces": [
           "application/json"
         ],
@@ -3846,9 +3846,9 @@
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "path",
-            "description": "commentsTwo unique id",
+            "description": "messageCommentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -3876,19 +3876,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsTwoId not found"
+            "description": "UserId or MessageCommentsTwoId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/comments/{commentsId}/commentsTwo": {
+    "/admin/{adminId}/user/{userId}/messages/{messagesId}/messageComments/{messageCommentsId}/messageCommentsTwo": {
       "post": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Administrator add a new commentsTwo info and update comments info",
+        "summary": "Admin add messageCommentsTwo and update messageComments",
         "description": "",
-        "operationId": "administrator addCommentsTwo",
+        "operationId": "administrator addMessageCommentsTwo",
         "consumes": [
           "application/json"
         ],
@@ -3918,19 +3918,19 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
-            "description": "commentsId",
+            "description": "messageCommentsId",
             "required": true,
             "type": "string"
           },
           {
             "in": "body",
-            "name":"commentsInfo",
-            "description": "comments object that needs to be added to the store",
+            "name":"messageCommentsInfo",
+            "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CommentsTwo"
+              "$ref": "#/definitions/MessageCommentsTwo"
             }
           }
         ],
@@ -3945,13 +3945,13 @@
 
       }
     },
-    "/admin/{adminId}/user/{userId}/comments/{commentsId}/userCommentsTwo": {
+    "/admin/{adminId}/user/{userId}/messageComments/{messageCommentsId}/userMessageCommentsTwo": {
       "get": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Administrator select commentsTwo Info",
-        "description": "Administrator get commentsTwo info",
+        "summary": "Administrator select messageCommentsTwo Info",
+        "description": "Administrator get messageCommentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -3978,14 +3978,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4025,13 +4025,13 @@
         }
       }
     },
-    "/admin/{adminId}/comments/{commentsId}/allCommentsTwo": {
+    "/admin/{adminId}/messageComments/{messageCommentsId}/allMessageCommentsTwo": {
       "get": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Administrator select commentsTwo Info",
-        "description": "Administrator get commentsTwo info",
+        "summary": "Administrator select messageCommentsTwo Info",
+        "description": "Administrator get messageCommentsTwo info",
         "produces": [
           "application/json"
         ],
@@ -4058,14 +4058,14 @@
             "type": "string"
           },
           {
-            "name": "commentsId",
+            "name": "messageCommentsId",
             "in": "path",
             "description": "评论ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "query",
             "description": "二級评论ID",
             "required": false,
@@ -4105,14 +4105,14 @@
         }
       }
     },
-    "/admin/{adminId}/commentsTwo/{commentsTwoId}/readStatus": {
+    "/admin/{adminId}/messageCommentsTwo/{messageCommentsTwoId}/readStatus": {
       "put": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Administrator finds commentsTwo readStatus and update",
-        "description": "Administrator update commentsTwo readStatus ",
-        "operationId": "administrator update commentsTwo readStatus by id",
+        "summary": "Administrator finds messageCommentsTwo readStatus and update",
+        "description": "Administrator update messageCommentsTwo readStatus ",
+        "operationId": "administrator update messageCommentsTwo readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -4125,9 +4125,9 @@
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "path",
-            "description": "commentsTwo unique id",
+            "description": "messageCommentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4155,19 +4155,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or CommentsTwoId not found"
+            "description": "UserId or MessageCommentsTwoId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/commentsTwo/{commentsTwoId}/status":{
+    "/admin/{adminId}/messageCommentsTwo/{messageCommentsTwoId}/status":{
       "put": {
         "tags": [
-          "commentsTwo"
+          "messageCommentsTwo"
         ],
-        "summary": "Administrator finds commentsTwo status and update",
-        "description": "Administrator update commentsTwo status ",
-        "operationId": "administrator update commentsTwo status by id",
+        "summary": "Administrator finds messageCommentsTwo status and update",
+        "description": "Administrator update messageCommentsTwo status ",
+        "operationId": "administrator update messageCommentsTwo status by id",
         "produces": [
           "application/json"
         ],
@@ -4180,9 +4180,9 @@
             "type": "string"
           },
           {
-            "name": "commentsTwoId",
+            "name": "messageCommentsTwoId",
             "in": "path",
-            "description": "commentsTwo unique id",
+            "description": "messageCommentsTwo unique id",
             "required": true,
             "type": "string"
           },
@@ -4210,7 +4210,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "CommentsTwoId not found"
+            "description": "MessageCommentsTwoId not found"
           }
         }
       }
@@ -4619,8 +4619,8 @@
       "required": [
         "type",
         "messagesId",
-        "commentsId",
-        "commentsTwoId"
+        "messageCommentsId",
+        "messageCommentsTwoId"
       ],
       "properties": {
         "type": {
@@ -4630,10 +4630,10 @@
         "messagesId": {
           "type": "string"
         },
-        "commentsId": {
+        "messageCommentsId": {
           "type": "string"
         },
-        "commentsTwoId": {
+        "messageCommentsTwoId": {
           "type": "string"
         }
       },
@@ -4690,7 +4690,7 @@
         "name": "messages"
       }
     },
-    "Comments": {
+    "MessageComments": {
       "type": "object",
       "required": [
         "commentsMsg"
@@ -4701,10 +4701,10 @@
         }
       },
       "xml": {
-        "name": "comments"
+        "name": "messageComments"
       }
     },
-    "CommentsTwo": {
+    "MessageCommentsTwo": {
       "type": "object",
       "required": [
         "commentsTwoMsg"
@@ -4715,7 +4715,7 @@
         }
       },
       "xml": {
-        "name": "commentsTwo"
+        "name": "messageCommentsTwo"
       }
     },
     "App": {

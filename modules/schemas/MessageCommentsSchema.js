@@ -2,7 +2,7 @@
 
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
-const commentsSchema = new Schema({
+const messageCommentsSchema = new Schema({
         commentsMsg    : {type:String,default:'',display: '评论内容'},
         commentsNum    : {type:Number,default:0,display: '评论次数'},
         agreeNum      : {type:Number,default:0,display: '点赞次数'},
@@ -22,7 +22,7 @@ const commentsSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const CommentsModel = mongoose.model('comments',commentsSchema)
+const MessageCommentsModel = mongoose.model('message_comments',messageCommentsSchema)
 module.exports = {
-    CommentsModel
+    MessageCommentsModel
 }

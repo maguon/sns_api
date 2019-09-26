@@ -4,22 +4,22 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('CommentsController');
+const logger = serverLogger.createLogger('MessageCommentsController');
 
-const {CommentsModel} = require('../modules');
-const {CommentsTwoModel} = require('../modules');
+const {MessageCommentsModel} = require('../modules');
+const {MessageCommentsTwoModel} = require('../modules');
 const {MessageModel} = require('../modules');
 
-const getUserComments = (req, res, next) => {
+const getUserMessageComments = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = MessageCommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserComments  userID format incorrect!');
+            logger.info('getUserMessageComments  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -28,16 +28,16 @@ const getUserComments = (req, res, next) => {
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getUserComments  messagesId format incorrect!');
+            logger.info('getUserMessageComments  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.commentsId){
-        if(path.commentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.commentsId));
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
-            logger.info('getUserComments  commentsId format incorrect!');
+            logger.info('getUserMessageComments  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -53,34 +53,34 @@ const getUserComments = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserComments ' + error.message);
+            logger.error(' getUserMessageComments ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserComments ' + 'success');
+            logger.info(' getUserMessageComments ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getAllComments = (req, res, next) => {
+const getAllMessageComments = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = MessageCommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.messagesId){
         if(path.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('getAllComments  messagesId format incorrect!');
+            logger.info('getAllMessageComments  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.commentsId){
-        if(path.commentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.commentsId));
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
-            logger.info('getAllComments  commentsId format incorrect!');
+            logger.info('getAllMessageComments  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -96,54 +96,54 @@ const getAllComments = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllComments ' + error.message);
+            logger.error(' getAllMessageComments ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAllComments ' + 'success');
+            logger.info(' getAllMessageComments ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createComments = (req, res, next) => {
+const createMessageComments = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let commentsObj = bodyParams;
-    commentsObj.status = sysConsts.INFO_STATUS.Status.available;
-    commentsObj.commentsNum = 0;
-    commentsObj.agreeNum = 0;
+    let messageCommentsObj = bodyParams;
+    messageCommentsObj.status = sysConsts.INFO_STATUS.Status.available;
+    messageCommentsObj.commentsNum = 0;
+    messageCommentsObj.agreeNum = 0;
 
     let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let commentsNum = 0;
 
     if(path.userId){
         if(path.userId.length == 24){
-            commentsObj._userId = mongoose.mongo.ObjectId(path.userId);
+            messageCommentsObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createComments  userID format incorrect!');
+            logger.info('createMessageComments  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
     if(path.messagesId){
         if(path.messagesId.length == 24){
-            commentsObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
+            messageCommentsObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
             query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
-            logger.info('createComments  messagesId format incorrect!');
+            logger.info('createMessageComments  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    const saveComments = ()=>{
+    const saveMessageComments = ()=>{
         return new Promise(((resolve, reject) => {
-            let commentsModel = new CommentsModel(commentsObj);
-            commentsModel.save(function(error,result){
+            let messageCommentsModel = new MessageCommentsModel(messageCommentsObj);
+            messageCommentsModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createComments saveComments ' + error.message);
+                    logger.error(' createMessageComments saveMessageComments ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' createComments saveComments ' + 'success');
+                    logger.info(' createMessageComments saveMessageComments ' + 'success');
                     resolve(result);
                 }
             });
@@ -153,12 +153,12 @@ const createComments = (req, res, next) => {
         return new Promise(((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createComments getCommentsNum ' + error.message);
+                    logger.error(' createMessageComments getCommentsNum ' + error.message);
                     reject(error);
                 } else {
                     if(rows.length > 0){
                         commentsNum = Number(rows[0]._doc.commentsNum);
-                        logger.info(' createComments getCommentsNum ' + 'success');
+                        logger.info(' createMessageComments getCommentsNum ' + 'success');
                         resolve(resultInfo);
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -172,10 +172,10 @@ const createComments = (req, res, next) => {
         return new Promise((() => {
             MessageModel.updateOne(query,{ commentsNum: commentsNum +1},function(error,result){
                 if (error) {
-                    logger.error(' createComments updateCommentsNum ' + error.message);
+                    logger.error(' createMessageComments updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' createComments updateCommentsNum ' + 'success');
+                    logger.info(' createMessageComments updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetCreateRes(res, resultInfo);
                     return next();
@@ -183,7 +183,7 @@ const createComments = (req, res, next) => {
             })
         }));
     }
-    saveComments()
+    saveMessageComments()
         .then(getCommentsNum)
         .then(updateCommentsNum)
         .catch((reject)=>{
@@ -197,7 +197,7 @@ const createComments = (req, res, next) => {
 const updateReadStatus = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
-    let query = CommentsModel.find({});
+    let query = MessageCommentsModel.find({});
 
     if(params.userId){
         if(params.userId.length == 24){
@@ -208,16 +208,16 @@ const updateReadStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.commentsId){
-        if(params.commentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
+    if(params.messageCommentsId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
-            logger.info('updateReadStatus  commentsId format incorrect!');
+            logger.info('updateReadStatus  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    CommentsModel.updateOne(query,bodyParams,function(error,result){
+    MessageCommentsModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -228,10 +228,10 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
-const updateUserCommentsStatus = (req, res, next) => {
+const updateUserMessageCommentsStatus = (req, res, next) => {
     let params = req.params;
-    let query = CommentsModel.find({});
-    let queryCommentsTwo = CommentsTwoModel.find({});
+    let query = MessageCommentsModel.find({});
+    let queryMessageCommentsTwo = MessageCommentsTwoModel.find({});
     let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
     let comNum = 0;
 
@@ -239,17 +239,17 @@ const updateUserCommentsStatus = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateUserCommentsStatus  userID format incorrect!');
+            logger.info('updateUserMessageCommentsStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.commentsId){
-        if(params.commentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
-            queryCommentsTwo.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
+    if(params.messageCommentsId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+            queryCommentsTwo.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
-            logger.info('updateUserCommentsStatus  commentsId format incorrect!');
+            logger.info('updateUserMessageCommentsStatus  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -258,7 +258,7 @@ const updateUserCommentsStatus = (req, res, next) => {
         return new Promise((resolve, reject) => {
             query.populate({path:'_messageId'}).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' updateUserCommentsStatus getCommentsNum ' + error.message);
+                    logger.error(' updateUserMessageCommentsStatus getCommentsNum ' + error.message);
                     reject({err:error});
                 } else {
                     if(rows.length){
@@ -267,7 +267,7 @@ const updateUserCommentsStatus = (req, res, next) => {
                             comNum = comNum -1;
                         }
                         queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
-                        logger.info(' updateUserCommentsStatus getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
+                        logger.info(' updateUserMessageCommentsStatus getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
                         resolve();
                     }else{
                         reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -276,28 +276,28 @@ const updateUserCommentsStatus = (req, res, next) => {
             });
         });
     }
-    const updateComments = ()=>{
+    const updateMessageComments = ()=>{
         return new Promise((resolve, reject) => {
-            CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+            MessageCommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsStatus updateComments ' + error.message);
+                    logger.error(' updateUserMessageCommentsStatus updateMessageComments ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' deleteUserComments updateComments ' + 'success');
+                    logger.info(' deleteUserMessageComments updateMessageComments ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
             })
         });
     }
-    const updateCommentsTwo = ()=>{
+    const updateMessageCommentsTwo = ()=>{
         return new Promise((resolve, reject) => {
-            CommentsTwoModel.updateOne(queryCommentsTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+            MessageCommentsTwoModel.updateOne(queryMessageCommentsTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsStatus updateCommentsTwo ' + error.message);
+                    logger.error(' updateUserMessageCommentsStatus updateMessageCommentsTwo ' + error.message);
                     reject({err:error});
                 } else {
-                    logger.info(' updateUserCommentsStatus updateCommentsTwo ' + 'success');
+                    logger.info(' updateUserMessageCommentsStatus updateMessageCommentsTwo ' + 'success');
                     resolve(result);
                     console.log('result:',result)
                 }
@@ -309,10 +309,10 @@ const updateUserCommentsStatus = (req, res, next) => {
             console.log('comNum:',comNum);
             MessageModel.updateOne(queryMessage,{ commentsNum: comNum},function(error,result){
                 if (error) {
-                    logger.error(' updateUserCommentsStatus updateCommentsNum ' + error.message);
+                    logger.error(' updateUserMessageCommentsStatus updateCommentsNum ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' updateUserCommentsStatus updateCommentsNum ' + 'success');
+                    logger.info(' updateUserMessageCommentsStatus updateCommentsNum ' + 'success');
                     console.log('rows:',result);
                     resUtil.resetUpdateRes(res,resultInfo,null);
                     return next();
@@ -321,8 +321,8 @@ const updateUserCommentsStatus = (req, res, next) => {
         });
     }
     getCommentsNum()
-        .then(updateComments)
-        .then(updateCommentsTwo)
+        .then(updateMessageComments)
+        .then(updateMessageCommentsTwo)
         .then(updateCommentsNum)
         .catch((reject)=>{
             if(reject.err){
@@ -332,19 +332,19 @@ const updateUserCommentsStatus = (req, res, next) => {
             }
         })
 }
-const updateAdminCommentsStatus = (req, res, next) => {
+const updateAdminMessageCommentsStatus = (req, res, next) => {
     let params = req.params;
-    let query = CommentsModel.find({});
-    if(params.commentsId){
-        if(params.commentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.commentsId));
+    let query = MessageCommentsModel.find({});
+    if(params.messageCommentsId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
-            logger.info('deleteAdminComments  commentsId format incorrect!');
+            logger.info('deleteAdminMessageComments  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    CommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
+    MessageCommentsModel.updateOne(query,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
         if (error) {
             logger.error(' updateOne ' + error.message);
             resUtil.resInternalError(error,res);
@@ -356,10 +356,10 @@ const updateAdminCommentsStatus = (req, res, next) => {
     })
 }
 module.exports = {
-    getUserComments,
-    getAllComments,
-    createComments,
+    getUserMessageComments,
+    getAllMessageComments,
+    createMessageComments,
     updateReadStatus,
-    updateUserCommentsStatus,
-    updateAdminCommentsStatus
+    updateUserMessageCommentsStatus,
+    updateAdminMessageCommentsStatus
 };

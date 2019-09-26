@@ -14,8 +14,8 @@ import {UserRelationController} from './controller';
 import {UserLocationCollectionsController} from './controller';
 import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
-import {CommentsController} from './controller';
-import {CommentsTwoController} from './controller';
+import {MessageCommentsController} from './controller';
+import {MessageCommentsTwoController} from './controller';
 import {AppController} from './controller';
 
 /**
@@ -174,33 +174,33 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
      /**
-     Comments   - 评论
+     MessageComments   - 评论
      */
-    server.get('/api/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);
-    server.get('/api/user/:userId/messages/:messagesId/allComments', CommentsController.getAllComments);
-    server.post({path:'/api/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
-    server.put({path:'/api/user/:userId/comments/:commentsId/readStatus',contentType: 'application/json'} ,CommentsController.updateReadStatus);
-    server.put({path:'/api/user/:userId/comments/:commentsId/status',contentType: 'application/json'} ,CommentsController.updateUserCommentsStatus);
+    server.get('/api/user/:userId/messages/:messagesId/userMessageComments', MessageCommentsController.getUserMessageComments);
+    server.get('/api/user/:userId/messages/:messagesId/allMessageComments', MessageCommentsController.getAllMessageComments);
+    server.post({path:'/api/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
+    server.put({path:'/api/user/:userId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
+    server.put({path:'/api/user/:userId/comments/:commentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateUserMessageCommentsStatus);
 
-    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userComments', CommentsController.getUserComments);
-    server.get('/api/admin/:adminId/messages/:messagesId/allComments', CommentsController.getAllComments);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, CommentsController.createComments);
-    server.put({path:'/api/admin/:adminId/comments/:commentsId/readStatus',contentType: 'application/json'} ,CommentsController.updateReadStatus);
-    server.put({path:'/api/admin/:adminId/comments/:commentsId/status',contentType: 'application/json'} ,CommentsController.updateAdminCommentsStatus);
+    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userMessageComments', MessageCommentsController.getUserMessageComments);
+    server.get('/api/admin/:adminId/messages/:messagesId/allMessageComments', MessageCommentsController.getAllMessageComments);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
+    server.put({path:'/api/admin/:adminId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
+    server.put({path:'/api/admin/:adminId/comments/:commentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateAdminMessageCommentsStatus);
     /**
-     CommentsTwo   - 二級评论
+     MessageCommentsTwo   - 二級评论
      */
-    server.get('/api/user/:userId/comments/:commentsId/userCommentsTwo', CommentsTwoController.getUserCommentsTwo);
-    server.get('/api/user/:userId/comments/:commentsId/allCommentsTwo', CommentsTwoController.getAllCommentsTwo);
-    server.post({path:'/api/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, CommentsTwoController.createCommentsTwo);
-    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,CommentsTwoController.updateReadStatus);
-    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,CommentsTwoController.updateUserCommentsTwo);
+    server.get('/api/user/:userId/comments/:commentsId/userMessageCommentsTwo', MessageCommentsTwoController.getUserMessageCommentsTwo);
+    server.get('/api/user/:userId/comments/:commentsId/allMessageCommentsTwo', MessageCommentsTwoController.getAllMessageCommentsTwo);
+    server.post({path:'/api/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, MessageCommentsTwoController.createMessageCommentsTwo);
+    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
+    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateUserMessageCommentsTwo);
 
-    server.get('/api/admin/:adminId/user/:userId/comments/:commentsId/userCommentsTwo', CommentsTwoController.getUserCommentsTwo);
-    server.get('/api/admin/:adminId/comments/:commentsId/allCommentsTwo', CommentsTwoController.getAllCommentsTwo);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, CommentsTwoController.createCommentsTwo);
-    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,CommentsTwoController.updateReadStatus);
-    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,CommentsTwoController.updateAdminCommentsTwo);
+    server.get('/api/admin/:adminId/user/:userId/comments/:commentsId/userMessageCommentsTwo', MessageCommentsTwoController.getUserMessageCommentsTwo);
+    server.get('/api/admin/:adminId/comments/:commentsId/allMessageCommentsTwo', MessageCommentsTwoController.getAllMessageCommentsTwo);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, MessageCommentsTwoController.createMessageCommentsTwo);
+    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
+    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateAdminMessageCommentsTwo);
 
     /**
      app

@@ -7,5 +7,5 @@ exports.UserRelationController = require('./UserRelationController');
 exports.UserLocationCollectionsController = require('./UserLocationCollectionController');
 exports.UserPraiseController = require('./UserPraiseController');
 exports.MessageController = require('./MessageController');
-exports.CommentsController = require('./CommentsController');
-exports.CommentsTwoController = require('./CommentsTwoController');
+exports.MessageCommentsController = require('./MessageCommentsController');
+exports.MessageCommentsTwoController = require('./MessageCommentsTwoController');
