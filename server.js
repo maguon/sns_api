@@ -11,7 +11,7 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserRelationController} from './controller';
-import {AddressCollectionsController} from './controller';
+import {UserLocationCollectionsController} from './controller';
 import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
 import {CommentsController} from './controller';
@@ -156,10 +156,10 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
-     addressCollections    -地理位置收藏
+     userLocationCollections    -地理位置收藏
      */
-    server.post({path:'/api/user/:userId/addressCollection',contentType: 'application/json'}, AddressCollectionsController.createAddressCollections);
-    server.get('/api/user/:userId/addressCollection', AddressCollectionsController.getAddressCollections);
+    server.post({path:'/api/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
+    server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
 
     /**
      messages    -微博动态

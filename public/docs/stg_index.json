@@ -36,8 +36,8 @@
       "description": "UserPraise version and url management api (用户点赞记录)"
     },
     {
-      "name": "addressCollection",
-      "description": "addressCollection version and url management api (用户地理位置收藏)"
+      "name": "userLocationCollection",
+      "description": "userLocationCollection version and url management api (用户地理位置收藏)"
     },
     {
       "name": "messageCollection",
@@ -2469,14 +2469,14 @@
       }
     },
 
-    "/user/{userId}/addressCollection": {
+    "/user/{userId}/userLocationCollection": {
       "post": {
         "tags": [
-          "addressCollection"
+          "userLocationCollection"
         ],
-        "summary": "Add a new addressCollection info",
+        "summary": "Add a new userLocationCollection info",
         "description": "",
-        "operationId": "addAddressCollection",
+        "operationId": "addUserLocationCollection",
         "consumes": [
           "application/json"
         ],
@@ -2494,10 +2494,10 @@
           {
             "in": "body",
             "name":"userInfo",
-            "description": "AddressCollection object that needs to be added to the store",
+            "description": "UserLocationCollection object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AddressCollection"
+              "$ref": "#/definitions/UserLocationCollection"
             }
           }
         ],
@@ -2513,10 +2513,10 @@
       },
       "get": {
         "tags": [
-          "addressCollection"
+          "userLocationCollection"
         ],
-        "summary": "Select addressCollection Info",
-        "description": "get addressCollection info",
+        "summary": "Select userLocationCollection Info",
+        "description": "get userLocationCollection info",
         "produces": [
           "application/json"
         ],
@@ -2529,7 +2529,7 @@
             "type": "string"
           },
           {
-            "name": "addressCollectionsId",
+            "name": "userLocationCollectionsId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
@@ -4641,7 +4641,7 @@
         "name": "userPraise"
       }
     },
-    "AddressCollection": {
+    "UserLocationCollection": {
       "type": "object",
       "required": [
         "address",
@@ -4656,7 +4656,7 @@
         }
       },
       "xml": {
-        "name": "addressCollection"
+        "name": "userLocationCollection"
       }
     },
     "Messages": {

@@ -15,16 +15,16 @@ let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to
 let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
 let USER_DETAIL_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 /**
- * The module for relation
+ * The module for userRelation
  */
 let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
 /**
- * The module for praise
+ * The module for userPraise
  */
 let PRAISE_RECORD_ID_NULL_ERROR ="该点赞记录不存在！" ;
 let PRAISE_TYPE_ERROR ="点赞类型不存在！" ;
 /**
- * The module for addressCollectionsId
+ * The module for userLocationCollection
  */
 let ADDRESS_COLLECTIONS_ID_NULL ="收藏位置不存在！" ;
 /**

@@ -4,28 +4,28 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('AddressCollectionsController');
+const logger = serverLogger.createLogger('UserLocationCollectionsController');
 
-const {AddressCollectionsModel} = require('../modules');
+const {UserLocationCollectionsModel} = require('../modules');
 
-const getAddressCollections = (req, res, next) => {
+const getUserLocationCollections = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = AddressCollectionsModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = UserLocationCollectionsModel.find({status:sysConsts.INFO_STATUS.Status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getAddressCollections  userId format incorrect!');
+            logger.info('getUserLocationCollections  userId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.addressCollectionsId){
-        if(params.addressCollectionsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.addressCollectionsId));
+    if(params.userLocationCollectionsId){
+        if(params.userLocationCollectionsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocationCollectionsId));
         }else{
-            logger.info('getAddressCollections  addressCollectionsId format incorrect!');
+            logger.info('getUserLocationCollections  userLocationCollectionsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.ADDRESS_COLLECTIONS_ID_NULL);
             return next();
         }
@@ -38,36 +38,36 @@ const getAddressCollections = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getAddressCollections ' + error.message);
+            logger.error(' getUserLocationCollections ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAddressCollections ' + 'success');
+            logger.info(' getUserLocationCollections ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createAddressCollections = (req, res, next) => {
+const createUserLocationCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let addressCollectionsObj = bodyParams;
-    addressCollectionsObj.status = sysConsts.INFO_STATUS.Status.available;
+    let userLocationCollectionsObj = bodyParams;
+    userLocationCollectionsObj.status = sysConsts.INFO_STATUS.Status.available;
     if(path.userId){
         if(path.userId.length == 24){
-            addressCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
+            userLocationCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createAddressCollections  userID format incorrect!');
+            logger.info('createUserLocationCollections  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    let addressCollectionsModel = new AddressCollectionsModel(addressCollectionsObj);
-    addressCollectionsModel.save(function(error,result){
+    let userLocationCollectionsModel = new UserLocationCollectionsModel(userLocationCollectionsObj);
+    userLocationCollectionsModel.save(function(error,result){
         if (error) {
-            logger.error(' createAddressCollections ' + error.message);
+            logger.error(' createUserLocationCollections ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' createAddressCollections ' + 'success');
+            logger.info(' createUserLocationCollections ' + 'success');
             resUtil.resetCreateRes(res, result);
             return next();
         }
@@ -173,8 +173,8 @@ const searchByRadius = (req, res, next) => {
     });
 }
 module.exports = {
-    getAddressCollections,
-    createAddressCollections,
+    getUserLocationCollections,
+    createUserLocationCollections,
     updateMessageStatus,
     searchByRadius
 };
