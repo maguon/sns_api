@@ -21,7 +21,7 @@ const userRelationSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserRelationModel = mongoose.model('userRelation',userRelationSchema)
+const UserRelationModel = mongoose.model('user_relation',userRelationSchema)
 module.exports = {
     UserRelationModel
 }
