@@ -12,7 +12,7 @@ import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserRelationController} from './controller';
 import {AddressCollectionsController} from './controller';
-import {PraiseController} from './controller';
+import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
 import {CommentsController} from './controller';
 import {CommentsTwoController} from './controller';
@@ -144,17 +144,17 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatusByAdmin);
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatusByAdmin);
     /**
-     Praise   -点赞记录
+     UserPraise   -点赞记录
      */
-    server.post({path:'/api/user/:userId/praise',contentType: 'application/json'}, PraiseController.createPraise);
-    server.get('/api/user/:userId/getPraise', PraiseController.getPraise);
-    server.put({path:'/api/user/:userId/praise/:praiseId/readStatus',contentType: 'application/json'} ,PraiseController.updateReadStatus);
-    server.put({path:'/api/user/:userId/praise/:praiseId/status',contentType: 'application/json'} ,PraiseController.updateStatusByUser);
+    server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
+    server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
+    server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
+    server.put({path:'/api/user/:userId/userPraise/:userPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatusByUser);
 
-    server.post({path:'/api/admin/:adminId/user/:userId/praise',contentType: 'application/json'}, PraiseController.createPraise);
-    server.get('/api/admin/:adminId/user/:userId/getPraise', PraiseController.getPraise);
-    server.put({path:'/api/admin/:adminId/user/:userId/praise/:praiseId/readStatus',contentType: 'application/json'} ,PraiseController.updateReadStatus);
-    server.put({path:'/api/admin/:adminId/user/:userId/praise/:praiseId/status',contentType: 'application/json'} ,PraiseController.updateStatus);
+    server.post({path:'/api/admin/:adminId/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
+    server.get('/api/admin/:adminId/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
+    server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
+    server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
      addressCollections    -地理位置收藏
      */

@@ -32,8 +32,8 @@
       "description": "Relation version and url management api (用户关注关系)"
     },
     {
-      "name": "praise",
-      "description": "Praise version and url management api (用户点赞记录)"
+      "name": "userPraise",
+      "description": "UserPraise version and url management api (用户点赞记录)"
     },
     {
       "name": "addressCollection",
@@ -1992,14 +1992,14 @@
       }
     },
 
-    "/user/{userId}/praise": {
+    "/user/{userId}/userPraise": {
       "post": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Add a new praise info",
+        "summary": "Add a new userPraise info",
         "description": "",
-        "operationId": "user add praise",
+        "operationId": "user add userPraise",
         "consumes": [
           "application/json"
         ],
@@ -2016,11 +2016,11 @@
           },
           {
             "in": "body",
-            "name": "PraiseInfo",
+            "name": "UserPraiseInfo",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Praise"
+              "$ref": "#/definitions/UserPraise"
             }
           }
         ],
@@ -2035,13 +2035,13 @@
 
       }
     },
-    "/user/{userId}/getPraise": {
+    "/user/{userId}/getUserPraise": {
       "get": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Select praise Info",
-        "description": "Get praise Info",
+        "summary": "Select userPraise Info",
+        "description": "Get userPraise Info",
         "produces": [
           "application/json"
         ],
@@ -2054,7 +2054,7 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "query",
             "description": "点赞记录Id",
             "required": false,
@@ -2122,10 +2122,10 @@
         }
       }
     },
-    "/user/{userId}/praise/{praiseId}/readStatus": {
+    "/user/{userId}/userPraise/{userPraiseId}/readStatus": {
       "put": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
         "summary": "Finds readStatus and update",
         "description": "Update readStatus ",
@@ -2142,9 +2142,9 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "path",
-            "description": "praiseId",
+            "description": "userPraiseId",
             "required": true,
             "type": "string"
           }
@@ -2163,19 +2163,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseId not found"
+            "description": "UserId or userPraiseId not found"
           }
         }
       }
     },
-    "/user/{userId}/praise/{praiseId}/status":{
+    "/user/{userId}/userPraise/{userPraiseId}/status":{
       "put": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Finds praise status and update",
-        "description": "Update praise status",
-        "operationId": "update praise status by userId",
+        "summary": "Finds userPraise status and update",
+        "description": "Update userPraise status",
+        "operationId": "update userPraise status by userId",
         "produces": [
           "application/json"
         ],
@@ -2188,9 +2188,9 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "path",
-            "description": "praiseId",
+            "description": "userPraiseId",
             "required": true,
             "type": "string"
           },
@@ -2218,19 +2218,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or praiseId not found"
+            "description": "UserId or userPraiseId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/praise": {
+    "/admin/{adminId}/user/{userId}/userPraise": {
       "post": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Administrators add a new praise info",
+        "summary": "Administrators add a new userPraise info",
         "description": "",
-        "operationId": "administrators add praise",
+        "operationId": "administrators add userPraise",
         "consumes": [
           "application/json"
         ],
@@ -2254,11 +2254,11 @@
           },
           {
             "in": "body",
-            "name": "PraiseInfo",
+            "name": "UserPraiseInfo",
             "description": "Admin object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Praise"
+              "$ref": "#/definitions/UserPraise"
             }
           }
         ],
@@ -2273,13 +2273,13 @@
 
       }
     },
-    "/admin/{adminId}/getPraise": {
+    "/admin/{adminId}/getUserPraise": {
       "get": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Administrators select praise Info",
-        "description": "Administrators get praise Info",
+        "summary": "Administrators select userPraise Info",
+        "description": "Administrators get userPraise Info",
         "produces": [
           "application/json"
         ],
@@ -2299,7 +2299,7 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "query",
             "description": "点赞记录Id",
             "required": false,
@@ -2367,14 +2367,14 @@
         }
       }
     },
-    "/admin/{adminId}/praise/{praiseId}/readStatus": {
+    "/admin/{adminId}/userPraise/{userPraiseId}/readStatus": {
       "put": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Administrators finds praiseReadStatus and update",
-        "description": "Administrators update praiseReadStatus ",
-        "operationId": "administrators update praiseReadStatus by id",
+        "summary": "Administrators finds userPraiseReadStatus and update",
+        "description": "Administrators update userPraiseReadStatus ",
+        "operationId": "administrators update userPraiseReadStatus by id",
         "produces": [
           "application/json"
         ],
@@ -2387,9 +2387,9 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "path",
-            "description": "praiseId",
+            "description": "userPraiseId",
             "required": true,
             "type": "string"
           }
@@ -2408,19 +2408,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or praiseId not found"
+            "description": "AdminId or userPraiseId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/praise/{praiseId}/status":{
+    "/admin/{adminId}/userPraise/{userPraiseId}/status":{
       "put": {
         "tags": [
-          "praise"
+          "userPraise"
         ],
-        "summary": "Administrators finds praise Status and update",
-        "description": "Administrators update praise status",
-        "operationId": "administrators update praise Status by userId",
+        "summary": "Administrators finds userPraise Status and update",
+        "description": "Administrators update userPraise status",
+        "operationId": "administrators update userPraise Status by userId",
         "produces": [
           "application/json"
         ],
@@ -2433,9 +2433,9 @@
             "type": "string"
           },
           {
-            "name": "praiseId",
+            "name": "userPraiseId",
             "in": "path",
-            "description": "praiseId",
+            "description": "userPraiseId",
             "required": true,
             "type": "string"
           },
@@ -2463,7 +2463,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or praiseId not found"
+            "description": "AdminId or userPraiseId not found"
           }
         }
       }
@@ -4614,7 +4614,7 @@
         "name": "userRelation"
       }
     },
-    "Praise": {
+    "UserPraise": {
       "type": "object",
       "required": [
         "type",
@@ -4638,7 +4638,7 @@
         }
       },
       "xml": {
-        "name": "praise"
+        "name": "userPraise"
       }
     },
     "AddressCollection": {

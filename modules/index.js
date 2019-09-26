@@ -6,5 +6,5 @@ exports.AddressCollectionsModel = require('./schemas/AddressCollectionsSchema').
 exports.MessageModel = require('./schemas/MessageSchema').MessageModel;
 exports.CommentsModel = require('./schemas/CommentsSchema').CommentsModel;
 exports.CommentsTwoModel = require('./schemas/CommentsTwoSchema').CommentsTwoModel;
-exports.PraiseModel = require('./schemas/PraiseSchema').PraiseModel;
+exports.UserPraiseModel = require('./schemas/UserPraiseSchema').UserPraiseModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;

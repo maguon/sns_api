@@ -6,32 +6,32 @@ const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('PraiseController');
+const logger = serverLogger.createLogger('UserPraiseController');
 
-const {PraiseModel} = require('../modules');
+const {UserPraiseModel} = require('../modules');
 const {MessageModel} = require('../modules');
 const {CommentsModel} = require('../modules');
 const {CommentsTwoModel} = require('../modules');
 
-const getPraise = (req, res, next) => {
+const getUserPraise = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = PraiseModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = UserPraiseModel.find({status:sysConsts.INFO_STATUS.Status.available});
 
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getPraise  userID format incorrect!');
+            logger.info('getUserPraise  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.praiseId){
-        if(params.praiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
+    if(params.userPraiseId){
+        if(params.userPraiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
         }else{
-            logger.info('getPraise  praiseId format incorrect!');
+            logger.info('getUserPraise  userPraiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
@@ -40,7 +40,7 @@ const getPraise = (req, res, next) => {
         if(params.messagesId.length == 24){
             query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
-            logger.info('getPraise  messagesId format incorrect!');
+            logger.info('getUserPraise  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -49,7 +49,7 @@ const getPraise = (req, res, next) => {
         if(params.commentsId.length == 24){
             query.where('_commentsId').equals(mongoose.mongo.ObjectId(params.commentsId));
         }else{
-            logger.info('getPraise  commentsId format incorrect!');
+            logger.info('getUserPraise  commentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -58,7 +58,7 @@ const getPraise = (req, res, next) => {
         if(params.commentsTwoId.length == 24){
             query.where('_commentsTwoId').equals(mongoose.mongo.ObjectId(params.commentsTwoId));
         }else{
-            logger.info('getPraise  commentsTwoId format incorrect!');
+            logger.info('getUserPraise  commentsTwoId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTSTWO_ID_NULL_ERROR);
             return next();
         }
@@ -77,53 +77,53 @@ const getPraise = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getPraise ' + error.message);
+            logger.error(' getUserPraise ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getPraise ' + 'success');
+            logger.info(' getUserPraise ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createPraise = (req, res, next) => {
+const createUserPraise = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
-    let praiseObj = bodyParams;
-    praiseObj.status = sysConsts.INFO_STATUS.Status.available;
+    let userPraiseObj = bodyParams;
+    userPraiseObj.status = sysConsts.INFO_STATUS.Status.available;
     let agreeNum = 0;
     let query;
     if(params.userId){
         if(params.userId.length == 24){
-            praiseObj._userId = mongoose.mongo.ObjectId(params.userId);
+            userPraiseObj._userId = mongoose.mongo.ObjectId(params.userId);
         }else{
-            logger.info('createPraise userID format incorrect!');
+            logger.info('createUserPraise userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    const messagePraise =()=>{
+    const messageUserPraise =()=>{
         return new Promise(()=>{
             query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
             if(bodyParams.messagesId){
                 if(bodyParams.messagesId.length == 24){
-                    praiseObj._messageId = mongoose.mongo.ObjectId(bodyParams.messagesId);
+                    userPraiseObj._messageId = mongoose.mongo.ObjectId(bodyParams.messagesId);
                     query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.messagesId));
                 }else{
-                    logger.info('createPraise messagePraise messagesId format incorrect!');
+                    logger.info('createUserPraise messageUserPraise messagesId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
-            const savePraise = ()=>{
+            const saveUserPraise = ()=>{
                 return new Promise((resolve, reject) => {
-                    let praiseModel = new PraiseModel(praiseObj);
-                    praiseModel.save(function(error,result){
+                    let userPraiseModel = new UserPraiseModel(userPraiseObj);
+                    userPraiseModel.save(function(error,result){
                         if (error) {
-                            logger.error(' createPraise messagePraise savePraise ' + error.message);
+                            logger.error(' createUserPraise messageUserPraise saveUserPraise ' + error.message);
                             reject({err:reject.error});
                         } else {
-                            logger.info(' createPraise messagePraise savePraise ' + 'success');
+                            logger.info(' createUserPraise messageUserPraise saveUserPraise ' + 'success');
                             resolve(result);
                         }
                     })
@@ -133,12 +133,12 @@ const createPraise = (req, res, next) => {
                 return new Promise((resolve, reject) => {
                     query.exec((error,rows)=> {
                         if (error) {
-                            logger.error(' createPraise messagePraise getAgreeNum ' + error.message);
+                            logger.error(' createUserPraise messageUserPraise getAgreeNum ' + error.message);
                             reject(error);
                         } else {
                             if(rows.length > 0){
                                 agreeNum = Number(rows[0]._doc.agreeNum);
-                                logger.info(' createPraise messagePraise getAgreeNum ' + 'success');
+                                logger.info(' createUserPraise messageUserPraise getAgreeNum ' + 'success');
                                 resolve(resultInfo);
                             }else{
                                 reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -151,10 +151,10 @@ const createPraise = (req, res, next) => {
                 return new Promise(() => {
                     MessageModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                         if (error) {
-                            logger.error(' createPraise messagePraise updateAgreeNum ' + error.message);
+                            logger.error(' createUserPraise messageUserPraise updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info(' createPraise messagePraise updateAgreeNum ' + 'success');
+                            logger.info(' createUserPraise messageUserPraise updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetCreateRes(res, resultInfo);
                             return next();
@@ -162,7 +162,7 @@ const createPraise = (req, res, next) => {
                     })
                 });
             }
-            savePraise()
+            saveUserPraise()
                 .then(getAgreeNum)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
@@ -172,28 +172,28 @@ const createPraise = (req, res, next) => {
                 })
         });
     }
-    const commentsPraise =()=>{
+    const commentsUserPraise =()=>{
         return new Promise(()=>{
             query = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
             if(bodyParams.commentsId){
                 if(bodyParams.commentsId.length == 24){
-                    praiseObj._commentsId = mongoose.mongo.ObjectId(bodyParams.commentsId);
+                    userPraiseObj._commentsId = mongoose.mongo.ObjectId(bodyParams.commentsId);
                     query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.commentsId));
                 }else{
-                    logger.info('createPraise  commentsPraise messagesId format incorrect!');
+                    logger.info('createUserPraise  commentsUserPraise messagesId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
                     return next();
                 }
             }
-            const savePraise =()=>{
+            const saveUserPraise =()=>{
                 return new Promise((resolve, reject) => {
-                    let praiseModel = new PraiseModel(praiseObj);
-                    praiseModel.save(function(error,result){
+                    let userPraiseModel = new UserPraiseModel(userPraiseObj);
+                    userPraiseModel.save(function(error,result){
                         if (error) {
-                            logger.error(' createPraise commentsPraise savePraise ' + error.message);
+                            logger.error(' createUserPraise commentsUserPraise saveUserPraise ' + error.message);
                             reject({err:error});
                         } else {
-                            logger.info(' createPraise commentsPraise savePraise ' + 'success');
+                            logger.info(' createUserPraise commentsUserPraise saveUserPraise ' + 'success');
                             resolve(result);
                         }
                     })
@@ -203,12 +203,12 @@ const createPraise = (req, res, next) => {
                 return new Promise((resolve, reject) => {
                     query.exec((error,rows)=> {
                         if (error) {
-                            logger.error(' createPraise commentsPraise getAgreeNum ' + error.message);
+                            logger.error(' createUserPraise commentsUserPraise getAgreeNum ' + error.message);
                             reject(error);
                         } else {
                             if(rows.length > 0){
                                 agreeNum = Number(rows[0]._doc.agreeNum);
-                                logger.info(' createPraise commentsPraise getAgreeNum ' + 'success');
+                                logger.info(' createUserPraise commentsUserPraise getAgreeNum ' + 'success');
                                 resolve(resultInfo);
                             }else{
                                 reject({msg:systemMsg.COMMENTS_ID_NULL_ERROR});
@@ -221,10 +221,10 @@ const createPraise = (req, res, next) => {
                 return new Promise(() => {
                     CommentsModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                         if (error) {
-                            logger.error(' createPraise updateAgreeNum updateAgreeNum ' + error.message);
+                            logger.error(' createUserPraise updateAgreeNum updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info(' createPraise updateAgreeNum updateAgreeNum ' + 'success');
+                            logger.info(' createUserPraise updateAgreeNum updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetCreateRes(res, resultInfo);
                             return next();
@@ -232,7 +232,7 @@ const createPraise = (req, res, next) => {
                     })
                 });
             }
-            savePraise()
+            saveUserPraise()
                 .then(getAgreeNum)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
@@ -244,29 +244,29 @@ const createPraise = (req, res, next) => {
                 })
         });
     }
-    const commentsTwoPraise =()=>{
+    const commentsTwoUserPraise =()=>{
         return new Promise(()=>{
             query = CommentsTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
             if(bodyParams.commentsTwoId){
                 if(bodyParams.commentsTwoId.length == 24){
-                    praiseObj._commentsTwoId = mongoose.mongo.ObjectId(bodyParams.commentsTwoId);
+                    userPraiseObj._commentsTwoId = mongoose.mongo.ObjectId(bodyParams.commentsTwoId);
                     query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.commentsTwoId));
                 }else{
-                    logger.info('createPraise commentsTwoPraise  messagesId format incorrect!');
+                    logger.info('createUserPraise commentsTwoUserPraise  messagesId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
 
-            const savePraise = ()=>{
+            const saveUserPraise = ()=>{
                 return new Promise((resolve,reject)=>{
-                    let praiseModel = new PraiseModel(praiseObj);
-                    praiseModel.save(function(error,result){
+                    let userPraiseModel = new UserPraiseModel(userPraiseObj);
+                    userPraiseModel.save(function(error,result){
                         if (error) {
-                            logger.error('createPraise commentsTwoPraise savePraise ' + error.message);
+                            logger.error('createUserPraise commentsTwoUserPraise saveUserPraise ' + error.message);
                             reject({err:error});
                         } else {
-                            logger.info('createPraise commentsTwoPraise savePraise ' + 'success');
+                            logger.info('createUserPraise commentsTwoUserPraise saveUserPraise ' + 'success');
                             resolve(result);
                         }
                     })
@@ -276,12 +276,12 @@ const createPraise = (req, res, next) => {
                 return new Promise((resolve, reject) => {
                     query.exec((error,rows)=> {
                         if (error) {
-                            logger.error('createPraise commentsTwoPraise getAgreeNum ' + error.message);
+                            logger.error('createUserPraise commentsTwoUserPraise getAgreeNum ' + error.message);
                             reject(error);
                         } else {
                             if(rows.length > 0){
                                 agreeNum = Number(rows[0]._doc.agreeNum);
-                                logger.info('createPraise commentsTwoPraise getAgreeNum ' + 'success');
+                                logger.info('createUserPraise commentsTwoUserPraise getAgreeNum ' + 'success');
                                 resolve(resultInfo);
                             }else{
                                 reject({msg:systemMsg.COMMENTS_ID_NULL_ERROR});
@@ -294,10 +294,10 @@ const createPraise = (req, res, next) => {
                 return new Promise(() => {
                     CommentsTwoModel.updateOne(query,{ agreeNum: agreeNum +1},function(error,result){
                         if (error) {
-                            logger.error('createPraise commentsTwoPraise updateAgreeNum ' + error.message);
+                            logger.error('createUserPraise commentsTwoUserPraise updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info('createPraise commentsTwoPraise updateAgreeNum ' + 'success');
+                            logger.info('createUserPraise commentsTwoUserPraise updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetCreateRes(res, resultInfo);
                             return next();
@@ -305,7 +305,7 @@ const createPraise = (req, res, next) => {
                     })
                 });
             }
-            savePraise()
+            saveUserPraise()
                 .then(getAgreeNum)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
@@ -318,22 +318,22 @@ const createPraise = (req, res, next) => {
         });
     }
     if(bodyParams.type == sysConsts.PRAISE.type.message){
-        return messagePraise();
+        return messageUserPraise();
     }
     if(bodyParams.type == sysConsts.PRAISE.type.comments){
-        return commentsPraise();
+        return commentsUserPraise();
     }
     if(bodyParams.type == sysConsts.PRAISE.type.commentsTwo){
-        return commentsTwoPraise();
+        return commentsTwoUserPraise();
     }else{
-        logger.info(' createPraise type error ');
+        logger.info(' createUserPraise type error ');
         resUtil.resetFailedRes(res,systemMsg.PRAISE_TYPE_ERROR);
         return next();
     }
 }
 const updateReadStatus = (req, res, next) => {
     let params = req.params;
-    let query = PraiseModel.find({});
+    let query = UserPraiseModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
@@ -343,16 +343,16 @@ const updateReadStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseId){
-        if(params.praiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
+    if(params.userPraiseId){
+        if(params.userPraiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
         }else{
-            logger.info('updateReadStatus  praiseId format incorrect!');
+            logger.info('updateReadStatus  userPraiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
-    PraiseModel.updateOne(query,{read_status:sysConsts.READ_STATUS.status.read},function(error,result){
+    UserPraiseModel.updateOne(query,{read_status:sysConsts.READ_STATUS.status.read},function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -366,7 +366,7 @@ const updateReadStatus = (req, res, next) => {
 const updateStatusByUser = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
-    let query = PraiseModel.find({});
+    let query = UserPraiseModel.find({});
     let agreeNum = 0;
     if(params.userId){
         if(params.userId.length == 24){
@@ -377,38 +377,38 @@ const updateStatusByUser = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseId){
-        if(params.praiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
+    if(params.userPraiseId){
+        if(params.userPraiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
         }else{
-            logger.info('updateStatusByUser  praiseId format incorrect!');
+            logger.info('updateStatusByUser  userPraiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' updateStatusByUser getPraise ' + error.message);
+            logger.error(' updateStatusByUser getUserPraise ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' updateStatusByUser getPraise ' + 'success');
+            logger.info(' updateStatusByUser getUserPraise ' + 'success');
             if(rows.length) {
-                let praiseType = rows[0]._doc.type;
-                if(praiseType == sysConsts.PRAISE.type.message){
-                    return messagePraise();
+                let userPraiseType = rows[0]._doc.type;
+                if(userPraiseType == sysConsts.PRAISE.type.message){
+                    return messageUserPraise();
                 }
-                if(praiseType == sysConsts.PRAISE.type.comments){
-                    return commentsPraise();
+                if(userPraiseType == sysConsts.PRAISE.type.comments){
+                    return commentsUserPraise();
                 }
-                if(praiseType == sysConsts.PRAISE.type.commentsTwo){
-                    return commentsTwoPraise();
+                if(userPraiseType == sysConsts.PRAISE.type.commentsTwo){
+                    return commentsTwoUserPraise();
                 }else{
-                    logger.info(' updateStatusByUser getPraise type error ');
+                    logger.info(' updateStatusByUser getUserPraise type error ');
                     resUtil.resetFailedRes(res,systemMsg.PRAISE_TYPE_ERROR);
                     return next();
                 }
             }else{
-                logger.info(' updateStatusByUser getPraise ID error ');
+                logger.info(' updateStatusByUser getUserPraise ID error ');
                 resUtil.resetFailedRes(res,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
                 return next();
             }
@@ -416,14 +416,14 @@ const updateStatusByUser = (req, res, next) => {
         }
     });
 
-    const messagePraise =()=>{
+    const messageUserPraise =()=>{
         return new Promise(()=>{
             let queryMessage = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
             const getAgreeNum = ()=>{
                 return new Promise((resolve, reject) => {
                     query.populate({path:'_messageId'}).exec((error,rows)=> {
                         if (error) {
-                            logger.error(' updateStatusByUser messagePraise getCommentsNum ' + error.message);
+                            logger.error(' updateStatusByUser messageUserPraise getCommentsNum ' + error.message);
                             reject({err:error});
                         } else {
                             if(rows.length){
@@ -432,7 +432,7 @@ const updateStatusByUser = (req, res, next) => {
                                     agreeNum = agreeNum -1;
                                 }
                                 queryMessage.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._messageId._id));
-                                logger.info(' updateStatusByUser messagePraise getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
+                                logger.info(' updateStatusByUser messageUserPraise getCommentsNum _messageId:' + rows[0]._doc._messageId._id +'success');
                                 resolve();
                             }else{
                                 reject({msg:systemMsg.MESSAGE_ID_NULL_ERROR});
@@ -441,14 +441,14 @@ const updateStatusByUser = (req, res, next) => {
                     });
                 });
             }
-            const updatePraise =()=>{
+            const updateUserPraise =()=>{
                 return new Promise((resolve, reject) => {
-                    PraiseModel.updateOne(query,bodyParams,function(error,result){
+                    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
                         if (error) {
-                            logger.error(' updateStatusByUser messagePraise updateStatus ' + error.message);
+                            logger.error(' updateStatusByUser messageUserPraise updateStatus ' + error.message);
                             reject({err:error});
                         } else {
-                            logger.info('updateStatusByUser  messagePraise updateStatus ' + 'success');
+                            logger.info('updateStatusByUser  messageUserPraise updateStatus ' + 'success');
                             resolve(result);
                         }
                     })
@@ -458,10 +458,10 @@ const updateStatusByUser = (req, res, next) => {
                 return new Promise(() => {
                     MessageModel.updateOne(queryMessage,{ agreeNum: agreeNum},function(error,result){
                         if (error) {
-                            logger.error(' updateStatusByUser messagePraise updateAgreeNum ' + error.message);
+                            logger.error(' updateStatusByUser messageUserPraise updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info(' updateStatusByUser messagePraise updateAgreeNum ' + 'success');
+                            logger.info(' updateStatusByUser messageUserPraise updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetUpdateRes(res,resultInfo,null);
                             return next();
@@ -470,7 +470,7 @@ const updateStatusByUser = (req, res, next) => {
                 });
             }
             getAgreeNum()
-                .then(updatePraise)
+                .then(updateUserPraise)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
                     if(reject.err){
@@ -481,14 +481,14 @@ const updateStatusByUser = (req, res, next) => {
                 })
         });
     }
-    const commentsPraise =()=>{
+    const commentsUserPraise =()=>{
         return new Promise(()=>{
             let queryComments = CommentsModel.find({status:sysConsts.INFO_STATUS.Status.available});
             const getAgreeNum = ()=>{
                 return new Promise((resolve, reject) => {
                     query.populate({path:'_commentsId'}).exec((error,rows)=> {
                         if (error) {
-                            logger.error(' updateStatusByUser commentsPraise getAgreeNum ' + error.message);
+                            logger.error(' updateStatusByUser commentsUserPraise getAgreeNum ' + error.message);
                             reject({err:error});
                         } else {
                             if(rows.length){
@@ -497,7 +497,7 @@ const updateStatusByUser = (req, res, next) => {
                                     agreeNum = agreeNum -1;
                                 }
                                 queryComments.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._commentsId._id));
-                                logger.info(' updateStatusByUser commentsPraise getAgreeNum _commentsId:' + rows[0]._doc._commentsId._id +'success');
+                                logger.info(' updateStatusByUser commentsUserPraise getAgreeNum _commentsId:' + rows[0]._doc._commentsId._id +'success');
                                 resolve();
                             }else{
                                 reject({msg:systemMsg.COMMENTS_ID_NULL_ERROR});
@@ -506,14 +506,14 @@ const updateStatusByUser = (req, res, next) => {
                     });
                 });
             }
-            const updateCommentsPraise =()=>{
+            const updateCommentsUserPraise =()=>{
                 return new Promise((resolve, reject) =>{
-                    PraiseModel.updateOne(query,bodyParams,function(error,result){
+                    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
                         if (error) {
-                            logger.error(' updateStatusByUser commentsPraise updateCommentsPraise ' + error.message);
+                            logger.error(' updateStatusByUser commentsUserPraise updateCommentsUserPraise ' + error.message);
                             reject({err:error});
                         } else {
-                            logger.info(' updateStatusByUser commentsPraise updateCommentsPraise ' + 'success');
+                            logger.info(' updateStatusByUser commentsUserPraise updateCommentsUserPraise ' + 'success');
                             resolve(result);
                         }
                     })
@@ -523,10 +523,10 @@ const updateStatusByUser = (req, res, next) => {
                 return new Promise(() => {
                     CommentsModel.updateOne(queryComments,{ agreeNum: agreeNum},function(error,result){
                         if (error) {
-                            logger.error(' updateStatusByUser commentsPraise updateAgreeNum ' + error.message);
+                            logger.error(' updateStatusByUser commentsUserPraise updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info(' updateStatusByUser commentsPraise updateAgreeNum ' + 'success');
+                            logger.info(' updateStatusByUser commentsUserPraise updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetUpdateRes(res,resultInfo,null);
                             return next();
@@ -535,7 +535,7 @@ const updateStatusByUser = (req, res, next) => {
                 });
             }
             getAgreeNum()
-                .then(updateCommentsPraise)
+                .then(updateCommentsUserPraise)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
                     if(reject.err){
@@ -546,14 +546,14 @@ const updateStatusByUser = (req, res, next) => {
                 })
         });
     }
-    const commentsTwoPraise =()=>{
+    const commentsTwoUserPraise =()=>{
         return new Promise(()=>{
             let queryCommentsTwo = CommentsTwoModel.find({status:sysConsts.INFO_STATUS.Status.available});
             const getAgreeNum = ()=>{
                 return new Promise((resolve, reject) => {
                     query.populate({path:'_commentsTwoId'}).exec((error,rows)=> {
                         if (error) {
-                            logger.error(' updateStatusByUser commentsTwoPraise getCommentsNum ' + error.message);
+                            logger.error(' updateStatusByUser commentsTwoUserPraise getCommentsNum ' + error.message);
                             reject({err:error});
                         } else {
                             if(rows.length){
@@ -562,7 +562,7 @@ const updateStatusByUser = (req, res, next) => {
                                     agreeNum = agreeNum -1;
                                 }
                                 queryCommentsTwo.where('_id').equals(mongoose.mongo.ObjectId(rows[0]._doc._commentsTwoId._id));
-                                logger.info(' updateStatusByUser commentsTwoPraise getCommentsNum _messageId:' + rows[0]._doc._commentsTwoId._id +'success');
+                                logger.info(' updateStatusByUser commentsTwoUserPraise getCommentsNum _messageId:' + rows[0]._doc._commentsTwoId._id +'success');
                                 resolve();
                             }else{
                                 reject({msg:systemMsg.COMMENTSTWO_ID_NULL_ERROR});
@@ -571,9 +571,9 @@ const updateStatusByUser = (req, res, next) => {
                     });
                 });
             }
-            const updateCommentsPraise =()=>{
+            const updateCommentsUserPraise =()=>{
                 return new Promise((resolve, reject) =>{
-                    PraiseModel.updateOne(query,bodyParams,function(error,result){
+                    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
                         if (error) {
                             logger.error(' updateStatus ' + error.message);
                             reject({err:error});
@@ -588,10 +588,10 @@ const updateStatusByUser = (req, res, next) => {
                 return new Promise(() => {
                     CommentsTwoModel.updateOne(queryCommentsTwo,{ agreeNum: agreeNum},function(error,result){
                         if (error) {
-                            logger.error(' updateStatusByUser commentsTwoPraise updateAgreeNum ' + error.message);
+                            logger.error(' updateStatusByUser commentsTwoUserPraise updateAgreeNum ' + error.message);
                             resUtil.resInternalError(error);
                         } else {
-                            logger.info(' updateStatusByUser commentsTwoPraise updateAgreeNum ' + 'success');
+                            logger.info(' updateStatusByUser commentsTwoUserPraise updateAgreeNum ' + 'success');
                             console.log('rows:',result);
                             resUtil.resetUpdateRes(res,resultInfo,null);
                             return next();
@@ -600,7 +600,7 @@ const updateStatusByUser = (req, res, next) => {
                 });
             }
             getAgreeNum()
-                .then(updateCommentsPraise)
+                .then(updateCommentsUserPraise)
                 .then(updateAgreeNum)
                 .catch((reject)=>{
                     if(reject.err){
@@ -617,7 +617,7 @@ const updateStatusByUser = (req, res, next) => {
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
-    let query = PraiseModel.find({});
+    let query = UserPraiseModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
@@ -627,16 +627,16 @@ const updateStatus = (req, res, next) => {
             return next();
         }
     }
-    if(params.praiseId){
-        if(params.praiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.praiseId));
+    if(params.userPraiseId){
+        if(params.userPraiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
         }else{
-            logger.info('updateStatus  praiseId format incorrect!');
+            logger.info('updateStatus  userPraiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
-    PraiseModel.updateOne(query,bodyParams,function(error,result){
+    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateStatus ' + error.message);
             resUtil.resInternalError(error,res);
@@ -648,8 +648,8 @@ const updateStatus = (req, res, next) => {
     })
 }
 module.exports = {
-    getPraise,
-    createPraise,
+    getUserPraise,
+    createUserPraise,
     updateReadStatus,
     updateStatusByUser,
     updateStatus
