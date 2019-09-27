@@ -152,7 +152,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatusByUser);
 
     server.post({path:'/api/admin/:adminId/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
-    server.get('/api/admin/:adminId/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
+    server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraise);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
@@ -160,7 +160,11 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
     server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
+    server.put({path:'/api/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
 
+    server.post({path:'/api/admin/:adminId/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
+    server.get('/api/admin/:adminId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
+    server.put({path:'/api/admin/:adminId/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
     /**
      messages    -微博动态
      */

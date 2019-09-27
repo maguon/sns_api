@@ -73,108 +73,41 @@ const createUserLocationCollections = (req, res, next) => {
         }
     })
 }
-const updateMessageStatus = (req, res, next) => {
+const updateStatus = (req, res, next) => {
+    let bodyParams = req.body;
     let params = req.params;
-    let queryMessge = MessageModel.find({});
-    let queryComments = CommentsModel.find({});
-    let queryCommentsTwo = CommentsTwoModel.find({});
+    let query = UserLocationCollectionsModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
-            queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('deleteMessageToUser  userID format incorrect!');
+            logger.info('updateStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryComments.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryCommentsTwo.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(params.userLocationCollectionId){
+        if(params.userLocationCollectionId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocationCollectionId));
         }else{
-            logger.info('deleteMessageToUser  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            logger.info('updateStatus  userLocationCollectionId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
             return next();
         }
     }
-
-    const updateMessage = ()=>{
-        return new Promise(((resolve, reject) => {
-            MessageModel.updateOne(queryMessge,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateMessage ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteMessageToUser updateMessage ' + 'success');
-                    console.log('rows:',result);
-                    resolve(result);
-                }
-            })
-        }));
-    }
-    const updateReview = (resultInfo)=>{
-        return new Promise(((resolve, reject) => {
-            //同时删除该消息下的所有一級评论
-            CommentsModel.updateMany(queryComments,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateReview ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteMessageToUser updateReview ' + 'success');
-                    resolve(resultInfo);
-                }
-            })
-        }));
-    }
-    const updateReviewTwo = (resultInfo) =>{
-        return new Promise(()=>{
-            CommentsTwoModel.updateMany(queryCommentsTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateReviewTwo ' + error.message);
-                    resUtil.resInternalError(error,res);
-                } else {
-                    logger.info(' deleteMessageToUser updateReviewTwo ' + 'success');
-                    console.log('rows:',result);
-                    resUtil.resetUpdateRes(res,resultInfo,null);
-                    return next();
-                }
-            })
-        });
-    }
-    updateMessage()
-        .then(updateReview)
-        .then(updateReviewTwo)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }
-        })
-}
-const searchByRadius = (req, res, next) => {
-    let params = req.query;
-    let arr =[];
-    let str=params.address.slice(1,params.address.length-1);
-    arr = str.split(',');
-    let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error, rows)=> {
+    UserLocationCollectionsModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' SearchByRadius ' + error.message);
+            logger.error(' updateStatus ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' SearchByRadius ' + 'success');
-            resUtil.resetQueryRes(res, rows);
+            logger.info(' updateStatus ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    });
+    })
 }
 module.exports = {
     getUserLocationCollections,
     createUserLocationCollections,
-    updateMessageStatus,
-    searchByRadius
+    updateStatus
 };

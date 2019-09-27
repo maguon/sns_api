@@ -2562,6 +2562,232 @@
         }
       }
     },
+    "/user/{userId}/userLocationCollection/{userLocationCollectionId}/status":{
+      "put": {
+        "tags": [
+          "userLocationCollection"
+        ],
+        "summary": "Finds userLocationCollection status and update",
+        "description": "Update userLocationCollection status",
+        "operationId": "update userLocationCollection status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userLocationCollectionId",
+            "in": "path",
+            "description": "userLocationCollectionId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or userLocationCollectionId not found"
+          }
+        }
+      }
+    },
+    "/admin/adminId/user/{userId}/userLocationCollection": {
+      "post": {
+        "tags": [
+          "userLocationCollection"
+        ],
+        "summary": "Administrators add a new userLocationCollection info",
+        "description": "",
+        "operationId": "Administrators addUserLocationCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "UserLocationCollection object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLocationCollection"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/admin/adminId/userLocationCollection": {
+      "get": {
+        "tags": [
+          "userLocationCollection"
+        ],
+        "summary": "Administrators select userLocationCollection Info",
+        "description": "Administrators get userLocationCollection info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userLocationCollectionsId",
+            "in": "query",
+            "description": "收藏信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/adminId/user/{userId}/userLocationCollection/{userLocationCollectionId}/status":{
+      "put": {
+        "tags": [
+          "userLocationCollection"
+        ],
+        "summary": "Administrators finds userLocationCollection status and update",
+        "description": "Administrators update userLocationCollection status",
+        "operationId": "Administrators update userLocationCollection status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userLocationCollectionId",
+            "in": "path",
+            "description": "userLocationCollectionId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or userLocationCollectionId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/messages": {
       "post": {
