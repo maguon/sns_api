@@ -23,7 +23,7 @@ const messageSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const MessageModel = mongoose.model('messages',messageSchema);
+const MessageModel = mongoose.model('messages_info',messageSchema);
 module.exports = {
     MessageModel
 }
