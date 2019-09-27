@@ -172,6 +172,9 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
     server.get('/api/user/:userId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
     server.put({path:'/api/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
+    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
+    server.get('/api/admin/:adminId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
+    server.put({path:'/api/admin/:adminId/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
 
     /**
      messages    -微博动态
