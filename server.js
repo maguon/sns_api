@@ -12,6 +12,7 @@ import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserRelationController} from './controller';
 import {UserLocationCollectionsController} from './controller';
+import {UserMessageCollectionsController} from './controller';
 import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
 import {MessageCommentsController} from './controller';
@@ -144,7 +145,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatusByAdmin);
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatusByAdmin);
     /**
-     UserPraise   -点赞记录
+     UserPraise   -用户点赞记录
      */
     server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
@@ -156,7 +157,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
-     userLocationCollections    -地理位置收藏
+     userLocationCollections    -用户地理位置收藏
      */
     server.post({path:'/api/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
     server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
@@ -165,6 +166,13 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
     server.get('/api/admin/:adminId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
     server.put({path:'/api/admin/:adminId/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
+    /**
+     userMessageCollections    -用户微博收藏
+     */
+    server.post({path:'/api/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
+    server.get('/api/user/:userId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
+    server.put({path:'/api/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
+
     /**
      messages    -微博动态
      */

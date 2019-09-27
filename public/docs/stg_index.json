@@ -2789,6 +2789,164 @@
       }
     },
 
+    "/user/{userId}/messages/{messagesId}/userMessageCollection": {
+      "post": {
+        "tags": [
+          "userMessageCollection"
+        ],
+        "summary": "Add a new userMessageCollection info",
+        "description": "",
+        "operationId": "addUserMessageCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messagesId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userInfo",
+            "description": "UserMessageCollection object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserMessageCollection"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/userMessageCollection": {
+      "get": {
+        "tags": [
+          "userMessageCollection"
+        ],
+        "summary": "Select userMessageCollection Info",
+        "description": "get userMessageCollection info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userMessageCollectionsId",
+            "in": "query",
+            "description": "收藏信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userMessageCollection/{userMessageCollectionId}/status":{
+      "put": {
+        "tags": [
+          "userMessageCollection"
+        ],
+        "summary": "Finds userMessageCollection status and update",
+        "description": "Update userMessageCollection status",
+        "operationId": "update userMessageCollection status by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "UserId unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userMessageCollectionId",
+            "in": "path",
+            "description": "userMessageCollectionId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "status(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or userMessageCollectionId not found"
+          }
+        }
+      }
+    },
+
     "/user/{userId}/messages": {
       "post": {
         "tags": [
@@ -4883,6 +5041,20 @@
       },
       "xml": {
         "name": "userLocationCollection"
+      }
+    },
+    "UserMessageCollection": {
+      "type": "object",
+      "required": [
+        "remarks"
+      ],
+      "properties": {
+        "remarks": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "userMessageCollection"
       }
     },
     "Messages": {

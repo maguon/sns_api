@@ -28,6 +28,10 @@ let PRAISE_TYPE_ERROR ="点赞类型不存在！" ;
  */
 let ADDRESS_COLLECTIONS_ID_NULL ="收藏位置不存在！" ;
 /**
+ * The module for userMessageCollection
+ */
+let MESSAGE_COLLECTIONS_ID_NULL ="收藏动态不存在！" ;
+/**
  * The module for messages
  */
 let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
@@ -65,6 +69,8 @@ module.exports = {
     PRAISE_TYPE_ERROR,
 
     ADDRESS_COLLECTIONS_ID_NULL,
+
+    MESSAGE_COLLECTIONS_ID_NULL,
 
     MESSAGE_DELETE_ADMIN_ERROR,
     MESSAGE_ID_NULL_ERROR,
