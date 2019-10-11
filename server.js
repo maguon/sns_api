@@ -113,8 +113,6 @@ const createServer=()=>{
 
     server.get('/api/admin/:adminId/user', UserController.getUser);
     server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
-    server.post({path:'/api/admin/:adminId/user',contentType: 'application/json'}, UserController.createUser);
-    server.put({path:'/api/admin/:adminId/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
     /**
      user_detail    -用户详细信息
@@ -124,8 +122,6 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
 
     server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
-    server.put({path:'/api/admin/:adminId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/admin/:adminId/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
     /**
      UserRelation    -用户关系
      */
@@ -137,13 +133,11 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatus);
     server.put({path:'/api/user/:userId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatus);
 
-    server.post({path:'/api/admin/:adminId/user/:userId/userRelation',contentType: 'application/json'}, UserRelationController.createUserRelation);
     server.get('/api/admin/:adminId/user/:userId/follow', UserRelationController.getFollow);
     server.get('/api/admin/:adminId/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/admin/:adminId/user/:userId/attention', UserRelationController.getAttention);
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatusByAdmin);
-    server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatusByAdmin);
     /**
      UserPraise   -用户点赞记录
      */
@@ -152,9 +146,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatusByUser);
 
-    server.post({path:'/api/admin/:adminId/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraise);
-    server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
      userLocationCollections    -用户地理位置收藏
@@ -163,7 +155,6 @@ const createServer=()=>{
     server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
     server.put({path:'/api/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
 
-    server.post({path:'/api/admin/:adminId/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
     server.get('/api/admin/:adminId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
     server.put({path:'/api/admin/:adminId/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
     /**
@@ -172,7 +163,6 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
     server.get('/api/user/:userId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
     server.put({path:'/api/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
     server.get('/api/admin/:adminId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
     server.put({path:'/api/admin/:adminId/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
 

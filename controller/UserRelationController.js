@@ -304,30 +304,6 @@ const updateUserRelationReadStatus = (req, res, next) => {
         }
     })
 }
-const updateUserRelationReadStatusByAdmin = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = UserRelationModel.find({});
-    let params = req.params;
-    if(params.userRelationId) {
-        if (params.userRelationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
-        } else {
-            logger.info('updateUserRelationReadStatusByAdmin userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserRelationModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateUserRelationReadStatusByAdmin ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateUserRelationReadStatusByAdmin ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     getFollow,
     getFollowUserInfo,
@@ -336,6 +312,5 @@ module.exports = {
     createUserRelation,
     updateUserRelationStatus,
     updateUserRelationStatusByAdmin,
-    updateUserRelationReadStatus,
-    updateUserRelationReadStatusByAdmin,
+    updateUserRelationReadStatus
 };

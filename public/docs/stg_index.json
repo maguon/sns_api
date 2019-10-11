@@ -595,47 +595,6 @@
       }
     },
     "/admin/{adminId}/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Administrators add a new user info and null userDetail info",
-        "description": "",
-        "operationId": "administrator adds users",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"userInfo",
-            "description": "User object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "user"
@@ -739,62 +698,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}": {
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Administrators finds userInfo and update",
-        "description": "Administrators updates user info",
-        "operationId": "administrator updates user information by ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-
-          },
-          {
-            "name": "userInfo",
-            "in": "body",
-            "description": "User object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminUserId not found"
           }
         }
       }
@@ -1064,118 +967,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/userDetail/{userDetailId}": {
-      "put": {
-        "tags": [
-          "userDetail"
-        ],
-        "summary": "Administrators finds userDetail info and update",
-        "description": "Administrators update userDetail info",
-        "operationId": "administrators update userdetail information by userdetailid",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userDetailId",
-            "in": "path",
-            "description": "UserDetail unique id",
-            "required": true,
-            "type": "string"
-
-          },
-          {
-            "name": "userDetailInfo",
-            "in": "body",
-            "description": "UserDetail object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserDetail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserDetail"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserDetailId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/updateDetail": {
-      "put": {
-        "tags": [
-          "userDetail"
-        ],
-        "summary": "Administrators finds userDetail info and update",
-        "description": "Administrators update userDetail info",
-        "operationId": "administrators update userDetail info by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserDetail unique id",
-            "required": true,
-            "type": "string"
-
-          },
-          {
-            "name": "userDetailInfo",
-            "in": "body",
-            "description": "UserDetail object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserDetail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserDetail"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserDetailId not found"
           }
         }
       }
@@ -1568,56 +1359,6 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/userRelation": {
-      "post": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Administrators add a new userRelation info",
-        "description": "",
-        "operationId": "Administrators add userRelation",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"userInfo",
-            "description": "User object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Relation"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
     "/admin/{adminId}/user/{userId}/follow": {
       "get": {
         "tags": [
@@ -1936,61 +1677,6 @@
         }
       }
     },
-    "/admin/{adminId}/userRelation/{userRelationId}/readStatus": {
-      "put": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Administrators finds userRelation readStatus and update",
-        "description": "Administrators update userRelation readStatus info",
-        "operationId": "Administrators update userRelation readStatus info by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userRelationId",
-            "in": "path",
-            "description": "userRelation unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Read_Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminUserId not found"
-          }
-        }
-      }
-    },
 
     "/user/{userId}/userPraise": {
       "post": {
@@ -2223,56 +1909,6 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/userPraise": {
-      "post": {
-        "tags": [
-          "userPraise"
-        ],
-        "summary": "Administrators add a new userPraise info",
-        "description": "",
-        "operationId": "administrators add userPraise",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "UserPraiseInfo",
-            "description": "Admin object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserPraise"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
     "/admin/{adminId}/getUserPraise": {
       "get": {
         "tags": [
@@ -2363,52 +1999,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/userPraise/{userPraiseId}/readStatus": {
-      "put": {
-        "tags": [
-          "userPraise"
-        ],
-        "summary": "Administrators finds userPraiseReadStatus and update",
-        "description": "Administrators update userPraiseReadStatus ",
-        "operationId": "administrators update userPraiseReadStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userPraiseId",
-            "in": "path",
-            "description": "userPraiseId",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminId or userPraiseId not found"
           }
         }
       }
@@ -2615,56 +2205,6 @@
             "description": "UserId or userLocationCollectionId not found"
           }
         }
-      }
-    },
-    "/admin/adminId/user/{userId}/userLocationCollection": {
-      "post": {
-        "tags": [
-          "userLocationCollection"
-        ],
-        "summary": "Administrators add a new userLocationCollection info",
-        "description": "",
-        "operationId": "Administrators addUserLocationCollection",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"userInfo",
-            "description": "UserLocationCollection object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserLocationCollection"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
       }
     },
     "/admin/adminId/userLocationCollection": {
@@ -2944,63 +2484,6 @@
             "description": "UserId or userMessageCollectionId not found"
           }
         }
-      }
-    },
-    "/admin/adminId/user/{userId}/messages/{messagesId}/userMessageCollection": {
-      "post": {
-        "tags": [
-          "userMessageCollection"
-        ],
-        "summary": "Administrators add a new userMessageCollection info",
-        "description": "",
-        "operationId": "Administrators addUserMessageCollection",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"userInfo",
-            "description": "UserMessageCollection object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserMessageCollection"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
       }
     },
     "/admin/adminId/userMessageCollection": {
