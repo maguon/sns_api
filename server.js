@@ -17,6 +17,7 @@ import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
 import {MessageCommentsController} from './controller';
 import {MessageCommentsTwoController} from './controller';
+import {VoteController} from  './controller';
 import {AppController} from './controller';
 
 /**
@@ -206,7 +207,11 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, MessageCommentsTwoController.createMessageCommentsTwo);
     server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateAdminMessageCommentsTwo);
-
+    /**
+     Vote
+     */
+    server.post({path:'/api/user/:userId/vote',contentType: 'application/json'}, VoteController.createVote);
+    server.get('/api/user/:userId/vote', VoteController.getVote);
     /**
      app
      */

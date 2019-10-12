@@ -10,3 +10,4 @@ exports.UserPraiseController = require('./UserPraiseController');
 exports.MessageController = require('./MessageController');
 exports.MessageCommentsController = require('./MessageCommentsController');
 exports.MessageCommentsTwoController = require('./MessageCommentsTwoController');
+exports.VoteController = require('./VoteController');

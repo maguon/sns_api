@@ -4261,6 +4261,100 @@
       }
     },
 
+    "/user/{userId}/vote": {
+      "post": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Admin add vote",
+        "description": "",
+        "operationId": "administrator vote",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"voteInfo",
+            "description": "voteInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Select vote Info",
+        "description": "get vote info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -4775,6 +4869,36 @@
       },
       "xml": {
         "name": "messageCommentsTwo"
+      }
+    },
+    "Vote": {
+      "type": "object",
+      "required": [
+        "info",
+        "maxNum",
+        "startTime",
+        "endTime",
+        "status"
+      ],
+      "properties": {
+        "info": {
+          "type": "String"
+        },
+        "maxNum": {
+          "type": "integer"
+        },
+        "startTime": {
+          "type": "String"
+        },
+        "endTime": {
+          "type": "String"
+        },
+        "status": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "vote"
       }
     },
     "App": {
