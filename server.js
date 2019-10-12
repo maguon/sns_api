@@ -212,6 +212,8 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/user/:userId/vote', VoteController.getVote);
+
+    server.get('/api/admin/:adminId/vote', VoteController.getVote);
     /**
      app
      */

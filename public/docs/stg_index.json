@@ -4330,7 +4330,59 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "状态（0-未开启，1-进行中，2-已结束）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/vote": {
+      "get": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Administrator select vote Info",
+        "description": "Administrator get vote info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "voteID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
           },
