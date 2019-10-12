@@ -37,10 +37,18 @@ const PRAISE ={
         commentsTwo:3//二级评论
     }
 }
+const VOTE ={
+    status:{
+        not_open:0,//未开启
+        in_progress:1,//进行中
+        closed:2//已结束
+    }
+}
 module.exports = {
     INFO_STATUS,
     USER,
     MESSAGE_TYPE,
     READ_STATUS,
-    PRAISE
+    PRAISE,
+    VOTE
 }

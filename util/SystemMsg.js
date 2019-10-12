@@ -45,6 +45,10 @@ let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
  */
 let COMMENTSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
 /**
+ * The module for vote
+ */
+let VOTE_ID_NULL_ERROR ="投票信息不存在！" ;
+/**
  * The module for app
  */
 let APP_ID_NULL_ERROR ="版本信息不存在！" ;
@@ -78,6 +82,8 @@ module.exports = {
     COMMENTS_ID_NULL_ERROR,
 
     COMMENTSTWO_ID_NULL_ERROR,
+
+    VOTE_ID_NULL_ERROR,
 
     APP_ID_NULL_ERROR
 }
