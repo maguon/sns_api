@@ -11,6 +11,7 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserRelationController} from './controller';
+import {UserVoteController} from './controller';
 import {UserLocationCollectionsController} from './controller';
 import {UserMessageCollectionsController} from './controller';
 import {UserPraiseController} from './controller';
@@ -18,6 +19,7 @@ import {MessageController} from './controller';
 import {MessageCommentsController} from './controller';
 import {MessageCommentsTwoController} from './controller';
 import {VoteController} from  './controller';
+import {VoteDetailController} from  './controller';
 import {AppController} from './controller';
 
 /**
@@ -124,7 +126,7 @@ const createServer=()=>{
 
     server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
     /**
-     UserRelation    -用户关系
+     userRelation    -用户关系
      */
     server.post({path:'/api/user/:userId/userRelation',contentType: 'application/json'}, UserRelationController.createUserRelation);
     server.get('/api/user/:userId/follow', UserRelationController.getFollow);
@@ -140,7 +142,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
     server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatusByAdmin);
     /**
-     UserPraise   -用户点赞记录
+     userPraise   -用户点赞记录
      */
     server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
@@ -149,6 +151,13 @@ const createServer=()=>{
 
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraise);
     server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
+    /**
+     userVote   -用户投票记录
+     */
+    server.post({path:'/api/user/:userId/userVote',contentType: 'application/json'}, UserVoteController.createUserVote);
+    server.get('/api/user/:userId/getUserVote', UserVoteController.getUserVote);
+
+    server.get('/api/admin/:adminId/getUserVote', UserVoteController.getUserVoteByAdmin);
     /**
      userLocationCollections    -用户地理位置收藏
      */
@@ -180,7 +189,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
      /**
-     MessageComments   - 评论
+     messageComments   - 评论
      */
     server.get('/api/user/:userId/messages/:messagesId/userMessageComments', MessageCommentsController.getUserMessageComments);
     server.get('/api/user/:userId/messages/:messagesId/allMessageComments', MessageCommentsController.getAllMessageComments);
@@ -194,7 +203,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/comments/:commentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateAdminMessageCommentsStatus);
     /**
-     MessageCommentsTwo   - 二級评论
+     messageCommentsTwo   - 二級评论
      */
     server.get('/api/user/:userId/comments/:commentsId/userMessageCommentsTwo', MessageCommentsTwoController.getUserMessageCommentsTwo);
     server.get('/api/user/:userId/comments/:commentsId/allMessageCommentsTwo', MessageCommentsTwoController.getAllMessageCommentsTwo);
@@ -208,12 +217,17 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
     server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateAdminMessageCommentsTwo);
     /**
-     Vote
+     vote      - 投票信息
      */
     server.post({path:'/api/user/:userId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/user/:userId/vote', VoteController.getVote);
 
     server.get('/api/admin/:adminId/vote', VoteController.getVote);
+    /**
+     vote_detail     - 投票选项
+     */
+    server.get('/api/user/:userId/voteDetail', VoteDetailController.getVoteDetail);
+
     /**
      app
      */

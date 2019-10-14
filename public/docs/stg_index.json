@@ -64,6 +64,10 @@
       "description": "Vote version and url management api (投票信息)"
     },
     {
+      "name": "voteDetail",
+      "description": "VoteDetail version and url management api (投票选项信息)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -1336,7 +1340,7 @@
             "description": "readStatus(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -2054,6 +2058,133 @@
           },
           "404": {
             "description": "AdminId or userPraiseId not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/userVote": {
+      "post": {
+        "tags": [
+          "userVote"
+        ],
+        "summary": "Add a new userVote info",
+        "description": "",
+        "operationId": "user add userVote",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "UserVoteInfo",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserVote"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/user/{userId}/getUserVote": {
+      "get": {
+        "tags": [
+          "userVote"
+        ],
+        "summary": "Select userVote Info",
+        "description": "Get userVote Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/getUserVote": {
+      "get": {
+        "tags": [
+          "userVote"
+        ],
+        "summary": "Administrators select userVote Info",
+        "description": "Administrators get userVote Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "操作员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
@@ -3232,7 +3363,7 @@
             "description": "readStatus(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -3534,7 +3665,7 @@
             "description": "readStatus(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -3589,7 +3720,7 @@
             "description": "status(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -3848,7 +3979,7 @@
             "description": "readStatus(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -4182,7 +4313,7 @@
             "description": "readStatus(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Read_Status"
+              "$ref": "#/definitions/ReadStatus"
             }
           }
         ],
@@ -4266,9 +4397,9 @@
         "tags": [
           "vote"
         ],
-        "summary": "Admin add vote",
+        "summary": "Add vote",
         "description": "",
-        "operationId": "administrator vote",
+        "operationId": "add vote",
         "consumes": [
           "application/json"
         ],
@@ -4385,6 +4516,45 @@
             "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/voteDetail": {
+      "get": {
+        "tags": [
+          "voteDetail"
+        ],
+        "summary": "Select voteDetail Info",
+        "description": "get voteDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
           },
           {
             "in": "query",
@@ -4832,6 +5002,24 @@
         "name": "userPraise"
       }
     },
+    "UserVote": {
+      "type": "object",
+      "voteDetailId": [
+        "voteId",
+        "messageCommentsId"
+      ],
+      "properties": {
+        "voteId": {
+          "type": "string"
+        },
+        "voteDetailId": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "userVote"
+      }
+    },
     "UserLocationCollection": {
       "type": "object",
       "required": [
@@ -4930,7 +5118,8 @@
         "maxNum",
         "startTime",
         "endTime",
-        "status"
+        "status",
+        "VoteDetail"
       ],
       "properties": {
         "info": {
@@ -4947,10 +5136,30 @@
         },
         "status": {
           "type": "integer"
+        },
+        "VoteDetail": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/VoteDetail"
+          }
         }
       },
       "xml": {
         "name": "vote"
+      }
+    },
+    "VoteDetail": {
+      "type": "object",
+      "required": [
+        "option"
+      ],
+      "properties": {
+        "option": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "VoteDetail"
       }
     },
     "App": {
@@ -5028,7 +5237,7 @@
         "name": "status"
       }
     },
-    "Read_Status": {
+    "ReadStatus": {
       "type": "object",
       "required": [
         "status"
