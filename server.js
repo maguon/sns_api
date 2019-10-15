@@ -240,7 +240,7 @@ const createServer=()=>{
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");
 
-        const error = new Errors.NotFoundError()
+        const error = new Errors.NotFoundError();
         res.send(error);
         return next();
     });
