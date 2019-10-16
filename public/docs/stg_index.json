@@ -68,6 +68,10 @@
       "description": "VoteDetail version and url management api (投票选项信息)"
     },
     {
+      "name": "applicationContact,",
+      "description": "ApplicationContact version and url management api (申请联系方式)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -4558,7 +4562,7 @@
           {
             "name": "voteId",
             "in": "query",
-            "description": "voteID",
+            "description": "投票信息ID",
             "required": false,
             "type": "string"
           },
@@ -4568,6 +4572,51 @@
             "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/voteAndVoteDetail": {
+      "get": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Administrator select vote And voteDetail Info",
+        "description": "Administrator get vote And voteDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
+            "type": "string"
           },
           {
             "in": "query",
@@ -4606,6 +4655,58 @@
             "in": "path",
             "description": "用户ID",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/voteDetail": {
+      "get": {
+        "tags": [
+          "voteDetail"
+        ],
+        "summary": "Administrator select voteDetail Info",
+        "description": "Administrator get voteDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
             "type": "string"
           },
           {

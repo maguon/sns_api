@@ -224,10 +224,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
 
     server.get('/api/admin/:adminId/vote', VoteController.getVote);
+    server.get('/api/admin/:adminId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
     /**
      vote_detail     - 投票选项
      */
     server.get('/api/user/:userId/voteDetail', VoteDetailController.getVoteDetail);
+
+    server.get('/api/admin/:adminId/voteDetail', VoteDetailController.getVoteDetail);
 
     /**
      app

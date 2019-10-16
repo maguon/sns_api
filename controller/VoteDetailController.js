@@ -10,11 +10,11 @@ const {VoteDetailModel} = require('../modules');
 const getVoteDetail = (req, res, next) => {
     let params = req.query;
     let query = VoteDetailModel.find({});
-    if(params.voteDetailId){
-        if(params.voteDetailId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteDetailId));
+    if(params.voteId){
+        if(params.voteId.length == 24){
+            query.where('_voteId').equals(mongoose.mongo.ObjectId(params.voteId));
         }else{
-            logger.info('getVoteDetail voteDetailId format incorrect!');
+            logger.info('getVoteDetail voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
             return next();
         }
