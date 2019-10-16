@@ -4447,8 +4447,15 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "用户ID",
+            "description": "userID",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vote_userId",
+            "in": "query",
+            "description": "发布投票用户ID",
+            "required": false,
             "type": "string"
           },
           {
@@ -4464,6 +4471,51 @@
             "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/voteAndVoteDetail": {
+      "get": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Select vote And voteDetail Info",
+        "description": "get vote And voteDetail info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "当前登陆用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
+            "type": "string"
           },
           {
             "in": "query",

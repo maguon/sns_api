@@ -11,6 +11,15 @@ const {VoteDetailModel} = require('../modules');
 const getVote = (req, res, next) => {
     let params = req.query;
     let query = VoteModel.find({});
+    if(params.vote_userId){
+        if(params.vote_userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.vote_userId));
+        }else{
+            logger.info('getVote userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
     if(params.voteId){
         if(params.voteId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
@@ -32,6 +41,46 @@ const getVote = (req, res, next) => {
             resUtil.resInternalError(error,res);
         } else {
             logger.info(' getVote ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getVoteAndVoteDetail = (req, res, next) => {
+    let params = req.query;
+    let aggregate_limit = [
+        {
+            $lookup: {
+                from: 'vote_details',  // 从哪个Schema中查询（一般需要复数，除非声明Schema的时候专门有处理）
+                localField: '_id',  // 本地关联的字段
+                foreignField: '_voteId', // vote_detail中用的关联字段
+                as: 'options' // 查询到所有vote后放入的字段名，这个是自定义的，是个数组类型。
+            }
+         }];
+    if(params.voteId){
+        if(params.voteId.length == 24){
+            aggregate_limit.push({
+                $match: {
+                    _id :  mongoose.mongo.ObjectId(params.voteId)
+                }
+            });
+        }else{
+            logger.info('getVoteAndVoteDetail userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    if(params.start && params.size){
+        aggregate_limit.push({$skip: parseInt(params.start)});
+        aggregate_limit.push({$limit: parseInt(params.size)});
+    }
+    VoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserInfoAndDetail ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            console.log('rows:',rows);
+            logger.info(' getUserInfoAndDetail ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -65,11 +114,9 @@ const createVote = (req, res, next) => {
             })
         });
     }
-
     const createVoteDetail =(voteInfo)=>{
         return new Promise(()=>{
             var optionArray = bodyParams.VoteDetail;
-
             var voteDetailArray = new Array();
             for(let i=0;i<optionArray.length;i++){
                 let voteDetailObj={
@@ -92,7 +139,6 @@ const createVote = (req, res, next) => {
             });
         });
     }
-
     createVote()
         .then(createVoteDetail)
         .catch((reject)=>{
@@ -103,7 +149,9 @@ const createVote = (req, res, next) => {
             }
         })
 }
+
 module.exports = {
     getVote,
+    getVoteAndVoteDetail,
     createVote
 };
