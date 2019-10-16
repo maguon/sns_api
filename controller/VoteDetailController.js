@@ -14,7 +14,7 @@ const getVoteDetail = (req, res, next) => {
         if(params.voteDetailId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.voteDetailId));
         }else{
-            logger.info('getVoteDetail voteId format incorrect!');
+            logger.info('getVoteDetail voteDetailId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
             return next();
         }
