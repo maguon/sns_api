@@ -68,7 +68,7 @@
       "description": "VoteDetail version and url management api (投票选项信息)"
     },
     {
-      "name": "applicationContact,",
+      "name": "applicationContact",
       "description": "ApplicationContact version and url management api (申请联系方式)"
     },
     {
@@ -4730,6 +4730,173 @@
       }
     },
 
+    "/user/{userId}/applicationContact": {
+      "post": {
+        "tags": [
+          "applicationContact"
+        ],
+        "summary": "Add applicationContact",
+        "description": "",
+        "operationId": "add applicationContact",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"contactInfo",
+            "description": "contactInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationContact"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "applicationContact"
+        ],
+        "summary": "Select applicationContact Info",
+        "description": "get applicationContact info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "beInvitedUserId",
+            "in": "query",
+            "description": "被请求人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationContactId",
+            "in": "query",
+            "description": "申请联系方式ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "申请状态（0-未读，1-拒绝，2-同意）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/applicationContact": {
+      "get": {
+        "tags": [
+          "applicationContact"
+        ],
+        "summary": "Administrator select applicationContact Info",
+        "description": "Administrator get applicationContact info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "申请人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "beInvitedUserId",
+            "in": "query",
+            "description": "被请求人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationContactId",
+            "in": "query",
+            "description": "申请联系方式ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "申请状态（0-未读，1-拒绝，2-同意）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -5313,6 +5480,20 @@
       },
       "xml": {
         "name": "VoteDetail"
+      }
+    },
+    "ApplicationContact": {
+      "type": "object",
+      "required": [
+        "beInvitedUserId"
+      ],
+      "properties": {
+        "_beInvitedUserId": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "ApplicationContact"
       }
     },
     "App": {

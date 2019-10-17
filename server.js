@@ -20,6 +20,7 @@ import {MessageCommentsController} from './controller';
 import {MessageCommentsTwoController} from './controller';
 import {VoteController} from  './controller';
 import {VoteDetailController} from  './controller';
+import {ApplicationContactController} from  './controller';
 import {AppController} from './controller';
 
 /**
@@ -231,7 +232,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/voteDetail', VoteDetailController.getVoteDetail);
 
     server.get('/api/admin/:adminId/voteDetail', VoteDetailController.getVoteDetail);
+    /**
+     applicationContact     - 申请联系方式
+     */
+    server.post({path:'/api/user/:userId/applicationContact',contentType: 'application/json'}, ApplicationContactController.createApplicationContact);
+    server.get('/api/user/:userId/applicationContact', ApplicationContactController.getApplicationContact);
 
+    server.get('/api/admin/:adminId/applicationContact', ApplicationContactController.getApplicationContactByAdmin);
     /**
      app
      */

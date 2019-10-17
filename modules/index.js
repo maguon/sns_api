@@ -11,4 +11,5 @@ exports.MessageCommentsModel = require('./schemas/MessageCommentsSchema').Messag
 exports.MessageCommentsTwoModel = require('./schemas/MessageCommentsTwoSchema').MessageCommentsTwoModel;
 exports.VoteModel = require('./schemas/VoteSchema').VoteModel;
 exports.VoteDetailModel = require('./schemas/VoteDetailSchema').VoteDetailModel;
+exports.ApplicationContactModel = require('./schemas/ApplicationContactSchema').ApplicationContactModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
