@@ -189,6 +189,71 @@ const updateUserInfo = (req, res, next) => {
         }
     })
 }
+const updatePassword = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserModel.find({});
+    let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserStatus userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    const getPassword =()=>{
+        return new Promise(((resolve, reject) => {
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' updatePassword getPassword ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' updatePassword getPassword ' + 'success');
+                    resolve(rows);
+                }
+            });
+        }));
+    }
+
+    const updatePassword =(userInfo)=>{
+        return new Promise(((resolve, reject) => {
+            if(bodyParams.oldPassword){
+                bodyParams.oldPasswordEnc = encrypt.encryptByMd5NoKey(bodyParams.oldPassword);
+            }
+            if(userInfo[0]._doc.password == bodyParams.oldPasswordEnc){
+                if(bodyParams.newPassword){
+                    bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.newPassword);
+                    UserModel.updateOne(query,bodyParams,function(error,result){
+                        if (error) {
+                            logger.error(' updatePassword updatePassword ' + error.message);
+                            resUtil.resInternalError(error);
+                        } else {
+                            logger.info(' updatePassword  updatePassword ' + 'success');
+                            console.log('rows:',result);
+                            resUtil.resetUpdateRes(res,result,null);
+                            return next();
+                        }
+                    })
+                }else{
+                    reject({msg:systemMsg.USER_NEW_PASSWORD_ERROR});
+                }
+            }else{
+                reject({msg:systemMsg.USER_OLD_PASSWORD_ERROR});
+            }
+
+        }));
+    }
+    getPassword()
+        .then(updatePassword)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 const updateUserStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
@@ -309,6 +374,7 @@ module.exports = {
     getUserInfoAndDetail,
     createUser,
     updateUserInfo,
+    updatePassword,
     updateUserStatus,
     userLogin
 };

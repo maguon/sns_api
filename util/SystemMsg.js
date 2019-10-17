@@ -14,6 +14,8 @@ let USER_CREATE_ERROR = "创建用户信息失败！" ; //Failed to create user 
 let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to create user details
 let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
 let USER_DETAIL_ID_NULL_ERROR ="该用户详细信息不存在！" ;
+let USER_OLD_PASSWORD_ERROR = "原密码有误！";
+let USER_NEW_PASSWORD_ERROR = "新密码有误！";
 /**
  * The module for userRelation
  */
@@ -74,6 +76,8 @@ module.exports = {
     USER_CREATE_DETAIL_ERROR,
     USER_DELETE_INFO,
     USER_DETAIL_ID_NULL_ERROR,
+    USER_OLD_PASSWORD_ERROR,
+    USER_NEW_PASSWORD_ERROR,
 
     RELATION_ID_NULL_ERROR,
 

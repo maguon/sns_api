@@ -114,6 +114,7 @@ const createServer=()=>{
     server.get('/api/user', UserController.getUser);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
     server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.put({path:'/api/user/:userId/password',contentType: 'application/json'},UserController.updatePassword);
     server.put({path:'/api/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
 
     server.get('/api/admin/:adminId/user', UserController.getUser);

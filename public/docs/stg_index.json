@@ -558,6 +558,50 @@
         }
       }
     },
+    "/user/{userId}/password": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "update user password",
+        "description": "user update password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/password"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid admin id"
+          }
+        }
+      }
+    },
     "/user/{userId}/status":{
       "put": {
         "tags": [
@@ -5418,6 +5462,20 @@
       },
       "xml": {
         "name": "userDetail"
+      }
+    },
+    "password": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "password"
       }
     },
     "Relation": {
