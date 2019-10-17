@@ -21,6 +21,7 @@ import {MessageCommentsTwoController} from './controller';
 import {VoteController} from  './controller';
 import {VoteDetailController} from  './controller';
 import {ApplicationContactController} from  './controller';
+import {SystemMessageController} from  './controller';
 import {AppController} from './controller';
 
 /**
@@ -239,6 +240,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/applicationContact', ApplicationContactController.getApplicationContact);
 
     server.get('/api/admin/:adminId/applicationContact', ApplicationContactController.getApplicationContactByAdmin);
+    /**
+     systemMessage     - 系统消息
+     */
+    server.get('/api/user/:userId/systemMessage', SystemMessageController.getSystemMessage);
+
+    server.get('/api/admin/:adminId/systemMessage', SystemMessageController.getSystemMessage);
+    server.post({path:'/api/admin/:adminId/systemMessage',contentType: 'application/json'}, SystemMessageController.createSystemMessage);
     /**
      app
      */

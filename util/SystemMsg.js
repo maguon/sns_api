@@ -53,6 +53,10 @@ let VOTE_ID_NULL_ERROR ="投票信息不存在！" ;
  */
 let VOTE_DETAIL_ID_NULL_ERROR ="投票选项不存在！" ;
 /**
+ * The module for system_message
+ */
+let SYSTEM_MESSAGE_ID_NULL_ERROR ="系统消息不存在！" ;
+/**
  * The module for app
  */
 let APP_ID_NULL_ERROR ="版本信息不存在！" ;
@@ -90,6 +94,8 @@ module.exports = {
     VOTE_ID_NULL_ERROR,
 
     VOTE_DETAIL_ID_NULL_ERROR,
+
+    SYSTEM_MESSAGE_ID_NULL_ERROR,
 
     APP_ID_NULL_ERROR
 }

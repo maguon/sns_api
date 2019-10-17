@@ -72,6 +72,10 @@
       "description": "ApplicationContact version and url management api (申请联系方式)"
     },
     {
+      "name": "systemMessage",
+      "description": "SystemMessage version and url management api (系统消息)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -4897,6 +4901,152 @@
       }
     },
 
+    "/user/{userId}/systemMessage": {
+      "get": {
+        "tags": [
+          "systemMessage"
+        ],
+        "summary": "Select systemMessage Info",
+        "description": "get systemMessage info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "publisherId",
+            "in": "query",
+            "description": "发布人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "systemMessageId",
+            "in": "query",
+            "description": "系统消息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/systemMessage": {
+      "get": {
+        "tags": [
+          "systemMessage"
+        ],
+        "summary": "Administrator select systemMessage Info",
+        "description": "Administrator get systemMessage info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "publisherId",
+            "in": "query",
+            "description": "发布人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "systemMessageId",
+            "in": "query",
+            "description": "系统消息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "systemMessage"
+        ],
+        "summary": "Administrator add systemMessage",
+        "description": "",
+        "operationId": "Administrator add systemMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"systemMessageInfo",
+            "description": "systemMessageInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemMessage"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -5494,6 +5644,20 @@
       },
       "xml": {
         "name": "ApplicationContact"
+      }
+    },
+    "SystemMessage": {
+      "type": "object",
+      "required": [
+        "info"
+      ],
+      "properties": {
+        "info": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "SystemMessage"
       }
     },
     "App": {
