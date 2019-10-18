@@ -250,6 +250,12 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/systemMessage', SystemMessageController.getSystemMessage);
     server.post({path:'/api/admin/:adminId/systemMessage',contentType: 'application/json'}, SystemMessageController.createSystemMessage);
     /**
+     privacySettings     - 隐私设置
+     */
+    server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, ApplicationContactController.createApplicationContact);
+    server.get('/api/user/:userId/privacySettings', ApplicationContactController.getApplicationContact);
+
+    /**
      app
      */
     server.get('/api/app', AppController.getApp);

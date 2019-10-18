@@ -15,8 +15,8 @@ const voteSchema = new Schema({
             display: '用户信息ID'
         }
     },
-    { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
-    });
+{ timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
+});
 
 const VoteModel = mongoose.model('vote_info',voteSchema);
 module.exports = {

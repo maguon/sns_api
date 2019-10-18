@@ -5859,15 +5859,35 @@
     "PrivacySettings": {
       "type": "object",
       "required": [
-        "info"
+        "name_display",
+        "phone_display",
+        "city_display",
+        "car_display",
+        "recommend_to_friends",
+        "message_authority"
       ],
       "properties": {
-        "info": {
-          "type": "String"
+        "name_display": {
+          "type": "integer"
+        },
+        "phone_display": {
+          "type": "integer"
+        },
+        "city_display": {
+          "type": "integer"
+        },
+        "car_display": {
+          "type": "integer"
+        },
+        "recommend_to_friends": {
+          "type": "integer"
+        },
+        "message_authority": {
+          "type": "integer"
         }
       },
       "xml": {
-        "name": "SystemMessage"
+        "name": "PrivacySettings"
       }
     },
     "App": {
