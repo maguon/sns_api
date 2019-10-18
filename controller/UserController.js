@@ -203,21 +203,24 @@ const updatePassword = (req, res, next) => {
         }
     }
     const getPassword =()=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             query.exec((error,rows)=> {
                 if (error) {
                     logger.error(' updatePassword getPassword ' + error.message);
                     reject({err:error.message});
                 } else {
                     logger.info(' updatePassword getPassword ' + 'success');
-                    resolve(rows);
+                    if(rows.length < 1){
+                        reject({msg:"该用户未注册！"});
+                    }else{
+                        resolve(rows);
+                    }
                 }
             });
-        }));
+        });
     }
-
     const updatePassword =(userInfo)=>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             if(bodyParams.oldPassword){
                 bodyParams.oldPasswordEnc = encrypt.encryptByMd5NoKey(bodyParams.oldPassword);
             }
@@ -241,11 +244,68 @@ const updatePassword = (req, res, next) => {
             }else{
                 reject({msg:systemMsg.USER_OLD_PASSWORD_ERROR});
             }
-
-        }));
+        });
     }
     getPassword()
         .then(updatePassword)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
+const updatePhone = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserModel.find({});
+    let params = req.params;
+    let reqQuery = req.query;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserStatus userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    const getCode =()=>{
+        return new Promise((resolve, reject) => {
+            oAuthUtil.getUserPhoneCode({phone:params.phone},(error,rows)=>{
+                if(error){
+                    logger.error('updatePhone getUserPhoneCode ' + error.message);
+                    reject(error);
+                }else{
+                    if(rows && rows.result.code !=bodyParams.code ){
+                        logger.warn('updatePhone getUserPhoneCode ' + 'Verification code error!');
+                        resUtil.resetFailedRes(res,'验证码错误',null);
+                    }else{
+                        logger.info('updatePhone getUserPhoneCode '+'success');
+                        resolve();
+                    }
+                }
+            })
+        });
+    }
+    const updateUserPhone =()=>{
+        return new Promise(() => {
+            bodyParams.auth_status = sysConsts.USER.auth_status.certified;
+            bodyParams.auth_time = new Date();
+            UserModel.updateOne(query,bodyParams,function(error,result){
+                if (error) {
+                    logger.error(' updatePhone updateUserPhone ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' updatePhone  updateUserPhone ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    getCode()
+        .then(updateUserPhone)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
@@ -375,6 +435,7 @@ module.exports = {
     createUser,
     updateUserInfo,
     updatePassword,
+    updatePhone,
     updateUserStatus,
     userLogin
 };

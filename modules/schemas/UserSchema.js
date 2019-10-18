@@ -9,6 +9,7 @@ const userSchema = new Schema({
         type          : {type:Number,default:0,min:0,max:3,display: '用户类型（1-普通，2-会员）'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（0-停用，1-启用）'},
         auth_status   : {type:Number,default:0,min:0,max:3,display: '认证状态(0-未认证,1-已认证)'},
+        auth_time     : {type:Date,default:new Date(),display: '验证时间'},
         last_login_on : {type:Date,default:new Date(),display: '最后登录时间'},
         _userDetailId: {
             type: Schema.Types.ObjectId,

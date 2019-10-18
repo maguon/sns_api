@@ -76,6 +76,10 @@
       "description": "SystemMessage version and url management api (系统消息)"
     },
     {
+      "name": "privacySettings",
+      "description": "PrivacySettings version and url management api (隐私设置)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -582,7 +586,7 @@
             "description": "user info",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/password"
+              "$ref": "#/definitions/Password"
             }
           }
         ],
@@ -592,12 +596,56 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref": "#/definitions/password"
+                "$ref": "#/definitions/Password"
               }
             }
           },
           "400": {
-            "description": "Invalid token value or invalid admin id"
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
+    "/user/{userId}/phone": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "update user phone",
+        "description": "user update phone",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Phone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/Phone"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
           }
         }
       }
@@ -5091,6 +5139,74 @@
       }
     },
 
+    "/user/{userId}/privacySettings": {
+      "post": {
+        "tags": [
+          "privacySettings"
+        ],
+        "summary": "Add privacySettings",
+        "description": "",
+        "operationId": "add privacySettings",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"privacySettingsInfo",
+            "description": "privacySettingsInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PrivacySettings"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "privacySettings"
+        ],
+        "summary": "Select privacySettings Info",
+        "description": "get privacySettings info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -5464,8 +5580,12 @@
         "name": "userDetail"
       }
     },
-    "password": {
+    "Password": {
       "type": "object",
+      "required": [
+        "oldPassword",
+        "newPassword"
+      ],
       "properties": {
         "oldPassword": {
           "type": "string"
@@ -5475,7 +5595,25 @@
         }
       },
       "xml": {
-        "name": "password"
+        "name": "Password"
+      }
+    },
+    "Phone": {
+      "type": "object",
+      "required": [
+        "phone",
+        "code"
+      ],
+      "properties": {
+        "phone": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Phone"
       }
     },
     "Relation": {
@@ -5705,6 +5843,20 @@
       }
     },
     "SystemMessage": {
+      "type": "object",
+      "required": [
+        "info"
+      ],
+      "properties": {
+        "info": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "SystemMessage"
+      }
+    },
+    "PrivacySettings": {
       "type": "object",
       "required": [
         "info"
