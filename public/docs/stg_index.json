@@ -5252,6 +5252,46 @@
         }
       }
     },
+    "/admin/{adminId}/privacySettings": {
+      "get": {
+        "tags": [
+          "privacySettings"
+        ],
+        "summary": "Administrator select privacySettings Info",
+        "description": "Administrator get privacySettings info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "privacySettingsId",
+            "in": "query",
+            "description": "privacySettingsID",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/app": {
       "get": {

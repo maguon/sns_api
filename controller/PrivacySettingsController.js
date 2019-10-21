@@ -12,12 +12,21 @@ const getPrivacySettings = (req, res, next) => {
     let params = req.query;
     let query = PrivacySettingsModel.find({});
 
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getPrivacySettings  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.privacySettingsId){
+        if(params.privacySettingsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.privacySettingsId));
+        }else{
+            logger.info('getPrivacySettings  privacySettingsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.PRIVACY_SETTINGS_ID_NULL_ERROR);
             return next();
         }
     }
