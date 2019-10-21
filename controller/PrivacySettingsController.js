@@ -7,7 +7,35 @@ const logger = serverLogger.createLogger('PrivacySettingsController');
 
 const {PrivacySettingsModel} = require('../modules');
 
-const getPrivacySettings = (req, res, next) => {
+const getPrivacySettingsByUser = (req, res, next) => {
+    let path = req.params;
+    let params = req.query;
+    let query = PrivacySettingsModel.find({});
+
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getPrivacySettingsByUser  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.exec((error,rows)=> {
+        if (error) {
+            logger.error(' getPrivacySettingsByUser ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getPrivacySettingsByUser ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getPrivacySettingsByAdmin = (req, res, next) => {
     let path = req.params;
     let params = req.query;
     let query = PrivacySettingsModel.find({});
@@ -104,7 +132,8 @@ const updatePrivacySettings = (req, res, next) => {
 
 }
 module.exports = {
-    getPrivacySettings,
+    getPrivacySettingsByUser,
+    getPrivacySettingsByAdmin,
     createPrivacySettings,
     updatePrivacySettings
 };
