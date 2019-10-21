@@ -14,7 +14,7 @@ const getSystemMessage = (req, res, next) => {
         if(params.publisherId.length == 24){
             query.where('_adminId').equals(mongoose.mongo.ObjectId(params.publisherId));
         }else{
-            logger.info('getVote publisherId format incorrect!');
+            logger.info('getSystemMessage publisherId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
@@ -23,7 +23,7 @@ const getSystemMessage = (req, res, next) => {
         if(params.systemMessageId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.vsystemMessageIdoteId));
         }else{
-            logger.info('getVote voteId format incorrect!');
+            logger.info('getSystemMessage voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -36,10 +36,10 @@ const getSystemMessage = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getVote ' + error.message);
+            logger.error(' getSystemMessage ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getVote ' + 'success');
+            logger.info(' getSystemMessage ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }

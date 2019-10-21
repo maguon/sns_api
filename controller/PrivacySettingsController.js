@@ -8,8 +8,8 @@ const logger = serverLogger.createLogger('PrivacySettingsController');
 const {PrivacySettingsModel} = require('../modules');
 
 const getPrivacySettingsByUser = (req, res, next) => {
-    let path = req.params;
-    let params = req.query;
+    let path = req.query;
+    let params = req.params;
     let query = PrivacySettingsModel.find({});
 
     if(path.userId){
@@ -36,15 +36,15 @@ const getPrivacySettingsByUser = (req, res, next) => {
     });
 }
 const getPrivacySettingsByAdmin = (req, res, next) => {
-    let path = req.params;
-    let params = req.query;
+    let path = req.query;
+    let params = req.params;
     let query = PrivacySettingsModel.find({});
 
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('getPrivacySettings  userID format incorrect!');
+            logger.info('getPrivacySettingsByAdmin  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -53,7 +53,7 @@ const getPrivacySettingsByAdmin = (req, res, next) => {
         if(params.privacySettingsId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.privacySettingsId));
         }else{
-            logger.info('getPrivacySettings  privacySettingsId format incorrect!');
+            logger.info('getPrivacySettingsByAdmin  privacySettingsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRIVACY_SETTINGS_ID_NULL_ERROR);
             return next();
         }
@@ -63,10 +63,10 @@ const getPrivacySettingsByAdmin = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getPrivacySettings ' + error.message);
+            logger.error(' getPrivacySettingsByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getPrivacySettings ' + 'success');
+            logger.info(' getPrivacySettingsByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -121,10 +121,10 @@ const updatePrivacySettings = (req, res, next) => {
     }
     PrivacySettingsModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updatePhone updateUserPhone ' + error.message);
+            logger.error(' updatePrivacySettings ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updatePhone  updateUserPhone ' + 'success');
+            logger.info(' updatePrivacySettings  ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
