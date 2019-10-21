@@ -61,7 +61,11 @@ let SYSTEM_MESSAGE_ID_NULL_ERROR ="系统消息不存在！" ;
 /**
  * The module for privacy_settings
  */
-let PRIVACY_SETTINGS_ID_NULL_ERROR ="隐私设置消息不存在！" ;
+let PRIVACY_SETTINGS_ID_NULL_ERROR ="隐私设置信息不存在！" ;
+/**
+ * The module for notification_settings
+ */
+let NOTIFICATION_SETTINGS_ID_NULL_ERROR ="通知设置信息不存在！" ;
 /**
  * The module for app
  */
@@ -106,6 +110,8 @@ module.exports = {
     SYSTEM_MESSAGE_ID_NULL_ERROR,
 
     PRIVACY_SETTINGS_ID_NULL_ERROR,
+
+    NOTIFICATION_SETTINGS_ID_NULL_ERROR,
 
     APP_ID_NULL_ERROR
 }

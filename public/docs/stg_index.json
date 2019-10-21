@@ -80,6 +80,10 @@
       "description": "PrivacySettings version and url management api (隐私设置)"
     },
     {
+      "name": "notificationSettings",
+      "description": "notificationSettings version and url management api (通知设置)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -5293,6 +5297,120 @@
       }
     },
 
+    "/user/{userId}/notificationSettings": {
+      "post": {
+        "tags": [
+          "notificationSettings"
+        ],
+        "summary": "Add notificationSettings",
+        "description": "",
+        "operationId": "add notificationSettings",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"notificationSettingsInfo",
+            "description": "notificationSettingsInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotificationSettings"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "notificationSettings"
+        ],
+        "summary": "Select notificationSettings Info",
+        "description": "get notificationSettings info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/notificationSettings/{notificationSettingsId}/notificationSettings": {
+      "put": {
+        "tags": [
+          "notificationSettings"
+        ],
+        "summary": "Finds notificationSettings info",
+        "description": "Update notificationSettings info ",
+        "operationId": "update notificationSettings info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "notificationSettingsId",
+            "in": "path",
+            "description": "notificationSettings unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "notificationSettingsInfo",
+            "in": "body",
+            "description": "notificationSettingsInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotificationSettings"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or notificationSettingsId not found"
+          }
+        }
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -5974,6 +6092,44 @@
       },
       "xml": {
         "name": "PrivacySettings"
+      }
+    },
+    "NotificationSettings": {
+      "type": "object",
+      "required": [
+        "info",
+        "praise",
+        "comments",
+        "beConcernedAbout",
+        "others",
+        "worksReleasedByFollowers",
+        "recommendedWorks"
+      ],
+      "properties": {
+        "info": {
+          "type": "integer"
+        },
+        "praise": {
+          "type": "integer"
+        },
+        "comments": {
+          "type": "integer"
+        },
+        "beConcernedAbout": {
+          "type": "integer"
+        },
+        "others": {
+          "type": "integer"
+        },
+        "worksReleasedByFollowers": {
+          "type": "integer"
+        },
+        "recommendedWorks": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "NotificationSettings"
       }
     },
     "App": {

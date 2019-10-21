@@ -23,15 +23,13 @@ import {VoteDetailController} from  './controller';
 import {ApplicationContactController} from  './controller';
 import {SystemMessageController} from  './controller';
 import {PrivacySettingsController} from  './controller';
+import {NotificationSettingsController} from  './controller';
 import {AppController} from './controller';
 
 /**
  * Returns a server with all routes defined on it
  */
 const createServer=()=>{
-
-
-
     // Create a server with our logger and custom formatter
     // Note that 'version' means all routes will default to
     // 1.0.0
@@ -66,19 +64,12 @@ const createServer=()=>{
         ip: true
     }));
 
-
-
-
-
     server.use(restify.plugins.bodyParser({uploadDir:__dirname+'/../uploads/'}));
     server.use(restify.plugins.acceptParser(server.acceptable));
     server.use(restify.plugins.dateParser());
     server.use(restify.plugins.authorizationParser());
     server.use(restify.plugins.queryParser());
     server.use(restify.plugins.gzipResponse());
-
-
-
 
     /*var STATIS_FILE_RE = /\.(css|js|jpe?g|png|gif|less|eot|svg|bmp|tiff|ttf|otf|woff|pdf|ico|json|wav|ogg|mp3?|xml|woff2|map)$/i;
     server.get('/'+STATIS_FILE_RE, restify.plugins.serveStaticFiles('./public/docs',{ default: 'index.html', maxAge: 0 }));
@@ -253,11 +244,19 @@ const createServer=()=>{
     /**
      privacySettings     - 隐私设置
      */
-    server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettings);
+    server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettingsByUser);
     server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, PrivacySettingsController.createPrivacySettings);
     server.put({path:'/api/user/:userId/privacySettings/:privacySettingsId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
 
-    server.get('/api/admin/:adminId/privacySettings', PrivacySettingsController.getPrivacySettings);
+    server.get('/api/admin/:adminId/privacySettings', PrivacySettingsController.getPrivacySettingsByAdmin);
+    /**
+     notificationSettings     - 通知设置
+     */
+    server.get('/api/user/:userId/notificationSettings', NotificationSettingsController.getNotificationSettingsByUser);
+    server.post({path:'/api/user/:userId/notificationSettings',contentType: 'application/json'}, NotificationSettingsController.createNotificationSettings);
+    server.put({path:'/api/user/:userId/notificationSettings/:notificationSettingsId/notificationSettings',contentType: 'application/json'} ,NotificationSettingsController.updateNotificationSettings);
+
+    server.get('/api/admin/:adminId/notificationSettings', NotificationSettingsController.getNotificationSettingsByAdmin);
     /**
      app
      */

@@ -14,4 +14,5 @@ exports.VoteDetailModel = require('./schemas/VoteDetailSchema').VoteDetailModel;
 exports.ApplicationContactModel = require('./schemas/ApplicationContactSchema').ApplicationContactModel;
 exports.SystemMessageModel = require('./schemas/SystemMessageSchema').SystemMessageModel;
 exports.PrivacySettingsModel = require('./schemas/PrivacySettingsSchema').PrivacySettingsModel;
+exports.NotificationSettingsModel = require('./schemas/NotificationSettingsSchema').NotificationSettingsModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
