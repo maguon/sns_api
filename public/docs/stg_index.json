@@ -5204,6 +5204,50 @@
             "description": "Invalid params"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "privacySettings"
+        ],
+        "summary": "Finds privacySettings info",
+        "description": "Update privacySettings info ",
+        "operationId": "update privacySettings info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "privacySettingsId",
+            "in": "path",
+            "description": "privacySettings unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "privacySettingsInfo",
+            "in": "body",
+            "description": "privacySettingsInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PrivacySettings"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or PrivacySettingsId not found"
+          }
+        }
       }
     },
 

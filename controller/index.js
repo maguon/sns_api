@@ -15,3 +15,4 @@ exports.VoteController = require('./VoteController');
 exports.VoteDetailController = require('./VoteDetailController');
 exports.ApplicationContactController = require('./ApplicationContactController');
 exports.SystemMessageController = require('./SystemMessageController');
+exports.PrivacySettingsController = require('./PrivacySettingsController');

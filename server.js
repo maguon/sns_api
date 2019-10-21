@@ -22,6 +22,7 @@ import {VoteController} from  './controller';
 import {VoteDetailController} from  './controller';
 import {ApplicationContactController} from  './controller';
 import {SystemMessageController} from  './controller';
+import {PrivacySettingsController} from  './controller';
 import {AppController} from './controller';
 
 /**
@@ -252,9 +253,9 @@ const createServer=()=>{
     /**
      privacySettings     - 隐私设置
      */
-    server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, ApplicationContactController.createApplicationContact);
-    server.get('/api/user/:userId/privacySettings', ApplicationContactController.getApplicationContact);
-
+    server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettings);
+    server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, PrivacySettingsController.createPrivacySettings);
+    server.put({path:'/api/user/:userId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
     /**
      app
      */
