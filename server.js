@@ -255,7 +255,7 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettings);
     server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, PrivacySettingsController.createPrivacySettings);
-    server.put({path:'/api/user/:userId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
+    server.put({path:'/api/user/:userId/privacySettings/:privacySettingsId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
     /**
      app
      */

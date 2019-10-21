@@ -5204,7 +5204,9 @@
             "description": "Invalid params"
           }
         }
-      },
+      }
+    },
+    "/user/{userId}/privacySettings/{privacySettingsId}/privacySettings": {
       "put": {
         "tags": [
           "privacySettings"
