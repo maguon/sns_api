@@ -17,7 +17,7 @@
   "tags": [
     {
       "name": "adminUser",
-      "description": "adminUser version and url management api (操作员)"
+      "description": "AdminUser version and url management api (操作员)"
     },
     {
       "name": "user",
@@ -41,11 +41,11 @@
     },
     {
       "name": "userLocationCollection",
-      "description": "userLocationCollection version and url management api (用户地理位置收藏)"
+      "description": "UserLocationCollection version and url management api (用户地理位置收藏)"
     },
     {
       "name": "userMessageCollection",
-      "description": "userMessageCollection version and url management api (用户微博收藏)"
+      "description": "UserMessageCollection version and url management api (用户微博收藏)"
     },
     {
       "name": "messages",
@@ -53,11 +53,11 @@
     },
     {
       "name": "messageComments",
-      "description": "messageComments version and url management api (消息评论)"
+      "description": "MessageComments version and url management api (消息评论)"
     },
     {
       "name": "messageCommentsTwo",
-      "description": "messageCommentsⅡ version and url management api (消息二级评论)"
+      "description": "MessageCommentsⅡ version and url management api (消息二级评论)"
     },
     {
       "name": "vote",
@@ -81,11 +81,15 @@
     },
     {
       "name": "notificationSettings",
-      "description": "notificationSettings version and url management api (通知设置)"
+      "description": "NotificationSettings version and url management api (通知设置)"
     },
     {
       "name": "blacklist",
-      "description": "blacklist version and url management api (黑名单设置)"
+      "description": "Blacklist version and url management api (黑名单设置)"
+    },
+    {
+      "name": "about",
+      "description": "About version and url management api (关于我们)"
     },
     {
       "name": "app",
@@ -5563,6 +5567,172 @@
       }
     },
 
+    "/user/{userId}/about": {
+      "get": {
+        "tags": [
+          "about"
+        ],
+        "summary": "Select about Info",
+        "description": "get about info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aboutId",
+            "in": "query",
+            "description": "aboutId",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/about": {
+      "get": {
+        "tags": [
+          "about"
+        ],
+        "summary": "Administrator select about Info",
+        "description": "Administrator get about info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aboutId",
+            "in": "query",
+            "description": "aboutId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "about"
+        ],
+        "summary": "Administrator add about",
+        "description": "",
+        "operationId": "Administrator add about",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"aboutInfo",
+            "description": "aboutInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/About"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      }
+    },
+    "/admin/{adminId}/about/{aboutId}/about": {
+      "put": {
+        "tags": [
+          "about"
+        ],
+        "summary": "Administrator finds about and update",
+        "description": "Administrator update about ",
+        "operationId": "administrator update about by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aboutId",
+            "in": "path",
+            "description": "about unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aboutInfo",
+            "in": "body",
+            "description": "aboutInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/About"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or aboutId not found"
+          }
+        }
+      }
+    },
+
     "/app": {
       "get": {
         "tags": [
@@ -6296,6 +6466,33 @@
       },
       "xml": {
         "name": "Blacklist"
+      }
+    },
+    "About": {
+      "type": "object",
+      "required": [
+        "corporate_name",
+        "info",
+        "phone",
+        "remarks"
+      ],
+      "properties": {
+        "corporate_name": {
+          "type": "string"
+        },
+        "info": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "remarks": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "About"
       }
     },
     "App": {

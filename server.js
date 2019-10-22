@@ -25,6 +25,7 @@ import {SystemMessageController} from  './controller';
 import {PrivacySettingsController} from  './controller';
 import {NotificationSettingsController} from  './controller';
 import {BlacklistController} from  './controller';
+import {AboutController} from './controller';
 import {AppController} from './controller';
 
 /**
@@ -265,6 +266,14 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/blacklist',contentType: 'application/json'}, BlacklistController.createBlacklist);
 
     server.get('/api/admin/:adminId/blacklist', BlacklistController.getBlacklistByAdmin);
+    /**
+     about     - 关于我们
+     */
+    server.get('/api/user/:userId/about', AboutController.getAbout);
+
+    server.get('/api/admin/:adminId/about', AboutController.getAbout);
+    server.post({path:'/api/admin/:adminId/about',contentType: 'application/json'}, AboutController.createAbout);
+    server.put({path:'/api/admin/:adminId/about/:aboutId/about',contentType: 'application/json'} ,AboutController.updateAbout);
     /**
      app
      */

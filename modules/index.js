@@ -16,4 +16,5 @@ exports.SystemMessageModel = require('./schemas/SystemMessageSchema').SystemMess
 exports.PrivacySettingsModel = require('./schemas/PrivacySettingsSchema').PrivacySettingsModel;
 exports.NotificationSettingsModel = require('./schemas/NotificationSettingsSchema').NotificationSettingsModel;
 exports.BlacklistModel = require('./schemas/BlacklistSchema').BlacklistModel;
+exports.AboutModel = require('./schemas/AboutSchema').AboutModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
