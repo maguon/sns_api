@@ -6484,8 +6484,7 @@
           "type": "string"
         },
         "phone": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "remarks": {
           "type": "string"
