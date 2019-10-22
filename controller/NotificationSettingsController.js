@@ -48,11 +48,11 @@ const getNotificationSettingsByAdmin = (req, res, next) => {
             return next();
         }
     }
-    if(params.privacySettingsId){
-        if(params.privacySettingsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.privacySettingsId));
+    if(params.notificationSettingsId){
+        if(params.notificationSettingsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.notificationSettingsId));
         }else{
-            logger.info('getNotificationSettingsByAdmin  privacySettingsId format incorrect!');
+            logger.info('getNotificationSettingsByAdmin  notificationSettingsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRIVACY_SETTINGS_ID_NULL_ERROR);
             return next();
         }

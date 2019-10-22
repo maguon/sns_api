@@ -84,6 +84,10 @@
       "description": "notificationSettings version and url management api (通知设置)"
     },
     {
+      "name": "blacklist",
+      "description": "blacklist version and url management api (黑名单设置)"
+    },
+    {
       "name": "app",
       "description": "App version and url management api (APP版本)"
     }
@@ -5406,6 +5410,46 @@
           },
           "404": {
             "description": "UserId or notificationSettingsId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/notificationSettings": {
+      "get": {
+        "tags": [
+          "notificationSettings"
+        ],
+        "summary": "Administrator select notificationSettings Info",
+        "description": "Administrator get notificationSettings info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "notificationSettingsId",
+            "in": "query",
+            "description": "notificationSettingsId",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
