@@ -15,4 +15,5 @@ exports.ApplicationContactModel = require('./schemas/ApplicationContactSchema').
 exports.SystemMessageModel = require('./schemas/SystemMessageSchema').SystemMessageModel;
 exports.PrivacySettingsModel = require('./schemas/PrivacySettingsSchema').PrivacySettingsModel;
 exports.NotificationSettingsModel = require('./schemas/NotificationSettingsSchema').NotificationSettingsModel;
+exports.BlacklistModel = require('./schemas/BlacklistSchema').BlacklistModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
