@@ -18,7 +18,7 @@ const blacklistSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const BlacklistModel = mongoose.model('blacklist',blacklistSchema);
+const BlacklistModel = mongoose.model('blacklist_info',blacklistSchema);
 module.exports = {
     BlacklistModel
 }
