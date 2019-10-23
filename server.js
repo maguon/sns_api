@@ -264,6 +264,7 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/blacklist', BlacklistController.getBlacklistByUser);
     server.post({path:'/api/user/:userId/blacklist',contentType: 'application/json'}, BlacklistController.createBlacklist);
+    server.del({path:'/api/user/:userId/blacklist/:blacklistId',contentType: 'application/json'},BlacklistController.deleteBlacklist);
 
     server.get('/api/admin/:adminId/blacklist', BlacklistController.getBlacklistByAdmin);
     /**

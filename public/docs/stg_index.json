@@ -351,7 +351,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessagesId not found"
+            "description": "AdminUserId not found"
           }
         }
       }
@@ -569,7 +569,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminUserId not found"
+            "description": "UserId not found"
           }
         }
       }
@@ -647,15 +647,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "items": {
-                "$ref": "#/definitions/Phone"
-              }
-            }
-          },
           "400": {
             "description": "Invalid token value or invalid user id"
           }
@@ -1415,7 +1406,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminUserId not found"
+            "description": "UserId not found"
           }
         }
       }
@@ -1470,7 +1461,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminUserId not found"
+            "description": "UserId not found"
           }
         }
       }
@@ -4443,7 +4434,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessageCommentsTwoId not found"
+            "description": "AdminUserId or MessageCommentsTwoId not found"
           }
         }
       }
@@ -5564,6 +5555,51 @@
             "description": "Invalid params"
           }
         }
+      }
+    },
+    "/user/{userId}/blacklist/{blacklistId}": {
+      "delete": {
+        "tags": [
+          "blacklist"
+        ],
+        "summary": "Delete blacklist",
+        "description": "Delete blacklist",
+        "operationId": "Delete blacklist by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blacklistId",
+            "in": "path",
+            "description": "blacklist unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "addedUserId",
+            "in": "query",
+            "description": "added User Id",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or blacklistId not found"
+          }
+        },
+        "deprecated": true
       }
     },
 

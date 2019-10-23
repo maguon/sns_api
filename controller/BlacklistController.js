@@ -96,8 +96,51 @@ const createBlacklist = (req, res, next) => {
         }
     })
 }
+const deleteBlacklist = (req, res, next) => {
+    let path = req.path;
+    let params = req.query;
+    let query = BlacklistModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query._userId = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('deleteBlacklist userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(path.blacklistId){
+        if(path.blacklistId.length == 24){
+            query.blacklistId = mongoose.mongo.ObjectId(path.blacklistId);
+        }else{
+            logger.info('deleteBlacklist blacklistId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.BLACK_LIST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.addedUserId){
+        if(params.addedUserId.length == 24){
+            query._addedUserId = mongoose.mongo.ObjectId(params.addedUserId);
+        }else{
+            logger.info('deleteBlacklist addedUserId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    BlacklistModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteBlacklist ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteBlacklist ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getBlacklistByUser,
     getBlacklistByAdmin,
-    createBlacklist
+    createBlacklist,
+    deleteBlacklist
 };
