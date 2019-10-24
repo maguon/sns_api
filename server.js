@@ -121,6 +121,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/user/:userId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
+    server.put({path:'/api/user/:userId/avatarImage',contentType: 'application/json'},UserDetailController.updateAvatarImage);
 
     server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
     /**

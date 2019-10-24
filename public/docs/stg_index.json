@@ -1020,6 +1020,54 @@
         }
       }
     },
+    "/user/{userId}/avatarImage":{
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Finds userDetail avatarImage and update",
+        "description": "Updates userDetail avatarImage",
+        "operationId": "Update userDetail avatarImage",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "avatarImage",
+            "in": "body",
+            "description": "UserDetail avatarImage that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AvatarImage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/userDetail": {
       "get": {
         "tags": [
@@ -6140,6 +6188,20 @@
       },
       "xml": {
         "name": "userDetail"
+      }
+    },
+    "AvatarImage": {
+      "type": "object",
+      "required": [
+        "avatar"
+      ],
+      "properties": {
+        "avatar": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AvatarImage"
       }
     },
     "Password": {
