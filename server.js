@@ -132,14 +132,12 @@ const createServer=()=>{
     server.get('/api/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/user/:userId/attention', UserRelationController.getAttention);
     server.get('/api/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
-    server.put({path:'/api/user/:userId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatus);
     server.put({path:'/api/user/:userId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatus);
 
     server.get('/api/admin/:adminId/user/:userId/follow', UserRelationController.getFollow);
     server.get('/api/admin/:adminId/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/admin/:adminId/user/:userId/attention', UserRelationController.getAttention);
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
-    server.put({path:'/api/admin/:adminId/userRelation/:userRelationId/status',contentType: 'application/json'} ,UserRelationController.updateUserRelationStatusByAdmin);
     /**
      userPraise   -用户点赞记录
      */

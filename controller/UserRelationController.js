@@ -11,7 +11,7 @@ const {UserRelationModel} = require('../modules');
 const getFollow = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = UserRelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
+    let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -29,9 +29,6 @@ const getFollow = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
     }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
@@ -53,7 +50,7 @@ const getFollow = (req, res, next) => {
 const getFollowUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = UserRelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
+    let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -71,9 +68,6 @@ const getFollowUserInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
     }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
@@ -95,7 +89,7 @@ const getFollowUserInfo = (req, res, next) => {
 const getAttention = (req, res, next) => {
     let path = req.params;
     let params = req.params;
-    let query = UserRelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
+    let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
@@ -117,12 +111,6 @@ const getAttention = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.groupName){
-        query.where('groupName').equals(params.groupName);
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
-    }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
     }
@@ -143,7 +131,7 @@ const getAttention = (req, res, next) => {
 const getAttentionUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.params;
-    let query = UserRelationModel.find({status : sysConsts.INFO_STATUS.Status.available});
+    let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
@@ -164,12 +152,6 @@ const getAttentionUserInfo = (req, res, next) => {
     }
     if(params.type){
         query.where('type').equals(params.type);
-    }
-    if(params.groupName){
-        query.where('groupName').equals(params.groupName);
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
     }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
@@ -192,7 +174,6 @@ const createUserRelation = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
     let userRelationObj = bodyParams;
-    userRelationObj.status = sysConsts.INFO_STATUS.Status.available;
     if(params.userId){
         if(params.userId.length == 24){
             userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
@@ -210,63 +191,6 @@ const createUserRelation = (req, res, next) => {
         } else {
             logger.info(' createUserRelation ' + 'success');
             resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
-}
-const updateUserRelationStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = UserRelationModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('updateUserRelationStatus userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.userRelationId) {
-        if (params.userRelationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
-        } else {
-            logger.info('updateUserRelationStatus userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserRelationModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateUserRelationStatus ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateUserRelationStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
-const updateUserRelationStatusByAdmin = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = UserRelationModel.find({});
-    let params = req.params;
-    if(params.userRelationId) {
-        if (params.userRelationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
-        } else {
-            logger.info('updateUserRelationStatusByAdmin userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserRelationModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateUserRelationStatusByAdmin ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateUserRelationStatusByAdmin ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
@@ -310,7 +234,5 @@ module.exports = {
     getAttention,
     getAttentionUserInfo,
     createUserRelation,
-    updateUserRelationStatus,
-    updateUserRelationStatusByAdmin,
     updateUserRelationReadStatus
 };
