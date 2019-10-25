@@ -1391,7 +1391,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "user unique id",
+            "description": "被关注用户ID",
             "required": true,
             "type": "string"
           },
@@ -1764,13 +1764,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "read_status",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
@@ -1812,7 +1805,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "user unique id",
+            "description": "被点赞用户ID",
             "required": true,
             "type": "string"
           },
@@ -1822,61 +1815,6 @@
             "description": "userPraiseId",
             "required": true,
             "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userPraiseId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/userPraise/{userPraiseId}/status":{
-      "put": {
-        "tags": [
-          "userPraise"
-        ],
-        "summary": "Finds userPraise status and update",
-        "description": "Update userPraise status",
-        "operationId": "update userPraise status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userPraiseId",
-            "in": "path",
-            "description": "userPraiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
           }
         ],
         "responses": {
@@ -1959,13 +1897,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "read_status",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
@@ -1988,61 +1919,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/userPraise/{userPraiseId}/status":{
-      "put": {
-        "tags": [
-          "userPraise"
-        ],
-        "summary": "Administrators finds userPraise Status and update",
-        "description": "Administrators update userPraise status",
-        "operationId": "administrators update userPraise Status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userPraiseId",
-            "in": "path",
-            "description": "userPraiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminId or userPraiseId not found"
           }
         }
       }

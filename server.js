@@ -144,10 +144,8 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
-    server.put({path:'/api/user/:userId/userPraise/:userPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatusByUser);
 
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraise);
-    server.put({path:'/api/admin/:adminId/user/:userId/userPraise/:userUserPraiseId/status',contentType: 'application/json'} ,UserPraiseController.updateStatus);
     /**
      userVote   -用户投票记录
      */
