@@ -9,10 +9,10 @@ const voteSchema = new Schema({
         startTime        : {type:String,default: '',display: '投票开始时间'},
         endTime          : {type:String,default: '',display: '投票截止时间'},
         status           : {type:Number,default:1,min:0,max:3,display: '投票状态（0-未开启，1-进行中，2-已结束）'},
-        _userId: {
+        _adminId: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
-            display: '用户信息ID'
+            ref: 'admin_user',
+            display: '管理员ID'
         }
     },
 { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }

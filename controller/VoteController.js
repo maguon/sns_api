@@ -91,11 +91,11 @@ const createVote = (req, res, next) => {
     let bodyParams = req.body;
     let voteObj = bodyParams;
     voteObj.participantsNum = 0;
-    if(params.userId){
-        if(params.userId.length == 24){
-            voteObj._userId = mongoose.mongo.ObjectId(params.userId);
+    if(params.adminId){
+        if(params.adminId.length == 24){
+            voteObj._adminId = mongoose.mongo.ObjectId(params.adminId);
         }else{
-            logger.info('createVote userID format incorrect!');
+            logger.info('createVote adminID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }

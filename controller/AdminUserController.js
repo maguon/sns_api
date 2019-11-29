@@ -162,7 +162,7 @@ const adminUserLogin = (req, res, next) => {
             oAuthUtil.saveToken(admin,function(error,result){
                 if(error){
                     logger.error('adminUserLogin loginSaveToken ' + error.stack);
-                    return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
+                    return next(sysError.InternalError(error.message,sysMsg.InvalidArgument));
                 }else{
                     logger.info('adminUserLogin loginSaveToken ' + admin.adminId + " success");
                     resUtil.resetQueryRes(res,admin,null);

@@ -214,10 +214,10 @@ const createServer=()=>{
     /**
      vote      - 投票信息
      */
-    server.post({path:'/api/user/:userId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/user/:userId/vote', VoteController.getVote);
     server.get('/api/user/:userId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
 
+    server.post({path:'/api/admin/:adminId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/admin/:adminId/vote', VoteController.getVote);
     server.get('/api/admin/:adminId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
     /**
