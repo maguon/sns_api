@@ -6018,10 +6018,14 @@
       "type": "object",
       "required": [
         "address",
+        "addressName",
         "remarks"
       ],
       "properties": {
         "address": {
+          "type": "Array"
+        },
+        "addressName": {
           "type": "Array"
         },
         "remarks": {
@@ -6052,6 +6056,7 @@
         "type",
         "info",
         "address",
+        "addressName",
         "label",
         "multi_media"
       ],
@@ -6065,6 +6070,9 @@
         },
         "address": {
           "type": "Array"
+        },
+        "addressName": {
+          "type": "string"
         },
         "label": {
           "type": "string"
