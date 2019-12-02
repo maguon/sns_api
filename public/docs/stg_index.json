@@ -4254,47 +4254,6 @@
     },
 
     "/user/{userId}/vote": {
-      "post": {
-        "tags": [
-          "vote"
-        ],
-        "summary": "Add vote",
-        "description": "",
-        "operationId": "add vote",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"voteInfo",
-            "description": "voteInfo object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Vote"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "vote"
@@ -4399,6 +4358,47 @@
       }
     },
     "/admin/{adminId}/vote": {
+      "post": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Administrator add vote",
+        "description": "",
+        "operationId": "Administrator add vote",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"voteInfo",
+            "description": "voteInfo object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
       "get": {
         "tags": [
           "vote"
