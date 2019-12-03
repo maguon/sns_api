@@ -129,8 +129,10 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userRelation',contentType: 'application/json'}, UserRelationController.createUserRelation);
     server.get('/api/user/:userId/follow', UserRelationController.getFollow);
+    server.get('/api/user/:userId/followCount', UserRelationController.getFollowCount);
     server.get('/api/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/user/:userId/attention', UserRelationController.getAttention);
+    server.get('/api/user/:userId/attentionCount', UserRelationController.getAttentionCount);
     server.get('/api/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
     server.put({path:'/api/user/:userId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatus);
 

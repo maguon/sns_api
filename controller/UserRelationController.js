@@ -46,6 +46,29 @@ const getFollow = (req, res, next) => {
         }
     });
 }
+const getFollowCount = (req, res, next) => {
+    let path = req.params;
+    let query = UserRelationModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getFollowCount userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    query.count().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getFollowCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getFollowCount ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 const getFollowUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
@@ -127,6 +150,33 @@ const getAttention = (req, res, next) => {
         }
     });
 }
+const getAttentionCount = (req, res, next) => {
+    let path = req.params;
+    let params = req.params;
+    let query = UserRelationModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getAttentionCount userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.read_status){
+        query.where('read_status').equals(params.read_status);
+    }
+    query.count().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getAttentionCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getAttentionCount ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 const getAttentionUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.params;
@@ -173,6 +223,7 @@ const createUserRelation = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
     let userRelationObj = bodyParams;
+    userRelationObj.type = 0;
     if(params.userId){
         if(params.userId.length == 24){
             userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
@@ -229,8 +280,10 @@ const updateUserRelationReadStatus = (req, res, next) => {
 }
 module.exports = {
     getFollow,
+    getFollowCount,
     getFollowUserInfo,
     getAttention,
+    getAttentionCount,
     getAttentionUserInfo,
     createUserRelation,
     updateUserRelationReadStatus
