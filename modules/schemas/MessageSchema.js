@@ -3,7 +3,7 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const messageSchema = new Schema({
-        type          : {type:Number,default:0,min:0,max:3,display: '消息类型(1. 文字 2. 图片 3. 视频 4. 求助 5. 投票)'},
+        type          : {type:Number,default:0,min:0,max:3,display: '消息类型(1.文章 2.图片 3.视频 4.求助 )'},
         info          : {type:String,default:'',trim:true,display: '内容'},
         address       : {type:Array,index: {type: '2d',sparse: true},display: '地理位置'},
         addressName   : {type:String,default:'',trim:true,display: '地理位置名称'},

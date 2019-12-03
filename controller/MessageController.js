@@ -52,6 +52,50 @@ const getMessage = (req, res, next) => {
         }
     });
 }
+const getMessageCount = (req, res, next) => {
+    let path = req.params;
+    let aggregate_limit = [];
+    if(path.userId){
+        if(path.userId.length == 24){
+            aggregate_limit.push({
+                $match: {
+                    _userId :  mongoose.mongo.ObjectId(path.userId)
+                }
+            });
+        }else{
+            logger.info('getMessageCount userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    aggregate_limit.push({
+        $group: {
+            _id: {type:"$type"},
+            count:{$sum:1}
+        }
+    });
+
+    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getMessageCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            console.log('rows:',rows);
+            logger.info(' getMessageCount ' + 'success');
+
+            let total = 0;
+            for (let num in rows) {
+                total += rows[num].count;
+            }
+            let returnMsg = {
+                groupCount: rows,
+                countSum: total
+            }
+            resUtil.resetQueryRes(res, returnMsg);
+            return next();
+        }
+    });
+}
 const createMessage = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
@@ -215,6 +259,7 @@ const deleteMessage = (req, res, next) => {
 }
 module.exports = {
     getMessage,
+    getMessageCount,
     createMessage,
     updateMessageStatus,
     searchByRadius,

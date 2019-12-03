@@ -176,6 +176,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/messages',contentType: 'application/json'}, MessageController.createMessage);
     server.get('/api/user/:userId/messages', MessageController.getMessage);
+    server.get('/api/user/:userId/messagesCount', MessageController.getMessageCount);
     server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
     server.del({path:'/api/user/:userId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessage);

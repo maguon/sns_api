@@ -2668,13 +2668,13 @@
           },{
             "name": "type",
             "in": "query",
-            "description": "消息类型",
+            "description": "消息类型(1.文章 2.图片 3.视频 4.求助 )",
             "required": false,
             "type": "integer"
           },{
             "name": "status",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "状态（0-不可见，1-可见）",
             "required": false,
             "type": "integer"
           },
@@ -2689,6 +2689,32 @@
             "name": "size",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/messagesCount": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Select messagesCount",
+        "description": "get messagesCount",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
