@@ -1,4 +1,21 @@
 'use strict';
+const DRIVE_TYPE = {
+    A1:1,
+    A2:2,
+    A3:3,
+    B1:4,
+    B2:5,
+    C1:6,
+    C2:7,
+    C3:8,
+    C4:9,
+    D:10,
+    E:11,
+    F:12,
+    M:13,
+    N:14,
+    P:15
+}
 const INFO_STATUS = {
     Status: {
         disable:0,//停用
@@ -15,7 +32,7 @@ const USER ={
         certified:1//已认证
     }
 }
-const MESSAGE_TYPE ={
+const MESSAGE ={
     type:{
         text:1,//文字
         pictures:2,//图片
@@ -45,9 +62,10 @@ const VOTE ={
     }
 }
 module.exports = {
+    DRIVE_TYPE,
     INFO_STATUS,
     USER,
-    MESSAGE_TYPE,
+    MESSAGE,
     READ_STATUS,
     PRAISE,
     VOTE
