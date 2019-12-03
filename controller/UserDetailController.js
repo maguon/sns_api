@@ -35,8 +35,8 @@ const getUserDetail = (req, res, next) => {
     if(params.truename){
         query.where('truename').equals(params.truename);
     }
-    if(params.drivingtype){
-        query.where('drivingtype').equals(params.drivingtype);
+    if(params.drivingType){
+        query.where('drivingType').equals(params.drivingType);
     }
     query.exec((error,rows)=> {
         if (error) {

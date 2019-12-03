@@ -903,11 +903,11 @@
             "required": false,
             "type": "string"
           },{
-            "name": "drivingtype",
+            "name": "drivingType",
             "in": "query",
             "description": "驾驶证类型",
             "required": false,
-            "type": "string"
+            "type": "integer"
           }
         ],
         "responses": {
@@ -1112,11 +1112,11 @@
             "required": false,
             "type": "string"
           },{
-            "name": "drivingtype",
+            "name": "drivingType",
             "in": "query",
             "description": "驾驶证类型",
             "required": false,
-            "type": "string"
+            "type": "integer"
           }
         ],
         "responses": {
@@ -5899,7 +5899,7 @@
         "label",
         "truename",
         "avatar",
-        "drivingtype"
+        "drivingType"
       ],
       "properties": {
         "sex": {
@@ -5929,8 +5929,8 @@
         "avatar": {
           "type": "string"
         },
-        "drivingtype": {
-          "type": "string"
+        "drivingType": {
+          "type": "integer"
         }
       },
       "xml": {
