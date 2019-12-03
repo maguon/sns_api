@@ -6019,6 +6019,7 @@
       "required": [
         "address",
         "addressName",
+        "addressReal",
         "remarks"
       ],
       "properties": {
@@ -6026,7 +6027,10 @@
           "type": "Array"
         },
         "addressName": {
-          "type": "Array"
+          "type": "string"
+        },
+        "addressReal": {
+          "type": "string"
         },
         "remarks": {
           "type": "string"
@@ -6057,6 +6061,7 @@
         "info",
         "address",
         "addressName",
+        "addressReal",
         "label",
         "multi_media"
       ],
@@ -6072,6 +6077,9 @@
           "type": "Array"
         },
         "addressName": {
+          "type": "string"
+        },
+        "addressReal": {
           "type": "string"
         },
         "label": {

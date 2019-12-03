@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const userLocationCollectionSchema = new Schema({
         address       : {type:Array,index: {type: '2d',sparse: true},display: '地理位置'},
         addressName   : {type:String,default:'',trim:true,display: '地理位置名称'},
+        addressReal   : {type:String,default:'',trim:true,display: '真实地址'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（0-停用，1-启用）'},
         remarks       : {type:String,default:'',display: '备注'},
         _userId: {
