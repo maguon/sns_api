@@ -181,9 +181,42 @@ const searchByRadius = (req, res, next) => {
         }
     });
 }
+const deleteMessage = (req, res, next) => {
+    let path = req.path;
+    let query = MessageModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query._userId = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('deleteMessage userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(path.messagesId){
+        if(path.messagesId.length == 24){
+            query._id = mongoose.mongo.ObjectId(path.messagesId);
+        }else{
+            logger.info('deleteMessage messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    MessageModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteMessage ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteMessage ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getMessage,
     createMessage,
     updateMessageStatus,
-    searchByRadius
+    searchByRadius,
+    deleteMessage
 };

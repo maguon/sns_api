@@ -2804,6 +2804,43 @@
         }
       }
     },
+    "/user/{userId}/messages/{messagesId}/del": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Delete messages",
+        "description": "Delete messages",
+        "operationId": "Delete messages by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or messages not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/messages": {
       "post": {
         "tags": [

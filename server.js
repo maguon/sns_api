@@ -178,6 +178,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/messages', MessageController.getMessage);
     server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
+    server.del({path:'/api/user/:userId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessage);
 
     server.get('/api/admin/:adminId/messages', MessageController.getMessage);
     server.post({path:'/api/admin/:adminId/messages',contentType: 'application/json'}, MessageController.createMessage);
