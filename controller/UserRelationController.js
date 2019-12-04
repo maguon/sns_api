@@ -234,7 +234,7 @@ const createUserRelation = (req, res, next) => {
                 if(path.userId.length == 24){
                     query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createUserRelation friendJudgement userID format incorrect!');
+                    logger.info(' createUserRelation friendJudgement userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
@@ -243,18 +243,18 @@ const createUserRelation = (req, res, next) => {
                 if(bodyParams._userById.length == 24){
                     query.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
                 }else{
-                    logger.info('createUserRelation friendJudgement userById format incorrect!');
+                    logger.info(' createUserRelation friendJudgement userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error('createUserRelation friendJudgement ' + error.message);
+                    logger.error(' createUserRelation friendJudgement ' + error.message);
                     reject({err:error.message});
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info('createUserRelation friendJudgement ' + 'success');
+                    logger.info(' createUserRelation friendJudgement ' + 'success');
                     resolve(rows);
                 }
             });
@@ -270,7 +270,7 @@ const createUserRelation = (req, res, next) => {
                 if(params.userId.length == 24){
                     userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
                 }else{
-                    logger.info('createUserRelation userID format incorrect!');
+                    logger.info(' createUserRelation userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
@@ -279,10 +279,10 @@ const createUserRelation = (req, res, next) => {
             let userRelationModel = new UserRelationModel(userRelationObj);
             userRelationModel.save(function(error,result){
                 if (error) {
-                    logger.error('createUserRelation saveRelation ' + error.message);
+                    logger.error(' createUserRelation saveRelation ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info('createUserRelation saveRelation ' + 'success');
+                    logger.info(' createUserRelation saveRelation ' + 'success');
                     if(relationInfo.length > 0){
                         resolve(relationInfo);
                         returnMessage = result;
@@ -298,10 +298,10 @@ const createUserRelation = (req, res, next) => {
         return new Promise(() => {
             UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:1},function(error,result){
                 if (error) {
-                    logger.error(' updateUserRelationReadStatus ' + error.message);
+                    logger.error(' createUserRelation updateRelation ' + error.message);
                     resUtil.resInternalError(error);
                 } else {
-                    logger.info(' updateUserRelationReadStatus ' + 'success');
+                    logger.info(' createUserRelation updateRelation ' + 'success');
                     resUtil.resetCreateRes(res, returnMessage);
                     return next();
                 }
