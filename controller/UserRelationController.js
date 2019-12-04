@@ -221,7 +221,6 @@ const getAttentionUserInfo = (req, res, next) => {
 }
 const createUserRelation = (req, res, next) => {
     let path = req.params;
-    let params = req.params;
     let bodyParams = req.body;
     let userRelationObj = bodyParams;
     userRelationObj.type = 0;
@@ -266,9 +265,9 @@ const createUserRelation = (req, res, next) => {
             if(relationInfo.length > 0){
                 userRelationObj.type = 1;
             }
-            if(params.userId){
-                if(params.userId.length == 24){
-                    userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
+            if(path.userId){
+                if(path.userId.length == 24){
+                    userRelationObj._userId = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info(' createUserRelation userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -352,6 +351,105 @@ const updateUserRelationReadStatus = (req, res, next) => {
         }
     })
 }
+const deleteUserRelation = (req, res, next) => {
+    let path = req.params;
+    let returnMessage;
+    //判断是否已关注自己
+    const friendJudgement =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserRelationModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' deleteUserRelation friendJudgement userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(path.followUserId){
+                if(path.followUserId.length == 24){
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.followUserId));
+                }else{
+                    logger.info(' deleteUserRelation friendJudgement userById format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' deleteUserRelation friendJudgement ' + error.message);
+                    reject({err:error.message});
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' deleteUserRelation friendJudgement ' + 'success');
+                    resolve(rows);
+                }
+            });
+        })
+    }
+    const delRelation =(relationInfo)=>{
+        return new Promise((resolve, reject) => {
+            let query = UserRelationModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query._userId = mongoose.mongo.ObjectId(path.userId);
+                }else{
+                    logger.info(' deleteUserRelation delRelation userID format incorrect!');
+                    reject({err:error.message});
+                }
+            }
+            if(path.followUserId){
+                if(path.followUserId.length == 24){
+                    query._userById = mongoose.mongo.ObjectId(path.followUserId);
+                }else{
+                    logger.info(' deleteUserRelation delRelation followUserId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            UserRelationModel.deleteOne(query,function(error,result){
+                if(error){
+                    logger.error(' deleteUserRelation delRelation ' + error.message);
+                    reject({err:error.message});
+                }else{
+                    logger.info(' deleteUserRelation delRelation ' + 'success');
+                    if(relationInfo.length > 0){
+                        resolve(relationInfo);
+                        returnMessage = result;
+                    }else{
+                        resUtil.resetUpdateRes(res,result,null);
+                        return next();
+                    }
+                }
+            })
+        });
+    }
+    const updateRelation =(relationInfo)=>{
+        return new Promise(() => {
+            UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:0},function(error,result){
+                if (error) {
+                    logger.error(' deleteUserRelation updateRelation ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' deleteUserRelation updateRelation ' + 'success');
+                    resUtil.resetUpdateRes(res,returnMessage,null);
+                    return next();
+                }
+            })
+        });
+    }
+    friendJudgement()
+        .then(delRelation)
+        .then(updateRelation)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg) ;
+            }
+        })
+}
 module.exports = {
     getFollow,
     getFollowCount,
@@ -360,5 +458,6 @@ module.exports = {
     getAttentionCount,
     getAttentionUserInfo,
     createUserRelation,
-    updateUserRelationReadStatus
+    updateUserRelationReadStatus,
+    deleteUserRelation
 };

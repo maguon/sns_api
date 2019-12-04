@@ -1490,6 +1490,43 @@
         }
       }
     },
+    "/user/{userId}/followUser/{followUserId}/del": {
+      "delete": {
+        "tags": [
+          "userRelation"
+        ],
+        "summary": "Delete userRelation",
+        "description": "Delete userRelation",
+        "operationId": "Delete userRelation by userId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "followUserId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          },
+          "404": {
+            "description": "UserId not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/user/{userId}/follow": {
       "get": {
         "tags": [
