@@ -220,30 +220,104 @@ const getAttentionUserInfo = (req, res, next) => {
     });
 }
 const createUserRelation = (req, res, next) => {
+    let path = req.params;
     let params = req.params;
     let bodyParams = req.body;
     let userRelationObj = bodyParams;
     userRelationObj.type = 0;
-    if(params.userId){
-        if(params.userId.length == 24){
-            userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
-        }else{
-            logger.info('createUserRelation userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
+    let returnMessage;
+    //判断是否已关注自己
+    const friendJudgement =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserRelationModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createUserRelation friendJudgement userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams._userById){
+                if(bodyParams._userById.length == 24){
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+                }else{
+                    logger.info('createUserRelation friendJudgement userById format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error('createUserRelation friendJudgement ' + error.message);
+                    reject({err:error.message});
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info('createUserRelation friendJudgement ' + 'success');
+                    resolve(rows);
+                }
+            });
+        })
     }
-    let userRelationModel = new UserRelationModel(userRelationObj);
-    userRelationModel.save(function(error,result){
-        if (error) {
-            logger.error(' createUserRelation ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createUserRelation ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+    const saveRelation = (relationInfo) =>{
+        return new Promise((resolve, reject) => {
+            bodyParams._userById;
+            if(relationInfo.length > 0){
+                userRelationObj.type = 1;
+            }
+            if(params.userId){
+                if(params.userId.length == 24){
+                    userRelationObj._userId = mongoose.mongo.ObjectId(params.userId);
+                }else{
+                    logger.info('createUserRelation userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            //保存新关注信息
+            let userRelationModel = new UserRelationModel(userRelationObj);
+            userRelationModel.save(function(error,result){
+                if (error) {
+                    logger.error('createUserRelation saveRelation ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info('createUserRelation saveRelation ' + 'success');
+                    if(relationInfo.length > 0){
+                        resolve(relationInfo);
+                        returnMessage = result;
+                    }else{
+                        resUtil.resetCreateRes(res, result);
+                        return next();
+                    }
+                }
+            })
+        });
+    }
+    const updateRelation =(relationInfo)=>{
+        return new Promise(() => {
+            UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:1},function(error,result){
+                if (error) {
+                    logger.error(' updateUserRelationReadStatus ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' updateUserRelationReadStatus ' + 'success');
+                    resUtil.resetCreateRes(res, returnMessage);
+                    return next();
+                }
+            })
+        });
+    }
+    friendJudgement()
+        .then(saveRelation)
+        .then(updateRelation)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resInternalError(reject.err,res,next);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg) ;
+            }
+        })
 }
 const updateUserRelationReadStatus = (req, res, next) => {
     let bodyParams = req.body;

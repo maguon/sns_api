@@ -3,7 +3,7 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const userRelationSchema = new Schema({
-        type          : {type:Number,default:0,min:0,max:3,display: '关系类型（0-关注）'},
+        type          : {type:Number,default:0,min:0,max:3,display: '关系类型（0-关注,1-好友）'},
         read_status   : {type:Number,default:0,min:0,max:3,display: '未读状态(0-未读，1-已读)'},
         _userId: {
             type: Schema.Types.ObjectId,
