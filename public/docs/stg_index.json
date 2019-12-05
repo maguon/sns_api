@@ -6217,7 +6217,7 @@
         "addressName",
         "addressReal",
         "label",
-        "multi_media"
+        "media"
       ],
       "properties": {
         "type": {
@@ -6239,12 +6239,33 @@
         "label": {
           "type": "string"
         },
-        "multi_media": {
+        "media": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/MessagesMedia"
+          }
+        }
+      },
+      "xml": {
+        "name": "Messages"
+      }
+    },
+    "MessagesMedia": {
+      "type": "object",
+      "required": [
+        "url",
+        "preview"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "preview": {
           "type": "string"
         }
       },
       "xml": {
-        "name": "messages"
+        "name": "MessagesMedia"
       }
     },
     "MessageComments": {
