@@ -19,7 +19,6 @@ import {MessageController} from './controller';
 import {MessageCommentsController} from './controller';
 import {MessageCommentsTwoController} from './controller';
 import {VoteController} from  './controller';
-import {VoteDetailController} from  './controller';
 import {ApplicationContactController} from  './controller';
 import {SystemMessageController} from  './controller';
 import {PrivacySettingsController} from  './controller';
@@ -220,17 +219,9 @@ const createServer=()=>{
      vote      - 投票信息
      */
     server.get('/api/user/:userId/vote', VoteController.getVote);
-    server.get('/api/user/:userId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
 
     server.post({path:'/api/admin/:adminId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/admin/:adminId/vote', VoteController.getVote);
-    server.get('/api/admin/:adminId/voteAndVoteDetail', VoteController.getVoteAndVoteDetail);
-    /**
-     vote_detail     - 投票选项
-     */
-    server.get('/api/user/:userId/voteDetail', VoteDetailController.getVoteDetail);
-
-    server.get('/api/admin/:adminId/voteDetail', VoteDetailController.getVoteDetail);
     /**
      applicationContact     - 申请联系方式
      */

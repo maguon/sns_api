@@ -12,7 +12,6 @@ exports.MessageController = require('./MessageController');
 exports.MessageCommentsController = require('./MessageCommentsController');
 exports.MessageCommentsTwoController = require('./MessageCommentsTwoController');
 exports.VoteController = require('./VoteController');
-exports.VoteDetailController = require('./VoteDetailController');
 exports.ApplicationContactController = require('./ApplicationContactController');
 exports.SystemMessageController = require('./SystemMessageController');
 exports.PrivacySettingsController = require('./PrivacySettingsController');

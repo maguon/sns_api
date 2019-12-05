@@ -64,10 +64,6 @@
       "description": "Vote version and url management api (投票信息)"
     },
     {
-      "name": "voteDetail",
-      "description": "VoteDetail version and url management api (投票选项信息)"
-    },
-    {
       "name": "applicationContact",
       "description": "ApplicationContact version and url management api (申请联系方式)"
     },
@@ -1151,7 +1147,7 @@
           },
           {
             "in": "body",
-            "name":"userInfo",
+            "name":"userRelation",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2082,6 +2078,13 @@
             "type": "string"
           },
           {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2123,6 +2126,13 @@
             "name": "userId",
             "in": "query",
             "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "query",
+            "description": "投票ID",
             "required": false,
             "type": "string"
           },
@@ -2171,7 +2181,7 @@
           },
           {
             "in": "body",
-            "name":"userInfo",
+            "name":"userLocationCollectionInfo",
             "description": "UserLocationCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2448,7 +2458,7 @@
           },
           {
             "in": "body",
-            "name":"userInfo",
+            "name":"userMessageCollectionInfo",
             "description": "UserMessageCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2720,7 +2730,7 @@
           },
           {
             "in": "body",
-            "name":"userInfo",
+            "name":"messageInfo",
             "description": "Messages object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2987,7 +2997,7 @@
           },
           {
             "in": "body",
-            "name":"userInfo",
+            "name":"messageInfo",
             "description": "Messages object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4431,13 +4441,6 @@
             "type": "string"
           },
           {
-            "name": "vote_userId",
-            "in": "query",
-            "description": "发布投票用户ID",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "voteId",
             "in": "query",
             "description": "投票ID",
@@ -4471,58 +4474,13 @@
         }
       }
     },
-    "/user/{userId}/voteAndVoteDetail": {
-      "get": {
-        "tags": [
-          "vote"
-        ],
-        "summary": "Select vote And voteDetail Info",
-        "description": "get vote And voteDetail info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "当前登陆用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "voteId",
-            "in": "query",
-            "description": "投票ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/vote": {
       "post": {
         "tags": [
           "vote"
         ],
         "summary": "Administrator add vote",
-        "description": "",
+        "description": "Administrator add vote",
         "operationId": "Administrator add vote",
         "consumes": [
           "application/json"
@@ -4541,7 +4499,7 @@
           {
             "in": "body",
             "name":"voteInfo",
-            "description": "voteInfo object that needs to be added to the store",
+            "description": "Vote object that needs to be added to the store",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Vote"
@@ -4556,7 +4514,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -4588,142 +4545,6 @@
             "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/voteAndVoteDetail": {
-      "get": {
-        "tags": [
-          "vote"
-        ],
-        "summary": "Administrator select vote And voteDetail Info",
-        "description": "Administrator get vote And voteDetail info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "voteId",
-            "in": "query",
-            "description": "投票ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-
-    "/user/{userId}/voteDetail": {
-      "get": {
-        "tags": [
-          "voteDetail"
-        ],
-        "summary": "Select voteDetail Info",
-        "description": "get voteDetail info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "voteId",
-            "in": "query",
-            "description": "投票ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/voteDetail": {
-      "get": {
-        "tags": [
-          "voteDetail"
-        ],
-        "summary": "Administrator select voteDetail Info",
-        "description": "Administrator get voteDetail info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "voteId",
-            "in": "query",
-            "description": "投票ID",
-            "required": false,
-            "type": "string"
           },
           {
             "in": "query",
@@ -6152,16 +5973,17 @@
     },
     "UserVote": {
       "type": "object",
-      "voteDetailId": [
+      "required": [
         "voteId",
-        "messageCommentsId"
+        "option"
       ],
       "properties": {
-        "voteId": {
+        "_voteId": {
           "type": "string"
         },
-        "voteDetailId": {
-          "type": "string"
+        "option": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "xml": {
@@ -6304,7 +6126,7 @@
         "startTime",
         "endTime",
         "status",
-        "VoteDetail"
+        "option"
       ],
       "properties": {
         "info": {
@@ -6322,29 +6144,12 @@
         "status": {
           "type": "integer"
         },
-        "VoteDetail": {
-          "type": "array",
-          "items":{
-            "$ref": "#/definitions/VoteDetail"
-          }
-        }
-      },
-      "xml": {
-        "name": "vote"
-      }
-    },
-    "VoteDetail": {
-      "type": "object",
-      "required": [
-        "option"
-      ],
-      "properties": {
         "option": {
-          "type": "String"
+          "type": "Array"
         }
       },
       "xml": {
-        "name": "VoteDetail"
+        "name": "Vote"
       }
     },
     "ApplicationContact": {
