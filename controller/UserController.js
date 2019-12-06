@@ -102,7 +102,7 @@ const createUser = (req, res, next) => {
             userModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserInfo ' + error.message);
-                    reject({err:error});
+                    reject({err:error.message});
                 } else {
                     logger.info(' createUser createUserInfo ' + 'success');
                     if (result._doc) {
@@ -123,7 +123,7 @@ const createUser = (req, res, next) => {
             userDetailModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDetail ' + error.message);
-                    reject({err:error});
+                    reject({err:error.message});
                 } else {
                     if (result._doc) {
                         resolve(result._doc._id);

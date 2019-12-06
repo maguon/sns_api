@@ -7,13 +7,11 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
-const {CommentsModel} = require('../modules');
-const {CommentsTwoModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = MessageModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = MessageModel.find({status:sysConsts.INFO.status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -100,7 +98,8 @@ const createMessage = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let messageObj = bodyParams;
-    messageObj.status = sysConsts.INFO_STATUS.Status.available;
+    messageObj.status = sysConsts.INFO.status.available;
+    messageObj.comment_status = sysConsts.MESSAGE.comment_status.visible;
     messageObj.collectNum = 0;
     messageObj.commentsNum = 0;
     messageObj.agreeNum = 0;
@@ -129,13 +128,11 @@ const createMessage = (req, res, next) => {
 const updateMessageStatus = (req, res, next) => {
     let params = req.params;
     let queryMessge = MessageModel.find({});
-    let queryComments = CommentsModel.find({});
-    let queryCommentsTwo = CommentsTwoModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
             queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('deleteMessageToUser  userID format incorrect!');
+            logger.info('updateMessageStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -143,66 +140,22 @@ const updateMessageStatus = (req, res, next) => {
     if(params.messagesId){
         if(params.messagesId.length == 24){
             queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryComments.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
-            queryCommentsTwo.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
         }else{
-            logger.info('deleteMessageToUser  messagesId format incorrect!');
+            logger.info('updateMessageStatus  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-
-    const updateMessage = ()=>{
-        return new Promise(((resolve, reject) => {
-            MessageModel.updateOne(queryMessge,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateMessage ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteMessageToUser updateMessage ' + 'success');
-                    console.log('rows:',result);
-                    resolve(result);
-                }
-            })
-        }));
-    }
-    const updateReview = (resultInfo)=>{
-        return new Promise(((resolve, reject) => {
-            //同时删除该消息下的所有一級评论
-            CommentsModel.updateMany(queryComments,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateReview ' + error.message);
-                    reject({err:error});
-                } else {
-                    logger.info(' deleteMessageToUser updateReview ' + 'success');
-                    resolve(resultInfo);
-                }
-            })
-        }));
-    }
-    const updateReviewTwo = (resultInfo) =>{
-        return new Promise(()=>{
-            CommentsTwoModel.updateMany(queryCommentsTwo,{status:sysConsts.INFO_STATUS.Status.disable},function(error,result){
-                if (error) {
-                    logger.error(' deleteMessageToUser updateReviewTwo ' + error.message);
-                    resUtil.resInternalError(error,res);
-                } else {
-                    logger.info(' deleteMessageToUser updateReviewTwo ' + 'success');
-                    console.log('rows:',result);
-                    resUtil.resetUpdateRes(res,resultInfo,null);
-                    return next();
-                }
-            })
-        });
-    }
-    updateMessage()
-        .then(updateReview)
-        .then(updateReviewTwo)
-        .catch((reject)=>{
-            if(reject.err){
-                resUtil.resetFailedRes(res,reject.err);
-            }
-        })
+    MessageModel.updateOne(queryMessge,{status:sysConsts.INFO.status.disable},function(error,result){
+        if (error) {
+            logger.error(' updateMessageStatus updateMessage ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateMessageStatus updateMessage ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
 }
 const searchByRadius = (req, res, next) => {
     let params = req.query;

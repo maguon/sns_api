@@ -56,10 +56,6 @@
       "description": "MessageComments version and url management api (消息评论)"
     },
     {
-      "name": "messageCommentsTwo",
-      "description": "MessageCommentsⅡ version and url management api (消息二级评论)"
-    },
-    {
       "name": "vote",
       "description": "Vote version and url management api (投票信息)"
     },
@@ -1823,16 +1819,9 @@
           {
             "name": "userPraiseId",
             "in": "query",
-            "description": "点赞记录Id",
+            "description": "点赞ID",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "类型（1-消息,2-评论,3-二级评论）",
-            "required": false,
-            "type": "integer"
           },
           {
             "name": "messagesId",
@@ -1849,11 +1838,11 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsTwoId",
+            "name": "type",
             "in": "query",
-            "description": "二级评论Id",
+            "description": "点赞类型(1.动态 2.评论)",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "read_status",
@@ -1961,13 +1950,6 @@
             "type": "string"
           },
           {
-            "name": "type",
-            "in": "query",
-            "description": "类型（1-消息,2-评论,3-二级评论）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "messagesId",
             "in": "query",
             "description": "消息Id",
@@ -1982,11 +1964,11 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsTwoId",
+            "name": "type",
             "in": "query",
-            "description": "二级评论Id",
+            "description": "点赞类型(1.动态 2.评论)",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "read_status",
@@ -2774,7 +2756,13 @@
           },{
             "name": "type",
             "in": "query",
-            "description": "消息类型(1.文章 2.图片 3.视频 4.求助 )",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "carrier",
+            "in": "query",
+            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
           },{
@@ -2974,47 +2962,6 @@
       }
     },
     "/admin/{adminId}/messages": {
-      "post": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Administrator adds a new messages info",
-        "description": "",
-        "operationId": "administrator add Messages",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"messageInfo",
-            "description": "Messages object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Messages"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "messages"
@@ -3051,9 +2998,22 @@
             "required": false,
             "type": "integer"
           },{
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "carrier",
+            "in": "query",
+            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "status",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "文章状态（0-不可见，1-可见(默认)）",
             "required": false,
             "type": "integer"
           },
@@ -3184,7 +3144,7 @@
       }
     },
 
-    "/user/{userId}/messages/{messagesId}/messageComments": {
+    "/user/{userId}/comments": {
       "post": {
         "tags": [
           "messageComments"
@@ -3203,13 +3163,6 @@
             "name": "userId",
             "in": "path",
             "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
             "required": true,
             "type": "string"
           },
@@ -3233,7 +3186,7 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/userMessageComments": {
+    "/user/{userId}/userMessageComments": {
       "get": {
         "tags": [
           "messageComments"
@@ -3253,9 +3206,9 @@
           },
           {
             "name": "messagesId",
-            "in": "path",
+            "in": "query",
             "description": "消息ID",
-            "required": true,
+            "required": false,
             "type": "string"
           },{
             "name": "messageCommentsId",
@@ -3264,9 +3217,9 @@
             "required": false,
             "type": "string"
           },{
-            "name": "status",
+            "name": "type",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "评论类型(1.一级评论 2.二级评论)",
             "required": false,
             "type": "integer"
           },
@@ -3297,7 +3250,7 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/allMessageComments": {
+    "/user/{userId}/allMessageComments": {
       "get": {
         "tags": [
           "messageComments"
@@ -3317,9 +3270,9 @@
           },
           {
             "name": "messagesId",
-            "in": "path",
+            "in": "query",
             "description": "消息ID",
-            "required": true,
+            "required": false,
             "type": "string"
           },{
             "name": "messageCommentsId",
@@ -3328,9 +3281,9 @@
             "required": false,
             "type": "string"
           },{
-            "name": "status",
+            "name": "type",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "评论类型(1.一级评论 2.二级评论)",
             "required": false,
             "type": "integer"
           },
@@ -3416,119 +3369,7 @@
         }
       }
     },
-    "/user/{userId}/messageComments/{messageCommentsId}/status":{
-      "put": {
-        "tags": [
-          "messageComments"
-        ],
-        "summary": "Finds messageComments status and update",
-        "description": "Update messageComments status ",
-        "operationId": "update messageComments status by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "messageComments unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessageCommentsId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/messageComments": {
-      "post": {
-        "tags": [
-          "messageComments"
-        ],
-        "summary": "Administrator add a new messageComments info and update messages info",
-        "description": "",
-        "operationId": "administrator add messageComments",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"messageCommentsInfo",
-            "description": "messageComments object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MessageComments"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/userMessageComments": {
+    "/admin/{adminId}/MessageComments": {
       "get": {
         "tags": [
           "messageComments"
@@ -3548,879 +3389,58 @@
           },
           {
             "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "消息ID",
-            "required": true,
-            "type": "string"
-          },{
-            "name": "messageCommentsId",
             "in": "query",
-            "description": "评论ID",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messages/{messagesId}/allMessageComments": {
-      "get": {
-        "tags": [
-          "messageComments"
-        ],
-        "summary": "Administrator select messageComments Info",
-        "description": "Administrator get messageComments info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录操作人员ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "消息ID",
-            "required": true,
-            "type": "string"
-          },{
-            "name": "messageCommentsId",
-            "in": "query",
-            "description": "评论ID",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messageComments/{messageCommentsId}/readStatus": {
-      "put": {
-        "tags": [
-          "messageComments"
-        ],
-        "summary": "Administrator finds messageComments readStatus and update",
-        "description": "Administrator update messageComments readStatus ",
-        "operationId": "Administrator update messageComments readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "messageComments unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "MessageCommentsId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messageComments/{messageCommentsId}/status":{
-      "put": {
-        "tags": [
-          "messageComments"
-        ],
-        "summary": "Administrator finds messageComments status and update",
-        "description": "Administrator update messageComments status ",
-        "operationId": "Administrator update messageComments status by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "messageComments unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "MessageCommentsId not found"
-          }
-        }
-      }
-    },
-
-    "/user/{userId}/messages/{messagesId}/messageComments/{messageCommentsId}/messageCommentsTwo": {
-      "post": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Add a new messageCommentsTwo info and update messageComments info",
-        "description": "",
-        "operationId": "addMessageCommentsTwo",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
             "description": "userId",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
             "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
-            "required": true,
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "messageCommentsId",
-            "in": "path",
-            "description": "messageCommentsId",
-            "required": true,
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
             "type": "string"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "评论类型(1.一级评论 2.二级评论)",
+            "required": false,
+            "type": "integer"
           },
           {
-            "in": "body",
-            "name":"messageCommentsInfo",
-            "description": "messageComments object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MessageCommentsTwo"
-            }
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
           "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
+            "description": "Invalid params"
           }
         }
+      }
+    },
 
-      }
-    },
-    "/user/{userId}/messageComments/{messageCommentsId}/userMessageCommentsTwo": {
-      "get": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Select messageCommentsTwo Info",
-        "description": "get messageCommentsTwo info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "评论ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "query",
-            "description": "二級评论ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/messageComments/{messageCommentsId}/allMessageCommentsTwo": {
-      "get": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Select messageCommentsTwo Info",
-        "description": "get messageCommentsTwo info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "评论ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "query",
-            "description": "二級评论ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/messageCommentsTwo/{messageCommentsTwoId}/readStatus": {
-      "put": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Finds messageCommentsTwo readStatus and update",
-        "description": "Update messageCommentsTwo readStatus ",
-        "operationId": "update messageCommentsTwo readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "path",
-            "description": "messageCommentsTwo unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessageCommentsTwoId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/messageCommentsTwo/{messageCommentsTwoId}/status":{
-      "put": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Finds messageCommentsTwo status and update",
-        "description": "Update messageCommentsTwo status ",
-        "operationId": "update messageCommentsTwo status by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "path",
-            "description": "messageCommentsTwo unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MessageCommentsTwoId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/messages/{messagesId}/messageComments/{messageCommentsId}/messageCommentsTwo": {
-      "post": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Admin add messageCommentsTwo and update messageComments",
-        "description": "",
-        "operationId": "administrator addMessageCommentsTwo",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "messageCommentsId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"messageCommentsInfo",
-            "description": "messageComments object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MessageCommentsTwo"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      }
-    },
-    "/admin/{adminId}/user/{userId}/messageComments/{messageCommentsId}/userMessageCommentsTwo": {
-      "get": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Administrator select messageCommentsTwo Info",
-        "description": "Administrator get messageCommentsTwo info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录操作人员ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "评论ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "query",
-            "description": "二級评论ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messageComments/{messageCommentsId}/allMessageCommentsTwo": {
-      "get": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Administrator select messageCommentsTwo Info",
-        "description": "Administrator get messageCommentsTwo info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录操作人员ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsId",
-            "in": "path",
-            "description": "评论ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "query",
-            "description": "二級评论ID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "read_status",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messageCommentsTwo/{messageCommentsTwoId}/readStatus": {
-      "put": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Administrator finds messageCommentsTwo readStatus and update",
-        "description": "Administrator update messageCommentsTwo readStatus ",
-        "operationId": "administrator update messageCommentsTwo readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "path",
-            "description": "messageCommentsTwo unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "AdminUserId or MessageCommentsTwoId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/messageCommentsTwo/{messageCommentsTwoId}/status":{
-      "put": {
-        "tags": [
-          "messageCommentsTwo"
-        ],
-        "summary": "Administrator finds messageCommentsTwo status and update",
-        "description": "Administrator update messageCommentsTwo status ",
-        "operationId": "administrator update messageCommentsTwo status by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "admin unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "messageCommentsTwoId",
-            "in": "path",
-            "description": "messageCommentsTwo unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "MessageCommentsTwoId not found"
-          }
-        }
-      }
-    },
 
     "/user/{userId}/vote": {
       "get": {
@@ -5948,22 +4968,18 @@
       "type": "object",
       "required": [
         "type",
-        "messagesId",
-        "messageCommentsId",
-        "messageCommentsTwoId"
+        "_messageId",
+        "_messageCommentsId"
       ],
       "properties": {
         "type": {
           "type": "integer",
           "format": "int64"
         },
-        "messagesId": {
+        "_messageId": {
           "type": "string"
         },
-        "messageCommentsId": {
-          "type": "string"
-        },
-        "messageCommentsTwoId": {
+        "_messageCommentsId": {
           "type": "string"
         }
       },
@@ -6034,15 +5050,24 @@
       "type": "object",
       "required": [
         "type",
+        "carrier",
         "info",
         "address",
         "addressName",
         "addressReal",
+        "VisibleType",
         "label",
-        "media"
+        "media",
+        "location",
+        "locationName",
+        "locationReal"
       ],
       "properties": {
         "type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "carrier": {
           "type": "integer",
           "format": "int64"
         },
@@ -6058,6 +5083,10 @@
         "addressReal": {
           "type": "string"
         },
+        "VisibleType": {
+          "type": "integer",
+          "format": "int64"
+        },
         "label": {
           "type": "string"
         },
@@ -6066,6 +5095,15 @@
           "items":{
             "$ref": "#/definitions/MessagesMedia"
           }
+        },
+        "location": {
+          "type": "Array"
+        },
+        "locationName": {
+          "type": "string"
+        },
+        "locationReal": {
+          "type": "string"
         }
       },
       "xml": {
@@ -6093,29 +5131,28 @@
     "MessageComments": {
       "type": "object",
       "required": [
-        "commentsMsg"
+        "type",
+        "commentsMsg",
+        "_messageId",
+        "_messageCommentsId"
       ],
       "properties": {
+        "type": {
+          "type": "Integer",
+          "format": "int64"
+        },
         "commentsMsg": {
           "type": "String"
+        },
+        "_messageId": {
+          "type": "string"
+        },
+        "_messageCommentsId": {
+          "type": "string"
         }
       },
       "xml": {
         "name": "messageComments"
-      }
-    },
-    "MessageCommentsTwo": {
-      "type": "object",
-      "required": [
-        "commentsTwoMsg"
-      ],
-      "properties": {
-        "commentsTwoMsg": {
-          "type": "String"
-        }
-      },
-      "xml": {
-        "name": "messageCommentsTwo"
       }
     },
     "Vote": {

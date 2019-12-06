@@ -43,10 +43,6 @@ let MESSAGE_ID_NULL_ERROR ="该动态不存在！" ;
  */
 let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
 /**
- * The module for commentsTwo
- */
-let COMMENTSTWO_ID_NULL_ERROR ="该二級评论不存在！" ;
-/**
  * The module for vote
  */
 let VOTE_ID_NULL_ERROR ="投票信息不存在！" ;
@@ -100,8 +96,6 @@ module.exports = {
     MESSAGE_ID_NULL_ERROR,
 
     COMMENTS_ID_NULL_ERROR,
-
-    COMMENTSTWO_ID_NULL_ERROR,
 
     VOTE_ID_NULL_ERROR,
 

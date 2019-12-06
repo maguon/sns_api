@@ -8,7 +8,6 @@ exports.UserLocationCollectionsModel = require('./schemas/UserLocationCollection
 exports.UserMessageCollectionsModel = require('./schemas/UserMessageCollectionSchema').UserMessageCollectionsModel;
 exports.MessageModel = require('./schemas/MessageSchema').MessageModel;
 exports.MessageCommentsModel = require('./schemas/MessageCommentsSchema').MessageCommentsModel;
-exports.MessageCommentsTwoModel = require('./schemas/MessageCommentsTwoSchema').MessageCommentsTwoModel;
 exports.VoteModel = require('./schemas/VoteSchema').VoteModel;
 exports.ApplicationContactModel = require('./schemas/ApplicationContactSchema').ApplicationContactModel;
 exports.SystemMessageModel = require('./schemas/SystemMessageSchema').SystemMessageModel;

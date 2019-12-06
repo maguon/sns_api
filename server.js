@@ -3,7 +3,6 @@ const restify = require('restify');
 const Errors = require('restify-errors');
 const corsMiddleware = require('restify-cors-middleware')
 
-const resUtil = require('./util/ResponseUtil');
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
@@ -17,7 +16,6 @@ import {UserMessageCollectionsController} from './controller';
 import {UserPraiseController} from './controller';
 import {MessageController} from './controller';
 import {MessageCommentsController} from './controller';
-import {MessageCommentsTwoController} from './controller';
 import {VoteController} from  './controller';
 import {ApplicationContactController} from  './controller';
 import {SystemMessageController} from  './controller';
@@ -147,7 +145,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
 
-    server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraise);
+    server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraiseByAdmin);
     /**
      userVote   -用户投票记录
      */
@@ -184,37 +182,17 @@ const createServer=()=>{
     server.del({path:'/api/user/:userId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessage);
 
     server.get('/api/admin/:adminId/messages', MessageController.getMessage);
-    server.post({path:'/api/admin/:adminId/messages',contentType: 'application/json'}, MessageController.createMessage);
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
      /**
      messageComments   - 评论
      */
-    server.get('/api/user/:userId/messages/:messagesId/userMessageComments', MessageCommentsController.getUserMessageComments);
-    server.get('/api/user/:userId/messages/:messagesId/allMessageComments', MessageCommentsController.getAllMessageComments);
-    server.post({path:'/api/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
+    server.get('/api/user/:userId/userMessageComments', MessageCommentsController.getUserMessageComments);
+    server.get('/api/user/:userId/allMessageComments', MessageCommentsController.getAllMessageComments);
+    server.post({path:'/api/user/:userId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
     server.put({path:'/api/user/:userId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
-    server.put({path:'/api/user/:userId/comments/:commentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateUserMessageCommentsStatus);
 
-    server.get('/api/admin/:adminId/user/:userId/messages/:messagesId/userMessageComments', MessageCommentsController.getUserMessageComments);
-    server.get('/api/admin/:adminId/messages/:messagesId/allMessageComments', MessageCommentsController.getAllMessageComments);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
-    server.put({path:'/api/admin/:adminId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
-    server.put({path:'/api/admin/:adminId/comments/:commentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateAdminMessageCommentsStatus);
-    /**
-     messageCommentsTwo   - 二級评论
-     */
-    server.get('/api/user/:userId/comments/:commentsId/userMessageCommentsTwo', MessageCommentsTwoController.getUserMessageCommentsTwo);
-    server.get('/api/user/:userId/comments/:commentsId/allMessageCommentsTwo', MessageCommentsTwoController.getAllMessageCommentsTwo);
-    server.post({path:'/api/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, MessageCommentsTwoController.createMessageCommentsTwo);
-    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
-    server.put({path:'/api/user/:userId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateUserMessageCommentsTwo);
-
-    server.get('/api/admin/:adminId/user/:userId/comments/:commentsId/userMessageCommentsTwo', MessageCommentsTwoController.getUserMessageCommentsTwo);
-    server.get('/api/admin/:adminId/comments/:commentsId/allMessageCommentsTwo', MessageCommentsTwoController.getAllMessageCommentsTwo);
-    server.post({path:'/api/admin/:adminId/user/:userId/messages/:messagesId/comments/:commentsId/commentsTwo',contentType: 'application/json'}, MessageCommentsTwoController.createMessageCommentsTwo);
-    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/readStatus',contentType: 'application/json'} ,MessageCommentsTwoController.updateReadStatus);
-    server.put({path:'/api/admin/:adminId/commentsTwo/:commentsTwoId/status',contentType: 'application/json'} ,MessageCommentsTwoController.updateAdminMessageCommentsTwo);
+    server.get('/api/admin/:adminId/MessageComments', MessageCommentsController.getMessageCommentsByAdmin);
     /**
      vote      - 投票信息
      */

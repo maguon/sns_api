@@ -38,22 +38,24 @@ const USER ={
 }
 const MESSAGE ={
     type:{
-        text:1,//文字
+        article:1,//文章
+        help:2//求助
+    },
+    carrier:{
+        text:1,//文本
         pictures:2,//图片
         video:3,//视频
-        help:4//求助
+        help:4//地理位置
+    },
+    comment_status:{
+        visible:1,//可见的
+        invisible:2//不可见
     }
 }
 const COUMMENT ={
     type:{
         firstCoumment:1,//一级评论
         twoCoumment:2//二级评论
-    }
-}
-const PRAISE ={
-    type:{
-        message:1,//消息
-        comments:2//评论
     }
 }
 const VOTE ={
@@ -69,6 +71,5 @@ module.exports = {
     USER,
     MESSAGE,
     COUMMENT,
-    PRAISE,
     VOTE
 }
