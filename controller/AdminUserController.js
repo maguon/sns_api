@@ -54,7 +54,7 @@ const getAdminUser = (req, res, next) => {
 const createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
     let adminUserObj = bodyParams;
-    adminUserObj.status = sysConsts.INFO_STATUS.Status.available;
+    adminUserObj.status = sysConsts.INFO.status.available;
     if(bodyParams.password){
         console.log(bodyParams.password);
         bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
