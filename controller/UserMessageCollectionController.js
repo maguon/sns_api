@@ -11,7 +11,7 @@ const {UserMessageCollectionsModel} = require('../modules');
 const getUserMessageCollections = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserMessageCollectionsModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = UserMessageCollectionsModel.find({status:sysConsts.INFO.status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -51,7 +51,7 @@ const createUserMessageCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let userMessageCollectionsObj = bodyParams;
-    userMessageCollectionsObj.status = sysConsts.INFO_STATUS.Status.available;
+    userMessageCollectionsObj.status = sysConsts.INFO.status.available;
     if(path.userId){
         if(path.userId.length == 24){
             userMessageCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);

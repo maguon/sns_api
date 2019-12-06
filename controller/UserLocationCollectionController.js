@@ -11,7 +11,7 @@ const {UserLocationCollectionsModel} = require('../modules');
 const getUserLocationCollections = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserLocationCollectionsModel.find({status:sysConsts.INFO_STATUS.Status.available});
+    let query = UserLocationCollectionsModel.find({status:sysConsts.INFO.status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
@@ -51,7 +51,7 @@ const createUserLocationCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let userLocationCollectionsObj = bodyParams;
-    userLocationCollectionsObj.status = sysConsts.INFO_STATUS.Status.available;
+    userLocationCollectionsObj.status = sysConsts.INFO.status.available;
     if(path.userId){
         if(path.userId.length == 24){
             userLocationCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
