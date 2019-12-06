@@ -5055,7 +5055,7 @@
         "address",
         "addressName",
         "addressReal",
-        "VisibleType",
+        "addressShow",
         "label",
         "media",
         "location",
@@ -5083,7 +5083,7 @@
         "addressReal": {
           "type": "string"
         },
-        "VisibleType": {
+        "addressShow": {
           "type": "integer",
           "format": "int64"
         },

@@ -9,7 +9,7 @@ const messageSchema = new Schema({
         address       : {type:Array,index: {type: '2d',sparse: true},display: '发布文章-地理位置(格式： [纬度，经度])'},
         addressName   : {type:String,default:'',trim:true,display: '发布文章-地理位置名称'},
         addressReal   : {type:String,default:'',trim:true,display: '发布文章-真实地址'},
-        VisibleType   : {type:Number,default:0,min:0,max:3,display: '发布文章-位置显示状态(0-不可见，1-可见)'},
+        addressShow   : {type:Number,default:0,min:0,max:3,display: '发布文章-位置显示状态(0-不可见，1-可见)'},
         collectNum    : {type:Number,default:0,display: '收藏次数'},
         commentsNum   : {type:Number,default:0,display: '评论次数'},
         agreeNum      : {type:Number,default:0,display: '点赞次数'},
