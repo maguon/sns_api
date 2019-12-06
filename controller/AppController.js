@@ -46,7 +46,7 @@ const getApp = (req, res, next) => {
 const createApp = (req, res, next) => {
     let bodyParams = req.body;
     let appObj = bodyParams
-    appObj.status = sysConsts.INFO_STATUS.Status.available;
+    appObj.status = sysConsts.INFO.status.available;
     let appModel = new AppModel(appObj)
     appModel.save(function(error,result){
         if (error) {

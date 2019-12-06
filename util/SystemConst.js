@@ -16,10 +16,14 @@ const DRIVE_TYPE = {
     N:14,
     P:15
 }
-const INFO_STATUS = {
-    Status: {
+const INFO = {
+    status: {
         disable:0,//停用
         available:1//可用
+    },
+    read_status:{
+        unread:0,//未读
+        read:1//已读
     }
 }
 const USER ={
@@ -37,21 +41,19 @@ const MESSAGE ={
         text:1,//文字
         pictures:2,//图片
         video:3,//视频
-        help:4,//求助
-        voting:5//投票
+        help:4//求助
     }
 }
-const READ_STATUS ={
-    status:{
-        not_read:0,//未读
-        read:1//已读
+const COUMMENT ={
+    type:{
+        firstCoumment:1,//一级评论
+        twoCoumment:2//二级评论
     }
 }
 const PRAISE ={
     type:{
         message:1,//消息
-        comments:2,//评论
-        commentsTwo:3//二级评论
+        comments:2//评论
     }
 }
 const VOTE ={
@@ -63,10 +65,10 @@ const VOTE ={
 }
 module.exports = {
     DRIVE_TYPE,
-    INFO_STATUS,
+    INFO,
     USER,
     MESSAGE,
-    READ_STATUS,
+    COUMMENT,
     PRAISE,
     VOTE
 }
