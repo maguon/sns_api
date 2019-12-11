@@ -3551,6 +3551,61 @@
         }
       }
     },
+    "/admin/{adminId}/vote/{voteId}": {
+      "put": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Finds voteInfo and update",
+        "description": "Update vote info",
+        "operationId": "update vote by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "path",
+            "description": "vote id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteInfo",
+            "in": "body",
+            "description": "voteInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Vote"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "VoteId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/applicationContact": {
       "post": {

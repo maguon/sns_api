@@ -71,8 +71,33 @@ const createVote = (req, res, next) => {
         }
     })
 }
-
+const updateVote = (req, res, next) =>{
+    let bodyParams = req.body;
+    let query = VoteModel.find();
+    let params = req.params;
+    if(params.voteId ){
+        if(params.voteId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId ));
+        }else{
+            logger.info('updateVote voteId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    VoteModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateVote ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateVote ' + 'success');
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getVote,
-    createVote
+    createVote,
+    updateVote
 };
