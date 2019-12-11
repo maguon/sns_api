@@ -3,64 +3,61 @@ const mongoose = require('mongoose');
 const systemMsg = require('../util/SystemMsg');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
-const logger = serverLogger.createLogger('UserDetailController');
+const logger = serverLogger.createLogger('UserDriveController');
 
-const {UserDetailModel} = require('../modules');
+const {UserDriveModel} = require('../modules');
 
-const getUserDetail = (req, res, next) => {
+const getUserDrive = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = UserDetailModel.find({});
+    let query = UserDriveModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserDetail  userID format incorrect!');
+            logger.info('getUserDrive  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userDetailId){
-        if(params.userDetailId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
+    if(params.userDriveId){
+        if(params.userDriveId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDriveId));
         }else{
-            logger.info('getUserDetail  userDetailID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.USER_DETAIL_ID_NULL_ERROR);
+            logger.info('getUserDrive  userDriveId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.USER_DRIVE_ID_NULL_ERROR);
             return next();
         }
     }
     if(params.sex){
         query.where('sex').equals(params.sex);
     }
-    if(params.nickName){
-        query.where('nick_name').equals({"$regex" : params.nickName,"$options":"$ig"});
+    if(params.truename){
+        query.where('truename').equals(params.truename);
     }
-    if(params.realName){
-        query.where('real_name').equals({"$regex" : params.realName,"$options":"$ig"});
-    }
-    if(params.cityName){
-        query.where('city_name').equals({"$regex" : params.cityName,"$options":"$ig"});
+    if(params.drivingType){
+        query.where('drivingType').equals(params.drivingType);
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserDetail ' + error.message);
+            logger.error(' getUserDrive ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserDetail ' + 'success');
+            logger.info(' getUserDrive ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const updateUserDetailInfo = (req, res, next) => {
+const updateUserDriveInfo = (req, res, next) => {
     let bodyParams = req.body;
-    let query = UserDetailModel.find({});
+    let query = UserDriveModel.find({});
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateUserDetailInfo  userID format incorrect!');
+            logger.info('updateUserDriveInfo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -69,41 +66,41 @@ const updateUserDetailInfo = (req, res, next) => {
         if(params.userDetailId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
         }else{
-            logger.info('updateUserDetailInfo  userDetailID format incorrect!');
+            logger.info('updateUserDriveInfo  userDetailID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);
             return next();
         }
     }
-    UserDetailModel.updateOne(query,bodyParams,function(error,result){
+    UserDriveModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateUserDetailInfo ' + error.message);
+            logger.error(' updateUserDriveInfo ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateUserDetailInfo ' + 'success');
+            logger.info(' updateUserDriveInfo ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
-const updateAvatarImage = (req, res, next) => {
+const updateAccordingToUserID = (req, res, next) => {
     let bodyParams = req.body;
-    let query = UserDetailModel.find({});
+    let query = UserDriveModel.find({});
     let params = req.params;
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateAvatarImage  userID format incorrect!');
+            logger.info('updateAccordingToUserID  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    UserDetailModel.updateOne(query,bodyParams,function(error,result){
+    UserDriveModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateAvatarImage ' + error.message);
+            logger.error(' updateAccordingToUserID ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateAvatarImage ' + 'success');
+            logger.info(' updateAccordingToUserID ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -111,7 +108,7 @@ const updateAvatarImage = (req, res, next) => {
 }
 
 module.exports = {
-    getUserDetail,
-    updateUserDetailInfo,
-    updateAvatarImage
+    getUserDrive,
+    updateUserDriveInfo,
+    updateAccordingToUserID
 };

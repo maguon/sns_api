@@ -9,12 +9,13 @@ const DRIVE_TYPE = {
     C2:7,
     C3:8,
     C4:9,
-    D:10,
-    E:11,
-    F:12,
-    M:13,
-    N:14,
-    P:15
+    C5:10,
+    D:11,
+    E:12,
+    F:13,
+    M:14,
+    N:15,
+    P:16
 }
 const INFO = {
     status: {

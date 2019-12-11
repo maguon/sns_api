@@ -9,6 +9,7 @@ const logger = serverLogger.createLogger('Server');
 import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
+import {UserDriveController} from './controller';
 import {UserRelationController} from './controller';
 import {UserVoteController} from './controller';
 import {UserLocationCollectionsController} from './controller';
@@ -98,29 +99,31 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId/status',contentType: 'application/json'} ,AdminUserController.updateAdminUserStatus);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
     /**
-     user   -用户管理
+     user_info   -用户管理
      */
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
     server.get('/api/user', UserController.getUser);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
-    server.put({path:'/api/user/:userId',contentType: 'application/json'} ,UserController.updateUserInfo);
+    server.put({path:'/api/user/:userId/type',contentType: 'application/json'} ,UserController.updateUserType);
     server.put({path:'/api/user/:userId/password',contentType: 'application/json'},UserController.updatePassword);
     server.put({path:'/api/user/:userId/phone',contentType: 'application/json'},UserController.updatePhone);
-    server.put({path:'/api/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
+    server.put({path:'/api/user/:userId/authStatus',contentType: 'application/json'} ,UserController.updateUserAuthStatus);
 
-    server.get('/api/admin/:adminId/user', UserController.getUser);
-    server.get('/api/admin/:adminId/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
+    server.get('/api/admin/:adminId/user', UserController.getUserByAdmian);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
     /**
      user_detail    -用户详细信息
      */
     server.get('/api/user/:userId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/user/:userId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
-    server.put({path:'/api/user/:userId/updateDetail',contentType: 'application/json'} ,UserDetailController.updateAccordingToUserID);
     server.put({path:'/api/user/:userId/avatarImage',contentType: 'application/json'},UserDetailController.updateAvatarImage);
+    /**
+     user_drive    -用户驾驶信息
+     */
+    server.get('/api/user/:userId/userDrive', UserDriveController.getUserDrive);
+    server.put({path:'/api/user/:userId/userDrive/:userDriveId',contentType: 'application/json'} ,UserDriveController.updateUserDriveInfo);
 
-    server.get('/api/admin/:adminId/userDetail', UserDetailController.getUserDetail);
     /**
      userRelation    -用户关系
      */

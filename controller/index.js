@@ -1,8 +1,8 @@
-require('events').EventEmitter.defaultMaxListeners = 100;
-exports.AppController = require('./AppController');
+require('events').EventEmitter.defaultMaxListeners = 1000;
 exports.AdminUserController = require('./AdminUserController');
 exports.UserController = require('./UserController');
 exports.UserDetailController = require('./UserDetailController');
+exports.UserDriveController = require('./UserDriveController');
 exports.UserRelationController = require('./UserRelationController');
 exports.UserPraiseController = require('./UserPraiseController');
 exports.UserVoteController = require('./UserVoteController');
@@ -17,3 +17,4 @@ exports.PrivacySettingsController = require('./PrivacySettingsController');
 exports.NotificationSettingsController = require('./NotificationSettingsController');
 exports.BlacklistController = require('./BlacklistController');
 exports.AboutController = require('./AboutController');
+exports.AppController = require('./AppController');

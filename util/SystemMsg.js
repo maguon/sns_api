@@ -17,6 +17,10 @@ let USER_DETAIL_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 let USER_OLD_PASSWORD_ERROR = "原密码有误！";
 let USER_NEW_PASSWORD_ERROR = "新密码有误！";
 /**
+ * The module for userDrive
+ */
+let USER_DRIVE_ID_NULL_ERROR ="该用户驾驶信息不存在！" ;
+/**
  * The module for userRelation
  */
 let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
@@ -82,6 +86,8 @@ module.exports = {
     USER_DETAIL_ID_NULL_ERROR,
     USER_OLD_PASSWORD_ERROR,
     USER_NEW_PASSWORD_ERROR,
+
+    USER_DRIVE_ID_NULL_ERROR,
 
     RELATION_ID_NULL_ERROR,
 

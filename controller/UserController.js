@@ -10,6 +10,7 @@ const logger = serverLogger.createLogger('UserController');
 
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
+const {UserDriveModel} = require('../modules');
 
 const getUser = (req, res, next) => {
     let path = req.params;
@@ -24,20 +25,11 @@ const getUser = (req, res, next) => {
             return next();
         }
     }
-    if(params.userDetailId){
-        if(params.userDetailId.length == 24){
-            query.where('_userDetailId').equals(mongoose.mongo.ObjectId(params.userDetailId));
-        }else{
-            logger.info('getUser userDetailID format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
-            return next();
-        }
-    }
     if(params.phone){
         query.where('phone').equals(params.phone);
     }
-    if(params.nikename){
-        query.where('nikename').equals(params.nikename);
+    if(params.nickName){
+        query.where('nick_name').equals({"$regex" : params.nickName,"$options":"$ig"});
     }
     if(params.status){
         query.where('status').equals(params.status);
@@ -62,19 +54,93 @@ const getUser = (req, res, next) => {
         }
     });
 }
-const getUserInfoAndDetail = (req, res, next) => {
-    let params = req.params;
+const getUserByAdmian = (req, res, next) => {
+    let params = req.query;
     let query = UserModel.find({},{password:0});
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('getUser userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    if(params.phone){
+        query.where('phone').equals(params.phone);
+    }
+    if(params.sex){
+        query.where('sex').equals(params.sex);
+    }
+    if(params.nickName){
+        query.where('nick_name').equals({"$regex" : params.nickName,"$options":"$ig"});
+    }
+    if(params.cityName){
+        query.where('city_name').equals({"$regex" : params.cityName,"$options":"$ig"});
+    }
+    if(params.drivingType){
+        query.where('driving_type').equals(params.drivingType);
+    }
+    if(params.createDateStart){
+        query.where('created_at').equals({$gte:params.createDateStart});
+    }
+    if(params.createDateEnd){
+        query.where('created_at').equals({$lte:params.createDateEnd});
+    }
+    if(params.status){
+        query.where('status').equals(params.status);
+    }
+    if(params.auth_status){
+        query.where('auth_status').equals(params.auth_status);
+    }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.populate({path:'_userDetailId'}).populate({path:'_userDriveId'}).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserByAdmian ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getUserByAdmian ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+
+}
+const getUserInfoAndDetail = (req, res, next) => {
+    let params = req.params;
+    let aggregate_limit = [];
+    if(params.userId){
+        if(params.userId.length == 24){
+            aggregate_limit.push({
+                $match: {
+                    _id :  mongoose.mongo.ObjectId(params.userId)
+                }
+            });
         }else{
             logger.info('getUserInfoAndDetail userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    query.populate({path:'_userDetailId'}).exec((error,rows)=> {
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_details",
+            localField:"_userDetailId",
+            foreignField:"_id",
+            as:"user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_drive_infos",
+            localField:"_userDriveId",
+            foreignField:"_id",
+            as:"user_drive_info"
+        }
+    });
+    UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserInfoAndDetail ' + error.message);
             resUtil.resInternalError(error,res);
@@ -97,7 +163,7 @@ const createUser = (req, res, next) => {
     userObj.status = sysConsts.USER.status.available;
     userObj.auth_status = sysConsts.USER.auth_status.uncertified;
     const createUserInfo = () =>{
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             let userModel = new UserModel(userObj);
             userModel.save(function(error,result){
                 if (error) {
@@ -113,18 +179,18 @@ const createUser = (req, res, next) => {
                     }
                 }
             })
-        }));
+        });
     }
     const createUserDetail = () =>{
         return new Promise((resolve,reject)=>{
             let userDetailModel = new UserDetailModel();
             userDetailModel._userId = userId;
-            userDetailModel.status = sysConsts.INFO.status.available;
             userDetailModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDetail ' + error.message);
                     reject({err:error.message});
                 } else {
+                    logger.info(' createUser createUserDetail ' + 'success');
                     if (result._doc) {
                         resolve(result._doc._id);
                     }else{
@@ -134,14 +200,36 @@ const createUser = (req, res, next) => {
             });
         });
     }
-    const updateUserInfo = (userDetailId) =>{
+    const createUserDrive = (userDetailId) =>{
+        return new Promise((resolve,reject)=>{
+            let userDriveModel = new UserDriveModel();
+            userDriveModel._userId = userId;
+            userDriveModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUser createUserDrive ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUser createUserDrive ' + 'success');
+                    if (result._doc) {
+                        let updateInfo={
+                            userDetailId : userDetailId,
+                            userDriveId: result._doc._id
+                        }
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.USER_DRIVE_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    const updateUserInfo = (updateInfo) =>{
         return new Promise((() => {
             let query = UserModel.find({});
             if(userId){
                 query.where('_id').equals(userId);
             }
-
-            UserModel.updateOne(query,{_userDetailId:userDetailId},function(error,result){
+            UserModel.updateOne(query,{_userDetailId:updateInfo.userDetailId,_userDriveId:updateInfo.userDriveId},function(error,result){
                 if (error) {
                     logger.error(' createUser updateUserInfo ' + error.message);
                     resUtil.resInternalError(error);
@@ -155,6 +243,7 @@ const createUser = (req, res, next) => {
     }
     createUserInfo()
         .then(createUserDetail)
+        .then(createUserDrive)
         .then(updateUserInfo)
         .catch((reject)=>{
             if(reject.err){
@@ -164,7 +253,7 @@ const createUser = (req, res, next) => {
             }
         });
 }
-const updateUserInfo = (req, res, next) => {
+const updateUserType = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
     let params = req.params;
@@ -172,17 +261,17 @@ const updateUserInfo = (req, res, next) => {
         if(params.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('updateUserInfo userID format incorrect!');
+            logger.info('updateUserType userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
     UserModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateUserInfo ' + error.message);
+            logger.error(' updateUserType ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateUserInfo ' + 'success');
+            logger.info(' updateUserType ' + 'success');
             console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
@@ -260,7 +349,6 @@ const updatePhone = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
     let params = req.params;
-    let reqQuery = req.query;
     if(params.userId){
         if(params.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
@@ -339,6 +427,31 @@ const updateUserStatus = (req, res, next) => {
         }
     })
 }
+const updateUserAuthStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserModel.find({});
+    let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateUserAuthStatus userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    UserModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateUserAuthStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateUserAuthStatus ' + 'success');
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
     let UserId;
@@ -374,7 +487,7 @@ const userLogin = (req, res, next) => {
             UserId = userInfo._doc._id.toString();
             let user = {
                 userId : userInfo._doc._id.toString(),
-                userName : userInfo.nikename,
+                userName : userInfo.nickName,
                 status : userInfo.status,
                 type: userInfo.type
             }
@@ -431,11 +544,13 @@ const userLogin = (req, res, next) => {
 }
 module.exports = {
     getUser,
+    getUserByAdmian,
     getUserInfoAndDetail,
     createUser,
-    updateUserInfo,
+    updateUserType,
     updatePassword,
     updatePhone,
     updateUserStatus,
+    updateUserAuthStatus,
     userLogin
 };

@@ -441,19 +441,15 @@
             "description": "用户详细信息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "phone",
             "in": "query",
             "description": "用户电话",
             "required": false,
             "type": "integer"
-          },{
-            "name": "nikename",
-            "in": "query",
-            "description": "用户昵称",
-            "required": false,
-            "type": "string"
-          },{
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -518,14 +514,14 @@
         }
       }
     },
-    "/user/{userId}": {
+    "/user/{userId}/type": {
       "put": {
         "tags": [
           "user"
         ],
-        "summary": "Finds userInfo and update",
-        "description": "Update user info",
-        "operationId": "update user info by id",
+        "summary": "Finds userType and update",
+        "description": "Update user Type",
+        "operationId": "update user Type by id",
         "produces": [
           "application/json"
         ],
@@ -543,7 +539,7 @@
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserType"
             }
           }
         ],
@@ -553,7 +549,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/User"
+                "$ref": "#/definitions/UserType"
               }
             }
           },
@@ -645,13 +641,13 @@
         }
       }
     },
-    "/user/{userId}/status":{
+    "/user/{userId}/authStatus":{
       "put": {
         "tags": [
           "user"
         ],
-        "summary": "Finds userInfo messages status and update",
-        "description": "Updates userInfo messages status",
+        "summary": "Finds userInfo status and update",
+        "description": "Updates userInfo status",
         "operationId": "Update user status",
         "produces": [
           "application/json"
@@ -670,7 +666,7 @@
             "description": "status(0 or 1)",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Status"
+              "$ref": "#/definitions/AuthStatus"
             }
           }
         ],
@@ -717,19 +713,59 @@
             "description": "用户ID",
             "required": false,
             "type": "string"
-          },{
-            "name": "userDetailId",
+          },
+          {
+            "name": "phone",
             "in": "query",
-            "description": "用户详细信息ID",
+            "description": "电话",
             "required": false,
-            "type": "string"
-          },{
-            "name": "nikename",
+            "type": "integer"
+          },
+          {
+            "name": "sex",
+            "in": "query",
+            "description": "性别（0-女 1-男）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "nickName",
             "in": "query",
             "description": "用户昵称",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "城市",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "drivingType",
+            "in": "query",
+            "description": "驾照类型",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "注册时间（始）",
+            "required": false,
+            "type": "string"
+
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "注册时间（终）",
+            "required": false,
+            "type": "string"
+
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -739,12 +775,6 @@
             "name": "auth_status",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "type",
-            "in": "query",
-            "description": "用户类型（1-普通，2-会员）",
             "required": false,
             "type": "integer"
           },
@@ -768,46 +798,13 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/userInfoAndDetail": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Administrators select userInfo and userDetail",
-        "description": "Administrators get userInfo and userDetail",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "当前登录管理员ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
     "/admin/{adminId}/user/{userId}/status":{
       "put": {
         "tags": [
           "user"
         ],
-        "summary": "Administrator finds userInfo messages status and update",
-        "description": "Administrator updates userInfo messages status",
+        "summary": "Administrator finds userInfo status and update",
+        "description": "Administrator updates userInfo status",
         "operationId": "administrator update user status by adminId",
         "produces": [
           "application/json"
@@ -830,7 +827,7 @@
           {
             "name": "status",
             "in": "body",
-            "description": "status(0 or 1)",
+            "description": "status(1-正常，2-禁言，3-停用，4-注销)",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
@@ -881,25 +878,6 @@
             "description": "用户详细信息ID",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "sex",
-            "in": "query",
-            "description": "性别0:女 1:男",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "truename",
-            "in": "query",
-            "description": "真实姓名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "drivingType",
-            "in": "query",
-            "description": "驾驶证类型",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -930,54 +908,6 @@
           },
           {
             "name": "userDetailId",
-            "in": "path",
-            "description": "UserDetail unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userDetailInfo",
-            "in": "body",
-            "description": "UserDetail object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserDetail"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserDetail"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserDetailId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/updateDetail": {
-      "put": {
-        "tags": [
-          "userDetail"
-        ],
-        "summary": "Finds userDetail info and update",
-        "description": "Update userDetail info",
-        "operationId": "update userDetail info by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
             "in": "path",
             "description": "UserDetail unique id",
             "required": true,
@@ -1060,60 +990,91 @@
         }
       }
     },
-    "/admin/{adminId}/userDetail": {
+
+    "/user/{userId}/userDrive": {
       "get": {
         "tags": [
-          "userDetail"
+          "userDrive"
         ],
-        "summary": "Administrators select userDetail info",
-        "description": "Administrators get userDetail info",
+        "summary": "Select userDrive info",
+        "description": "Get userDrive info",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "adminId",
+            "name": "userId",
             "in": "path",
-            "description": "当前登录管理员ID",
+            "description": "用户ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "userDetailId",
+            "name": "userDriveId",
             "in": "query",
-            "description": "用户详细信息ID",
+            "description": "用户驾驶信息ID",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "_userId",
-            "in": "query",
-            "description": "用户ID",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "sex",
-            "in": "query",
-            "description": "性别0:女 1:男",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "truename",
-            "in": "query",
-            "description": "真实姓名",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "drivingType",
-            "in": "query",
-            "description": "驾驶证类型",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
           "400": {
             "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userDrive/{userDriveId}": {
+      "put": {
+        "tags": [
+          "userDrive"
+        ],
+        "summary": "Finds userDrive info and update",
+        "description": "Update userDrive info",
+        "operationId": "update userDrive info by userDriveId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userDriveId",
+            "in": "path",
+            "description": "UserDrive unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userDriveInfo",
+            "in": "body",
+            "description": "UserDrive object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDrive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDrive"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDriveId not found"
           }
         }
       }
@@ -4802,7 +4763,7 @@
         }
       },
       "xml": {
-        "name": "admin"
+        "name": "AdminUser"
       }
     },
     "UserLogin": {
@@ -4828,7 +4789,6 @@
       "required": [
         "phone",
         "password",
-        "nikename",
         "auth_status",
         "type"
       ],
@@ -4840,29 +4800,38 @@
         "password": {
           "type": "string"
         },
-        "nikename": {
-          "type": "string"
-        },
         "type": {
           "type": "integer",
           "format": "int64"
         }
       },
       "xml": {
-        "name": "user"
+        "name": "User"
+      }
+    },
+    "UserType": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "UserType"
       }
     },
     "UserDetail": {
       "type": "object",
       "required": [
         "sex",
-        "birthday",
-        "realmname",
-        "intro",
-        "label",
-        "truename",
-        "avatar",
-        "drivingType"
+        "nick_name",
+        "real_name",
+        "city_name",
+        "intro"
       ],
       "properties": {
         "sex": {
@@ -4873,31 +4842,40 @@
             1
           ]
         },
-        "birthday": {
-          "type": "String",
-          "format": "YYYY_MM_DD"
+        "nick_name": {
+          "type": "string"
         },
-        "realmname": {
+        "real_name": {
+          "type": "string"
+        },
+        "city_name": {
           "type": "string"
         },
         "intro": {
           "type": "string"
-        },
-        "label": {
-          "type": "string"
-        },
-        "truename": {
-          "type": "string"
-        },
-        "avatar": {
-          "type": "string"
-        },
-        "drivingType": {
-          "type": "integer"
         }
       },
       "xml": {
-        "name": "userDetail"
+        "name": "UserDetail"
+      }
+    },
+    "UserDrive": {
+      "type": "object",
+      "required": [
+        "driving_type",
+        "certification_date"
+      ],
+      "properties": {
+        "driving_type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "certification_date": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserDrive"
       }
     },
     "AvatarImage": {
@@ -4961,7 +4939,7 @@
         }
       },
       "xml": {
-        "name": "userRelation"
+        "name": "Relation"
       }
     },
     "UserPraise": {
@@ -4984,7 +4962,7 @@
         }
       },
       "xml": {
-        "name": "userPraise"
+        "name": "UserPraise"
       }
     },
     "UserVote": {
@@ -5003,7 +4981,7 @@
         }
       },
       "xml": {
-        "name": "userVote"
+        "name": "UserVote"
       }
     },
     "UserLocationCollection": {
@@ -5029,7 +5007,7 @@
         }
       },
       "xml": {
-        "name": "userLocationCollection"
+        "name": "UserLocationCollection"
       }
     },
     "UserMessageCollection": {
@@ -5043,7 +5021,7 @@
         }
       },
       "xml": {
-        "name": "userMessageCollection"
+        "name": "UserMessageCollection"
       }
     },
     "Messages": {
@@ -5152,7 +5130,7 @@
         }
       },
       "xml": {
-        "name": "messageComments"
+        "name": "MessageComments"
       }
     },
     "Vote": {
@@ -5303,6 +5281,20 @@
         "name": "Blacklist"
       }
     },
+    "City": {
+      "type": "object",
+      "required": [
+        "city_name"
+      ],
+      "properties": {
+        "city_name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "City"
+      }
+    },
     "About": {
       "type": "object",
       "required": [
@@ -5393,6 +5385,21 @@
       "properties": {
         "status": {
           "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "Status"
+      }
+    },
+    "AuthStatus": {
+      "type": "object",
+      "required": [
+        "auth_status"
+      ],
+      "properties": {
+        "auth_status": {
+          "type": "integer",
           "format": "int64",
           "enum": [
             0,
@@ -5401,7 +5408,7 @@
         }
       },
       "xml": {
-        "name": "status"
+        "name": "AuthStatus"
       }
     },
     "ReadStatus": {
@@ -5420,7 +5427,7 @@
         }
       },
       "xml": {
-        "name": "status"
+        "name": "ReadStatus"
       }
     },
     "StatusResponse": {
@@ -5443,7 +5450,7 @@
         }
       },
       "xml": {
-        "name": "status"
+        "name": "StatusResponse"
       }
     }
   }
