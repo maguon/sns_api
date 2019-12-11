@@ -125,6 +125,12 @@ const getUserInfoAndDetail = (req, res, next) => {
         }
     }
     aggregate_limit.push({
+        $project: {
+            password:0,
+            auth_time:0,
+        }
+    });
+    aggregate_limit.push({
         $lookup: {
             from:"user_details",
             localField:"_userDetailId",
