@@ -28,6 +28,10 @@
       "description": "UserDetail version and url management api (用户详细信息)"
     },
     {
+      "name": "userDrive",
+      "description": "UserDrive version and url management api (用户驾驶信息)"
+    },
+    {
       "name": "userRelation",
       "description": "Relation version and url management api (用户关注关系)"
     },
