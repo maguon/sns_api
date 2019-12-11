@@ -82,33 +82,8 @@ const updateUserDriveInfo = (req, res, next) => {
         }
     })
 }
-const updateAccordingToUserID = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = UserDriveModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('updateAccordingToUserID  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserDriveModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateAccordingToUserID ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateAccordingToUserID ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 
 module.exports = {
     getUserDrive,
-    updateUserDriveInfo,
-    updateAccordingToUserID
+    updateUserDriveInfo
 };
