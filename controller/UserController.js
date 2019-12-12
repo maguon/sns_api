@@ -56,57 +56,67 @@ const getUser = (req, res, next) => {
 }
 const getUserByAdmian = (req, res, next) => {
     let params = req.query;
-    let query = UserModel.find({},{password:0});
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_infos",
+            localField:"_userId",
+            foreignField:"_id",
+            as:"user_login_info"
+        }
+    });
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+            matchObj._userId =  mongoose.mongo.ObjectId(params.userId);
         }else{
-            logger.info('getUser userID format incorrect!');
+            logger.info('getUserByAdmian userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
     if(params.phone){
-        query.where('phone').equals(params.phone);
-    }
-    if(params.sex){
-        query.where('sex').equals(params.sex);
-    }
-    if(params.nickName){
-        query.where('nick_name').equals({"$regex" : params.nickName,"$options":"$ig"});
-    }
-    if(params.cityName){
-        query.where('city_name').equals({"$regex" : params.cityName,"$options":"$ig"});
-    }
-    if(params.drivingType){
-        query.where('driving_type').equals(params.drivingType);
-    }
-    if(params.createDateStart){
-        query.where('created_at').equals({$gte:params.createDateStart});
-    }
-    if(params.createDateEnd){
-        query.where('created_at').equals({$lte:params.createDateEnd});
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
+        matchObj[ "user_login_info.phone"] = Number(params.phone);
     }
     if(params.auth_status){
-        query.where('auth_status').equals(params.auth_status);
+        matchObj[ "user_login_info.auth_status"] = Number(params.auth_status);
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    if(params.nickName){
+        matchObj[ "nick_name"] = {"$regex" : params.nickName,"$options":"$ig"};
     }
-    query.populate({path:'_userDetailId'}).populate({path:'_userDriveId'}).exec((error,rows)=> {
+    if(params.cityName){
+        matchObj[ "city_name"] = {"$regex" : params.cityName,"$options":"$ig"};
+    }
+    if(params.sex){
+        matchObj.sex =  Number(params.sex);
+    }
+    if(params.createDateStart){
+        matchObj["created_at"] = {$gte:new Date(params.createDateStart)};
+    }
+    if(params.createDateEnd){
+        matchObj["created_at"] = {$lte:new Date(params.createDateEnd)};
+    }
+    aggregate_limit.push({
+        $project: {
+            "user_login_info._id":0,
+            "user_login_info.password":0,
+            "user_login_info._userDetailId":0
+        }
+    });
+    aggregate_limit.push({
+        $match:matchObj
+    });
+    UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserByAdmian ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
+            console.log('rows:',rows);
             logger.info(' getUserByAdmian ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
-
 }
 const getUserInfoAndDetail = (req, res, next) => {
     let params = req.params;

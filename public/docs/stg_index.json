@@ -747,19 +747,11 @@
             "type": "string"
           },
           {
-            "name": "drivingType",
-            "in": "query",
-            "description": "驾照类型",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "name": "createDateStart",
             "in": "query",
             "description": "注册时间（始）",
             "required": false,
             "type": "string"
-
           },
           {
             "name": "createDateEnd",
@@ -767,7 +759,6 @@
             "description": "注册时间（终）",
             "required": false,
             "type": "string"
-
           },
           {
             "name": "status",
@@ -2733,7 +2724,7 @@
           },{
             "name": "status",
             "in": "query",
-            "description": "状态（0-不可见，1-可见）",
+            "description": "文章状态（0-不可见，1-可见(默认)）",
             "required": false,
             "type": "integer"
           },
@@ -2773,6 +2764,13 @@
             "in": "path",
             "description": "用户ID",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "_userId",
+            "in": "query",
+            "description": "发布文章用户ID",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2953,27 +2951,37 @@
           },{
             "name": "user_id",
             "in": "query",
-            "description": "用户ID",
+            "description": "发布文章用户ID",
             "required": false,
             "type": "integer"
-          },{
-            "name": "type",
-            "in": "query",
-            "description": "消息类型",
-            "required": false,
-            "type": "integer"
-          },{
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "发布时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "发布时间（终）",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "status",
