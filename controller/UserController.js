@@ -60,52 +60,61 @@ const getUserByAdmian = (req, res, next) => {
     let matchObj = {};
     aggregate_limit.push({
         $lookup: {
-            from:"user_infos",
-            localField:"_userId",
-            foreignField:"_id",
-            as:"user_login_info"
+            from: "user_infos",
+            localField: "_userId",
+            foreignField: "_id",
+            as: "user_login_info"
         }
     });
-    if(params.userId){
-        if(params.userId.length == 24){
-            matchObj._userId =  mongoose.mongo.ObjectId(params.userId);
-        }else{
+    if (params.userId) {
+        if (params.userId.length == 24) {
+            matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+        } else {
             logger.info('getUserByAdmian userID format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
+            resUtil.resetQueryRes(res, [], null);
             return next();
         }
     }
-    if(params.phone){
-        matchObj[ "user_login_info.phone"] = Number(params.phone);
+    if (params.phone) {
+        matchObj["user_login_info.phone"] = Number(params.phone);
     }
-    if(params.auth_status){
-        matchObj[ "user_login_info.auth_status"] = Number(params.auth_status);
+    if (params.auth_status) {
+        matchObj["user_login_info.auth_status"] = Number(params.auth_status);
     }
-    if(params.nickName){
-        matchObj[ "nick_name"] = {"$regex" : params.nickName,"$options":"$ig"};
+    if (params.nickName) {
+        matchObj["nick_name"] = {"$regex": params.nickName, "$options": "$ig"};
     }
-    if(params.cityName){
-        matchObj[ "city_name"] = {"$regex" : params.cityName,"$options":"$ig"};
+    if (params.cityName) {
+        matchObj["city_name"] = {"$regex": params.cityName, "$options": "$ig"};
     }
-    if(params.sex){
-        matchObj.sex =  Number(params.sex);
+    if (params.sex) {
+        matchObj.sex = Number(params.sex);
     }
-    if(params.createDateStart){
-        matchObj["created_at"] = {$gte:new Date(params.createDateStart)};
+    if (params.createDateStart) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart)};
     }
-    if(params.createDateEnd){
-        matchObj["created_at"] = {$lte:new Date(params.createDateEnd)};
+    if (params.createDateEnd) {
+        matchObj["created_at"] = {$lte: new Date(params.createDateEnd)};
     }
     aggregate_limit.push({
         $project: {
-            "user_login_info._id":0,
-            "user_login_info.password":0,
-            "user_login_info._userDetailId":0
+            "user_login_info._id": 0,
+            "user_login_info.password": 0,
+            "user_login_info._userDetailId": 0
         }
     });
     aggregate_limit.push({
-        $match:matchObj
+        $match: matchObj
     });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
     UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserByAdmian ' + error.message);
