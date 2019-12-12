@@ -2953,7 +2953,7 @@
             "in": "query",
             "description": "发布文章用户ID",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "type",

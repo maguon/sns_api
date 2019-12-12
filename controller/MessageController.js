@@ -53,11 +53,11 @@ const getMessage = (req, res, next) => {
 const getMessageCount = (req, res, next) => {
     let path = req.params;
     let aggregate_limit = [];
-    if(path.userId){
-        if(path.userId.length == 24){
+    if(path._userId){
+        if(path._userId.length == 24){
             aggregate_limit.push({
                 $match: {
-                    _userId :  mongoose.mongo.ObjectId(path.userId)
+                    _userId :  mongoose.mongo.ObjectId(path._userId)
                 }
             });
         }else{
@@ -210,11 +210,62 @@ const deleteMessage = (req, res, next) => {
         }
     })
 }
+const getMessageByAdmin = (req, res, next) => {
+    let params = req.query;
+    let query = MessageModel.find({status:sysConsts.INFO.status.available});
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('getMessage  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.messagesId){
+        if(params.messagesId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+        }else{
+            logger.info('getMessage  messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.type){
+        query.where('type').equals(params.type);
+    }
+    if(params.status){
+        query.where('status').equals(params.status);
+    }
+    if(params.carrier){
+        query.where('carrier').equals(params.carrier);
+    }
+    if(params.createDateStart){
+        query.where('created_at').equals({$gte:new Date(params.createDateStart)});
+    }
+    if(params.createDateEnd){
+        query.where('created_at').equals({$lte:new Date(params.createDateEnd)});
+    }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.exec((error,rows)=> {
+        if (error) {
+            logger.error(' getMessage ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getMessage ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 module.exports = {
     getMessage,
     getMessageCount,
     createMessage,
     updateMessageStatus,
     searchByRadius,
-    deleteMessage
+    deleteMessage,
+    getMessageByAdmin
 };
