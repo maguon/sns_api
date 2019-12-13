@@ -23,9 +23,9 @@ const messageSchema = new Schema({
         comment_status: {type:Number,default:0,min:0,max:3,display: '评论状态(0-允许评论(默认)，1-不允许评论)'},
         _userId: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'user_info',
             display: '用户信息ID'
-        },
+        }
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
