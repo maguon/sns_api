@@ -10,15 +10,6 @@ const {VoteModel} = require('../modules');
 const getVote = (req, res, next) => {
     let params = req.query;
     let query = VoteModel.find({});
-    if(params.vote_userId){
-        if(params.vote_userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.vote_userId));
-        }else{
-            logger.info('getVote userID format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
-            return next();
-        }
-    }
     if(params.voteId){
         if(params.voteId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
@@ -40,6 +31,47 @@ const getVote = (req, res, next) => {
             resUtil.resInternalError(error,res);
         } else {
             logger.info(' getVote ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getVoteByAdmin = (req, res, next) => {
+    let params = req.query;
+    let query = VoteModel.find({});
+    if(params.voteId){
+        if(params.voteId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
+        }else{
+            logger.info('getVoteByAdmin voteId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.info){
+        query.where('info').equals({"$regex" : params.info,"$options":"$ig"});
+    }
+    if(params.maxNum){
+        query.where('maxNum').equals(params.maxNum);
+    }
+    if(params.status){
+        query.where('status').equals(params.status);
+    }
+    if (params.createDateStart) {
+        query.where('created_at').equals({$gte: new Date(params.createDateStart)});
+    }
+    if (params.createDateEnd) {
+        query.where('created_at').equals({$lte: new Date(params.createDateEnd)});
+    }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.exec((error,rows)=> {
+        if (error) {
+            logger.error(' getVoteByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getVoteByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -98,6 +130,7 @@ const updateVote = (req, res, next) =>{
 }
 module.exports = {
     getVote,
+    getVoteByAdmin,
     createVote,
     updateVote
 };

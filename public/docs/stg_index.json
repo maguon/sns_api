@@ -3651,11 +3651,39 @@
             "type": "string"
           },
           {
+            "name": "info",
+            "in": "query",
+            "description": "内容检索",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxNum",
+            "in": "query",
+            "description": "一人最多投票数",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态（0-未开启，1-进行中，2-已结束）",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "发布时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "发布时间（终）",
+            "required": false,
+            "type": "string"
           },
           {
             "in": "query",
