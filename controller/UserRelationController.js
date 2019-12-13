@@ -393,7 +393,7 @@ const deleteUserRelation = (req, res, next) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query._userId = mongoose.mongo.ObjectId(path.userId);
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' deleteUserRelation delRelation userID format incorrect!');
                     reject({err:error.message});
@@ -401,7 +401,7 @@ const deleteUserRelation = (req, res, next) => {
             }
             if(path.followUserId){
                 if(path.followUserId.length == 24){
-                    query._userById = mongoose.mongo.ObjectId(path.followUserId);
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.followUserId));
                 }else{
                     logger.info(' deleteUserRelation delRelation followUserId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);

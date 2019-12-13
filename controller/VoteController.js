@@ -128,9 +128,33 @@ const updateVote = (req, res, next) =>{
         }
     })
 }
+const deleteVoteByAdmin = (req, res, next) => {
+    var params = req.params;
+    let query = VoteModel.find({});
+    if(params.voteId){
+        if(params.voteId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId ));
+        }else{
+            logger.info('deleteVoteByAdmin vodeId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    VoteModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteVoteByAdmin ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteVoteByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getVote,
     getVoteByAdmin,
     createVote,
-    updateVote
+    updateVote,
+    deleteVoteByAdmin
 };

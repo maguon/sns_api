@@ -102,7 +102,7 @@ const deleteBlacklist = (req, res, next) => {
     let query = BlacklistModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query._userId = mongoose.mongo.ObjectId(path.userId);
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('deleteBlacklist userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -111,7 +111,7 @@ const deleteBlacklist = (req, res, next) => {
     }
     if(path.blacklistId){
         if(path.blacklistId.length == 24){
-            query.blacklistId = mongoose.mongo.ObjectId(path.blacklistId);
+            query.where('blacklistId').equals(mongoose.mongo.ObjectId(path.blacklistId));
         }else{
             logger.info('deleteBlacklist blacklistId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.BLACK_LIST_ID_NULL_ERROR);
@@ -120,7 +120,7 @@ const deleteBlacklist = (req, res, next) => {
     }
     if(params.addedUserId){
         if(params.addedUserId.length == 24){
-            query._addedUserId = mongoose.mongo.ObjectId(params.addedUserId);
+            query.where('_addedUserId').equals(mongoose.mongo.ObjectId(params.addedUserId));
         }else{
             logger.info('deleteBlacklist addedUserId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);

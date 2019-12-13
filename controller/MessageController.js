@@ -183,7 +183,7 @@ const deleteMessage = (req, res, next) => {
     let query = MessageModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query._userId = mongoose.mongo.ObjectId(path.userId);
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('deleteMessage userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -192,7 +192,7 @@ const deleteMessage = (req, res, next) => {
     }
     if(path.messagesId){
         if(path.messagesId.length == 24){
-            query._id = mongoose.mongo.ObjectId(path.messagesId);
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
             logger.info('deleteMessage messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -287,7 +287,7 @@ const deleteMessageByAdmin = (req, res, next) => {
     let query = MessageModel.find({});
     if(path.messagesId){
         if(path.messagesId.length == 24){
-            query._id = mongoose.mongo.ObjectId(path.messagesId);
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
             logger.info('deleteMessageByAdmin messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);

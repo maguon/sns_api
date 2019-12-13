@@ -207,6 +207,8 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/admin/:adminId/vote', VoteController.getVoteByAdmin);
     server.put({path:'/api/admin/:adminId/vote/:voteId',contentType: 'application/json'} ,VoteController.updateVote);
+    server.del({path:'/api/admin/:adminId/vote/:voteId/del',contentType: 'application/json'},VoteController.deleteVoteByAdmin);
+
     /**
      applicationContact     - 申请联系方式
      */

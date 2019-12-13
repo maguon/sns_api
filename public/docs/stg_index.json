@@ -3760,6 +3760,43 @@
         }
       }
     },
+    "/admin/{adminId}/vote/{voteId}/del": {
+      "delete": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Administrator delete vote",
+        "description": "Administrator delete vote",
+        "operationId": "Administrator delete vote by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "path",
+            "description": "vote unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or voteId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/applicationContact": {
       "post": {

@@ -245,7 +245,7 @@ const deleteComments = (req, res, next) => {
     let query = MessageModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query._userId = mongoose.mongo.ObjectId(path.userId);
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('deleteComments userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -254,7 +254,7 @@ const deleteComments = (req, res, next) => {
     }
     if(path.messageCommentsId){
         if(path.messageCommentsId.length == 24){
-            query._id = mongoose.mongo.ObjectId(path.messageCommentsId);
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
             logger.info('deleteComments messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -324,11 +324,11 @@ const getMessageCommentsByAdmin = (req, res, next) => {
     });
 }
 const deleteCommentsByAdmin = (req, res, next) => {
-    let path = req.path;
-    let query = MessageModel.find({});
-    if(path.messageCommentsId){
-        if(path.messageCommentsId.length == 24){
-            query._id = mongoose.mongo.ObjectId(path.messageCommentsId);
+    var params = req.params;
+    let query = MessageCommentsModel.find({});
+    if(params.messageCommentsId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
             logger.info('deleteCommentsByAdmin messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
