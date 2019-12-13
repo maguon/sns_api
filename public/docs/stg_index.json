@@ -665,9 +665,9 @@
             "type": "string"
           },
           {
-            "name": "status",
+            "name": "authStatus",
             "in": "body",
-            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
+            "description": "认证状态(0-未认证,1-已认证)",
             "required": true,
             "schema": {
               "$ref": "#/definitions/AuthStatus"
