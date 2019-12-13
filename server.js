@@ -187,6 +187,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/messages', MessageController.getMessageByAdmin);
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
+    server.del({path:'/api/admin/:adminId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessageByAdmin);
      /**
      messageComments   - 评论
      */

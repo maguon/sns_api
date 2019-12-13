@@ -282,6 +282,29 @@ const getMessageByAdmin = (req, res, next) => {
         }
     });
 }
+const deleteMessageByAdmin = (req, res, next) => {
+    let path = req.path;
+    let query = MessageModel.find({});
+    if(path.messagesId){
+        if(path.messagesId.length == 24){
+            query._id = mongoose.mongo.ObjectId(path.messagesId);
+        }else{
+            logger.info('deleteMessageByAdmin messagesId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    MessageModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteMessageByAdmin ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteMessageByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getMessage,
     getMessageCount,
@@ -289,5 +312,6 @@ module.exports = {
     updateMessageStatus,
     searchByRadius,
     deleteMessage,
-    getMessageByAdmin
+    getMessageByAdmin,
+    deleteMessageByAdmin
 };

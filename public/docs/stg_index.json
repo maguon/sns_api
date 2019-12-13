@@ -3124,6 +3124,43 @@
         }
       }
     },
+    "/admin/{adminId}/messages/{messagesId}/del": {
+      "delete": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrator delete messages",
+        "description": "Administrator delete messages",
+        "operationId": "Administrator delete messages by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "path",
+            "description": "messages unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or messagesId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/comments": {
       "post": {
