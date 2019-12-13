@@ -456,7 +456,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
             "required": false,
             "type": "integer"
           },{
@@ -667,7 +667,7 @@
           {
             "name": "status",
             "in": "body",
-            "description": "status(0 or 1)",
+            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
             "required": true,
             "schema": {
               "$ref": "#/definitions/AuthStatus"
@@ -763,7 +763,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0-停用，1-启用）",
+            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
             "required": false,
             "type": "integer"
           },{
@@ -822,7 +822,7 @@
           {
             "name": "status",
             "in": "body",
-            "description": "status(1-正常，2-禁言，3-停用，4-注销)",
+            "description": "状态（1-正常，2-禁言，4-停用，5-注销)",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
