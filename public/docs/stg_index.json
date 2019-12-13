@@ -3387,6 +3387,43 @@
         }
       }
     },
+    "/user/{userId}/messageComments/{messageCommentsId}/del": {
+      "delete": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Delete messageComments",
+        "description": "Delete messageComments",
+        "operationId": "Delete messageComments by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messageCommentsId",
+            "in": "path",
+            "description": "messageComments unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or messageComments not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/MessageComments": {
       "get": {
         "tags": [
@@ -3458,7 +3495,43 @@
         }
       }
     },
-
+    "/admin/{adminId}/messageComments/{messageCommentsId}/del": {
+      "delete": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Administrator delete messageComments",
+        "description": "Administrator delete messageComments",
+        "operationId": "Administrator delete messageComments by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messageCommentsId",
+            "in": "path",
+            "description": "messageComments unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or messageCommentsId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/vote": {
       "get": {

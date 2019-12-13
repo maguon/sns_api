@@ -193,10 +193,12 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/userMessageComments', MessageCommentsController.getUserMessageComments);
     server.get('/api/user/:userId/allMessageComments', MessageCommentsController.getAllMessageComments);
-    server.post({path:'/api/user/:userId/comments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
-    server.put({path:'/api/user/:userId/comments/:commentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
+    server.post({path:'/api/user/:userId/messageComments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
+    server.put({path:'/api/user/:userId/messageComments/:messageCommentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
+    server.del({path:'/api/user/:userId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteComments);
 
     server.get('/api/admin/:adminId/MessageComments', MessageCommentsController.getMessageCommentsByAdmin);
+    server.del({path:'/api/admin/:adminId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteCommentsByAdmin);
     /**
      vote      - 投票信息
      */

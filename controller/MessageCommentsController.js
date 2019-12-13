@@ -35,7 +35,7 @@ const getUserMessageComments = (req, res, next) => {
     }
     if(params.messageCommentsId){
         if(params.messageCommentsId.length == 24){
-            query.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
             logger.info('getUserMessageComments  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -76,7 +76,7 @@ const getAllMessageComments = (req, res, next) => {
     }
     if(params.messageCommentsId){
         if(params.messageCommentsId.length == 24){
-            query.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
             logger.info('getAllMessageComments  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -240,6 +240,38 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
+const deleteComments = (req, res, next) => {
+    let path = req.path;
+    let query = MessageModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query._userId = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('deleteComments userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query._id = mongoose.mongo.ObjectId(path.messageCommentsId);
+        }else{
+            logger.info('deleteComments messageCommentsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    MessageModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteComments ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteComments ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const getMessageCommentsByAdmin = (req, res, next) => {
     let params = req.query;
     let query = MessageCommentsModel.find({});
@@ -264,7 +296,7 @@ const getMessageCommentsByAdmin = (req, res, next) => {
     }
     if(params.messageCommentsId){
         if(params.messageCommentsId.length == 24){
-            query.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
         }else{
             logger.info('getMessageCommentsByAdmin  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -291,10 +323,35 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         }
     });
 }
+const deleteCommentsByAdmin = (req, res, next) => {
+    let path = req.path;
+    let query = MessageModel.find({});
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query._id = mongoose.mongo.ObjectId(path.messageCommentsId);
+        }else{
+            logger.info('deleteCommentsByAdmin messageCommentsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    MessageCommentsModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteCommentsByAdmin ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteCommentsByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getUserMessageComments,
     getAllMessageComments,
     createMessageComments,
     updateReadStatus,
-    getMessageCommentsByAdmin
+    deleteComments,
+    getMessageCommentsByAdmin,
+    deleteCommentsByAdmin
 };
