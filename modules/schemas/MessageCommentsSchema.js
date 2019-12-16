@@ -7,10 +7,11 @@ const messageCommentsSchema = new Schema({
         commentsMsg    : {type:String,default:'',display: '评论内容'},
         commentsNum    : {type:Number,default:0,display: '评论次数'},
         agreeNum       : {type:Number,default:0,display: '点赞次数'},
-        read_status    : {type:Number,default:0,min:0,max:3,display: '未读状态(0-未读，1-已读)'},
+        status         : {type:Number,default:0,min:0,max:3,display: '状态(0-屏蔽，1-正常（默认）)'},
+        read_status    : {type:Number,default:0,min:0,max:3,display: '未读状态(0-未读（默认），1-已读)'},
         _userId: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'user_info',
             display: '用户信息ID'
         },
         _messageId: {

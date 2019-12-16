@@ -57,7 +57,11 @@ const COUMMENT ={
     type:{
         firstCoumment:1,//一级评论
         twoCoumment:2//二级评论
-    }
+    },
+    status: {
+        shield:0,//屏蔽
+        normal:1//正常
+    },
 }
 const VOTE ={
     status:{

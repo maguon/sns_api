@@ -3162,7 +3162,7 @@
       }
     },
 
-    "/user/{userId}/comments": {
+    "/user/{userId}/messageComments": {
       "post": {
         "tags": [
           "messageComments"
@@ -3443,11 +3443,25 @@
             "type": "string"
           },
           {
-            "name": "userId",
+            "name": "messageCommentsId",
             "in": "query",
-            "description": "userId",
+            "description": "评论ID",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "评论人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "注册手机号",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "messagesId",
@@ -3455,25 +3469,27 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
-            "name": "messageCommentsId",
+          },
+          {
+            "name": "status",
             "in": "query",
-            "description": "评论ID",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "type",
-            "in": "query",
-            "description": "评论类型(1.一级评论 2.二级评论)",
+            "description": "状态(0-屏蔽，1-正常（默认）)",
             "required": false,
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "createDateStart",
             "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
+            "description": "评论时间（始）",
             "required": false,
-            "type": "integer"
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "评论时间（终）",
+            "required": false,
+            "type": "string"
           },
           {
             "in": "query",
