@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('SystemMessageController');
 
 const {SystemMessageModel} = require('../modules');
@@ -49,6 +50,7 @@ const createSystemMessage = (req, res, next) => {
     let params = req.params;
     let bodyParams = req.body;
     let systemMessageObj = bodyParams;
+    systemMessageObj.status = sysConsts.SYSMESSAGE.status.normal;
     if(params.adminId){
         if(params.adminId.length == 24){
             systemMessageObj._adminId = mongoose.mongo.ObjectId(params.adminId);
@@ -70,8 +72,77 @@ const createSystemMessage = (req, res, next) => {
         }
     })
 }
-
+const getSystemMessageByAdmin = (req, res, next) => {
+    let params = req.query;
+    let query = SystemMessageModel.find({});
+    if(params.publisherId){
+        if(params.publisherId.length == 24){
+            query.where('_adminId').equals(mongoose.mongo.ObjectId(params.publisherId));
+        }else{
+            logger.info('getSystemMessageByAdmin publisherId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    if(params.systemMessageId){
+        if(params.systemMessageId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.vsystemMessageIdoteId));
+        }else{
+            logger.info('getSystemMessageByAdmin voteId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.status){
+        query.where('status').equals(params.status);
+    }
+    if (params.createDateStart){
+        query.where('created_at').equals({$gte: new Date(params.createDateStart)});
+    }
+    if (params.createDateEnd){
+        query.where('created_at').equals({$lte: new Date(params.createDateEnd)});
+    }
+    if(params.start && params.size){
+        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    }
+    query.exec((error,rows)=>{
+        if (error) {
+            logger.error(' getSystemMessageByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getSystemMessageByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const updateStatusByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let params = req.params;
+    let query = SystemMessageModel.find({});
+    if(params.systemMessageId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.systemMessageId));
+        }else{
+            logger.info('updateStatusByAdmin  systemMessageId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    SystemMessageModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateStatusByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateStatusByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getSystemMessage,
-    createSystemMessage
+    createSystemMessage,
+    getSystemMessageByAdmin,
+    updateStatusByAdmin
 };

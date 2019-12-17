@@ -4069,6 +4069,13 @@
             "type": "string"
           },
           {
+            "name": "status",
+            "in": "query",
+            "description": "状态(0-屏蔽，1-正常（默认）)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -4119,6 +4126,27 @@
             "description": "系统消息ID",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "发送时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "发送时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态(0-屏蔽，1-正常（默认）)",
+            "required": false,
+            "type": "integer"
           },
           {
             "in": "query",
@@ -4179,6 +4207,61 @@
           }
         }
 
+      }
+    },
+    "/admin/{adminId}/systemMessage/{systemMessageId}/status": {
+      "put": {
+        "tags": [
+          "systemMessage"
+        ],
+        "summary": "Administrator finds systemMessage status and update",
+        "description": "Administrator update systemMessage status ",
+        "operationId": "Administrator update systemMessage status by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "systemMessageId",
+            "in": "path",
+            "description": "系统消息ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "状态(0-屏蔽，1-正常（默认）)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessageCommentsId not found"
+          }
+        }
       }
     },
 

@@ -61,7 +61,7 @@ const COUMMENT ={
     status: {
         shield:0,//屏蔽
         normal:1//正常
-    },
+    }
 }
 const VOTE ={
     status:{
@@ -70,11 +70,18 @@ const VOTE ={
         closed:2//已结束
     }
 }
+const SYSMESSAGE ={
+    status:{
+        shield:0,//屏蔽
+        normal:1//正常
+    }
+}
 module.exports = {
     DRIVE_TYPE,
     INFO,
     USER,
     MESSAGE,
     COUMMENT,
-    VOTE
+    VOTE,
+    SYSMESSAGE
 }
