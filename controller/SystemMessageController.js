@@ -84,6 +84,15 @@ const getSystemMessageByAdmin = (req, res, next) => {
             return next();
         }
     }
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('getSystemMessageByAdmin userId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
     if(params.systemMessageId){
         if(params.systemMessageId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.vsystemMessageIdoteId));
@@ -95,6 +104,9 @@ const getSystemMessageByAdmin = (req, res, next) => {
     }
     if(params.status){
         query.where('status').equals(params.status);
+    }
+    if(params.type){
+        query.where('type').equals(params.type);
     }
     if (params.createDateStart){
         query.where('created_at').equals({$gte: new Date(params.createDateStart)});

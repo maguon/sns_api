@@ -4128,6 +4128,13 @@
             "type": "string"
           },
           {
+            "name": "userId",
+            "in": "query",
+            "description": "接收人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "systemMessageId",
             "in": "query",
             "description": "系统消息ID",
@@ -4152,6 +4159,13 @@
             "name": "status",
             "in": "query",
             "description": "状态(0-屏蔽，1-正常（默认）)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "类型(1-所有用户 2-单个用户 )",
             "required": false,
             "type": "integer"
           },
@@ -5599,9 +5613,17 @@
     "SystemMessage": {
       "type": "object",
       "required": [
+        "type",
+        "_userId",
         "info"
       ],
       "properties": {
+        "type": {
+          "type": "integer"
+        },
+        "_userId": {
+          "type": "String"
+        },
         "info": {
           "type": "String"
         }
