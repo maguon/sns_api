@@ -3511,6 +3511,61 @@
         }
       }
     },
+    "/admin/{adminId}/messageComments/{messageCommentsId}/status": {
+      "put": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Administrator finds messageComments status and update",
+        "description": "Administrator update messageComments status ",
+        "operationId": "Administrator update messageComments status by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messageCommentsId",
+            "in": "path",
+            "description": "评论ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "状态(0-屏蔽，1-正常（默认）)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or MessageCommentsId not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/messageComments/{messageCommentsId}/del": {
       "delete": {
         "tags": [

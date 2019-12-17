@@ -198,6 +198,7 @@ const createServer=()=>{
     server.del({path:'/api/user/:userId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteComments);
 
     server.get('/api/admin/:adminId/MessageComments', MessageCommentsController.getMessageCommentsByAdmin);
+    server.put({path:'/api/admin/:adminId/messageComments/:messageCommentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteCommentsByAdmin);
     /**
      vote      - 投票信息

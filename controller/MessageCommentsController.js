@@ -113,7 +113,7 @@ const createMessageComments = (req, res, next) => {
     const saveMessageComments = ()=>{
         return new Promise((resolve, reject) => {
             let messageCommentsObj = bodyParams;
-            messageCommentsObj.status = sysConsts.COUMMENT.status.shield;
+            messageCommentsObj.status = sysConsts.COUMMENT.status.normal;
             messageCommentsObj.read_status = sysConsts.INFO.read_status.unread;
             messageCommentsObj.commentsNum = 0;
             messageCommentsObj.agreeNum = 0;
@@ -460,6 +460,30 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         })
 
 }
+const updateStatusByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let params = req.params;
+    let query = MessageCommentsModel.find({});
+    if(params.messageCommentsId){
+        if(params.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+        }else{
+            logger.info('updateStatusByAdmin  messageCommentsId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    MessageCommentsModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateStatusByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateStatusByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 const deleteCommentsByAdmin = (req, res, next) => {
     var params = req.params;
     let query = MessageCommentsModel.find({});
@@ -490,5 +514,6 @@ module.exports = {
     updateReadStatus,
     deleteComments,
     getMessageCommentsByAdmin,
+    updateStatusByAdmin,
     deleteCommentsByAdmin
 };
