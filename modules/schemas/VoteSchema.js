@@ -3,6 +3,7 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const voteSchema = new Schema({
+        title            : {type:String,default:'',trim:true,display: '标题'},
         info             : {type:String,default:'',trim:true,display: '内容'},
         participantsNum  : {type:Number,default:0,display: '参与人数'},
         maxNum           : {type:Number,default:0,display: '一人最多投票数'},

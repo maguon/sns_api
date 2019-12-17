@@ -48,6 +48,9 @@ const getVoteByAdmin = (req, res, next) => {
             return next();
         }
     }
+    if(params.title){
+        query.where('title').equals({"$regex" : params.title,"$options":"$ig"});
+    }
     if(params.info){
         query.where('info').equals({"$regex" : params.info,"$options":"$ig"});
     }

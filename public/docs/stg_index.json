@@ -3722,6 +3722,13 @@
             "type": "string"
           },
           {
+            "name": "title",
+            "in": "query",
+            "description": "标题检索",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "info",
             "in": "query",
             "description": "内容检索",
@@ -5540,6 +5547,7 @@
     "Vote": {
       "type": "object",
       "required": [
+        "title",
         "info",
         "maxNum",
         "startTime",
@@ -5548,6 +5556,9 @@
         "option"
       ],
       "properties": {
+        "title": {
+          "type": "String"
+        },
         "info": {
           "type": "String"
         },
