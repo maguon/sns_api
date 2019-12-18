@@ -1,5 +1,6 @@
 "use strict"
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
@@ -7,6 +8,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
+const {UserDetailModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
     let params = req.query;
@@ -113,17 +115,51 @@ const createMessage = (req, res, next) => {
             return next();
         }
     }
-    let messageModel = new MessageModel(messageObj);
-    messageModel.save(function(error,result){
-        if (error) {
-            logger.error(' createMessage ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createMessage ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+
+    const saveMessage =()=>{
+        return new Promise((resolve, reject) => {
+            let messageModel = new MessageModel(messageObj);
+            messageModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createMessage saveMessage ' + error.message);
+                    reject({err:reject.message});
+                } else {
+                    logger.info(' createMessage saveMessage ' + 'success');
+                    resolve(result);
+                }
+            })
+        });
+    }
+
+    const updateUserNumber =(returnMessage)=>{
+        return new Promise(() => {
+            let queryUser = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createMessage updateUserNumber _userId format incorrect!');
+                    return next();
+                }
+            }
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createMessage updateUserNumber ' + error.message);
+                } else {
+                    logger.info(' createMessage updateUserNumber ' + 'success');
+                    resUtil.resetCreateRes(res, returnMessage);
+                    return next();
+                }
+            });
+        });
+    }
+    saveMessage()
+        .then(updateUserNumber)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
 }
 const updateMessageStatus = (req, res, next) => {
     let params = req.params;
@@ -304,6 +340,26 @@ const deleteMessageByAdmin = (req, res, next) => {
             return next();
         }
     })
+}
+const updateUserCountNum =(userId)=>{
+    let queryUser = UserDetailModel.find({});
+    console.log(userId)
+    if(userId){
+        if(userId.length == 24){
+            queryUser.where('_userId').equals(mongoose.mongo.ObjectId(userId));
+        }else{
+            logger.info('updateUserCountNum updateMessageNum _userId format incorrect!');
+            return next();
+        }
+    }
+    UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
+        if (error) {
+            logger.error(' updateUserCountNum findOneAndUpdate ' + error.message);
+        } else {
+            logger.info(' updateUserCountNum findOneAndUpdate ' + 'success');
+            console.log(rows);
+        }
+    });
 }
 module.exports = {
     getMessage,
