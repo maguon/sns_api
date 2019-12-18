@@ -148,7 +148,7 @@ const createMessageComments = (req, res, next) => {
                 if(path.userId.length == 24){
                     queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createMessage updateUserNumber _userId format incorrect!');
+                    logger.info('createMessageComments updateUserNumber _userId format incorrect!');
                     return next();
                 }
             }
@@ -156,9 +156,9 @@ const createMessageComments = (req, res, next) => {
                 //文章评论数加一
                 UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsNum: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessage updateUserNumber ' + error.message);
+                        logger.error(' createMessageComments updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        logger.info(' createMessageComments updateUserNumber ' + 'success');
                         resolve();
                     }
                 });
@@ -166,9 +166,9 @@ const createMessageComments = (req, res, next) => {
                 //回复评论数加一
                 UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsReplyNum: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessage updateUserNumber ' + error.message);
+                        logger.error(' createMessageComments updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        logger.info(' createMessageComments updateUserNumber ' + 'success');
                         resolve();
                     }
                 });
@@ -220,7 +220,7 @@ const createMessageComments = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createMessageComments updateMessageCommentsNum ' + 'success');
-                    resUtil.resetQueryRes(res, returnMessage);
+                    resUtil.resetCreateRes(res,returnMessage);
                     return next();
                 }
             });
