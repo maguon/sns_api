@@ -142,15 +142,30 @@ const createMessage = (req, res, next) => {
                     return next();
                 }
             }
-            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
-                if (error) {
-                    logger.error(' createMessage updateUserNumber ' + error.message);
-                } else {
-                    logger.info(' createMessage updateUserNumber ' + 'success');
-                    resUtil.resetCreateRes(res, returnMessage);
-                    return next();
-                }
-            });
+            if(bodyParams.type == 1){
+                //文章字段加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMessage updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMessage);
+                        return next();
+                    }
+                });
+            }else{
+                //求助字段加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesHelpNum: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMessage updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMessage);
+                        return next();
+                    }
+                });
+            }
+
         });
     }
     saveMessage()
