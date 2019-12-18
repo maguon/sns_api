@@ -7,6 +7,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserLocationCollectionsController');
 
 const {UserLocationCollectionsModel} = require('../modules');
+const {UserDetailModel} = require('../modules');
 
 const getUserLocationCollections = (req, res, next) => {
     let params = req.query;
@@ -52,26 +53,61 @@ const createUserLocationCollections = (req, res, next) => {
     let bodyParams = req.body;
     let userLocationCollectionsObj = bodyParams;
     userLocationCollectionsObj.status = sysConsts.INFO.status.available;
-    if(path.userId){
-        if(path.userId.length == 24){
-            userLocationCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
-        }else{
-            logger.info('createUserLocationCollections  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
+    const saveCollections =()=>{
+        return new Promise((resolve, reject) => {
+            if(path.userId){
+                if(path.userId.length == 24){
+                    userLocationCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
+                }else{
+                    logger.info('createUserLocationCollections  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            let userLocationCollectionsModel = new UserLocationCollectionsModel(userLocationCollectionsObj);
+            userLocationCollectionsModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUserLocationCollections ' + error.message);
+                    reject({err:reject.err});
+                } else {
+                    logger.info(' createUserLocationCollections ' + 'success');
+                    resolve(result);
+                }
+            })
+        });
     }
-    let userLocationCollectionsModel = new UserLocationCollectionsModel(userLocationCollectionsObj);
-    userLocationCollectionsModel.save(function(error,result){
-        if (error) {
-            logger.error(' createUserLocationCollections ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createUserLocationCollections ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+    //更新用户地理位置收藏数
+    const updateCollectionNum =(result)=>{
+        return new Promise(() => {
+            let queryUser = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createUserLocationCollections updateCollectionNum _userId format incorrect!');
+                    return next();
+                }
+            }
+            //投票数数加一
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { locationCollectionNum: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserLocationCollections updateCollectionNum ' + error.message);
+                } else {
+                    logger.info(' createUserLocationCollections updateCollectionNum ' + 'success');
+                    resUtil.resetCreateRes(res, result);
+                    return next();
+                }
+            });
+        });
+    }
+    saveCollections()
+        .then(updateCollectionNum)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
+
 }
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
