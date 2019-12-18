@@ -31,9 +31,6 @@ const getUserLocationCollections = (req, res, next) => {
             return next();
         }
     }
-    if(params.status){
-        query.where('status').equals(params.status);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -52,7 +49,6 @@ const createUserLocationCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let userLocationCollectionsObj = bodyParams;
-    userLocationCollectionsObj.status = sysConsts.INFO.status.available;
     const saveCollections =()=>{
         return new Promise((resolve, reject) => {
             if(path.userId){
@@ -109,41 +105,7 @@ const createUserLocationCollections = (req, res, next) => {
         })
 
 }
-const updateStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let params = req.params;
-    let query = UserLocationCollectionsModel.find({});
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('updateStatus  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.userLocationCollectionId){
-        if(params.userLocationCollectionId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocationCollectionId));
-        }else{
-            logger.info('updateStatus  userLocationCollectionId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserLocationCollectionsModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateStatus ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' updateStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     getUserLocationCollections,
-    createUserLocationCollections,
-    updateStatus
+    createUserLocationCollections
 };
