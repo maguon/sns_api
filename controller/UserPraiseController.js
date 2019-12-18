@@ -114,7 +114,7 @@ const createUserPraise = (req, res, next) => {
                     return next();
                 }
             }
-            MessageModel.findOneAndUpdate(query,{ $inc: { agreeNum: 1 } },).exec((error,rows)=> {
+            MessageModel.findOneAndUpdate(query,{ $inc: { agreeNum: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserPraise updateMessageNum ' + error.message);
                     resUtil.resInternalError(error,res);
