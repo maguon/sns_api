@@ -6,6 +6,7 @@ const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('UserRelationController');
 
 const {UserRelationModel} = require('../modules');
+const {UserDetailModel} = require('../modules');
 
 const getFollow = (req, res, next) => {
     let path = req.params;
@@ -231,7 +232,7 @@ const createUserRelation = (req, res, next) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' createUserRelation friendJudgement userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -240,7 +241,7 @@ const createUserRelation = (req, res, next) => {
             }
             if(bodyParams._userById){
                 if(bodyParams._userById.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(bodyParams._userById));
                 }else{
                     logger.info(' createUserRelation friendJudgement userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -259,6 +260,51 @@ const createUserRelation = (req, res, next) => {
             });
         })
     }
+    //更新关注数
+    const updateFollowNum =(relationInfo)=>{
+        return new Promise((resolve, reject) => {
+            let queryUser = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createUserRelation updateFollowNum _userId format incorrect!');
+                    return next();
+                }
+            }
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { followNum: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserRelation updateFollowNum ' + error.message);
+                } else {
+                    logger.info(' createUserRelation updateFollowNum ' + 'success');
+                    resolve(relationInfo);
+                }
+            });
+        });
+    }
+    //更新被关注数
+    const updateAttentionNum =(relationInfo)=>{
+        return new Promise((resolve, reject) => {
+            let queryUser = UserDetailModel.find({});
+            if(bodyParams._userById){
+                if(bodyParams._userById.length == 24){
+                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+                }else{
+                    logger.info('createUserRelation updateAttentionNum _userById format incorrect!');
+                    return next();
+                }
+            }
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { attentionNum: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserRelation updateAttentionNum ' + error.message);
+                } else {
+                    logger.info(' createUserRelation updateAttentionNum ' + 'success');
+                    resolve(relationInfo);;
+                }
+            });
+        });
+    }
+    //保存新关注信息
     const saveRelation = (relationInfo) =>{
         return new Promise((resolve, reject) => {
             bodyParams._userById;
@@ -293,6 +339,7 @@ const createUserRelation = (req, res, next) => {
             })
         });
     }
+    //更新原关注信息
     const updateRelation =(relationInfo)=>{
         return new Promise(() => {
             UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:1},function(error,result){
@@ -308,6 +355,8 @@ const createUserRelation = (req, res, next) => {
         });
     }
     friendJudgement()
+        .then(updateFollowNum)
+        .then(updateAttentionNum)
         .then(saveRelation)
         .then(updateRelation)
         .catch((reject)=>{
