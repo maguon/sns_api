@@ -31,9 +31,6 @@ const getUserMessageCollections = (req, res, next) => {
             return next();
         }
     }
-    if(params.status){
-        query.where('status').equals(params.status);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -52,7 +49,6 @@ const createUserMessageCollections = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let userMessageCollectionsObj = bodyParams;
-    userMessageCollectionsObj.status = sysConsts.INFO.status.available;
     const saveCollections =()=>{
         return new Promise((resolve, reject) => {
             if(path.userId){
@@ -61,15 +57,6 @@ const createUserMessageCollections = (req, res, next) => {
                 }else{
                     logger.info('createUserMessageCollections  userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-                    return next();
-                }
-            }
-            if(path.messagesId){
-                if(path.messagesId.length == 24){
-                    userMessageCollectionsObj._messageId = mongoose.mongo.ObjectId(path.messagesId);
-                }else{
-                    logger.info('createUserMessageCollections  messagesId format incorrect!');
-                    resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
@@ -85,7 +72,6 @@ const createUserMessageCollections = (req, res, next) => {
             })
         });
     }
-
     //更新用户投票数
     const updateCollectionNum =(result)=>{
         return new Promise(() => {
@@ -110,7 +96,6 @@ const createUserMessageCollections = (req, res, next) => {
             });
         });
     }
-
     saveCollections()
         .then(updateCollectionNum)
         .catch((reject)=>{
@@ -119,41 +104,7 @@ const createUserMessageCollections = (req, res, next) => {
             }
         })
 }
-const updateStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let params = req.params;
-    let query = UserMessageCollectionsModel.find({});
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('updateStatus  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.userMessageCollectionId){
-        if(params.userMessageCollectionId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userMessageCollectionId));
-        }else{
-            logger.info('updateStatus  userMessageCollectionId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    UserMessageCollectionsModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateStatus ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' updateStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 module.exports = {
     getUserMessageCollections,
-    createUserMessageCollections,
-    updateStatus
+    createUserMessageCollections
 };
