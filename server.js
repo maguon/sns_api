@@ -161,18 +161,14 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
     server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
-    server.put({path:'/api/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
 
     server.get('/api/admin/:adminId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
-    server.put({path:'/api/admin/:adminId/user/:userId/userLocationCollection/:userLocationCollectionId/status',contentType: 'application/json'} ,UserLocationCollectionsController.updateStatus);
     /**
      userMessageCollections    -用户微博收藏
      */
-    server.post({path:'/api/user/:userId/messages/:messagesId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
+    server.post({path:'/api/user/:userId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
     server.get('/api/user/:userId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
-    server.put({path:'/api/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
     server.get('/api/admin/:adminId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
-    server.put({path:'/api/admin/:adminId/user/:userId/userMessageCollection/:userMessageCollectionId/status',contentType: 'application/json'} ,UserMessageCollectionsController.updateStatus);
 
     /**
      messages    -微博动态
@@ -207,7 +203,8 @@ const createServer=()=>{
 
     server.post({path:'/api/admin/:adminId/vote',contentType: 'application/json'}, VoteController.createVote);
     server.get('/api/admin/:adminId/vote', VoteController.getVoteByAdmin);
-    server.put({path:'/api/admin/:adminId/vote/:voteId',contentType: 'application/json'} ,VoteController.updateVote);
+    server.put({path:'/api/admin/:adminId/vote/:voteId/info',contentType: 'application/json'} ,VoteController.updateVote);
+    server.put({path:'/api/admin/:adminId/vote/:voteId/status',contentType: 'application/json'} ,VoteController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/vote/:voteId/del',contentType: 'application/json'},VoteController.deleteVoteByAdmin);
 
     /**

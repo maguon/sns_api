@@ -2162,13 +2162,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2184,61 +2177,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/userLocationCollection/{userLocationCollectionId}/status":{
-      "put": {
-        "tags": [
-          "userLocationCollection"
-        ],
-        "summary": "Finds userLocationCollection status and update",
-        "description": "Update userLocationCollection status",
-        "operationId": "update userLocationCollection status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userLocationCollectionId",
-            "in": "path",
-            "description": "userLocationCollectionId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userLocationCollectionId not found"
           }
         }
       }
@@ -2276,13 +2214,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2302,70 +2233,8 @@
         }
       }
     },
-    "/admin/adminId/user/{userId}/userLocationCollection/{userLocationCollectionId}/status":{
-      "put": {
-        "tags": [
-          "userLocationCollection"
-        ],
-        "summary": "Administrators finds userLocationCollection status and update",
-        "description": "Administrators update userLocationCollection status",
-        "operationId": "Administrators update userLocationCollection status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userLocationCollectionId",
-            "in": "path",
-            "description": "userLocationCollectionId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userLocationCollectionId not found"
-          }
-        }
-      }
-    },
 
-    "/user/{userId}/messages/{messagesId}/userMessageCollection": {
+    "/user/{userId}/userMessageCollection": {
       "post": {
         "tags": [
           "userMessageCollection"
@@ -2388,13 +2257,6 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
-            "in": "path",
-            "description": "messagesId",
-            "required": true,
-            "type": "string"
-          },
-          {
             "in": "body",
             "name":"userMessageCollectionInfo",
             "description": "UserMessageCollection object that needs to be added to the store",
@@ -2413,9 +2275,7 @@
           }
         }
 
-      }
-    },
-    "/user/{userId}/userMessageCollection": {
+      },
       "get": {
         "tags": [
           "userMessageCollection"
@@ -2441,13 +2301,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2463,61 +2316,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/userMessageCollection/{userMessageCollectionId}/status":{
-      "put": {
-        "tags": [
-          "userMessageCollection"
-        ],
-        "summary": "Finds userMessageCollection status and update",
-        "description": "Update userMessageCollection status",
-        "operationId": "update userMessageCollection status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userMessageCollectionId",
-            "in": "path",
-            "description": "userMessageCollectionId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userMessageCollectionId not found"
           }
         }
       }
@@ -2555,13 +2353,6 @@
             "type": "string"
           },
           {
-            "name": "status",
-            "in": "query",
-            "description": "状态（0-停用，1-启用）",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2577,68 +2368,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/adminId/user/{userId}/userMessageCollection/{userMessageCollectionId}/status":{
-      "put": {
-        "tags": [
-          "userMessageCollection"
-        ],
-        "summary": "Administrators finds userMessageCollection status and update",
-        "description": "Administrators update userMessageCollection status",
-        "operationId": "Administrators update userMessageCollection status by userId",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "UserId unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userMessageCollectionId",
-            "in": "path",
-            "description": "userMessageCollectionId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "body",
-            "description": "status(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Status"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userMessageCollectionId not found"
           }
         }
       }
@@ -3561,7 +3290,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessageCommentsId not found"
+            "description": "AdminId or MessageCommentsId not found"
           }
         }
       }
@@ -3632,7 +3361,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0-未开启，1-进行中，2-已结束）",
+            "description": "投票状态（0-未开启，1-进行中，3-已结束）",
             "required": false,
             "type": "integer"
           },
@@ -3745,7 +3474,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（0-未开启，1-进行中，2-已结束）",
+            "description": "投票状态（0-未开启，1-进行中，3-已结束）",
             "required": false,
             "type": "integer"
           },
@@ -3783,22 +3512,22 @@
         }
       }
     },
-    "/admin/{adminId}/vote/{voteId}": {
+    "/admin/{adminId}/vote/{voteId}/info": {
       "put": {
         "tags": [
           "vote"
         ],
-        "summary": "Finds voteInfo and update",
-        "description": "Update vote info",
-        "operationId": "update vote by id",
+        "summary": "Administrator Finds voteInfo and update",
+        "description": "Administrator update vote info",
+        "operationId": "Administrator update vote by id",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "adminId",
             "in": "path",
-            "description": "user unique id",
+            "description": "admin unique id",
             "required": true,
             "type": "string"
           },
@@ -3820,20 +3549,57 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Vote"
-              }
-            }
-          },
           "400": {
             "description": "Invalid params "
           },
           "404": {
             "description": "VoteId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/vote/{voteId}/status": {
+      "put": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Administrator finds vote status and update",
+        "description": "Administrator update vote status ",
+        "operationId": "Administrator update vote status by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录操作人员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "voteId",
+            "in": "path",
+            "description": "vote id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "投票状态（0-未开启，1-进行中，3-已结束）",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or VoteId not found"
           }
         }
       }
@@ -5438,9 +5204,13 @@
     "UserMessageCollection": {
       "type": "object",
       "required": [
+        "_messageId",
         "remarks"
       ],
       "properties": {
+        "_messageId": {
+          "type": "string"
+        },
         "remarks": {
           "type": "string"
         }

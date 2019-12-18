@@ -109,23 +109,79 @@ const createVote = (req, res, next) => {
 const updateVote = (req, res, next) =>{
     let bodyParams = req.body;
     let query = VoteModel.find();
+    let queryStatus = VoteModel.find({});
     let params = req.params;
-    if(params.voteId ){
+    if(params.voteId){
         if(params.voteId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId ));
+            queryStatus.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
         }else{
-            logger.info('updateVote voteId format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
+            logger.info('getVote voteId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    const queryConditionalStatus =()=>{
+        return new Promise((resolve, reject) => {
+            queryStatus.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getVote ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getVote ' + 'success');
+                    if(rows[0]._doc.status == 1){
+                        //投票进行中不允许修改信息
+                        resUtil.resetFailedRes(res,systemMsg.VOTE_STATUS_NULL_ERROR);
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+
+    const updateInfo =()=>{
+        return new Promise(() => {
+            VoteModel.updateOne(query,bodyParams,function(error,result){
+                if (error) {
+                    logger.error(' updateVote ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' updateVote ' + 'success');
+                    console.log('rows:',result);
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            })
+        });
+    }
+    queryConditionalStatus()
+        .then(updateInfo)
+        .catch((reject)=>{
+            if(reject){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
+}
+const updateStatusByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let params = req.params;
+    let query = VoteModel.find({});
+    if(params.voteId){
+        if(params.voteId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
+        }else{
+            logger.info('updateStatusByAdmin  voteId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
             return next();
         }
     }
     VoteModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
-            logger.error(' updateVote ' + error.message);
+            logger.error(' updateStatusByAdmin ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateVote ' + 'success');
-            console.log('rows:',result);
+            logger.info(' updateStatusByAdmin ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -159,5 +215,6 @@ module.exports = {
     getVoteByAdmin,
     createVote,
     updateVote,
+    updateStatusByAdmin,
     deleteVoteByAdmin
 };
