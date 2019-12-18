@@ -10,6 +10,7 @@ const logger = serverLogger.createLogger('MessageCommentsController');
 const {MessageCommentsModel} = require('../modules');
 const {MessageModel} = require('../modules');
 const {UserModel} = require('../modules');
+const {UserDetailModel} = require('../modules');
 
 const getUserMessageComments = (req, res, next) => {
     let path = req.params;
@@ -105,11 +106,11 @@ const getAllMessageComments = (req, res, next) => {
     });
 }
 const createMessageComments = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let bodyParams = req.body;
     let returnMessage;
 
-    //保存数据
+    //保存新评论信息
     const saveMessageComments = ()=>{
         return new Promise((resolve, reject) => {
             let messageCommentsObj = bodyParams;
@@ -117,9 +118,9 @@ const createMessageComments = (req, res, next) => {
             messageCommentsObj.read_status = sysConsts.INFO.read_status.unread;
             messageCommentsObj.commentsNum = 0;
             messageCommentsObj.agreeNum = 0;
-            if(params.userId){
-                if(params.userId.length == 24){
-                    messageCommentsObj._userId = mongoose.mongo.ObjectId(params.userId);
+            if(path.userId){
+                if(path.userId.length == 24){
+                    messageCommentsObj._userId = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info('createMessageComments userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -131,17 +132,51 @@ const createMessageComments = (req, res, next) => {
                 if (error) {
                     logger.error(' createMessageComments saveMessageComments ' + error.message);
                     reject({err:error.message});
-                    // resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createMessageComments saveMessageComments ' + 'success');
                     returnMessage = result;
                     resolve();
-                    // resUtil.resetCreateRes(res, result);
-                    // return next();
                 }
             });
         });
     }
+    //更新用户的评论数
+    const updateUserNumber =()=>{
+        return new Promise((resolve, reject) => {
+            let queryUser = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createMessage updateUserNumber _userId format incorrect!');
+                    return next();
+                }
+            }
+            if(bodyParams.type == 1){
+                //文章评论数加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsNum: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMessage updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        resolve();
+                    }
+                });
+            }else{
+                //回复评论数加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsReplyNum: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMessage updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMessage updateUserNumber ' + 'success');
+                        resolve();
+                    }
+                });
+            }
+
+        });
+    }
+    //更新动态的评论数（一级评论）
     const updateMessageNum = () =>{
         return new Promise(() => {
             let query = MessageModel.find({});
@@ -166,6 +201,7 @@ const createMessageComments = (req, res, next) => {
             });
         });
     }
+    //更新评论的评论数（二级评论）
     const updateMessageCommentsNum = () =>{
         return new Promise((() => {
             let query = MessageCommentsModel.find({});
@@ -191,6 +227,7 @@ const createMessageComments = (req, res, next) => {
         }));
     }
     saveMessageComments()
+        .then(updateUserNumber)
         .then(()=>{
             if(bodyParams.type == sysConsts.COUMMENT.type.firstCoumment){
                 //一级评论

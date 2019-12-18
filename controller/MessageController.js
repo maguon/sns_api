@@ -115,7 +115,6 @@ const createMessage = (req, res, next) => {
             return next();
         }
     }
-
     const saveMessage =()=>{
         return new Promise((resolve, reject) => {
             let messageModel = new MessageModel(messageObj);
@@ -130,7 +129,6 @@ const createMessage = (req, res, next) => {
             })
         });
     }
-
     const updateUserNumber =(returnMessage)=>{
         return new Promise(() => {
             let queryUser = UserDetailModel.find({});
