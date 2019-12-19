@@ -372,13 +372,9 @@ const getMessageCommentsByAdmin = (req, res, next) => {
     if (params.status){
         matchObj.status = Number(params.status);
     }
-    if (params.createDateStart){
-        matchObj["created_at"] = {$gte: new Date(params.createDateStart)};
+    if (params.createDateStart && params.createDateEnd) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
-    if (params.createDateEnd){
-        matchObj["created_at"] = {$lte: new Date(params.createDateEnd)};
-    }
-
     //根据phone查询用户ID
     const getUserId = () =>{
         return new Promise((resolve, reject) => {

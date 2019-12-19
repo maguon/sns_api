@@ -90,11 +90,8 @@ const getUserByAdmian = (req, res, next) => {
     if (params.sex) {
         matchObj.sex = Number(params.sex);
     }
-    if (params.createDateStart) {
-        matchObj["created_at"] = {$gte: new Date(params.createDateStart)};
-    }
-    if (params.createDateEnd) {
-        matchObj["created_at"] = {$lte: new Date(params.createDateEnd)};
+    if (params.createDateStart && params.createDateEnd) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     aggregate_limit.push({
         $project: {
@@ -129,7 +126,7 @@ const getUserByAdmian = (req, res, next) => {
 }
 const getUserCountByAdmin = (req, res, next) => {
     let query = UserModel.find({});
-    query.count().exec((error,rows)=> {
+    query.countDocuments().exec((error,rows)=> {
         if (error) {
             logger.error(' getUserCount ' + error.message);
             resUtil.resInternalError(error,res);

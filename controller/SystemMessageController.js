@@ -108,11 +108,8 @@ const getSystemMessageByAdmin = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if (params.createDateStart){
-        query.where('created_at').equals({$gte: new Date(params.createDateStart)});
-    }
-    if (params.createDateEnd){
-        query.where('created_at').equals({$lte: new Date(params.createDateEnd)});
+    if (params.createDateStart && params.createDateEnd ) {
+        query.where('created_at').equals({$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd) });
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));

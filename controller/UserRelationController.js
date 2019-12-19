@@ -59,7 +59,7 @@ const getFollowCount = (req, res, next) => {
             return next();
         }
     }
-    query.count().exec((error,rows)=> {
+    query.countDocuments().exec((error,rows)=> {
         if (error) {
             logger.error(' getFollowCount ' + error.message);
             resUtil.resInternalError(error,res);
@@ -167,7 +167,7 @@ const getAttentionCount = (req, res, next) => {
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
     }
-    query.count().exec((error,rows)=> {
+    query.countDocuments().exec((error,rows)=> {
         if (error) {
             logger.error(' getAttentionCount ' + error.message);
             resUtil.resInternalError(error,res);
