@@ -354,26 +354,6 @@ const deleteMessageByAdmin = (req, res, next) => {
         }
     })
 }
-const updateUserCountNum =(userId)=>{
-    let queryUser = UserDetailModel.find({});
-    console.log(userId)
-    if(userId){
-        if(userId.length == 24){
-            queryUser.where('_userId').equals(mongoose.mongo.ObjectId(userId));
-        }else{
-            logger.info('updateUserCountNum updateMessageNum _userId format incorrect!');
-            return next();
-        }
-    }
-    UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
-        if (error) {
-            logger.error(' updateUserCountNum findOneAndUpdate ' + error.message);
-        } else {
-            logger.info(' updateUserCountNum findOneAndUpdate ' + 'success');
-            console.log(rows);
-        }
-    });
-}
 module.exports = {
     getMessage,
     getMessageCount,
