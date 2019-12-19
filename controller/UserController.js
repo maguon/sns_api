@@ -55,7 +55,119 @@ const getUser = (req, res, next) => {
         }
     });
 }
-const getUserByAdmian = (req, res, next) => {
+const getUserToken = (req, res, next) => {
+    let path = req.params;
+    let user ={
+        userId:path.userId
+    }
+
+    const getUserStatus =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserModel.find({},{password:0});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('getUserToken userID format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserToken getUserStatus ' + error.message);
+                    reject({err:reject.err});
+                } else {
+                    logger.info(' getUserToken getUserStatus ' + 'success');
+                    user.status = rows[0]._doc.status;
+                    resolve();
+                }
+            });
+        });
+    }
+
+    const removeAndSaveToken =()=>{
+        return new Promise((resolve, reject) => {
+            user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
+            oAuthUtil.removeToken({accessToken:path.token},function(error,result){
+                if(error) {
+                    logger.error('getUserToken removeAndSaveToken ' + error.stack);
+                    reject({err:error.stack});
+                }else {
+                    oAuthUtil.saveToken(user,function(error,result){
+                        if(error){
+                            logger.error('getUserToken removeAndSaveToken ' + error.stack);
+                            reject({err:error.stack});
+                        }else{
+                            logger.info('getUserToken removeAndSaveToken ' + path.userId+ " success");
+                            resUtil.resetQueryRes(res,user,null);
+                            return next();
+                        }
+                    })
+                }
+            })
+        });
+    }
+
+    getUserStatus()
+        .then(removeAndSaveToken)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
+}
+const getUserInfoAndDetail = (req, res, next) => {
+    let params = req.params;
+    let aggregate_limit = [];
+    if(params.userId){
+        if(params.userId.length == 24){
+            aggregate_limit.push({
+                $match: {
+                    _id :  mongoose.mongo.ObjectId(params.userId)
+                }
+            });
+        }else{
+            logger.info('getUserInfoAndDetail userID format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    aggregate_limit.push({
+        $project: {
+            password:0,
+            auth_time:0,
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_details",
+            localField:"_userDetailId",
+            foreignField:"_id",
+            as:"user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_drive_infos",
+            localField:"_userDriveId",
+            foreignField:"_id",
+            as:"user_drive_info"
+        }
+    });
+    UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserInfoAndDetail ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            console.log('rows:',rows);
+            logger.info(' getUserInfoAndDetail ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getUserByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
@@ -152,56 +264,6 @@ const getUserTodayCountByAdmin = (req, res, next) => {
             resUtil.resInternalError(error,res);
         } else {
             logger.info(' getUserTodayCountByAdmin ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
-}
-const getUserInfoAndDetail = (req, res, next) => {
-    let params = req.params;
-    let aggregate_limit = [];
-    if(params.userId){
-        if(params.userId.length == 24){
-            aggregate_limit.push({
-                $match: {
-                    _id :  mongoose.mongo.ObjectId(params.userId)
-                }
-            });
-        }else{
-            logger.info('getUserInfoAndDetail userID format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
-            return next();
-        }
-    }
-    aggregate_limit.push({
-        $project: {
-            password:0,
-            auth_time:0,
-        }
-    });
-    aggregate_limit.push({
-        $lookup: {
-            from:"user_details",
-            localField:"_userDetailId",
-            foreignField:"_id",
-            as:"user_detail_info"
-        }
-    });
-    aggregate_limit.push({
-        $lookup: {
-            from:"user_drive_infos",
-            localField:"_userDriveId",
-            foreignField:"_id",
-            as:"user_drive_info"
-        }
-    });
-    UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getUserInfoAndDetail ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            console.log('rows:',rows);
-            logger.info(' getUserInfoAndDetail ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -599,10 +661,11 @@ const userLogin = (req, res, next) => {
 }
 module.exports = {
     getUser,
-    getUserByAdmian,
+    getUserToken,
+    getUserInfoAndDetail,
+    getUserByAdmin,
     getUserCountByAdmin,
     getUserTodayCountByAdmin,
-    getUserInfoAndDetail,
     createUser,
     updateUserType,
     updatePassword,

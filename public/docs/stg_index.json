@@ -518,6 +518,39 @@
         }
       }
     },
+    "/user/{userId}/token/{token}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Select user token ",
+        "description": "Get user token ",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/user/{userId}/type": {
       "put": {
         "tags": [

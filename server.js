@@ -105,12 +105,13 @@ const createServer=()=>{
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
     server.get('/api/user', UserController.getUser);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
+    server.get('/api/user/:userId/token/:token', UserController.getUserToken);
     server.put({path:'/api/user/:userId/type',contentType: 'application/json'} ,UserController.updateUserType);
     server.put({path:'/api/user/:userId/password',contentType: 'application/json'},UserController.updatePassword);
     server.put({path:'/api/user/:userId/phone',contentType: 'application/json'},UserController.updatePhone);
     server.put({path:'/api/user/:userId/authStatus',contentType: 'application/json'} ,UserController.updateUserAuthStatus);
 
-    server.get('/api/admin/:adminId/user', UserController.getUserByAdmian);
+    server.get('/api/admin/:adminId/user', UserController.getUserByAdmin);
     server.get('/api/admin/:adminId/userCount', UserController.getUserCountByAdmin);
     server.get('/api/admin/:adminId/userTodayCount', UserController.getUserTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
