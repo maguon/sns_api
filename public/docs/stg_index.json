@@ -3257,7 +3257,7 @@
         }
       }
     },
-    "/admin/{adminId}/MessageComments": {
+    "/admin/{adminId}/messageComments": {
       "get": {
         "tags": [
           "messageComments"
@@ -3335,6 +3335,58 @@
             "name": "size",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/messageCommentsCount": {
+      "get": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Administrators select messageComments Count",
+        "description": "Administrators get messageComments Count",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/todayMessageCommentsCount": {
+      "get": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Administrators select todayMessageComments Count",
+        "description": "Administrators get todayMessageComments Count",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

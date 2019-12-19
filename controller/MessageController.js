@@ -351,7 +351,7 @@ const getTodayMessageCountByAdmin = (req, res, next) => {
         aggregate_limit.push({
             $match: {
                 created_at :  {$gte: startDay,$lt: endDay}
-    }
+            }
         });
     }
     aggregate_limit.push({

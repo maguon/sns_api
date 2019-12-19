@@ -1,6 +1,7 @@
 "use strict"
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
+const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
@@ -493,6 +494,60 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         })
 
 }
+const getMessageCommentsCountByAdmin = (req, res, next) => {
+    let query = MessageCommentsModel.find({});
+    query.countDocuments().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getMessageCommentsCountByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getMessageCommentsCountByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
+    let aggregate_limit = [];
+    let today = new Date();
+    let startDay = new Date(moment(today).format('YYYY-MM-DD'));
+    let endDay = new Date(moment(today).add(1, 'days').format('YYYY-MM-DD'));
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "messages_infos",
+                localField: "_messageId",
+                foreignField: "_id",
+                as: "messages_info"
+            }
+        }
+    );
+    if(startDay && endDay){
+        aggregate_limit.push({
+            $match: {
+                created_at :  {$gte: startDay,$lt: endDay}
+            }
+        });
+    }
+    aggregate_limit.push({
+        $group: {
+            _id: {type:"$messages_info.type"},
+            count:{$sum:1}
+        }
+    });
+    MessageCommentsModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getMessageCommentsTodayCountByAdmin getComment ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            console.log('rows:',rows);
+            logger.info(' getMessageCommentsTodayCountByAdmin getComment ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+
+}
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
     let params = req.params;
@@ -547,6 +602,8 @@ module.exports = {
     updateReadStatus,
     deleteComments,
     getMessageCommentsByAdmin,
+    getMessageCommentsCountByAdmin,
+    getMessageCommentsTodayCountByAdmin,
     updateStatusByAdmin,
     deleteCommentsByAdmin
 };

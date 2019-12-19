@@ -197,7 +197,9 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/messageComments/:messageCommentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
     server.del({path:'/api/user/:userId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteComments);
 
-    server.get('/api/admin/:adminId/MessageComments', MessageCommentsController.getMessageCommentsByAdmin);
+    server.get('/api/admin/:adminId/messageComments', MessageCommentsController.getMessageCommentsByAdmin);
+    server.get('/api/admin/:adminId/messageCommentsCount', MessageCommentsController.getMessageCommentsCountByAdmin);
+    server.get('/api/admin/:adminId/todayMessageCommentsCount', MessageCommentsController.getMessageCommentsTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/messageComments/:messageCommentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteCommentsByAdmin);
     /**
