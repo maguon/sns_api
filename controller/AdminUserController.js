@@ -26,10 +26,10 @@ const getAdminUser = (req, res, next) => {
         }
     }
     if(params.name){
-        query.where('name').equals(params.name);
+        query.where('name').equals({"$regex": params.name, "$options": "$ig"});
     }
     if(params.realname){
-        query.where('realname').equals(params.realname);
+        query.where('realname').equals({"$regex": params.realname, "$options": "$ig"});
     }
     if(params.phone){
         query.where('phone').equals(params.phone);

@@ -7,7 +7,7 @@ const adminUserSchema = new Schema({
         realname      : {type:String,default:'',trim:true,display: '真实姓名'},
         phone         : {type:Number,default:0,display: '电话'},
         password      : {type:String,default:'',trim:true,display: '密码'},
-        gender        : {type:Number,default:0,min:0,max:3,display: '性别'},
+        gender        : {type:Number,default:0,min:0,max:3,display: '性别（0-女 1-男）'},
         type          : {type:String,default:0,display: '管理员类型(99-超级管理员)'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（0-停用，1-启用）'}
     },
