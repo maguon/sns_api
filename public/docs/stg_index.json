@@ -819,6 +819,32 @@
         }
       }
     },
+    "/admin/{adminId}/userTodayCount": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrators select userToday Count",
+        "description": "Administrators get userToday Count",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/user/{userId}/status":{
       "put": {
         "tags": [
@@ -2764,6 +2790,32 @@
             "name": "size",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/messageCount": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrators select message Count",
+        "description": "Administrators get message Count",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

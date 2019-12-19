@@ -1,5 +1,6 @@
 "use strict"
 const mongoose = require('mongoose');
+const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt.js');
 const oAuthUtil = require('../util/OAuthUtil');
@@ -128,10 +129,29 @@ const getUserCountByAdmin = (req, res, next) => {
     let query = UserModel.find({});
     query.countDocuments().exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserCount ' + error.message);
+            logger.error(' getUserCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserCount ' + 'success');
+            logger.info(' getUserCountByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getUserTodayCountByAdmin = (req, res, next) => {
+    let query = UserModel.find({});
+    let today = new Date();
+    let startDay = new Date(moment(today).format('YYYY-MM-DD'));
+    let endDay = new Date(moment(today).add(1, 'days').format('YYYY-MM-DD'));
+    if(startDay && endDay){
+        query.where('created_at').equals({$gte: startDay,$lt: endDay});
+    }
+    query.countDocuments().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserTodayCountByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getUserTodayCountByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -581,6 +601,7 @@ module.exports = {
     getUser,
     getUserByAdmian,
     getUserCountByAdmin,
+    getUserTodayCountByAdmin,
     getUserInfoAndDetail,
     createUser,
     updateUserType,

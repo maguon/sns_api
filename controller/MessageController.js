@@ -329,17 +329,29 @@ const getMessageByAdmin = (req, res, next) => {
         }
     });
 }
-const getTodayMessageCount = (req, res, next) => {
+const getMessageCountByAdmin = (req, res, next) => {
+    let query = MessageModel.find({});
+    query.countDocuments().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getMessageCountByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getMessageCountByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getTodayMessageCountByAdmin = (req, res, next) => {
     let aggregate_limit = [];
     let today = new Date();
     let startDay = new Date(moment(today).format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).add(1, 'days').format('YYYY-MM-DD'));
-
     if(startDay && endDay){
         aggregate_limit.push({
             $match: {
                 created_at :  {$gte: startDay,$lt: endDay}
-            }
+    }
         });
     }
     aggregate_limit.push({
@@ -348,13 +360,12 @@ const getTodayMessageCount = (req, res, next) => {
             count:{$sum:1}
         }
     });
-
     MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageCount ' + error.message);
+            logger.error(' getTodayMessageCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMessageCount ' + 'success');
+            logger.info(' getTodayMessageCountByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -391,6 +402,7 @@ module.exports = {
     searchByRadius,
     deleteMessage,
     getMessageByAdmin,
-    getTodayMessageCount,
+    getMessageCountByAdmin,
+    getTodayMessageCountByAdmin,
     deleteMessageByAdmin
 };
