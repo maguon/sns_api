@@ -2773,6 +2773,32 @@
         }
       }
     },
+    "/admin/{adminId}/todayMessageCount": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Administrators select todayMessage Count",
+        "description": "Administrators get todayMessage Count",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/searchByRadius": {
       "get": {
         "tags": [

@@ -1,6 +1,7 @@
 "use strict"
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
+const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
@@ -298,11 +299,8 @@ const getMessageByAdmin = (req, res, next) => {
     if(params.carrier){
         matchObj.carrier = Number(params.carrier);
     }
-    if (params.createDateStart) {
-        matchObj["created_at"] = {$gte: new Date(params.createDateStart)};
-    }
-    if (params.createDateEnd) {
-        matchObj["created_at"] = {$lte: new Date(params.createDateEnd)};
+    if (params.createDateStart && params.createDateEnd) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     if (params.status) {
         matchObj.status = Number(params.status);
@@ -326,6 +324,28 @@ const getMessageByAdmin = (req, res, next) => {
         } else {
             console.log('rows:',rows);
             logger.info(' getMessageByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getTodayMessageCount = (req, res, next) => {
+    let query = MessageModel.find({});
+    let today = new Date();
+    console.log(today);
+    let startDay = new Date(moment(today).format('YYYY-MM-DD'));
+    let endDay = new Date(moment(today).add(1, 'days').format('YYYY-MM-DD'));
+    console.log(startDay);
+    console.log(endDay);
+    if(startDay && endDay){
+        query.where('created_at').equals({$gte: startDay,$lt: endDay});
+    }
+    query.countDocuments().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getTodayMessageCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getTodayMessageCount ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -362,5 +382,6 @@ module.exports = {
     searchByRadius,
     deleteMessage,
     getMessageByAdmin,
+    getTodayMessageCount,
     deleteMessageByAdmin
 };

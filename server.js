@@ -182,6 +182,7 @@ const createServer=()=>{
     server.del({path:'/api/user/:userId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessage);
 
     server.get('/api/admin/:adminId/messages', MessageController.getMessageByAdmin);
+    server.get('/api/admin/:adminId/todayMessageCount', MessageController.getTodayMessageCount);
     server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
     server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
     server.del({path:'/api/admin/:adminId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessageByAdmin);
