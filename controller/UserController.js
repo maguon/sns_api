@@ -127,6 +127,19 @@ const getUserByAdmian = (req, res, next) => {
         }
     });
 }
+const getUserCountByAdmin = (req, res, next) => {
+    let query = UserModel.find({});
+    query.count().exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getUserCount ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 const getUserInfoAndDetail = (req, res, next) => {
     let params = req.params;
     let aggregate_limit = [];
@@ -570,6 +583,7 @@ const userLogin = (req, res, next) => {
 module.exports = {
     getUser,
     getUserByAdmian,
+    getUserCountByAdmin,
     getUserInfoAndDetail,
     createUser,
     updateUserType,

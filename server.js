@@ -111,6 +111,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/authStatus',contentType: 'application/json'} ,UserController.updateUserAuthStatus);
 
     server.get('/api/admin/:adminId/user', UserController.getUserByAdmian);
+    server.get('/api/admin/:adminId/userCount', UserController.getUserCountByAdmin);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
     /**
      user_detail    -用户详细信息
