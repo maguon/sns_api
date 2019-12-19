@@ -330,22 +330,31 @@ const getMessageByAdmin = (req, res, next) => {
     });
 }
 const getTodayMessageCount = (req, res, next) => {
-    let query = MessageModel.find({});
+    let aggregate_limit = [];
     let today = new Date();
-    console.log(today);
     let startDay = new Date(moment(today).format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).add(1, 'days').format('YYYY-MM-DD'));
-    console.log(startDay);
-    console.log(endDay);
+
     if(startDay && endDay){
-        query.where('created_at').equals({$gte: startDay,$lt: endDay});
+        aggregate_limit.push({
+            $match: {
+                created_at :  {$gte: startDay,$lt: endDay}
+            }
+        });
     }
-    query.countDocuments().exec((error,rows)=> {
+    aggregate_limit.push({
+        $group: {
+            _id: {type:"$type"},
+            count:{$sum:1}
+        }
+    });
+
+    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getTodayMessageCount ' + error.message);
+            logger.error(' getMessageCount ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getTodayMessageCount ' + 'success');
+            logger.info(' getMessageCount ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
