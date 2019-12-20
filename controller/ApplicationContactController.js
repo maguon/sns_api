@@ -109,9 +109,34 @@ const createApplicationContact = (req, res, next) => {
         }
     })
 }
-
+const updateStatus = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = ApplicationContactModel.find({});
+    let params = req.params;
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(params.userId));
+        }else{
+            logger.info('updateStatus userId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    ApplicationContactModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateStatus ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateStatus ' + 'success');
+            console.log('rows:',result);
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getApplicationContact,
     getApplicationContactByAdmin,
-    createApplicationContact
+    createApplicationContact,
+    updateStatus
 };

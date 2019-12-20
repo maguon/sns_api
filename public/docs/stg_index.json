@@ -3994,6 +3994,61 @@
         }
       }
     },
+    "/user/{userId}/applicationContact/{applicationContactId}/status": {
+      "put": {
+        "tags": [
+          "applicationContact"
+        ],
+        "summary": "Finds applicationContact status and update",
+        "description": "Update applicationContact status ",
+        "operationId": "update applicationContact status by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "被关注用户",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "applicationContactId",
+            "in": "path",
+            "description": "申请联系方式ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "body",
+            "description": "申请状态（0-未读，1-拒绝，2-同意）",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or applicationContactId not found"
+          }
+        }
+      }
+    },
     "/admin/{adminId}/applicationContact": {
       "get": {
         "tags": [

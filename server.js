@@ -220,6 +220,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/applicationContact',contentType: 'application/json'}, ApplicationContactController.createApplicationContact);
     server.get('/api/user/:userId/applicationContact', ApplicationContactController.getApplicationContact);
+    server.put({path:'/api/user/:userId/applicationContact/:applicationContactId/status',contentType: 'application/json'} ,ApplicationContactController.updateStatus);
 
     server.get('/api/admin/:adminId/applicationContact', ApplicationContactController.getApplicationContactByAdmin);
     /**
