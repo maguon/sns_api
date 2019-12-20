@@ -4009,7 +4009,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "被关注用户",
+            "description": "被邀请用户",
             "required": true,
             "type": "string"
           },
