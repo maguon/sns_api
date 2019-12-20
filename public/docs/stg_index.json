@@ -4931,14 +4931,14 @@
       }
     },
 
-    "/app": {
+    "/user/{userId}/app": {
       "get": {
         "tags": [
           "app"
         ],
         "summary": "Query app info",
-        "description": "",
-        "operationId": "getApp",
+        "description": "Query app info",
+        "operationId": "get App",
         "consumes": [
           "application/json"
         ],
@@ -4946,6 +4946,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "appId",
             "in": "path",
@@ -4962,7 +4969,7 @@
           },
           {
             "in": "query",
-            "name": "device_type",
+            "name": "deviceType",
             "description": "系统类型(1-安卓 2-苹果)",
             "required": false,
             "type": "integer"
@@ -5001,11 +5008,85 @@
       }
     },
     "/admin/{adminId}/app": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Administrator query app info",
+        "description": "Administrator query app info",
+        "operationId": "Administrator query app info",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "appID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "appType",
+            "description": "app类型(1-司机之家)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "deviceType",
+            "description": "系统类型(1-安卓 2-苹果)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
       "post": {
         "tags": [
           "app"
         ],
-        "summary": "Add a new app info",
+        "summary": "Administrator add a new app info",
         "description": "",
         "operationId": "AddApp",
         "consumes": [
@@ -5045,9 +5126,9 @@
         "tags": [
           "app"
         ],
-        "summary": "Finds app and update",
-        "description": "update app info",
-        "operationId": "update app info by id",
+        "summary": "Administrator finds app and update",
+        "description": "Administrator update app info",
+        "operationId": "Administrator update app info by id",
         "produces": [
           "application/json"
         ],
