@@ -4679,46 +4679,6 @@
         }
       }
     },
-    "/admin/{adminId}/blacklist": {
-      "get": {
-        "tags": [
-          "blacklist"
-        ],
-        "summary": "Administrator select blacklist Info",
-        "description": "Administrator get blacklist info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "userID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "blacklistId",
-            "in": "query",
-            "description": "blacklistId",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
     "/user/{userId}/blacklist/{blacklistId}": {
       "delete": {
         "tags": [
@@ -4762,6 +4722,46 @@
           }
         },
         "deprecated": true
+      }
+    },
+    "/admin/{adminId}/blacklist": {
+      "get": {
+        "tags": [
+          "blacklist"
+        ],
+        "summary": "Administrator select blacklist Info",
+        "description": "Administrator get blacklist info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "userID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "blacklistId",
+            "in": "query",
+            "description": "blacklistId",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
       }
     },
 
@@ -5225,6 +5225,43 @@
           },
           "404": {
             "description": "AppId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/app/{appId}/del": {
+      "delete": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Administrator delete app",
+        "description": "Administrator delete app",
+        "operationId": "Administrator delete app by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "description": "app Id",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or appId not found"
           }
         }
       }

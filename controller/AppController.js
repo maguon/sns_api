@@ -107,9 +107,33 @@ const updateStatus = (req, res, next) => {
         }
     })
 }
+const deleteApp = (req, res, next) => {
+    let path = req.path;
+    let query = AppModel.find({});
+    if(path.appId){
+        if(path.appId.length == 24){
+            query.where('appId').equals(mongoose.mongo.ObjectId(path.appId));
+        }else{
+            logger.info(' deleteApp appId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.APP_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    AppModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error(' deleteApp ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' deleteApp ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getApp,
     createApp,
     updateApp,
-    updateStatus
+    updateStatus,
+    deleteApp
 };

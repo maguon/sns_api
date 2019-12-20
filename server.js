@@ -270,6 +270,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'}, AppController.createApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'} ,AppController.updateApp);
     server.put({path:'/api/admin/:adminId/app/:appId/status',contentType: 'application/json'} ,AppController.updateStatus);
+    server.del({path:'/api/admin/:adminId/app/:appId/del',contentType: 'application/json'},AppController.deleteApp);
 
 
     server.on('NotFound', function (req, res ,err,next) {
