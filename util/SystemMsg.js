@@ -68,6 +68,10 @@ let NOTIFICATION_SETTINGS_ID_NULL_ERROR ="通知设置信息不存在！" ;
  */
 let BLACK_LIST_ID_NULL_ERROR ="黑名单信息不存在！" ;
 /**
+ * The module for about
+ */
+let ABOUT_ID_NULL_ERROR ="关于我们信息不存在！" ;
+/**
  * The module for app
  */
 let APP_ID_NULL_ERROR ="版本信息不存在！" ;
