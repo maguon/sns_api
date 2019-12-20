@@ -1,5 +1,6 @@
 "use strict"
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
@@ -103,7 +104,7 @@ const createUserPraise = (req, res, next) => {
         });
     }
     const updateMessageNum = () =>{
-        return new Promise(() => {
+        return new Promise((resolve, reject) => {
             let query = MessageModel.find({});
             if(bodyParams._messageId){
                 if(bodyParams._messageId.length == 24){
@@ -120,25 +121,29 @@ const createUserPraise = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createUserPraise updateMessageNum ' + 'success');
-                    resUtil.resetQueryRes(res, returnMessage);
-                    return next();
+                    if(bodyParams.type == sysConsts.COUMMENT.type.firstCoumment){
+                        resUtil.resetQueryRes(res, returnMessage);
+                        return next();
+                    }else{
+                        resolve();
+                    }
                 }
             });
         });
     }
     const updateMessageCommentsNum = () =>{
         return new Promise(() => {
-            let query = MessageCommentsModel.find({});
+            let queryComment = MessageCommentsModel.find({});
             if(bodyParams._messageCommentsId){
                 if(bodyParams._messageCommentsId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageCommentsId));
+                    queryComment.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageCommentsId));
                 }else{
                     logger.info('createUserPraise updateMessageCommentsNum _messageCommentsId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
                     return next();
                 }
             }
-            MessageCommentsModel.findOneAndUpdate(query,{ $inc: { agreeNum: 1 } }).exec((error,rows)=> {
+            MessageCommentsModel.findOneAndUpdate(queryComment,{ $inc: { agreeNum: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserPraise updateMessageCommentsNum ' + error.message);
                     resUtil.resInternalError(error,res);
@@ -151,15 +156,8 @@ const createUserPraise = (req, res, next) => {
         });
     }
     savePraise()
-        .then(()=>{
-            if(bodyParams.type == sysConsts.COUMMENT.type.firstCoumment){
-                //更新文章
-                updateMessageNum();
-            }else{
-                //更新评论
-                updateMessageCommentsNum();
-            }
-        })
+        .then(updateMessageNum)
+        .then(updateMessageCommentsNum)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
