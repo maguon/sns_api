@@ -2562,6 +2562,69 @@
         }
       }
     },
+    "/user/{userId}/allMessages": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Select allMessages Info",
+        "description": "get allMessages info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "carrier",
+            "in": "query",
+            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
+            "required": false,
+            "type": "integer"
+          },{
+            "name": "status",
+            "in": "query",
+            "description": "文章状态（0-不可见，1-可见(默认)）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/user/{userId}/messagesCount": {
       "get": {
         "tags": [
