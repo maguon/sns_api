@@ -119,5 +119,7 @@ module.exports = {
 
     BLACK_LIST_ID_NULL_ERROR,
 
+    ABOUT_ID_NULL_ERROR,
+
     APP_ID_NULL_ERROR
 }
