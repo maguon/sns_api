@@ -112,7 +112,7 @@ const deleteApp = (req, res, next) => {
     let query = AppModel.find({});
     if(path.appId){
         if(path.appId.length == 24){
-            query.where('appId').equals(mongoose.mongo.ObjectId(path.appId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.appId));
         }else{
             logger.info(' deleteApp appId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.APP_ID_NULL_ERROR);

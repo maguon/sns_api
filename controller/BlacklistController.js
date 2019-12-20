@@ -111,7 +111,7 @@ const deleteBlacklist = (req, res, next) => {
     }
     if(path.blacklistId){
         if(path.blacklistId.length == 24){
-            query.where('blacklistId').equals(mongoose.mongo.ObjectId(path.blacklistId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.blacklistId));
         }else{
             logger.info('deleteBlacklist blacklistId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.BLACK_LIST_ID_NULL_ERROR);

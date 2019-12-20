@@ -149,9 +149,33 @@ const updateStatusByAdmin = (req, res, next) => {
         }
     })
 }
+const deleteSystemMessage = (req, res, next) => {
+    let path = req.path;
+    let query = SystemMessageModel.find({});
+    if(path.systemMessageId){
+        if(path.systemMessageId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.systemMessageId));
+        }else{
+            logger.info(' deleteApp systemMessageId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    SystemMessageModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error(' deleteSystemMessage ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' deleteSystemMessage ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getSystemMessage,
     createSystemMessage,
     getSystemMessageByAdmin,
-    updateStatusByAdmin
+    updateStatusByAdmin,
+    deleteSystemMessage
 };

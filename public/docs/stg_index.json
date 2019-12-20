@@ -4303,6 +4303,43 @@
         }
       }
     },
+    "/admin/{adminId}/systemMessage/{systemMessageId}/del": {
+      "delete": {
+        "tags": [
+          "systemMessage"
+        ],
+        "summary": "Administrator delete systemMessage",
+        "description": "Administrator delete systemMessage",
+        "operationId": "Administrator delete systemMessage by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "systemMessageId",
+            "in": "query",
+            "description": "systemMessage Id",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or appId not found"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/privacySettings": {
       "post": {

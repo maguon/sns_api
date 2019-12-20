@@ -230,6 +230,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/systemMessage', SystemMessageController.getSystemMessageByAdmin);
     server.post({path:'/api/admin/:adminId/systemMessage',contentType: 'application/json'}, SystemMessageController.createSystemMessage);
     server.put({path:'/api/admin/:adminId/systemMessage/:systemMessageId/status',contentType: 'application/json'} ,SystemMessageController.updateStatusByAdmin);
+    server.del({path:'/api/admin/:adminId/systemMessage/:systemMessageId/del',contentType: 'application/json'},SystemMessageController.deleteSystemMessage);
     /**
      privacySettings     - 隐私设置
      */

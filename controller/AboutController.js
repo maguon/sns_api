@@ -73,7 +73,7 @@ const deleteAbout = (req, res, next) => {
     let query = AboutModel.find({});
     if(path.aboutId){
         if(path.appId.length == 24){
-            query.where('aboutId').equals(mongoose.mongo.ObjectId(path.aboutId));
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.aboutId));
         }else{
             logger.info(' deleteAbout aboutId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.ABOUT_ID_NULL_ERROR);
