@@ -262,6 +262,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/about', AboutController.getAbout);
     server.post({path:'/api/admin/:adminId/about',contentType: 'application/json'}, AboutController.createAbout);
     server.put({path:'/api/admin/:adminId/about/:aboutId/about',contentType: 'application/json'} ,AboutController.updateAbout);
+    server.del({path:'/api/admin/:adminId/about/:aboutId/del',contentType: 'application/json'},AboutController.deleteAbout);
     /**
      app
      */

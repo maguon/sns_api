@@ -68,8 +68,32 @@ const updateAbout = (req, res, next) =>{
         }
     })
 }
+const deleteAbout = (req, res, next) => {
+    let path = req.path;
+    let query = AboutModel.find({});
+    if(path.aboutId){
+        if(path.appId.length == 24){
+            query.where('aboutId').equals(mongoose.mongo.ObjectId(path.aboutId));
+        }else{
+            logger.info(' deleteAbout aboutId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.ABOUT_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    AboutModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error(' deleteAbout ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info(' deleteAbout ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getAbout,
     createAbout,
-    updateAbout
+    updateAbout,
+    deleteAbout
 };

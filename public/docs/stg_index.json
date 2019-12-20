@@ -4720,8 +4720,7 @@
           "404": {
             "description": "UserId or blacklistId not found"
           }
-        },
-        "deprecated": true
+        }
       }
     },
     "/admin/{adminId}/blacklist": {
@@ -4918,6 +4917,43 @@
             "schema": {
               "$ref": "#/definitions/About"
             }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "AdminId or aboutId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/about/{aboutId}/del": {
+      "delete": {
+        "tags": [
+          "about"
+        ],
+        "summary": "Administrator delete about",
+        "description": "Administrator delete about",
+        "operationId": "Administrator delete about by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "aboutId",
+            "in": "query",
+            "description": "about Id",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
