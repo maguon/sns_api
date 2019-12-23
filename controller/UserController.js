@@ -572,11 +572,12 @@ const updateUserAuthStatus = (req, res, next) => {
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
     let UserId;
+    let user = {};
     const getUser = () =>{
         return new Promise((resolve,reject)=> {
             let query = UserModel.find({});
             if (bodyParams.userName) {
-                query.where('phone').equals(bodyParams.userName);
+                query.where('phone').equals(Number(bodyParams.userName));
             }
             if (bodyParams.password) {
                 bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
@@ -602,12 +603,11 @@ const userLogin = (req, res, next) => {
     const loginSaveToken = (userInfo) =>{
         return new Promise((resolve, reject)=>{
             UserId = userInfo._doc._id.toString();
-            let user = {
-                userId : userInfo._doc._id.toString(),
-                userName : userInfo.nickName,
-                status : userInfo.status,
-                type: userInfo.type
-            }
+            user.userId = userInfo._doc._id.toString();
+            user.userName = userInfo.nickName;
+            user.status = userInfo.status;
+            user.type = userInfo.type;
+
             user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
             oAuthUtil.saveToken(user,function(error,result){
                 if(error){
@@ -642,7 +642,7 @@ const userLogin = (req, res, next) => {
                 } else {
                     logger.info(' userLogin updateLastLogin ' + 'success');
                     console.log('rows:',result);
-                    resUtil.resetUpdateRes(res,user,null);
+                    resUtil.resetQueryRes(res,user,null);
                     return next();
                 }
             })
