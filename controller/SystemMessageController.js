@@ -129,6 +129,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
                         reject({err:error.message});
                     } else {
                         logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
+                        logger.info('rows[0]._doc._id:' + rows[0]._doc._id);
                         matchObj._userId =  mongoose.mongo.ObjectId(rows[0]._doc._id);
                         resolve();
                     }
