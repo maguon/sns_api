@@ -7,6 +7,7 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('SystemMessageController');
 
 const {SystemMessageModel} = require('../modules');
+const {UserModel} = require('../modules');
 
 const getSystemMessage = (req, res, next) => {
     let params = req.query;
@@ -74,56 +75,118 @@ const createSystemMessage = (req, res, next) => {
 }
 const getSystemMessageByAdmin = (req, res, next) => {
     let params = req.query;
-    let query = SystemMessageModel.find({});
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_infos",
+                localField: "_userId",
+                foreignField: "_id",
+                as: "user_login_info"
+            }
+        }
+    )
     if(params.publisherId){
         if(params.publisherId.length == 24){
-            query.where('_adminId').equals(mongoose.mongo.ObjectId(params.publisherId));
+            matchObj._adminId = mongoose.mongo.ObjectId(params.publisherId);
         }else{
             logger.info('getSystemMessageByAdmin publisherId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
-        }else{
-            logger.info('getSystemMessageByAdmin userId format incorrect!');
-            resUtil.resetQueryRes(res,[],null);
-            return next();
-        }
-    }
     if(params.systemMessageId){
         if(params.systemMessageId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.vsystemMessageIdoteId));
+            matchObj._id = mongoose.mongo.ObjectId(params.vsystemMessageIdoteId);
         }else{
-            logger.info('getSystemMessageByAdmin voteId format incorrect!');
+            logger.info('getSystemMessageByAdmin systemMessageId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
     if(params.status){
-        query.where('status').equals(params.status);
+        matchObj.status = Number(params.status);
     }
     if(params.type){
-        query.where('type').equals(params.type);
+        matchObj.type = Number(params.type);
     }
     if (params.createDateStart && params.createDateEnd ) {
-        query.where('created_at').equals({$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd) });
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    //根据phone查询用户ID
+    const getUserId = () =>{
+        return new Promise((resolve, reject) => {
+            //判断查询条件中 是否存在电话号
+            if(params.phone){
+                let queryUser = UserModel.find({});
+                if(params.phone){
+                    queryUser.where('phone').equals(params.phone);
+                }
+                queryUser.exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' getSystemMessageByAdmin getUserId ' + error.message);
+                        reject({err:error.message});
+                    } else {
+                        logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
+                        matchObj._userId =  mongoose.mongo.ObjectId(rows[0]._doc._id);
+                        resolve();
+                    }
+                });
+            }else{
+                resolve();
+            }
+        });
     }
-    query.exec((error,rows)=>{
-        if (error) {
-            logger.error(' getSystemMessageByAdmin ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getSystemMessageByAdmin ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
+
+    const getSystemMessage =()=>{
+        return new Promise(() => {
+            aggregate_limit.push({
+                $match: matchObj
+            });
+
+            if (params.start && params.size){
+                aggregate_limit.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+            aggregate_limit.push({
+                $project: {
+                    "user_login_info._id": 0,
+                    "user_login_info.password": 0,
+                    "user_login_info.type": 0,
+                    "user_login_info.auth_status": 0,
+                    "user_login_info.last_login_on": 0,
+                    "user_login_info.created_at": 0,
+                    "user_login_info.updated_at": 0,
+                    "user_login_info.__v": 0,
+                    "user_login_info._userDetailId": 0
+                }
+            });
+            SystemMessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getSystemMessageByAdmin getSystemMessage ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getSystemMessageByAdmin getSystemMessage ' + 'success');
+                    resUtil.resetQueryRes(res, rows);
+                    return next();
+                }
+            });
+        });
+    }
+
+    getUserId()
+        .then(getSystemMessage)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }
+        })
 }
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;

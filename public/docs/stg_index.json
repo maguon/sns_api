@@ -4208,11 +4208,11 @@
             "type": "string"
           },
           {
-            "name": "userId",
+            "name": "phone",
             "in": "query",
-            "description": "接收人ID",
+            "description": "接收人电话",
             "required": false,
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "systemMessageId",
