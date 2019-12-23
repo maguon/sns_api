@@ -45,8 +45,8 @@ const getUserMessageComments = (req, res, next) => {
             return next();
         }
     }
-    if(params.type){
-        query.where('type').equals(params.type);
+    if(params.level){
+        query.where('level').equals(params.level);
     }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
@@ -86,8 +86,8 @@ const getAllMessageComments = (req, res, next) => {
             return next();
         }
     }
-    if(params.type){
-        query.where('type').equals(params.type);
+    if(params.level){
+        query.where('level').equals(params.level);
     }
     if(params.read_status){
         query.where('read_status').equals(params.read_status);
@@ -153,7 +153,7 @@ const createMessageComments = (req, res, next) => {
                     return next();
                 }
             }
-            if(bodyParams.type == 1){
+            if(bodyParams.level == 1){
                 //文章评论数加一
                 UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsNum: 1 } }).exec((error,rows)=> {
                     if (error) {
@@ -230,7 +230,7 @@ const createMessageComments = (req, res, next) => {
     saveMessageComments()
         .then(updateUserNumber)
         .then(()=>{
-            if(bodyParams.type == sysConsts.COUMMENT.type.firstCoumment){
+            if(bodyParams.level == sysConsts.COUMMENT.level.firstCoumment){
                 //一级评论
                 updateMessageNum();
             }else{
@@ -354,7 +354,7 @@ const getMessageCommentsByAdmin = (req, res, next) => {
     }
     if(params.messagesId){
         if(params.messagesId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.messagesId);
+            matchObj._messageId = mongoose.mongo.ObjectId(params.messagesId);
         }else{
             logger.info('getMessageCommentsByAdmin  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -369,6 +369,9 @@ const getMessageCommentsByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
+    }
+    if (params.type){
+        matchObj.messages_type = Number(params.type);
     }
     if (params.status){
         matchObj.status = Number(params.status);
@@ -477,7 +480,6 @@ const getMessageCommentsByAdmin = (req, res, next) => {
                     logger.error(' getMessageCommentsByAdmin getComment ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    console.log('rows:',rows);
                     logger.info(' getMessageCommentsByAdmin getComment ' + 'success');
                     resUtil.resetQueryRes(res, rows);
                     return next();

@@ -3164,7 +3164,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "type",
+            "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
             "required": false,
@@ -3228,7 +3228,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "type",
+            "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
             "required": false,
@@ -3398,6 +3398,13 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "status",
@@ -5802,13 +5809,18 @@
     "MessageComments": {
       "type": "object",
       "required": [
-        "type",
+        "messages_type",
+        "level",
         "commentsMsg",
         "_messageId",
         "_messageCommentsId"
       ],
       "properties": {
-        "type": {
+        "messages_type": {
+          "type": "Integer",
+          "format": "int64"
+        },
+        "level": {
           "type": "Integer",
           "format": "int64"
         },

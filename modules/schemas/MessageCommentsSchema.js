@@ -3,7 +3,8 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const messageCommentsSchema = new Schema({
-        type           : {type:Number,default:0,min:0,max:3,display: '评论类型(1.一级评论 2.二级评论)'},
+        messages_type  : {type:Number,default:0,min:0,max:3,display: '消息类型(1.文章 2.求助 )'},
+        level          : {type:Number,default:0,min:0,max:3,display: '评论类型(1.一级评论 2.二级评论)'},
         commentsMsg    : {type:String,default:'',display: '评论内容'},
         commentsNum    : {type:Number,default:0,display: '评论次数'},
         agreeNum       : {type:Number,default:0,display: '点赞次数'},

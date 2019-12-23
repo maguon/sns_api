@@ -54,7 +54,7 @@ const MESSAGE ={
     }
 }
 const COUMMENT ={
-    type:{
+    level:{
         firstCoumment:1,//一级评论
         twoCoumment:2//二级评论
     },
