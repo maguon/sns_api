@@ -1285,7 +1285,7 @@
         "tags": [
           "userRelation"
         ],
-        "summary": "Select followInfo and userInfo",
+        "summary": "Select followInfo and userInfo(我的关注&关注用户信息)",
         "description": "Get followInfo and userInfo",
         "produces": [
           "application/json"
@@ -1421,7 +1421,7 @@
         "tags": [
           "userRelation"
         ],
-        "summary": "Select attentionInfo and userInfo",
+        "summary": "Select attentionInfo and userInfo(我的粉丝&粉丝用户信息)",
         "description": "Get attentionInfo and userInfo",
         "produces": [
           "application/json"
