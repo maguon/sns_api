@@ -332,7 +332,7 @@ const getMessageByAdmin = (req, res, next) => {
         matchObj.carrier = Number(params.carrier);
     }
     if (params.createDateStart && params.createDateEnd) {
-        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
+        matchObj.created_at = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     if (params.status) {
         matchObj.status = Number(params.status);
