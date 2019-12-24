@@ -401,11 +401,11 @@ const getMessageCommentsByAdmin = (req, res, next) => {
                         }else{
                             matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
                         }
-                        getComment();
+                        resolve();
                     }
                 });
             }else{
-                getComment();
+                resolve();
             }
         });
     }
