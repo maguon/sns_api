@@ -121,7 +121,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
             if(params.phone){
                 let queryUser = UserModel.find({});
                 if(params.phone){
-                    queryUser.where('phone').equals(params.phone);
+                    queryUser.where('phone').equals(Number(params.phone));
                 }
                 queryUser.exec((error,rows)=> {
                     if (error) {
