@@ -73,19 +73,38 @@ const getFollowCount = (req, res, next) => {
 const getFollowUserInfo = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = UserRelationModel.find({});
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_infos",
+                localField: "_userById",
+                foreignField: "_id",
+                as: "follow_user_login_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_userById",
+                foreignField: "_userId",
+                as: "follow_user_detail_info"
+            }
+        }
+    )
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            matchObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('getFollowUserInfo userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            logger.info('getFollowUserInfo userId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
     if(params.userRelationId){
         if(params.userRelationId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
+            matchObj._id = mongoose.mongo.ObjectId(params.userRelationId);
         }else{
             logger.info('getFollowUserInfo userRelationId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
@@ -93,17 +112,60 @@ const getFollowUserInfo = (req, res, next) => {
         }
     }
     if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+        matchObj.read_status = Number(params.read_status);
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.populate({path:'_userId'}).exec((error,rows)=> {
+    aggregate_limit.push({
+        $match: matchObj
+    });
+
+    if (params.start && params.size){
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+
+    aggregate_limit.push({
+        $project: {
+            "follow_user_login_info._id": 0,
+            "follow_user_login_info.password": 0,
+            "follow_user_login_info.type": 0,
+            "follow_user_login_info.auth_status": 0,
+            "follow_user_login_info.last_login_on": 0,
+            "follow_user_login_info.created_at": 0,
+            "follow_user_login_info.updated_at": 0,
+            "follow_user_login_info.__v": 0,
+            "follow_user_login_info._userDetailId": 0,
+
+            "follow_user_detail_info._id": 0,
+            "follow_user_detail_info.sex": 0,
+            "follow_user_detail_info.city_name": 0,
+            "follow_user_detail_info.intro": 0,
+            "follow_user_detail_info.avatar": 0,
+            "follow_user_detail_info.messagesNum": 0,
+            "follow_user_detail_info.messagesHelpNum": 0,
+            "follow_user_detail_info.followNum": 0,
+            "follow_user_detail_info.attentionNum": 0,
+            "follow_user_detail_info.commentsNum": 0,
+            "follow_user_detail_info.commentsReplyNum": 0,
+            "follow_user_detail_info.voteNum": 0,
+            "follow_user_detail_info.messageCollectionNum": 0,
+            "follow_user_detail_info.locationCollectionNum": 0,
+            "follow_user_detail_info.created_at": 0,
+            "follow_user_detail_info.updated_at": 0,
+            "follow_user_detail_info.__v": 0,
+            "follow_user_detail_info._userId": 0
+        }
+    });
+    UserRelationModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getFollowUserInfo ' + error.message);
+            logger.error(' getFollowUserInfo UserRelationModel ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getFollowUserInfo ' + 'success');
+            logger.info(' getFollowUserInfo UserRelationModel ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
