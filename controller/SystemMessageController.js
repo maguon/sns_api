@@ -172,41 +172,8 @@ const getSystemMessageByAdmin = (req, res, next) => {
             };
             aggregate_limit.push({
                 $project: {
-                    "user_login_info._id": 0,
                     "user_login_info.password": 0,
-                    "user_login_info.type": 0,
-                    "user_login_info.auth_status": 0,
-                    "user_login_info.last_login_on": 0,
-                    "user_login_info.created_at": 0,
-                    "user_login_info.updated_at": 0,
-                    "user_login_info.__v": 0,
-                    "user_login_info._userDetailId": 0,
-
-                    "user_detail_info._id": 0,
-                    "user_detail_info.sex": 0,
-                    "user_detail_info.city_name": 0,
-                    "user_detail_info.intro": 0,
-                    "user_detail_info.avatar": 0,
-                    "user_detail_info.messagesNum": 0,
-                    "user_detail_info.messagesHelpNum": 0,
-                    "user_detail_info.followNum": 0,
-                    "user_detail_info.attentionNum": 0,
-                    "user_detail_info.commentsNum": 0,
-                    "user_detail_info.commentsReplyNum": 0,
-                    "user_detail_info.voteNum": 0,
-                    "user_detail_info.messageCollectionNum": 0,
-                    "user_detail_info.locationCollectionNum": 0,
-                    "user_detail_info.created_at": 0,
-                    "user_detail_info.updated_at": 0,
-                    "user_detail_info.__v": 0,
-                    "user_detail_info._userId": 0,
-
-                    "admin_info.password": 0,
-                    "admin_info.gender": 0,
-                    "admin_info.created_at": 0,
-                    "admin_info.updated_at": 0,
-                    "admin_info.__v": 0,
-                    "admin_info._userId": 0
+                    "admin_info.password": 0
                 }
             });
             SystemMessageModel.aggregate(aggregate_limit).exec((error,rows)=> {

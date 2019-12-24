@@ -130,34 +130,7 @@ const getFollowUserInfo = (req, res, next) => {
 
     aggregate_limit.push({
         $project: {
-            "follow_user_login_info._id": 0,
-            "follow_user_login_info.password": 0,
-            "follow_user_login_info.type": 0,
-            "follow_user_login_info.auth_status": 0,
-            "follow_user_login_info.last_login_on": 0,
-            "follow_user_login_info.created_at": 0,
-            "follow_user_login_info.updated_at": 0,
-            "follow_user_login_info.__v": 0,
-            "follow_user_login_info._userDetailId": 0,
-
-            "follow_user_detail_info._id": 0,
-            "follow_user_detail_info.sex": 0,
-            "follow_user_detail_info.city_name": 0,
-            "follow_user_detail_info.intro": 0,
-            "follow_user_detail_info.avatar": 0,
-            "follow_user_detail_info.messagesNum": 0,
-            "follow_user_detail_info.messagesHelpNum": 0,
-            "follow_user_detail_info.followNum": 0,
-            "follow_user_detail_info.attentionNum": 0,
-            "follow_user_detail_info.commentsNum": 0,
-            "follow_user_detail_info.commentsReplyNum": 0,
-            "follow_user_detail_info.voteNum": 0,
-            "follow_user_detail_info.messageCollectionNum": 0,
-            "follow_user_detail_info.locationCollectionNum": 0,
-            "follow_user_detail_info.created_at": 0,
-            "follow_user_detail_info.updated_at": 0,
-            "follow_user_detail_info.__v": 0,
-            "follow_user_detail_info._userId": 0
+            "follow_user_login_info.password": 0
         }
     });
     UserRelationModel.aggregate(aggregate_limit).exec((error,rows)=> {
@@ -301,34 +274,7 @@ const getAttentionUserInfo = (req, res, next) => {
 
     aggregate_limit.push({
         $project: {
-            "attention_user_login_info._id": 0,
-            "attention_user_login_info.password": 0,
-            "attention_user_login_info.type": 0,
-            "attention_user_login_info.auth_status": 0,
-            "attention_user_login_info.last_login_on": 0,
-            "attention_user_login_info.created_at": 0,
-            "attention_user_login_info.updated_at": 0,
-            "attention_user_login_info.__v": 0,
-            "attention_user_login_info._userDetailId": 0,
-
-            "attention_user_detail_info._id": 0,
-            "attention_user_detail_info.sex": 0,
-            "attention_user_detail_info.city_name": 0,
-            "attention_user_detail_info.intro": 0,
-            "attention_user_detail_info.avatar": 0,
-            "attention_user_detail_info.messagesNum": 0,
-            "attention_user_detail_info.messagesHelpNum": 0,
-            "attention_user_detail_info.followNum": 0,
-            "attention_user_detail_info.attentionNum": 0,
-            "attention_user_detail_info.commentsNum": 0,
-            "attention_user_detail_info.commentsReplyNum": 0,
-            "attention_user_detail_info.voteNum": 0,
-            "attention_user_detail_info.messageCollectionNum": 0,
-            "attention_user_detail_info.locationCollectionNum": 0,
-            "attention_user_detail_info.created_at": 0,
-            "attention_user_detail_info.updated_at": 0,
-            "attention_user_detail_info.__v": 0,
-            "attention_user_detail_info._userId": 0
+            "attention_user_login_info.password": 0
         }
     });
     UserRelationModel.aggregate(aggregate_limit).exec((error,rows)=> {
