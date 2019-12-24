@@ -13,9 +13,9 @@ const systemMessageSchema = new Schema({
         },
         _userId: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'user_info',
             display: '用户信息ID'
-        },
+        }
         },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });

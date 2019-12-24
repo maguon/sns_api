@@ -118,30 +118,24 @@ const getSystemMessageByAdmin = (req, res, next) => {
     const getUserId = () =>{
         return new Promise((resolve, reject) => {
             //判断查询条件中 是否存在电话号
-            if (params.phone) {
-                matchObj["user_login_info.phone"] = Number(params.phone);
-            }
+            if(params.phone){
+                let queryUser = UserModel.find({});
+                if(params.phone){
+                    queryUser.where('phone').equals(params.phone);
+                }
+                queryUser.exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' getSystemMessageByAdmin getUserId ' + error.message);
+                        reject({err:error.message});
+                    } else {
+                        logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
+                        matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
+                        resolve();
+                    }
+                });
+            }else{
                 resolve();
-
-            // if(params.phone){
-            //     let queryUser = UserModel.find({});
-            //     if(params.phone){
-            //         queryUser.where('phone').equals(params.phone);
-            //     }
-            //     queryUser.exec((error,rows)=> {
-            //         if (error) {
-            //             logger.error(' getSystemMessageByAdmin getUserId ' + error.message);
-            //             reject({err:error.message});
-            //         } else {
-            //             logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
-            //             logger.info('rows[0]._doc._id:' + rows[0]._doc._id);
-            //             matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
-            //             resolve();
-            //         }
-            //     });
-            // }else{
-            //     resolve();
-            // }
+            }
         });
     }
 
