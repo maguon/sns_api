@@ -85,6 +85,22 @@ const getSystemMessageByAdmin = (req, res, next) => {
                 foreignField: "_id",
                 as: "user_login_info"
             }
+        },
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_userId",
+                foreignField: "_userId",
+                as: "user_detail_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "admin_users",
+                localField: "_adminId",
+                foreignField: "_id",
+                as: "admin_info"
+            }
         }
     )
     if(params.publisherId){
@@ -98,7 +114,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
     }
     if(params.systemMessageId){
         if(params.systemMessageId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.vsystemMessageIdoteId);
+            matchObj._id = mongoose.mongo.ObjectId(params.systemMessageId);
         }else{
             logger.info('getSystemMessageByAdmin systemMessageId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
@@ -112,7 +128,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
         matchObj.type = Number(params.type);
     }
     if (params.createDateStart && params.createDateEnd ){
-        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
+        matchObj.created_at = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     //根据phone查询用户ID
     const getUserId = () =>{
@@ -164,7 +180,33 @@ const getSystemMessageByAdmin = (req, res, next) => {
                     "user_login_info.created_at": 0,
                     "user_login_info.updated_at": 0,
                     "user_login_info.__v": 0,
-                    "user_login_info._userDetailId": 0
+                    "user_login_info._userDetailId": 0,
+
+                    "user_detail_info._id": 0,
+                    "user_detail_info.sex": 0,
+                    "user_detail_info.city_name": 0,
+                    "user_detail_info.intro": 0,
+                    "user_detail_info.avatar": 0,
+                    "user_detail_info.messagesNum": 0,
+                    "user_detail_info.messagesHelpNum": 0,
+                    "user_detail_info.followNum": 0,
+                    "user_detail_info.attentionNum": 0,
+                    "user_detail_info.commentsNum": 0,
+                    "user_detail_info.commentsReplyNum": 0,
+                    "user_detail_info.voteNum": 0,
+                    "user_detail_info.messageCollectionNum": 0,
+                    "user_detail_info.locationCollectionNum": 0,
+                    "user_detail_info.created_at": 0,
+                    "user_detail_info.updated_at": 0,
+                    "user_detail_info.__v": 0,
+                    "user_detail_info._userId": 0,
+
+                    "admin_info.password": 0,
+                    "admin_info.gender": 0,
+                    "admin_info.created_at": 0,
+                    "admin_info.updated_at": 0,
+                    "admin_info.__v": 0,
+                    "admin_info._userId": 0
                 }
             });
             SystemMessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
