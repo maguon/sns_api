@@ -111,7 +111,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
     if(params.type){
         matchObj.type = Number(params.type);
     }
-    if (params.createDateStart && params.createDateEnd ) {
+    if (params.createDateStart && params.createDateEnd ){
         matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     //根据phone查询用户ID
@@ -130,7 +130,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
                     } else {
                         logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
                         logger.info('rows[0]._doc._id:' + rows[0]._doc._id);
-                        matchObj._userId =  mongoose.mongo.ObjectId(rows[0]._doc._id);
+                        matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
                         resolve();
                     }
                 });
