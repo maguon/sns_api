@@ -189,7 +189,22 @@ const getUserByAdmin = (req, res, next) => {
         }
     }
     if (params.phone) {
-        matchObj["user_login_info.phone"] = Number(params.phone);
+        if (params.phone.length == 11) {
+            matchObj["user_login_info.phone"] = params.phone;
+        } else {
+            logger.info('getUserByAdmian phone format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
+    }
+    if (params.phoneReg) {
+        if (params.phoneReg.length >= 4) {
+            matchObj["user_login_info.phone"] = {"$regex": params.phoneReg, "$options": "$ig"};
+        } else {
+            logger.info('getUserByAdmian phoneReg format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
     }
     if (params.auth_status) {
         matchObj["user_login_info.auth_status"] = Number(params.auth_status);
@@ -208,9 +223,7 @@ const getUserByAdmin = (req, res, next) => {
     }
     aggregate_limit.push({
         $project: {
-            "user_login_info._id": 0,
-            "user_login_info.password": 0,
-            "user_login_info._userDetailId": 0
+            "user_login_info.password": 0
         }
     });
     aggregate_limit.push({
@@ -272,15 +285,39 @@ const getUserTodayCountByAdmin = (req, res, next) => {
 const createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userId;
-    if(bodyParams.password){
-        console.log(bodyParams.password);
-        bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+    //判断验证码
+
+    //判断该用户是否已创建
+    const getUserPhone = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUserPhone = UserModel.find({},{password:0});
+            if(bodyParams.phone){
+                queryUserPhone.where('phone').equals(bodyParams.phone);
+            }
+            queryUserPhone.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUser ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' getUser ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
     }
-    let userObj = bodyParams;
-    userObj.status = sysConsts.USER.status.available;
-    userObj.auth_status = sysConsts.USER.auth_status.uncertified;
+    //保存新用户
     const createUserInfo = () =>{
         return new Promise((resolve, reject) => {
+            if(bodyParams.password){
+                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+            }
+            let userObj = bodyParams;
+            userObj.status = sysConsts.USER.status.available;
+            userObj.auth_status = sysConsts.USER.auth_status.uncertified;
             let userModel = new UserModel(userObj);
             userModel.save(function(error,result){
                 if (error) {
@@ -298,6 +335,7 @@ const createUser = (req, res, next) => {
             })
         });
     }
+    //创建用户详细信息
     const createUserDetail = () =>{
         return new Promise((resolve,reject)=>{
             let userDetailModel = new UserDetailModel();
@@ -317,6 +355,7 @@ const createUser = (req, res, next) => {
             });
         });
     }
+    //创建用户驾驶信息
     const createUserDrive = (userDetailId) =>{
         return new Promise((resolve,reject)=>{
             let userDriveModel = new UserDriveModel();
@@ -340,6 +379,7 @@ const createUser = (req, res, next) => {
             });
         });
     }
+    //更新用户信息的关联ID
     const updateUserInfo = (updateInfo) =>{
         return new Promise((() => {
             let query = UserModel.find({});
@@ -358,7 +398,9 @@ const createUser = (req, res, next) => {
             })
         }));
     }
-    createUserInfo()
+
+    getUserPhone()
+        .then(createUserInfo)
         .then(createUserDetail)
         .then(createUserDrive)
         .then(updateUserInfo)

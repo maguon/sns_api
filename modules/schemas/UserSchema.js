@@ -3,7 +3,7 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-        phone         : {type:Number,default:0,display: '用户电话'},
+        phone         : {type:String,default:'',trim:true,display: '用户电话'},
         password      : {type:String,default:'',trim:true,display: '用户密码'},
         type          : {type:Number,default:0,min:0,max:3,display: '用户类型（1-普通，2-会员）'},
         status        : {type:Number,default:1,min:0,max:3,display: '状态（1-正常，2-禁言，4-停用，5-注销）'},

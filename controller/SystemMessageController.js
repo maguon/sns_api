@@ -137,7 +137,7 @@ const getSystemMessageByAdmin = (req, res, next) => {
             if(params.phone){
                 let queryUser = UserModel.find({});
                 if(params.phone){
-                    queryUser.where('phone').equals(Number(params.phone));
+                    queryUser.where('phone').equals(params.phone);
                 }
                 queryUser.exec((error,rows)=> {
                     if (error) {
@@ -145,8 +145,12 @@ const getSystemMessageByAdmin = (req, res, next) => {
                         reject({err:error.message});
                     } else {
                         logger.info(' getSystemMessageByAdmin getUserId ' + 'success');
-                        matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
-                        resolve();
+                        if(rows.length > 0){
+                            matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
+                            resolve();
+                        }else{
+                            resolve();
+                        }
                     }
                 });
             }else{

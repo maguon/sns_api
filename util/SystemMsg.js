@@ -10,6 +10,7 @@ let CUST_LOGIN_PSWD_ERROR = "登录密码错误" ; // Customer enter a wrong pas
 /**
  * The module for user
  */
+let USER_SIGNUP_PHONE_REGISTERED = "电话已被注册";//
 let USER_CREATE_ERROR = "创建用户信息失败！" ; //Failed to create user information
 let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to create user details
 let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
@@ -85,6 +86,7 @@ module.exports = {
     CUST_SIGNUP_REGISTERED,
     CUST_LOGIN_PSWD_ERROR,
 
+    USER_SIGNUP_PHONE_REGISTERED,
     USER_CREATE_ERROR,
     USER_CREATE_DETAIL_ERROR,
     USER_DELETE_INFO,

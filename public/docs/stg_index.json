@@ -213,7 +213,7 @@
             "in": "query",
             "description": "电话",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },{
             "name": "status",
             "in": "query",
@@ -451,7 +451,7 @@
             "in": "query",
             "description": "用户电话",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "status",
@@ -578,6 +578,52 @@
             "schema": {
               "$ref": "#/definitions/UserType"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserType"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId not found"
+          }
+        }
+      }
+    },
+    "/user/{userId}/phone/{phone}/regSms": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Send phone Sms",
+        "description": "Send phone Sms",
+        "operationId": "Send phone Sms",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -754,9 +800,16 @@
           {
             "name": "phone",
             "in": "query",
-            "description": "电话",
+            "description": "电话(11位)",
             "required": false,
-            "type": "integer"
+            "type": "string"
+          },
+          {
+            "name": "phoneReg",
+            "in": "query",
+            "description": "电话(4位以上)",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "sex",
@@ -3390,7 +3443,7 @@
             "in": "query",
             "description": "注册手机号",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "messagesId",
@@ -4212,7 +4265,7 @@
             "in": "query",
             "description": "接收人电话",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
             "name": "systemMessageId",
@@ -5439,8 +5492,7 @@
           "type": "string"
         },
         "phone": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "password": {
           "type": "string"
@@ -5490,8 +5542,7 @@
       ],
       "properties": {
         "phone": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "password": {
           "type": "string"
