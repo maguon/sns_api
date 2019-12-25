@@ -13,7 +13,6 @@
     }
   },
   "host": "stg.myxxjs.com:9901/api/",
-
   "tags": [
     {
       "name": "adminUser",
@@ -155,7 +154,7 @@
           },
           {
             "in": "body",
-            "name":"adminInfo",
+            "name": "adminInfo",
             "description": "AdminUser object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -171,7 +170,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -196,25 +194,29 @@
             "description": "管理员ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "name",
             "in": "query",
             "description": "管理员名称",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "realname",
             "in": "query",
             "description": "真实姓名",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "phone",
             "in": "query",
             "description": "电话",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -266,7 +268,6 @@
             "description": "adminUser unique id",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "adminUserInfo",
@@ -297,7 +298,7 @@
         }
       }
     },
-    "/admin/{adminId}/adminUser/{adminUserId}/status":{
+    "/admin/{adminId}/adminUser/{adminUserId}/status": {
       "put": {
         "tags": [
           "adminUser"
@@ -352,7 +353,6 @@
         }
       }
     },
-
     "/userLogin": {
       "post": {
         "tags": [
@@ -445,7 +445,7 @@
         "parameters": [
           {
             "in": "body",
-            "name":"userInfo",
+            "name": "userInfo",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -461,7 +461,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -479,7 +478,8 @@
             "description": "用户ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "userDetailId",
             "in": "query",
             "description": "用户详细信息ID",
@@ -499,13 +499,15 @@
             "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "auth_status",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "用户类型（1-普通，2-会员）",
@@ -718,7 +720,7 @@
         }
       }
     },
-    "/user/{userId}/authStatus":{
+    "/user/{userId}/authStatus": {
       "put": {
         "tags": [
           "user"
@@ -846,7 +848,8 @@
             "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "auth_status",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
@@ -925,7 +928,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/status":{
+    "/admin/{adminId}/user/{userId}/status": {
       "put": {
         "tags": [
           "user"
@@ -980,7 +983,6 @@
         }
       }
     },
-
     "/user/{userId}/userDetail": {
       "get": {
         "tags": [
@@ -1069,7 +1071,7 @@
         }
       }
     },
-    "/user/{userId}/avatarImage":{
+    "/user/{userId}/avatarImage": {
       "put": {
         "tags": [
           "userDetail"
@@ -1117,7 +1119,6 @@
         }
       }
     },
-
     "/user/{userId}/userDrive": {
       "get": {
         "tags": [
@@ -1206,7 +1207,6 @@
         }
       }
     },
-
     "/user/{userId}/userRelation": {
       "post": {
         "tags": [
@@ -1231,7 +1231,7 @@
           },
           {
             "in": "body",
-            "name":"userRelation",
+            "name": "userRelation",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -1247,7 +1247,6 @@
             "description": "Validation exception"
           }
         }
-
       }
     },
     "/user/{userId}/follow": {
@@ -1267,7 +1266,8 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1344,7 +1344,8 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1631,7 +1632,8 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1842,7 +1844,6 @@
         }
       }
     },
-
     "/user/{userId}/userPraise": {
       "post": {
         "tags": [
@@ -1883,7 +1884,6 @@
             "description": "Validation exception"
           }
         }
-
       }
     },
     "/user/{userId}/getUserPraise": {
@@ -2085,7 +2085,6 @@
         }
       }
     },
-
     "/user/{userId}/userVote": {
       "post": {
         "tags": [
@@ -2126,7 +2125,6 @@
             "description": "Validation exception"
           }
         }
-
       }
     },
     "/user/{userId}/getUserVote": {
@@ -2226,7 +2224,6 @@
         }
       }
     },
-
     "/user/{userId}/userLocationCollection": {
       "post": {
         "tags": [
@@ -2251,7 +2248,7 @@
           },
           {
             "in": "body",
-            "name":"userLocationCollectionInfo",
+            "name": "userLocationCollectionInfo",
             "description": "UserLocationCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2267,7 +2264,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -2365,7 +2361,6 @@
         }
       }
     },
-
     "/user/{userId}/userMessageCollection": {
       "post": {
         "tags": [
@@ -2390,7 +2385,7 @@
           },
           {
             "in": "body",
-            "name":"userMessageCollectionInfo",
+            "name": "userMessageCollectionInfo",
             "description": "UserMessageCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2406,7 +2401,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -2504,7 +2498,6 @@
         }
       }
     },
-
     "/user/{userId}/messages": {
       "post": {
         "tags": [
@@ -2529,7 +2522,7 @@
           },
           {
             "in": "body",
-            "name":"messageInfo",
+            "name": "messageInfo",
             "description": "Messages object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2545,7 +2538,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -2570,19 +2562,22 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "文章状态（0-不可见，1-可见(默认)）",
@@ -2633,19 +2628,22 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
-          },{
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "文章状态（0-不可见，1-可见(默认)）",
@@ -2729,7 +2727,8 @@
             "description": "地理位置（格式： [纬度，经度]）",
             "required": true,
             "type": "string"
-          },{
+          },
+          {
             "name": "radius",
             "in": "query",
             "description": "查询半径(单位：KM)",
@@ -2756,7 +2755,7 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/status":{
+    "/user/{userId}/messages/{messagesId}/status": {
       "put": {
         "tags": [
           "messages"
@@ -3018,7 +3017,8 @@
             "description": "地理位置（格式： [纬度，经度]）",
             "required": true,
             "type": "string"
-          },{
+          },
+          {
             "name": "radius",
             "in": "query",
             "description": "查询半径(单位：KM)",
@@ -3045,7 +3045,7 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/status":{
+    "/admin/{adminId}/messages/{messagesId}/status": {
       "put": {
         "tags": [
           "messages"
@@ -3137,7 +3137,6 @@
         }
       }
     },
-
     "/user/{userId}/messageComments": {
       "post": {
         "tags": [
@@ -3162,7 +3161,7 @@
           },
           {
             "in": "body",
-            "name":"messageCommentsInfo",
+            "name": "messageCommentsInfo",
             "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3204,13 +3203,15 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
@@ -3268,13 +3269,15 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
@@ -3638,7 +3641,6 @@
         }
       }
     },
-
     "/user/{userId}/vote": {
       "get": {
         "tags": [
@@ -3715,7 +3717,7 @@
           },
           {
             "in": "body",
-            "name":"voteInfo",
+            "name": "voteInfo",
             "description": "Vote object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3947,7 +3949,6 @@
         }
       }
     },
-
     "/user/{userId}/applicationContact": {
       "post": {
         "tags": [
@@ -3972,7 +3973,7 @@
           },
           {
             "in": "body",
-            "name":"contactInfo",
+            "name": "contactInfo",
             "description": "contactInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3988,7 +3989,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -4169,7 +4169,6 @@
         }
       }
     },
-
     "/user/{userId}/systemMessage": {
       "get": {
         "tags": [
@@ -4338,7 +4337,7 @@
           },
           {
             "in": "body",
-            "name":"systemMessageInfo",
+            "name": "systemMessageInfo",
             "description": "systemMessageInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4354,7 +4353,6 @@
             "description": "Validation exception"
           }
         }
-
       }
     },
     "/admin/{adminId}/systemMessage/{systemMessageId}/status": {
@@ -4449,7 +4447,6 @@
         }
       }
     },
-
     "/user/{userId}/privacySettings": {
       "post": {
         "tags": [
@@ -4474,7 +4471,7 @@
           },
           {
             "in": "body",
-            "name":"privacySettingsInfo",
+            "name": "privacySettingsInfo",
             "description": "privacySettingsInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4490,7 +4487,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -4603,7 +4599,6 @@
         }
       }
     },
-
     "/user/{userId}/notificationSettings": {
       "post": {
         "tags": [
@@ -4628,7 +4623,7 @@
           },
           {
             "in": "body",
-            "name":"notificationSettingsInfo",
+            "name": "notificationSettingsInfo",
             "description": "notificationSettingsInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4644,7 +4639,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -4757,7 +4751,6 @@
         }
       }
     },
-
     "/user/{userId}/blacklist": {
       "post": {
         "tags": [
@@ -4782,7 +4775,7 @@
           },
           {
             "in": "body",
-            "name":"blacklistInfo",
+            "name": "blacklistInfo",
             "description": "blacklistInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4798,7 +4791,6 @@
             "description": "Validation exception"
           }
         }
-
       },
       "get": {
         "tags": [
@@ -4909,7 +4901,6 @@
         }
       }
     },
-
     "/user/{userId}/about": {
       "get": {
         "tags": [
@@ -5010,7 +5001,7 @@
           },
           {
             "in": "body",
-            "name":"aboutInfo",
+            "name": "aboutInfo",
             "description": "aboutInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -5026,7 +5017,6 @@
             "description": "Validation exception"
           }
         }
-
       }
     },
     "/admin/{adminId}/about/{aboutId}/about": {
@@ -5112,7 +5102,6 @@
         }
       }
     },
-
     "/user/{userId}/app": {
       "get": {
         "tags": [
@@ -5287,7 +5276,7 @@
           },
           {
             "in": "body",
-            "name":"body",
+            "name": "body",
             "description": "App object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -5300,7 +5289,6 @@
             "description": "Invalid input"
           }
         }
-
       }
     },
     "/admin/{adminId}/app/{appId}": {
@@ -5328,7 +5316,6 @@
             "description": "app unique id",
             "required": true,
             "type": "string"
-
           },
           {
             "name": "body",
@@ -5356,7 +5343,7 @@
         }
       }
     },
-    "/admin/{adminId}/app/{appId}/status":{
+    "/admin/{adminId}/app/{appId}/status": {
       "put": {
         "tags": [
           "app"
@@ -5815,7 +5802,7 @@
         },
         "media": {
           "type": "array",
-          "items":{
+          "items": {
             "$ref": "#/definitions/MessagesMedia"
           }
         },
@@ -6215,770 +6202,5 @@
         "name": "StatusResponse"
       }
     }
-  },  "definitions": {
-  "AdminLogin": {
-    "type": "object",
-    "required": [
-      "userName",
-      "password"
-    ],
-    "properties": {
-      "userName": {
-        "type": "string"
-      },
-      "password": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "AdminLogin"
-    }
-  },
-  "AdminUser": {
-    "type": "object",
-    "required": [
-      "name",
-      "realname",
-      "phone",
-      "password",
-      "gender",
-      "type"
-    ],
-    "properties": {
-      "name": {
-        "type": "string"
-      },
-      "realname": {
-        "type": "string"
-      },
-      "phone": {
-        "type": "string"
-      },
-      "password": {
-        "type": "string"
-      },
-      "gender": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          0,
-          1
-        ]
-      },
-      "type": {
-        "type": "integer",
-        "format": "int64"
-      }
-    },
-    "xml": {
-      "name": "AdminUser"
-    }
-  },
-  "UserLogin": {
-    "type": "object",
-    "required": [
-      "userName",
-      "password"
-    ],
-    "properties": {
-      "userName": {
-        "type": "string"
-      },
-      "password": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserLogin"
-    }
-  },
-  "User": {
-    "type": "object",
-    "required": [
-      "phone",
-      "password",
-      "auth_status",
-      "type"
-    ],
-    "properties": {
-      "phone": {
-        "type": "string"
-      },
-      "password": {
-        "type": "string"
-      },
-      "type": {
-        "type": "integer",
-        "format": "int64"
-      }
-    },
-    "xml": {
-      "name": "User"
-    }
-  },
-  "UserType": {
-    "type": "object",
-    "required": [
-      "type"
-    ],
-    "properties": {
-      "type": {
-        "type": "integer",
-        "format": "int64"
-      }
-    },
-    "xml": {
-      "name": "UserType"
-    }
-  },
-  "UserDetail": {
-    "type": "object",
-    "required": [
-      "sex",
-      "nick_name",
-      "real_name",
-      "city_name",
-      "intro"
-    ],
-    "properties": {
-      "sex": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          0,
-          1
-        ]
-      },
-      "nick_name": {
-        "type": "string"
-      },
-      "real_name": {
-        "type": "string"
-      },
-      "city_name": {
-        "type": "string"
-      },
-      "intro": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserDetail"
-    }
-  },
-  "UserDrive": {
-    "type": "object",
-    "required": [
-      "driving_type",
-      "certification_date"
-    ],
-    "properties": {
-      "driving_type": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "certification_date": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserDrive"
-    }
-  },
-  "AvatarImage": {
-    "type": "object",
-    "required": [
-      "avatar"
-    ],
-    "properties": {
-      "avatar": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "AvatarImage"
-    }
-  },
-  "Password": {
-    "type": "object",
-    "required": [
-      "oldPassword",
-      "newPassword"
-    ],
-    "properties": {
-      "oldPassword": {
-        "type": "string"
-      },
-      "newPassword": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "Password"
-    }
-  },
-  "Phone": {
-    "type": "object",
-    "required": [
-      "phone",
-      "code"
-    ],
-    "properties": {
-      "phone": {
-        "type": "string"
-      },
-      "code": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "Phone"
-    }
-  },
-  "Relation": {
-    "type": "object",
-    "required": [
-      "_userById"
-    ],
-    "properties": {
-      "_userById": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "Relation"
-    }
-  },
-  "UserPraise": {
-    "type": "object",
-    "required": [
-      "type",
-      "_messageId",
-      "_messageCommentsId"
-    ],
-    "properties": {
-      "type": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "_messageId": {
-        "type": "string"
-      },
-      "_messageCommentsId": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserPraise"
-    }
-  },
-  "UserVote": {
-    "type": "object",
-    "required": [
-      "voteId",
-      "option"
-    ],
-    "properties": {
-      "_voteId": {
-        "type": "string"
-      },
-      "option": {
-        "type": "integer",
-        "format": "int64"
-      }
-    },
-    "xml": {
-      "name": "UserVote"
-    }
-  },
-  "UserLocationCollection": {
-    "type": "object",
-    "required": [
-      "address",
-      "addressName",
-      "addressReal",
-      "remarks"
-    ],
-    "properties": {
-      "address": {
-        "type": "Array"
-      },
-      "addressName": {
-        "type": "string"
-      },
-      "addressReal": {
-        "type": "string"
-      },
-      "remarks": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserLocationCollection"
-    }
-  },
-  "UserMessageCollection": {
-    "type": "object",
-    "required": [
-      "_messageId",
-      "remarks"
-    ],
-    "properties": {
-      "_messageId": {
-        "type": "string"
-      },
-      "remarks": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "UserMessageCollection"
-    }
-  },
-  "Messages": {
-    "type": "object",
-    "required": [
-      "type",
-      "carrier",
-      "info",
-      "address",
-      "addressName",
-      "addressReal",
-      "addressShow",
-      "label",
-      "media",
-      "location",
-      "locationName",
-      "locationReal"
-    ],
-    "properties": {
-      "type": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "carrier": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "info": {
-        "type": "string"
-      },
-      "address": {
-        "type": "Array"
-      },
-      "addressName": {
-        "type": "string"
-      },
-      "addressReal": {
-        "type": "string"
-      },
-      "addressShow": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "label": {
-        "type": "string"
-      },
-      "media": {
-        "type": "array",
-        "items":{
-          "$ref": "#/definitions/MessagesMedia"
-        }
-      },
-      "location": {
-        "type": "Array"
-      },
-      "locationName": {
-        "type": "string"
-      },
-      "locationReal": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "Messages"
-    }
-  },
-  "MessagesMedia": {
-    "type": "object",
-    "required": [
-      "url",
-      "preview"
-    ],
-    "properties": {
-      "url": {
-        "type": "string"
-      },
-      "preview": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "MessagesMedia"
-    }
-  },
-  "MessageComments": {
-    "type": "object",
-    "required": [
-      "messages_type",
-      "level",
-      "commentsMsg",
-      "_messageId",
-      "_messageCommentsId"
-    ],
-    "properties": {
-      "messages_type": {
-        "type": "Integer",
-        "format": "int64"
-      },
-      "level": {
-        "type": "Integer",
-        "format": "int64"
-      },
-      "commentsMsg": {
-        "type": "String"
-      },
-      "_messageId": {
-        "type": "string"
-      },
-      "_messageCommentsId": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "MessageComments"
-    }
-  },
-  "Vote": {
-    "type": "object",
-    "required": [
-      "title",
-      "info",
-      "maxNum",
-      "startTime",
-      "endTime",
-      "status",
-      "option"
-    ],
-    "properties": {
-      "title": {
-        "type": "String"
-      },
-      "info": {
-        "type": "String"
-      },
-      "maxNum": {
-        "type": "integer"
-      },
-      "startTime": {
-        "type": "String"
-      },
-      "endTime": {
-        "type": "String"
-      },
-      "status": {
-        "type": "integer"
-      },
-      "option": {
-        "type": "Array"
-      }
-    },
-    "xml": {
-      "name": "Vote"
-    }
-  },
-  "ApplicationContact": {
-    "type": "object",
-    "required": [
-      "beInvitedUserId"
-    ],
-    "properties": {
-      "_beInvitedUserId": {
-        "type": "String"
-      }
-    },
-    "xml": {
-      "name": "ApplicationContact"
-    }
-  },
-  "SystemMessage": {
-    "type": "object",
-    "required": [
-      "type",
-      "_userId",
-      "info"
-    ],
-    "properties": {
-      "type": {
-        "type": "integer"
-      },
-      "_userId": {
-        "type": "String"
-      },
-      "info": {
-        "type": "String"
-      }
-    },
-    "xml": {
-      "name": "SystemMessage"
-    }
-  },
-  "PrivacySettings": {
-    "type": "object",
-    "required": [
-      "name_display",
-      "phone_display",
-      "city_display",
-      "car_display",
-      "recommend_to_friends",
-      "message_authority"
-    ],
-    "properties": {
-      "name_display": {
-        "type": "integer"
-      },
-      "phone_display": {
-        "type": "integer"
-      },
-      "city_display": {
-        "type": "integer"
-      },
-      "car_display": {
-        "type": "integer"
-      },
-      "recommend_to_friends": {
-        "type": "integer"
-      },
-      "message_authority": {
-        "type": "integer"
-      }
-    },
-    "xml": {
-      "name": "PrivacySettings"
-    }
-  },
-  "NotificationSettings": {
-    "type": "object",
-    "required": [
-      "info",
-      "praise",
-      "comments",
-      "beConcernedAbout",
-      "others",
-      "worksReleasedByFollowers",
-      "recommendedWorks"
-    ],
-    "properties": {
-      "info": {
-        "type": "integer"
-      },
-      "praise": {
-        "type": "integer"
-      },
-      "comments": {
-        "type": "integer"
-      },
-      "beConcernedAbout": {
-        "type": "integer"
-      },
-      "others": {
-        "type": "integer"
-      },
-      "worksReleasedByFollowers": {
-        "type": "integer"
-      },
-      "recommendedWorks": {
-        "type": "integer"
-      }
-    },
-    "xml": {
-      "name": "NotificationSettings"
-    }
-  },
-  "Blacklist": {
-    "type": "object",
-    "required": [
-      "_addedUserId"
-    ],
-    "properties": {
-      "_addedUserId": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "Blacklist"
-    }
-  },
-  "City": {
-    "type": "object",
-    "required": [
-      "city_name"
-    ],
-    "properties": {
-      "city_name": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "City"
-    }
-  },
-  "About": {
-    "type": "object",
-    "required": [
-      "corporate_name",
-      "info",
-      "phone",
-      "remarks"
-    ],
-    "properties": {
-      "corporate_name": {
-        "type": "string"
-      },
-      "info": {
-        "type": "string"
-      },
-      "phone": {
-        "type": "string"
-      },
-      "remarks": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "About"
-    }
-  },
-  "App": {
-    "type": "object",
-    "required": [
-      "app_type",
-      "device_type",
-      "version",
-      "version_num",
-      "min_version_num",
-      "force_update",
-      "url",
-      "remarks"
-    ],
-    "properties": {
-      "app_type": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          1,
-          2
-        ]
-      },
-      "device_type": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          1,
-          2
-        ]
-      },
-      "version": {
-        "type": "string"
-      },
-      "version_num": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "min_version_num": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "force_update": {
-        "type": "integer",
-        "format": "int64"
-      },
-      "url": {
-        "type": "string",
-        "description": "app download address"
-      },
-      "remarks": {
-        "type": "string"
-      }
-    },
-    "xml": {
-      "name": "App"
-    }
-  },
-  "Status": {
-    "type": "object",
-    "required": [
-      "status"
-    ],
-    "properties": {
-      "status": {
-        "type": "integer",
-        "format": "int64"
-      }
-    },
-    "xml": {
-      "name": "Status"
-    }
-  },
-  "AuthStatus": {
-    "type": "object",
-    "required": [
-      "auth_status"
-    ],
-    "properties": {
-      "auth_status": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          0,
-          1
-        ]
-      }
-    },
-    "xml": {
-      "name": "AuthStatus"
-    }
-  },
-  "ReadStatus": {
-    "type": "object",
-    "required": [
-      "status"
-    ],
-    "properties": {
-      "read_status": {
-        "type": "integer",
-        "format": "int64",
-        "enum": [
-          0,
-          1
-        ]
-      }
-    },
-    "xml": {
-      "name": "ReadStatus"
-    }
-  },
-  "StatusResponse": {
-    "type": "object",
-    "required": [
-      "status"
-    ],
-    "properties": {
-      "success": {
-        "type": "integer",
-        "default": "true"
-      },
-      "n": {
-        "type": "integer",
-        "default": "1"
-      },
-      "ok": {
-        "type": "integer",
-        "default": "1"
-      }
-    },
-    "xml": {
-      "name": "StatusResponse"
-    }
   }
-}}
+}
