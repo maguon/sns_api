@@ -25,6 +25,7 @@ import {NotificationSettingsController} from  './controller';
 import {BlacklistController} from  './controller';
 import {AboutController} from './controller';
 import {AppController} from './controller';
+import {SmsController} from './controller';
 
 /**
  * Returns a server with all routes defined on it
@@ -274,6 +275,11 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'} ,AppController.updateApp);
     server.put({path:'/api/admin/:adminId/app/:appId/status',contentType: 'application/json'} ,AppController.updateStatus);
     server.del({path:'/api/admin/:adminId/app/:appId/del',contentType: 'application/json'},AppController.deleteApp);
+
+    /**
+     * SMS Module
+     */
+    server.post({path:'/api/user/:userId/phone/:phone/resetSms',contentType: 'application/json'},SmsController.resetSms);
 
 
     server.on('NotFound', function (req, res ,err,next) {

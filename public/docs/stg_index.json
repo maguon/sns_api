@@ -388,6 +388,46 @@
         }
       }
     },
+    "/user/{userId}/phone/{phone}/resetSms": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Send rest mobile sms",
+        "description": "Send rest mobile sms",
+        "operationId": "sendRestMobileSms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
     "/user": {
       "post": {
         "tags": [
@@ -456,7 +496,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
+            "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
           },{
@@ -578,52 +618,6 @@
             "schema": {
               "$ref": "#/definitions/UserType"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserType"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId not found"
-          }
-        }
-      }
-    },
-    "/user/{userId}/phone/{phone}/regSms": {
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Send phone Sms",
-        "description": "Send phone Sms",
-        "operationId": "Send phone Sms",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "phone",
-            "in": "path",
-            "description": "user phone",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -849,7 +843,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "状态（1-正常，2-禁言，4-停用，5-注销）",
+            "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
           },{
@@ -6221,5 +6215,770 @@
         "name": "StatusResponse"
       }
     }
+  },  "definitions": {
+  "AdminLogin": {
+    "type": "object",
+    "required": [
+      "userName",
+      "password"
+    ],
+    "properties": {
+      "userName": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "AdminLogin"
+    }
+  },
+  "AdminUser": {
+    "type": "object",
+    "required": [
+      "name",
+      "realname",
+      "phone",
+      "password",
+      "gender",
+      "type"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "realname": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "gender": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "type": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "xml": {
+      "name": "AdminUser"
+    }
+  },
+  "UserLogin": {
+    "type": "object",
+    "required": [
+      "userName",
+      "password"
+    ],
+    "properties": {
+      "userName": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserLogin"
+    }
+  },
+  "User": {
+    "type": "object",
+    "required": [
+      "phone",
+      "password",
+      "auth_status",
+      "type"
+    ],
+    "properties": {
+      "phone": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "type": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "xml": {
+      "name": "User"
+    }
+  },
+  "UserType": {
+    "type": "object",
+    "required": [
+      "type"
+    ],
+    "properties": {
+      "type": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "xml": {
+      "name": "UserType"
+    }
+  },
+  "UserDetail": {
+    "type": "object",
+    "required": [
+      "sex",
+      "nick_name",
+      "real_name",
+      "city_name",
+      "intro"
+    ],
+    "properties": {
+      "sex": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "nick_name": {
+        "type": "string"
+      },
+      "real_name": {
+        "type": "string"
+      },
+      "city_name": {
+        "type": "string"
+      },
+      "intro": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserDetail"
+    }
+  },
+  "UserDrive": {
+    "type": "object",
+    "required": [
+      "driving_type",
+      "certification_date"
+    ],
+    "properties": {
+      "driving_type": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "certification_date": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserDrive"
+    }
+  },
+  "AvatarImage": {
+    "type": "object",
+    "required": [
+      "avatar"
+    ],
+    "properties": {
+      "avatar": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "AvatarImage"
+    }
+  },
+  "Password": {
+    "type": "object",
+    "required": [
+      "oldPassword",
+      "newPassword"
+    ],
+    "properties": {
+      "oldPassword": {
+        "type": "string"
+      },
+      "newPassword": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "Password"
+    }
+  },
+  "Phone": {
+    "type": "object",
+    "required": [
+      "phone",
+      "code"
+    ],
+    "properties": {
+      "phone": {
+        "type": "string"
+      },
+      "code": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "Phone"
+    }
+  },
+  "Relation": {
+    "type": "object",
+    "required": [
+      "_userById"
+    ],
+    "properties": {
+      "_userById": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "Relation"
+    }
+  },
+  "UserPraise": {
+    "type": "object",
+    "required": [
+      "type",
+      "_messageId",
+      "_messageCommentsId"
+    ],
+    "properties": {
+      "type": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "_messageId": {
+        "type": "string"
+      },
+      "_messageCommentsId": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserPraise"
+    }
+  },
+  "UserVote": {
+    "type": "object",
+    "required": [
+      "voteId",
+      "option"
+    ],
+    "properties": {
+      "_voteId": {
+        "type": "string"
+      },
+      "option": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "xml": {
+      "name": "UserVote"
+    }
+  },
+  "UserLocationCollection": {
+    "type": "object",
+    "required": [
+      "address",
+      "addressName",
+      "addressReal",
+      "remarks"
+    ],
+    "properties": {
+      "address": {
+        "type": "Array"
+      },
+      "addressName": {
+        "type": "string"
+      },
+      "addressReal": {
+        "type": "string"
+      },
+      "remarks": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserLocationCollection"
+    }
+  },
+  "UserMessageCollection": {
+    "type": "object",
+    "required": [
+      "_messageId",
+      "remarks"
+    ],
+    "properties": {
+      "_messageId": {
+        "type": "string"
+      },
+      "remarks": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "UserMessageCollection"
+    }
+  },
+  "Messages": {
+    "type": "object",
+    "required": [
+      "type",
+      "carrier",
+      "info",
+      "address",
+      "addressName",
+      "addressReal",
+      "addressShow",
+      "label",
+      "media",
+      "location",
+      "locationName",
+      "locationReal"
+    ],
+    "properties": {
+      "type": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "carrier": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "info": {
+        "type": "string"
+      },
+      "address": {
+        "type": "Array"
+      },
+      "addressName": {
+        "type": "string"
+      },
+      "addressReal": {
+        "type": "string"
+      },
+      "addressShow": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "label": {
+        "type": "string"
+      },
+      "media": {
+        "type": "array",
+        "items":{
+          "$ref": "#/definitions/MessagesMedia"
+        }
+      },
+      "location": {
+        "type": "Array"
+      },
+      "locationName": {
+        "type": "string"
+      },
+      "locationReal": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "Messages"
+    }
+  },
+  "MessagesMedia": {
+    "type": "object",
+    "required": [
+      "url",
+      "preview"
+    ],
+    "properties": {
+      "url": {
+        "type": "string"
+      },
+      "preview": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "MessagesMedia"
+    }
+  },
+  "MessageComments": {
+    "type": "object",
+    "required": [
+      "messages_type",
+      "level",
+      "commentsMsg",
+      "_messageId",
+      "_messageCommentsId"
+    ],
+    "properties": {
+      "messages_type": {
+        "type": "Integer",
+        "format": "int64"
+      },
+      "level": {
+        "type": "Integer",
+        "format": "int64"
+      },
+      "commentsMsg": {
+        "type": "String"
+      },
+      "_messageId": {
+        "type": "string"
+      },
+      "_messageCommentsId": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "MessageComments"
+    }
+  },
+  "Vote": {
+    "type": "object",
+    "required": [
+      "title",
+      "info",
+      "maxNum",
+      "startTime",
+      "endTime",
+      "status",
+      "option"
+    ],
+    "properties": {
+      "title": {
+        "type": "String"
+      },
+      "info": {
+        "type": "String"
+      },
+      "maxNum": {
+        "type": "integer"
+      },
+      "startTime": {
+        "type": "String"
+      },
+      "endTime": {
+        "type": "String"
+      },
+      "status": {
+        "type": "integer"
+      },
+      "option": {
+        "type": "Array"
+      }
+    },
+    "xml": {
+      "name": "Vote"
+    }
+  },
+  "ApplicationContact": {
+    "type": "object",
+    "required": [
+      "beInvitedUserId"
+    ],
+    "properties": {
+      "_beInvitedUserId": {
+        "type": "String"
+      }
+    },
+    "xml": {
+      "name": "ApplicationContact"
+    }
+  },
+  "SystemMessage": {
+    "type": "object",
+    "required": [
+      "type",
+      "_userId",
+      "info"
+    ],
+    "properties": {
+      "type": {
+        "type": "integer"
+      },
+      "_userId": {
+        "type": "String"
+      },
+      "info": {
+        "type": "String"
+      }
+    },
+    "xml": {
+      "name": "SystemMessage"
+    }
+  },
+  "PrivacySettings": {
+    "type": "object",
+    "required": [
+      "name_display",
+      "phone_display",
+      "city_display",
+      "car_display",
+      "recommend_to_friends",
+      "message_authority"
+    ],
+    "properties": {
+      "name_display": {
+        "type": "integer"
+      },
+      "phone_display": {
+        "type": "integer"
+      },
+      "city_display": {
+        "type": "integer"
+      },
+      "car_display": {
+        "type": "integer"
+      },
+      "recommend_to_friends": {
+        "type": "integer"
+      },
+      "message_authority": {
+        "type": "integer"
+      }
+    },
+    "xml": {
+      "name": "PrivacySettings"
+    }
+  },
+  "NotificationSettings": {
+    "type": "object",
+    "required": [
+      "info",
+      "praise",
+      "comments",
+      "beConcernedAbout",
+      "others",
+      "worksReleasedByFollowers",
+      "recommendedWorks"
+    ],
+    "properties": {
+      "info": {
+        "type": "integer"
+      },
+      "praise": {
+        "type": "integer"
+      },
+      "comments": {
+        "type": "integer"
+      },
+      "beConcernedAbout": {
+        "type": "integer"
+      },
+      "others": {
+        "type": "integer"
+      },
+      "worksReleasedByFollowers": {
+        "type": "integer"
+      },
+      "recommendedWorks": {
+        "type": "integer"
+      }
+    },
+    "xml": {
+      "name": "NotificationSettings"
+    }
+  },
+  "Blacklist": {
+    "type": "object",
+    "required": [
+      "_addedUserId"
+    ],
+    "properties": {
+      "_addedUserId": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "Blacklist"
+    }
+  },
+  "City": {
+    "type": "object",
+    "required": [
+      "city_name"
+    ],
+    "properties": {
+      "city_name": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "City"
+    }
+  },
+  "About": {
+    "type": "object",
+    "required": [
+      "corporate_name",
+      "info",
+      "phone",
+      "remarks"
+    ],
+    "properties": {
+      "corporate_name": {
+        "type": "string"
+      },
+      "info": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "remarks": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "About"
+    }
+  },
+  "App": {
+    "type": "object",
+    "required": [
+      "app_type",
+      "device_type",
+      "version",
+      "version_num",
+      "min_version_num",
+      "force_update",
+      "url",
+      "remarks"
+    ],
+    "properties": {
+      "app_type": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "device_type": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          1,
+          2
+        ]
+      },
+      "version": {
+        "type": "string"
+      },
+      "version_num": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "min_version_num": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "force_update": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "url": {
+        "type": "string",
+        "description": "app download address"
+      },
+      "remarks": {
+        "type": "string"
+      }
+    },
+    "xml": {
+      "name": "App"
+    }
+  },
+  "Status": {
+    "type": "object",
+    "required": [
+      "status"
+    ],
+    "properties": {
+      "status": {
+        "type": "integer",
+        "format": "int64"
+      }
+    },
+    "xml": {
+      "name": "Status"
+    }
+  },
+  "AuthStatus": {
+    "type": "object",
+    "required": [
+      "auth_status"
+    ],
+    "properties": {
+      "auth_status": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          0,
+          1
+        ]
+      }
+    },
+    "xml": {
+      "name": "AuthStatus"
+    }
+  },
+  "ReadStatus": {
+    "type": "object",
+    "required": [
+      "status"
+    ],
+    "properties": {
+      "read_status": {
+        "type": "integer",
+        "format": "int64",
+        "enum": [
+          0,
+          1
+        ]
+      }
+    },
+    "xml": {
+      "name": "ReadStatus"
+    }
+  },
+  "StatusResponse": {
+    "type": "object",
+    "required": [
+      "status"
+    ],
+    "properties": {
+      "success": {
+        "type": "integer",
+        "default": "true"
+      },
+      "n": {
+        "type": "integer",
+        "default": "1"
+      },
+      "ok": {
+        "type": "integer",
+        "default": "1"
+      }
+    },
+    "xml": {
+      "name": "StatusResponse"
+    }
   }
-}
+}}

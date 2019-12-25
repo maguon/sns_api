@@ -1,5 +1,6 @@
 'use strict';
 let SYS_AUTH_TOKEN_ERROR ="当前用户级别，不能完成此操作" ;
+let SYS_INTERNAL_ERROR_MSG = "Web Service Internal Error.";
 /**
  * The module for admin
  */
@@ -80,6 +81,7 @@ let APP_ID_NULL_ERROR ="版本信息不存在！" ;
 
 module.exports = {
     SYS_AUTH_TOKEN_ERROR,
+    SYS_INTERNAL_ERROR_MSG,
 
     CUST_ID_NULL_ERROR,
     CUST_LOGIN_USER_PSWD_ERROR,

@@ -18,3 +18,4 @@ exports.NotificationSettingsController = require('./NotificationSettingsControll
 exports.BlacklistController = require('./BlacklistController');
 exports.AboutController = require('./AboutController');
 exports.AppController = require('./AppController');
+exports.SmsController = require('./SmsController');

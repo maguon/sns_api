@@ -153,11 +153,21 @@ const randomString=(e)=>{
     return n
 }
 
+const getNumberRandomKey = (max,min) =>{
+    let Range = max - min;
+    let Rand = Math.random();
+    return(min + Math.round(Rand * Range));
+}
+
+const getSmsRandomKey = ()=>{
+    return getNumberRandomKey(9999,1000);
+}
 module.exports = {
     encryptByMd5,
     encryptByMd5Key,
     base64Decode,
     base64Encode,
     encryptByMd5NoKey,
-    randomString
+    randomString,
+    getSmsRandomKey
 };
