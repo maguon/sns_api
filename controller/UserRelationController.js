@@ -294,13 +294,51 @@ const createUserRelation = (req, res, next) => {
     let userRelationObj = bodyParams;
     userRelationObj.type = 0;
     let returnMessage;
+    //判断是否重复关注
+    const getRelInfo =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserRelationModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' createUserRelation getRelInfo userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams._userById){
+                if(bodyParams._userById.length == 24){
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+                }else{
+                    logger.info(' createUserRelation getRelInfo userById format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserRelation getRelInfo ' + error.message);
+                    reject({err:error.message});
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' createUserRelation getRelInfo ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.RELATION_ID_ERROR});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        })
+    }
     //判断是否已关注自己
     const friendJudgement =()=>{
         return new Promise((resolve, reject) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' createUserRelation friendJudgement userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -309,7 +347,7 @@ const createUserRelation = (req, res, next) => {
             }
             if(bodyParams._userById){
                 if(bodyParams._userById.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+                    query.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
                 }else{
                     logger.info(' createUserRelation friendJudgement userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -422,7 +460,8 @@ const createUserRelation = (req, res, next) => {
             })
         });
     }
-    friendJudgement()
+    getRelInfo()
+        .then(friendJudgement)
         .then(updateFollowNum)
         .then(updateAttentionNum)
         .then(saveRelation)
@@ -505,12 +544,13 @@ const deleteUserRelation = (req, res, next) => {
             });
         })
     }
+    //删除关注关系
     const delRelation =(relationInfo)=>{
         return new Promise((resolve, reject) => {
-            let query = UserRelationModel.find({});
+            let queryRel = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryRel.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' deleteUserRelation delRelation userID format incorrect!');
                     reject({err:error.message});
@@ -518,14 +558,14 @@ const deleteUserRelation = (req, res, next) => {
             }
             if(path.followUserId){
                 if(path.followUserId.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.followUserId));
+                    queryRel.where('_userById').equals(mongoose.mongo.ObjectId(path.followUserId));
                 }else{
                     logger.info(' deleteUserRelation delRelation followUserId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
-            UserRelationModel.deleteOne(query,function(error,result){
+            UserRelationModel.deleteOne(queryRel,function(error,result){
                 if(error){
                     logger.error(' deleteUserRelation delRelation ' + error.message);
                     reject({err:error.message});
@@ -542,6 +582,7 @@ const deleteUserRelation = (req, res, next) => {
             })
         });
     }
+    //更新好友状态
     const updateRelation =(relationInfo)=>{
         return new Promise(() => {
             UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:0},function(error,result){
