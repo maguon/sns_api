@@ -310,7 +310,7 @@ const createUser = (req, res, next) => {
     //判断验证码
     const getPhoneCode = () =>{
         return new Promise((resolve, reject) => {
-            oAuthUtil.getPhoneCode({phone:bodyParams.phone},function (error,result) {
+            oAuthUtil.getUserPhoneCode({phone:bodyParams.phone},function (error,result) {
                 if (error) {
                     logger.error(' createUser getPhoneCode ' + error.message);
                     reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});

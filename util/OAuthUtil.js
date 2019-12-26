@@ -165,16 +165,6 @@ const getToken = (params,callback) =>{
     })
 }
 
-const savePhoneCode = (params,callback) => {
-    httpUtil.httpPost(systemConfig.hosts.auth,'/api/'+params.phone+"/passwordCode",{},params,function(error,result){
-        callback(error,result)
-    })
-}
-const getPhoneCode = (params,callback) => {
-    httpUtil.httpGet(systemConfig.hosts.auth,'/api/'+params.phone+"/passwordCode",{},{},function(error,result){
-        callback(error,result)
-    })
-}
 
 module.exports = {
     createAccessToken,
@@ -186,7 +176,5 @@ module.exports = {
     getUserPhoneCode,
     saveToken,
     removeToken,
-    getToken,
-    savePhoneCode,
-    getPhoneCode
+    getToken
 };
