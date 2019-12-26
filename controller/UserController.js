@@ -414,7 +414,6 @@ const createUser = (req, res, next) => {
             })
         }));
     }
-
     getUserPhone()
         .then(getPhoneCode)
         .then(createUserInfo)
