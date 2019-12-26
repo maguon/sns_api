@@ -358,8 +358,10 @@ const createUser = (req, res, next) => {
     //创建用户详细信息
     const createUserDetail = () =>{
         return new Promise((resolve,reject)=>{
+            let newName = encrypt.randomString(5);
             let userDetailModel = new UserDetailModel();
             userDetailModel._userId = userId;
+            userDetailModel.nick_name = newName;
             userDetailModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDetail ' + error.message);
