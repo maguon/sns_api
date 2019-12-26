@@ -716,6 +716,50 @@
         }
       }
     },
+    "/phone/{phone}/password": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "reset user password",
+        "description": "reset update password",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "user info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PasswordAndCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/Password"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token value or invalid user id"
+          }
+        }
+      }
+    },
     "/user/{userId}/phone": {
       "put": {
         "tags": [
@@ -5686,6 +5730,24 @@
       },
       "xml": {
         "name": "Password"
+      }
+    },
+    "PasswordAndCode": {
+      "type": "object",
+      "required": [
+        "code",
+        "newPassword"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "PasswordAndCode"
       }
     },
     "Phone": {

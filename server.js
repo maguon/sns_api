@@ -109,6 +109,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/token/:token', UserController.getUserToken);
     server.put({path:'/api/user/:userId/type',contentType: 'application/json'} ,UserController.updateUserType);
     server.put({path:'/api/user/:userId/password',contentType: 'application/json'},UserController.updatePassword);
+    server.put({path:'/api/phone/:phone/password',contentType: 'application/json'},UserController.updatePasswordByPhone);
     server.put({path:'/api/user/:userId/phone',contentType: 'application/json'},UserController.updatePhone);
     server.put({path:'/api/user/:userId/authStatus',contentType: 'application/json'} ,UserController.updateUserAuthStatus);
 
