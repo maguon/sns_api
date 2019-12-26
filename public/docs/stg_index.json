@@ -6039,6 +6039,7 @@
       "required": [
         "type",
         "_userId",
+        "phone",
         "info"
       ],
       "properties": {
@@ -6046,6 +6047,9 @@
           "type": "integer"
         },
         "_userId": {
+          "type": "String"
+        },
+        "phone": {
           "type": "String"
         },
         "info": {

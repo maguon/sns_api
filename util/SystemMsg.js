@@ -27,6 +27,7 @@ let USER_DRIVE_ID_NULL_ERROR ="该用户驾驶信息不存在！" ;
 /**
  * The module for userRelation
  */
+let RELATION_ID_ERROR ="该用户关系已存在！" ;
 let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
 /**
  * The module for userPraise
@@ -102,6 +103,7 @@ module.exports = {
 
     USER_DRIVE_ID_NULL_ERROR,
 
+    RELATION_ID_ERROR,
     RELATION_ID_NULL_ERROR,
 
     PRAISE_RECORD_ID_NULL_ERROR,
