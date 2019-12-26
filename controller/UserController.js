@@ -569,6 +569,7 @@ const updatePasswordByPhone = (req, res, next) => {
         return new Promise(() => {
             bodyParams.auth_status = sysConsts.USER.auth_status.certified;
             bodyParams.auth_time = new Date();
+            bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.newPassword);
             UserModel.updateOne({_id:userId},bodyParams,function(error,result){
                 if (error) {
                     logger.error(' updatePasswordByPhone updateUserPassword ' + error.message);
