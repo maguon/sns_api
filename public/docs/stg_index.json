@@ -5563,12 +5563,16 @@
       "type": "object",
       "required": [
         "phone",
+        "captcha",
         "password",
         "auth_status",
         "type"
       ],
       "properties": {
         "phone": {
+          "type": "string"
+        },
+        "captcha": {
           "type": "string"
         },
         "password": {

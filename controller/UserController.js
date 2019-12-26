@@ -285,8 +285,6 @@ const getUserTodayCountByAdmin = (req, res, next) => {
 const createUser = (req, res, next) => {
     let bodyParams = req.body;
     let userId;
-    //判断验证码
-
     //判断该用户是否已创建
     const getUserPhone = () =>{
         return new Promise((resolve, reject) => {
@@ -296,10 +294,10 @@ const createUser = (req, res, next) => {
             }
             queryUserPhone.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' getUser ' + error.message);
+                    logger.error(' createUser getUserPhone ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' getUser ' + 'success');
+                    logger.info(' createUser getUserPhone ' + 'success');
                     if(rows.length > 0){
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
                     }else{
@@ -307,6 +305,24 @@ const createUser = (req, res, next) => {
                     }
                 }
             });
+        });
+    }
+    //判断验证码
+    const getPhoneCode = () =>{
+        return new Promise((resolve, reject) => {
+            oAuthUtil.getPhoneCode({phone:bodyParams.phone},function (error,result) {
+                if (error) {
+                    logger.error(' createUser getPhoneCode ' + error.message);
+                    reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                } else{
+                    if(result == null || result.result== null || bodyParams.captcha != result.result.code){
+                        logger.warn(' createUser getPhoneCode ' + 'failed');
+                        reject({msg:systemMsg.USER_SMS_CAPTCHA_ERROR});
+                    }else{
+                        resolve();
+                    }
+                }
+            })
         });
     }
     //保存新用户
@@ -400,6 +416,7 @@ const createUser = (req, res, next) => {
     }
 
     getUserPhone()
+        .then(getPhoneCode)
         .then(createUserInfo)
         .then(createUserDetail)
         .then(createUserDrive)
