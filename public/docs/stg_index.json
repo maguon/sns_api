@@ -393,9 +393,9 @@
         "tags": [
           "user"
         ],
-        "summary": "send rest password sms",
-        "description": "Send rest password sms",
-        "operationId": "sendRestPasswordSms",
+        "summary": "send reg phone sms",
+        "description": "Send reg phone sms",
+        "operationId": "send Reg Phone Sms",
         "consumes": [
           "application/json"
         ],
