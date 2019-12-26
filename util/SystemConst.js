@@ -29,8 +29,9 @@ const INFO = {
 }
 const USER ={
     status: {
-        disable:0,//停用
-        available:1//可用
+        available:1,//可用
+        forbiddenWords:2,//禁言
+        disable:4//停用
     },
     auth_status:{
         uncertified:0,//未认证

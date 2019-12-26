@@ -79,8 +79,12 @@ const getUserToken = (req, res, next) => {
                     reject({err:reject.err});
                 } else {
                     logger.info(' getUserToken getUserStatus ' + 'success');
-                    user.status = rows[0]._doc.status;
-                    resolve();
+                    if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                        reject({msg:systemMsg.USER_STATUS_ERROR});
+                    }else{
+                        user.status = rows[0]._doc.status;
+                        resolve();
+                    }
                 }
             });
         });
@@ -477,7 +481,11 @@ const updatePassword = (req, res, next) => {
                     if(rows.length < 1){
                         reject({msg:"该用户未注册！"});
                     }else{
-                        resolve(rows);
+                        if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            reject({msg:systemMsg.USER_STATUS_ERROR});
+                        }else{
+                            resolve(rows);
+                        }
                     }
                 }
             });
@@ -556,7 +564,11 @@ const updatePasswordByPhone = (req, res, next) => {
                 } else {
                     logger.info(' regSms getUserPhone ' + 'success');
                     if(rows.length > 0){
-                        resolve(rows[0]._doc._id);
+                        if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            reject({msg:systemMsg.USER_STATUS_ERROR});
+                        }else{
+                            resolve(rows[0]._doc._id);
+                        }
                     }else{
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
                     }
@@ -721,7 +733,11 @@ const userLogin = (req, res, next) => {
                 } else {
                     if (rows.length != 0) {
                         logger.info(' userLogin getUser ' + 'success');
-                        resolve(rows[0]);
+                        if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            reject({msg:systemMsg.USER_STATUS_ERROR});
+                        }else{
+                            resolve(rows[0]);
+                        }
                     } else {
                         logger.warn(' userLogin username or password' + 'not verified!');
                         reject({msg:systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
@@ -747,8 +763,6 @@ const userLogin = (req, res, next) => {
                 }else{
                     logger.info('userLogin loginSaveToken ' + user.userId + " success");
                     resolve(user);
-                    // resUtil.resetQueryRes(res,user,null);
-                    // return next();
                 }
             })
 
