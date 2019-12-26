@@ -1,6 +1,5 @@
 "use strict"
 const mongoose = require('mongoose');
-const Errors = require('restify-errors');
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt');
 const oAuthUtil = require('../util/OAuthUtil');
@@ -53,23 +52,62 @@ const getAdminUser = (req, res, next) => {
 }
 const createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
-    let adminUserObj = bodyParams;
-    adminUserObj.status = sysConsts.INFO.status.available;
-    if(bodyParams.password){
-        console.log(bodyParams.password);
-        bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+    //判断该用户m名称是否存在
+    const getAdmin = () =>{
+        return new Promise((resolve, reject) => {
+            let queryAdmin = AdminUserModel.find({},{password:0});
+            if(bodyParams.name){
+                queryAdmin.where('name').equals(bodyParams.name);
+            }
+            queryAdmin.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createAdminUser getAdminUser ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createAdminUser getAdminUser ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.CUST_SIGNUP_REGISTERED});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
     }
-    let adminUserModel = new AdminUserModel(adminUserObj);
-    adminUserModel.save(function(error,result){
-        if (error) {
-            logger.error(' createAdminUser ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createAdminUser ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+
+    //保存管理员新数据
+    const saveAdmin = ()=>{
+        return new Promise((resolve, reject) => {
+            let adminUserObj = bodyParams;
+            adminUserObj.status = sysConsts.INFO.status.available;
+            if(bodyParams.password){
+                console.log(bodyParams.password);
+                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+            }
+            let adminUserModel = new AdminUserModel(adminUserObj);
+            adminUserModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createAdminUser ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' createAdminUser ' + 'success');
+                    resUtil.resetCreateRes(res, result);
+                    return next();
+                }
+            })
+        });
+    }
+
+    getAdmin()
+        .then(saveAdmin)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
 }
 const updateAdminUserInfo = (req, res, next) => {
     let bodyParams = req.body;
