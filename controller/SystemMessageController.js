@@ -52,26 +52,78 @@ const createSystemMessage = (req, res, next) => {
     let bodyParams = req.body;
     let systemMessageObj = bodyParams;
     systemMessageObj.status = sysConsts.SYSMESSAGE.status.normal;
-    if(params.adminId){
-        if(params.adminId.length == 24){
-            systemMessageObj._adminId = mongoose.mongo.ObjectId(params.adminId);
-        }else{
-            logger.info('createSystemMessage adminId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
+
+    //获取用户编号
+    const getUserId = () =>{
+        return new Promise((resolve, reject) => {
+
+            //userId存在
+            if(bodyParams._userId){
+                resolve();
+            }
+            //只有phone时
+            if((bodyParams.phone != null || bodyParams.phone != '' || bodyParams.phone != "undefined") && (bodyParams._userId == '' || bodyParams._userId == null ||  bodyParams._userId == "undefined")){
+                let queryUser = UserModel.find({});
+                if(bodyParams.phone){
+                    queryUser.where('phone').equals(bodyParams.phone);
+                }
+                queryUser.exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createSystemMessage getUserId ' + error.message);
+                        reject({err:error.message});
+                    } else {
+                        logger.info(' createSystemMessage getUserId ' + 'success');
+                        if(rows.length > 0){
+                            if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                                reject({msg:systemMsg.USER_STATUS_ERROR});
+                            }else{
+                                systemMessageObj._userId = rows[0]._doc._id;
+                                resolve();
+                            }
+                        }else{
+                            reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                        }
+                    }
+                });
+            }
+        });
     }
-    let systemMessageModel = new SystemMessageModel(systemMessageObj);
-    systemMessageModel.save(function(error,result){
-        if (error) {
-            logger.error(' createSystemMessage ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createSystemMessage ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
+
+    //保存新系统消息
+    const saveSysMsg = () =>{
+        return new Promise((resolve, reject) => {
+            if(params.adminId){
+                if(params.adminId.length == 24){
+                    systemMessageObj._adminId = mongoose.mongo.ObjectId(params.adminId);
+                }else{
+                    logger.info('createSystemMessage adminId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            let systemMessageModel = new SystemMessageModel(systemMessageObj);
+            systemMessageModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createSystemMessage ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' createSystemMessage ' + 'success');
+                    resUtil.resetCreateRes(res, result);
+                    return next();
+                }
+            })
+        });
+    }
+
+    getUserId()
+        .then(saveSysMsg)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
 }
 const getSystemMessageByAdmin = (req, res, next) => {
     let params = req.query;
