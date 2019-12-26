@@ -13,6 +13,7 @@
     }
   },
   "host": "stg.myxxjs.com:9901/api/",
+
   "tags": [
     {
       "name": "adminUser",
@@ -154,7 +155,7 @@
           },
           {
             "in": "body",
-            "name": "adminInfo",
+            "name":"adminInfo",
             "description": "AdminUser object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -170,6 +171,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -194,29 +196,25 @@
             "description": "管理员ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "name",
             "in": "query",
             "description": "管理员名称",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "realname",
             "in": "query",
             "description": "真实姓名",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "phone",
             "in": "query",
             "description": "电话",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "status",
             "in": "query",
             "description": "状态（0-停用，1-启用）",
@@ -268,6 +266,7 @@
             "description": "adminUser unique id",
             "required": true,
             "type": "string"
+
           },
           {
             "name": "adminUserInfo",
@@ -298,7 +297,7 @@
         }
       }
     },
-    "/admin/{adminId}/adminUser/{adminUserId}/status": {
+    "/admin/{adminId}/adminUser/{adminUserId}/status":{
       "put": {
         "tags": [
           "adminUser"
@@ -353,6 +352,7 @@
         }
       }
     },
+
     "/userLogin": {
       "post": {
         "tags": [
@@ -376,6 +376,39 @@
             "schema": {
               "$ref": "#/definitions/UserLogin"
             }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/phone/{phone}/regSms": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "send rest password sms",
+        "description": "Send rest password sms",
+        "operationId": "sendRestPasswordSms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "user phone",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -445,7 +478,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "userInfo",
+            "name":"userInfo",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -461,6 +494,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -478,8 +512,7 @@
             "description": "用户ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "userDetailId",
             "in": "query",
             "description": "用户详细信息ID",
@@ -499,15 +532,13 @@
             "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "auth_status",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "type",
             "in": "query",
             "description": "用户类型（1-普通，2-会员）",
@@ -720,7 +751,7 @@
         }
       }
     },
-    "/user/{userId}/authStatus": {
+    "/user/{userId}/authStatus":{
       "put": {
         "tags": [
           "user"
@@ -848,8 +879,7 @@
             "description": "状态（1-正常，2-禁言，4-停用）",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "auth_status",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
@@ -928,7 +958,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/status": {
+    "/admin/{adminId}/user/{userId}/status":{
       "put": {
         "tags": [
           "user"
@@ -983,6 +1013,7 @@
         }
       }
     },
+
     "/user/{userId}/userDetail": {
       "get": {
         "tags": [
@@ -1071,7 +1102,7 @@
         }
       }
     },
-    "/user/{userId}/avatarImage": {
+    "/user/{userId}/avatarImage":{
       "put": {
         "tags": [
           "userDetail"
@@ -1119,6 +1150,7 @@
         }
       }
     },
+
     "/user/{userId}/userDrive": {
       "get": {
         "tags": [
@@ -1207,6 +1239,7 @@
         }
       }
     },
+
     "/user/{userId}/userRelation": {
       "post": {
         "tags": [
@@ -1231,7 +1264,7 @@
           },
           {
             "in": "body",
-            "name": "userRelation",
+            "name":"userRelation",
             "description": "User object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -1247,6 +1280,7 @@
             "description": "Validation exception"
           }
         }
+
       }
     },
     "/user/{userId}/follow": {
@@ -1266,8 +1300,7 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },
-          {
+          },          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1344,8 +1377,7 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },
-          {
+          },          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1632,8 +1664,7 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },
-          {
+          },          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
@@ -1844,6 +1875,7 @@
         }
       }
     },
+
     "/user/{userId}/userPraise": {
       "post": {
         "tags": [
@@ -1884,6 +1916,7 @@
             "description": "Validation exception"
           }
         }
+
       }
     },
     "/user/{userId}/getUserPraise": {
@@ -2085,6 +2118,7 @@
         }
       }
     },
+
     "/user/{userId}/userVote": {
       "post": {
         "tags": [
@@ -2125,6 +2159,7 @@
             "description": "Validation exception"
           }
         }
+
       }
     },
     "/user/{userId}/getUserVote": {
@@ -2224,6 +2259,7 @@
         }
       }
     },
+
     "/user/{userId}/userLocationCollection": {
       "post": {
         "tags": [
@@ -2248,7 +2284,7 @@
           },
           {
             "in": "body",
-            "name": "userLocationCollectionInfo",
+            "name":"userLocationCollectionInfo",
             "description": "UserLocationCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2264,6 +2300,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -2361,6 +2398,7 @@
         }
       }
     },
+
     "/user/{userId}/userMessageCollection": {
       "post": {
         "tags": [
@@ -2385,7 +2423,7 @@
           },
           {
             "in": "body",
-            "name": "userMessageCollectionInfo",
+            "name":"userMessageCollectionInfo",
             "description": "UserMessageCollection object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2401,6 +2439,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -2498,6 +2537,7 @@
         }
       }
     },
+
     "/user/{userId}/messages": {
       "post": {
         "tags": [
@@ -2522,7 +2562,7 @@
           },
           {
             "in": "body",
-            "name": "messageInfo",
+            "name":"messageInfo",
             "description": "Messages object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -2538,6 +2578,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -2562,22 +2603,19 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "status",
             "in": "query",
             "description": "文章状态（0-不可见，1-可见(默认)）",
@@ -2628,22 +2666,19 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
-          },
-          {
+          },{
             "name": "status",
             "in": "query",
             "description": "文章状态（0-不可见，1-可见(默认)）",
@@ -2727,8 +2762,7 @@
             "description": "地理位置（格式： [纬度，经度]）",
             "required": true,
             "type": "string"
-          },
-          {
+          },{
             "name": "radius",
             "in": "query",
             "description": "查询半径(单位：KM)",
@@ -2755,7 +2789,7 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/status": {
+    "/user/{userId}/messages/{messagesId}/status":{
       "put": {
         "tags": [
           "messages"
@@ -3017,8 +3051,7 @@
             "description": "地理位置（格式： [纬度，经度]）",
             "required": true,
             "type": "string"
-          },
-          {
+          },{
             "name": "radius",
             "in": "query",
             "description": "查询半径(单位：KM)",
@@ -3045,7 +3078,7 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/status": {
+    "/admin/{adminId}/messages/{messagesId}/status":{
       "put": {
         "tags": [
           "messages"
@@ -3137,6 +3170,7 @@
         }
       }
     },
+
     "/user/{userId}/messageComments": {
       "post": {
         "tags": [
@@ -3161,7 +3195,7 @@
           },
           {
             "in": "body",
-            "name": "messageCommentsInfo",
+            "name":"messageCommentsInfo",
             "description": "messageComments object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3203,15 +3237,13 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
@@ -3269,15 +3301,13 @@
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "messageCommentsId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },
-          {
+          },{
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
@@ -3641,6 +3671,7 @@
         }
       }
     },
+
     "/user/{userId}/vote": {
       "get": {
         "tags": [
@@ -3717,7 +3748,7 @@
           },
           {
             "in": "body",
-            "name": "voteInfo",
+            "name":"voteInfo",
             "description": "Vote object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3949,6 +3980,7 @@
         }
       }
     },
+
     "/user/{userId}/applicationContact": {
       "post": {
         "tags": [
@@ -3973,7 +4005,7 @@
           },
           {
             "in": "body",
-            "name": "contactInfo",
+            "name":"contactInfo",
             "description": "contactInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -3989,6 +4021,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -4169,6 +4202,7 @@
         }
       }
     },
+
     "/user/{userId}/systemMessage": {
       "get": {
         "tags": [
@@ -4337,7 +4371,7 @@
           },
           {
             "in": "body",
-            "name": "systemMessageInfo",
+            "name":"systemMessageInfo",
             "description": "systemMessageInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4353,6 +4387,7 @@
             "description": "Validation exception"
           }
         }
+
       }
     },
     "/admin/{adminId}/systemMessage/{systemMessageId}/status": {
@@ -4447,6 +4482,7 @@
         }
       }
     },
+
     "/user/{userId}/privacySettings": {
       "post": {
         "tags": [
@@ -4471,7 +4507,7 @@
           },
           {
             "in": "body",
-            "name": "privacySettingsInfo",
+            "name":"privacySettingsInfo",
             "description": "privacySettingsInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4487,6 +4523,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -4599,6 +4636,7 @@
         }
       }
     },
+
     "/user/{userId}/notificationSettings": {
       "post": {
         "tags": [
@@ -4623,7 +4661,7 @@
           },
           {
             "in": "body",
-            "name": "notificationSettingsInfo",
+            "name":"notificationSettingsInfo",
             "description": "notificationSettingsInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4639,6 +4677,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -4751,6 +4790,7 @@
         }
       }
     },
+
     "/user/{userId}/blacklist": {
       "post": {
         "tags": [
@@ -4775,7 +4815,7 @@
           },
           {
             "in": "body",
-            "name": "blacklistInfo",
+            "name":"blacklistInfo",
             "description": "blacklistInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -4791,6 +4831,7 @@
             "description": "Validation exception"
           }
         }
+
       },
       "get": {
         "tags": [
@@ -4901,6 +4942,7 @@
         }
       }
     },
+
     "/user/{userId}/about": {
       "get": {
         "tags": [
@@ -5001,7 +5043,7 @@
           },
           {
             "in": "body",
-            "name": "aboutInfo",
+            "name":"aboutInfo",
             "description": "aboutInfo object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -5017,6 +5059,7 @@
             "description": "Validation exception"
           }
         }
+
       }
     },
     "/admin/{adminId}/about/{aboutId}/about": {
@@ -5102,6 +5145,7 @@
         }
       }
     },
+
     "/user/{userId}/app": {
       "get": {
         "tags": [
@@ -5276,7 +5320,7 @@
           },
           {
             "in": "body",
-            "name": "body",
+            "name":"body",
             "description": "App object that needs to be added to the store",
             "required": true,
             "schema": {
@@ -5289,6 +5333,7 @@
             "description": "Invalid input"
           }
         }
+
       }
     },
     "/admin/{adminId}/app/{appId}": {
@@ -5316,6 +5361,7 @@
             "description": "app unique id",
             "required": true,
             "type": "string"
+
           },
           {
             "name": "body",
@@ -5343,7 +5389,7 @@
         }
       }
     },
-    "/admin/{adminId}/app/{appId}/status": {
+    "/admin/{adminId}/app/{appId}/status":{
       "put": {
         "tags": [
           "app"
@@ -5802,7 +5848,7 @@
         },
         "media": {
           "type": "array",
-          "items": {
+          "items":{
             "$ref": "#/definitions/MessagesMedia"
           }
         },

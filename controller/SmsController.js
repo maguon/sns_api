@@ -72,7 +72,76 @@ const sendSms = (params, callback) =>{
     };
     httpSend(msg, callback);
 }
+//验证用户不存在，发送验证码
+const regSms = (req,res,next) =>{
+    let path = req.params;
+    let captcha = ""
 
+    const getUserPhone = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUser = UserModel.find({});
+            if(path.phone){
+                queryUser.where('phone').equals(path.phone);
+            }
+            queryUser.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' regSms getUserPhone ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' regSms getUserPhone ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+
+    const savePhoneCode = () =>{
+        return new Promise((resolve, reject) => {
+            captcha = encrypt.getSmsRandomKey();
+            console.log(captcha);
+            oauthUtil.savePhoneCode({phone:path.mobile,code:captcha},function(error,result){
+                if (error) {
+                    logger.error(' regSms savePhoneCode ' + error.message);
+                    reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                } else {
+                    logger.info(' regSms savePhoneCode ' + 'success');
+                    resolve();
+                }
+            })
+        });
+    }
+
+    const sendPhoneSms = () =>{
+        return new Promise((resolve, reject) => {
+            sendSms({phone:path.phone,captcha:captcha,templateId:smsConfig.smsOptions.signTemplateId},function (error,result) {
+                if (error) {
+                    logger.error(' regSms sendPhoneSms ' + error.message);
+                    reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                } else {
+                    logger.info(' regSms sendPhoneSms ' + 'success');
+                    resUtil.resetCreateRes(res,{_id:1},null);
+                    return next();
+                }
+            })
+        });
+    }
+
+    getUserPhone()
+        .then(savePhoneCode)
+        .then(sendPhoneSms)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
+//验证用户存在，发送验证码
 const resetSms = (req, res, next) => {
     let path = req.params;
     let captcha = "";
@@ -93,10 +162,10 @@ const resetSms = (req, res, next) => {
             }
             queryUser.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' resetSms getUserPhone getUserPhone ' + error.message);
+                    logger.error(' resetSms getUserPhone ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' resetSms getUserPhone getUserPhone ' + 'success');
+                    logger.info(' resetSms getUserPhone ' + 'success');
                     if(rows.length > 0){
                         resolve();
                     }else{
@@ -114,9 +183,10 @@ const resetSms = (req, res, next) => {
             console.log(captcha);
             oauthUtil.savePhoneCode({phone:path.phone,code:captcha},function(error,result){
                 if (error) {
-                    logger.error(' resetSms getUserPhone ' + error.message);
+                    logger.error(' resetSms savePhoneCode ' + error.message);
                     reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
                 } else {
+                    logger.info(' resetSms savePhoneCode ' + 'success');
                     resolve();
                 }
             })
@@ -128,10 +198,10 @@ const resetSms = (req, res, next) => {
         return new Promise((resolve, reject) => {
             sendSms({phone:path.phone,captcha:captcha,templateId:smsConfig.smsOptions.signTemplateId},function (error,result) {
                 if (error) {
-                    logger.error(' resetSms getUserPhone ' + error.message);
+                    logger.error(' resetSms sendServerSms ' + error.message);
                     reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
                 } else {
-                    logger.info(' resetSms getUserPhone ' + 'success');
+                    logger.info(' resetSms sendServerSmsS ' + 'success');
                     resUtil.resetCreateRes(res,{_id:1},null);
                     return next();
                 }
@@ -151,5 +221,6 @@ const resetSms = (req, res, next) => {
         })
 }
 module.exports = {
+    regSms,
     resetSms
 };
