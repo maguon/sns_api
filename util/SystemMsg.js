@@ -55,7 +55,7 @@ let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
  * The module for vote
  */
 let VOTE_ID_NULL_ERROR ="投票信息不存在！" ;
-let VOTE_STATUS_NULL_ERROR ="投票中，不允许修改！" ;
+let VOTE_STATUS_NULL_ERROR ="该状态下，投票信息不允许修改！" ;
 /**
  * The module for system_message
  */

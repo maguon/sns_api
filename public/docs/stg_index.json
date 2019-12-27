@@ -5815,13 +5815,33 @@
         "_voteId": {
           "type": "string"
         },
-        "option": {
-          "type": "integer",
-          "format": "int64"
+        "optionItem": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/OptionItemArray"
+          }
         }
       },
       "xml": {
         "name": "UserVote"
+      }
+    },
+    "OptionItemArray": {
+      "type": "object",
+      "required": [
+        "index",
+        "txt"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer"
+        },
+        "txt": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "OptionArray"
       }
     },
     "UserLocationCollection": {
@@ -6013,11 +6033,32 @@
           "type": "integer"
         },
         "option": {
-          "type": "Array"
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/OptionArray"
+          }
         }
       },
       "xml": {
         "name": "Vote"
+      }
+    },
+    "OptionArray": {
+      "type": "object",
+      "required": [
+        "txt",
+        "voteNum"
+      ],
+      "properties": {
+        "txt": {
+          "type": "String"
+        },
+        "voteNum": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "OptionArray"
       }
     },
     "ApplicationContact": {
