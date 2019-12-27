@@ -87,6 +87,44 @@ const createUserVote = (req, res, next) => {
     let bodyParams = req.body;
     let userVoteObj = bodyParams;
     let returnMsg;
+    //判断用户是否已经投票
+    const getUserVoteInfo =()=>{
+        return new Promise((resolve, reject) => {
+            let queryUserVote = UserVoteModel.find({});
+
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUserVote.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' createUserVote getUserVoteInfo  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams.voteId){
+                if(bodyParams.voteId.length == 24){
+                    queryUserVote.where('_voteId').equals(mongoose.mongo.ObjectId(bodyParams.voteId));
+                }else{
+                    logger.info(' createUserVote getUserVoteInfo  voteId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            queryUserVote.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserVote getUserVoteInfo ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUserVote getUserVoteInfo ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.USER_VOTE_CREATE_ERROR});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
     //保存用户投票信息
     const saveUserVote =()=>{
         return new Promise((resolve, reject) => {
@@ -209,7 +247,8 @@ const createUserVote = (req, res, next) => {
             });
         });
     }
-    saveUserVote()
+    getUserVoteInfo()
+        .then(saveUserVote)
         .then(getVoteInfo)
         .then(updateOptionVoteNum)
         .then(updateVoteNum)
@@ -217,6 +256,8 @@ const createUserVote = (req, res, next) => {
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
 }

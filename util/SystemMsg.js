@@ -35,6 +35,10 @@ let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
 let PRAISE_RECORD_ID_NULL_ERROR ="该点赞记录不存在！" ;
 let PRAISE_TYPE_ERROR ="点赞类型不存在！" ;
 /**
+ * The module for userVote
+ */
+let USER_VOTE_CREATE_ERROR ="该用户已投票！" ;
+/**
  * The module for userLocationCollection
  */
 let ADDRESS_COLLECTIONS_ID_NULL ="收藏位置不存在！" ;
@@ -108,6 +112,8 @@ module.exports = {
 
     PRAISE_RECORD_ID_NULL_ERROR,
     PRAISE_TYPE_ERROR,
+
+    USER_VOTE_CREATE_ERROR,
 
     ADDRESS_COLLECTIONS_ID_NULL,
 
