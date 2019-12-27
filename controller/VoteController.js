@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('VoteController');
 
 const {VoteModel} = require('../modules');
@@ -126,7 +127,7 @@ const updateVote = (req, res, next) =>{
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' getVote ' + 'success');
-                    if(rows[0]._doc.status == 1){
+                    if(rows[0]._doc.status != sysConsts.VOTE.status.not_open){
                         //投票进行中不允许修改信息
                         resUtil.resetFailedRes(res,systemMsg.VOTE_STATUS_NULL_ERROR);
                     }else{
@@ -155,8 +156,10 @@ const updateVote = (req, res, next) =>{
     queryConditionalStatus()
         .then(updateInfo)
         .catch((reject)=>{
-            if(reject){
+            if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
             }
         })
 }
