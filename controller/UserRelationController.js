@@ -215,7 +215,7 @@ const getAttentionCount = (req, res, next) => {
 }
 const getAttentionUserInfo = (req, res, next) => {
     let path = req.params;
-    let params = req.params;
+    let params = req.query;
 
     let aggregate_limit = [];
     let matchObj = {};
