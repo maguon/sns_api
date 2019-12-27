@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
-const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserVoteController');
 
 const {UserVoteModel} = require('../modules');
