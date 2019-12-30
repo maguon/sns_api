@@ -52,19 +52,19 @@ const getUserDrive = (req, res, next) => {
 const updateUserDriveInfo = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDriveModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserDriveInfo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userDetailId){
-        if(params.userDetailId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
+    if(path.userDetailId){
+        if(path.userDetailId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userDetailId));
         }else{
             logger.info('updateUserDriveInfo  userDetailID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);

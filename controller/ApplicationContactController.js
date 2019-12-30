@@ -75,22 +75,22 @@ const getApplicationContactByAdmin = (req, res, next) => {
     });
 }
 const createApplicationContact = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let bodyParams = req.body;
     let voteObj = bodyParams;
     voteObj.status = 0;
-    if(params.userId){
-        if(params.userId.length == 24){
-            voteObj._userId = mongoose.mongo.ObjectId(params.userId);
+    if(path.userId){
+        if(path.userId.length == 24){
+            voteObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('createApplicationContact userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userId){
-        if(params.userId.length == 24){
-            voteObj._userId = mongoose.mongo.ObjectId(params.userId);
+    if(path.userId){
+        if(path.userId.length == 24){
+            voteObj._userId = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('createApplicationContact userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -112,10 +112,10 @@ const createApplicationContact = (req, res, next) => {
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = ApplicationContactModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateStatus userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);

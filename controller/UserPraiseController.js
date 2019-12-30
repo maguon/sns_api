@@ -73,16 +73,16 @@ const getUserPraise = (req, res, next) => {
     });
 }
 const createUserPraise = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let bodyParams = req.body;
     let returnMessage;
     //保存点赞数据
     const savePraise =()=>{
         return new Promise((resolve, reject) => {
             let userPraiseObj = bodyParams;
-            if(params.userId){
-                if(params.userId.length == 24){
-                    userPraiseObj._userId = mongoose.mongo.ObjectId(params.userId);
+            if(path.userId){
+                if(path.userId.length == 24){
+                    userPraiseObj._userId = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info('createUserPraise savePraise userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -165,20 +165,20 @@ const createUserPraise = (req, res, next) => {
         })
 }
 const updateReadStatus = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let query = UserPraiseModel.find({});
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateReadStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userPraiseId){
-        if(params.userPraiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
+    if(path.userPraiseId){
+        if(path.userPraiseId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userPraiseId));
         }else{
             logger.info('updateReadStatus  userPraiseId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);

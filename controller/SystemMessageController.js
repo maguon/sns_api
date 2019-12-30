@@ -48,7 +48,7 @@ const getSystemMessage = (req, res, next) => {
     });
 }
 const createSystemMessage = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let bodyParams = req.body;
     let systemMessageObj = bodyParams;
     systemMessageObj.status = sysConsts.SYSMESSAGE.status.normal;
@@ -92,9 +92,9 @@ const createSystemMessage = (req, res, next) => {
     //保存新系统消息
     const saveSysMsg = () =>{
         return new Promise((resolve, reject) => {
-            if(params.adminId){
-                if(params.adminId.length == 24){
-                    systemMessageObj._adminId = mongoose.mongo.ObjectId(params.adminId);
+            if(path.adminId){
+                if(path.adminId.length == 24){
+                    systemMessageObj._adminId = mongoose.mongo.ObjectId(path.adminId);
                 }else{
                     logger.info('createSystemMessage adminId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -264,11 +264,11 @@ const getSystemMessageByAdmin = (req, res, next) => {
 }
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let params = req.params;
+    let path = req.params;
     let query = SystemMessageModel.find({});
-    if(params.systemMessageId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.systemMessageId));
+    if(path.systemMessageId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.systemMessageId));
         }else{
             logger.info('updateStatusByAdmin  systemMessageId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);

@@ -55,19 +55,19 @@ const getUserDetail = (req, res, next) => {
 const updateUserDetailInfo = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDetailModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserDetailInfo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userDetailId){
-        if(params.userDetailId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userDetailId));
+    if(path.userDetailId){
+        if(path.userDetailId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userDetailId));
         }else{
             logger.info('updateUserDetailInfo  userDetailID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);
@@ -88,10 +88,10 @@ const updateUserDetailInfo = (req, res, next) => {
 const updateAvatarImage = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserDetailModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateAvatarImage  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);

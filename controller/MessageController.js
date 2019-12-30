@@ -208,20 +208,20 @@ const createMessage = (req, res, next) => {
         })
 }
 const updateMessageStatus = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let queryMessge = MessageModel.find({});
-    if(params.userId){
-        if(params.userId.length == 24){
-            queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    if(path.userId){
+        if(path.userId.length == 24){
+            queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateMessageStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(path.messagesId){
+        if(path.messagesId.length == 24){
+            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
         }else{
             logger.info('updateMessageStatus  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);

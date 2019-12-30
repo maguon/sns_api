@@ -248,21 +248,21 @@ const createMessageComments = (req, res, next) => {
 }
 const updateReadStatus = (req, res, next) => {
     let bodyParams = req.body;
-    let params = req.params;
+    let path = req.params;
     let query = MessageCommentsModel.find({});
 
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateReadStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
             logger.info('updateReadStatus  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -508,11 +508,11 @@ const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
 }
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let params = req.params;
+    let path = req.params;
     let query = MessageCommentsModel.find({});
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
             logger.info('updateStatusByAdmin  messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
@@ -531,11 +531,11 @@ const updateStatusByAdmin = (req, res, next) => {
     })
 }
 const deleteCommentsByAdmin = (req, res, next) => {
-    var params = req.params;
+    let path = req.params;
     let query = MessageCommentsModel.find({});
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(path.messageCommentsId){
+        if(path.messageCommentsId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
         }else{
             logger.info('deleteCommentsByAdmin messageCommentsId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
