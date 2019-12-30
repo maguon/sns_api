@@ -27,6 +27,12 @@ const INFO = {
         read:1//已读
     }
 }
+const ADMIN ={
+    status: {
+        disable:0,//停用
+        available:1//可用
+    }
+}
 const USER ={
     status: {
         available:1,//可用
@@ -80,6 +86,7 @@ const SYSMESSAGE ={
 module.exports = {
     DRIVE_TYPE,
     INFO,
+    ADMIN,
     USER,
     MESSAGE,
     COUMMENT,

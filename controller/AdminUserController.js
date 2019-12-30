@@ -175,10 +175,14 @@ const adminUserLogin = (req, res, next) => {
                 } else {
                     if (rows.length != 0) {
                         logger.info(' adminUserLogin getAdmin ' + 'success');
-                        resolve(rows[0]);
+                        if(rows[0]._doc.status == sysConsts.ADMIN.status.available){
+                            resolve(rows[0]);
+                        }else{
+                            reject({msg:systemMsg.CUST_STATUS_ERROR});
+                        }
                     } else {
                         logger.warn(' adminUserLogin username or password' + 'not verified!');
-                        reject({msg:' adminUserLogin username or password not verified!'});
+                        reject({msg:systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
                     }
 
                 }
@@ -214,7 +218,7 @@ const adminUserLogin = (req, res, next) => {
             if(reject.err) {
                 resUtil.resetFailedRes(res, reject.err);
             }else{
-                resUtil.resetFailedRes(res, systemMsg.CUST_LOGIN_USER_PSWD_ERROR);
+                resUtil.resetFailedRes(res, reject.msg);
             }
         })
 
