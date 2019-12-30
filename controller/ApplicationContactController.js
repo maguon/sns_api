@@ -57,6 +57,15 @@ const getApplicationContactByAdmin = (req, res, next) => {
             return next();
         }
     }
+    if(params.applicationContactId){
+        if(params.applicationContactId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.applicationContactId));
+        }else{
+            logger.info('getApplicationContact applicationContactId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
     if(params.status){
         query.where('status').equals(params.status);
     }
