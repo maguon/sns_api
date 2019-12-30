@@ -89,7 +89,6 @@ const getUserToken = (req, res, next) => {
             });
         });
     }
-
     const removeAndSaveToken =()=>{
         return new Promise((resolve, reject) => {
             user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);

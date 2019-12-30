@@ -36,7 +36,6 @@ const getPrivacySettingsByUser = (req, res, next) => {
     });
 }
 const getPrivacySettingsByAdmin = (req, res, next) => {
-    let path = req.query;
     let params = req.params;
     let query = PrivacySettingsModel.find({});
 

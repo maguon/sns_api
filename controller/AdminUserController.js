@@ -52,7 +52,7 @@ const getAdminUser = (req, res, next) => {
 }
 const createAdminUser = (req, res, next) => {
     let bodyParams = req.body;
-    //判断该用户m名称是否存在
+    //判断该用户名称是否存在
     const getAdmin = () =>{
         return new Promise((resolve, reject) => {
             let queryAdmin = AdminUserModel.find({},{password:0});
@@ -74,7 +74,6 @@ const createAdminUser = (req, res, next) => {
             });
         });
     }
-
     //保存管理员新数据
     const saveAdmin = ()=>{
         return new Promise((resolve, reject) => {
@@ -97,7 +96,6 @@ const createAdminUser = (req, res, next) => {
             })
         });
     }
-
     getAdmin()
         .then(saveAdmin)
         .catch((reject)=>{
@@ -159,7 +157,7 @@ const updateAdminUserStatus = (req, res, next) => {
 }
 const adminUserLogin = (req, res, next) => {
     let bodyParams = req.body;
-
+    //获取管理员信息
     const getAdmin = () =>{
         return new Promise((resolve,reject)=> {
             let query = AdminUserModel.find({});
@@ -187,7 +185,7 @@ const adminUserLogin = (req, res, next) => {
             });
         });
     }
-
+    //获取token
     const loginSaveToken = (adminInfo) =>{
         return new Promise(()=>{
             let admin = {
@@ -210,11 +208,9 @@ const adminUserLogin = (req, res, next) => {
 
         });
     }
-
     getAdmin()
         .then(loginSaveToken)
         .catch((reject)=>{
-            // resUtil.resetFailedRes(res, reject.msg);
             if(reject.err) {
                 resUtil.resetFailedRes(res, reject.err);
             }else{

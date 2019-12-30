@@ -184,7 +184,7 @@ const createUserVote = (req, res, next) => {
 
                 for (let index = 0; index < voteInfo.option.length; index++) {
                     if (index == optionArray[i].index) {
-                        // //更新选项投票数
+                        //更新选项投票数
                         voteInfo.option[index].voteNum = voteInfo.option[index].voteNum + 1;
                         VoteModel.updateOne({"option.txt" : optionArray[i].txt},{$set:{"option.$.voteNum":voteInfo.option[index].voteNum}}).exec((error,result)=> {
                             if (error) {
