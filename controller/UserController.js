@@ -12,6 +12,8 @@ const logger = serverLogger.createLogger('UserController');
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 const {UserDriveModel} = require('../modules');
+const {PrivacySettingsModel} = require('../modules');
+const {NotificationSettingsModel} = require('../modules');
 
 const getUser = (req, res, next) => {
     let path = req.params;
@@ -400,6 +402,46 @@ const createUser = (req, res, next) => {
             });
         });
     }
+    //创建用户隐私设置信息
+    const createUserPrivacy = (updateInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let userPrivacyModel = new PrivacySettingsModel();
+            userPrivacyModel._userId = userId;
+            userPrivacyModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUser createUserPrivacy ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUser createUserPrivacy ' + 'success');
+                    if (result._doc) {
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                    }
+                }
+            });
+        });
+    }
+    //创建用户通知设置信息
+    const createUserNotification = (updateInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let userNotificationModel = new NotificationSettingsModel();
+            userNotificationModel._userId = userId;
+            userNotificationModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUser createUserNotification ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUser createUserNotification ' + 'success');
+                    if (result._doc) {
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                    }
+                }
+            });
+        });
+    }
     //更新用户信息的关联ID
     const updateUserInfo = (updateInfo) =>{
         return new Promise((() => {
@@ -424,6 +466,8 @@ const createUser = (req, res, next) => {
         .then(createUserInfo)
         .then(createUserDetail)
         .then(createUserDrive)
+        .then(createUserPrivacy)
+        .then(createUserNotification)
         .then(updateUserInfo)
         .catch((reject)=>{
             if(reject.err){
@@ -770,7 +814,7 @@ const userLogin = (req, res, next) => {
         });
     }
     const updateLastLogin = (user) =>{
-        return new Promise((() => {
+        return new Promise(() => {
             let query = UserModel.find({});
             if(UserId){
                 if(UserId.length == 24){
@@ -792,7 +836,7 @@ const userLogin = (req, res, next) => {
                     return next();
                 }
             })
-        }));
+        });
     }
     getUser()
         .then(loginSaveToken)

@@ -103,7 +103,7 @@ const regSms = (req,res,next) =>{
         return new Promise((resolve, reject) => {
             captcha = encrypt.getSmsRandomKey();
             console.log(captcha);
-            oauthUtil.saveUserPhoneCode({phone:path.mobile,code:captcha},function(error,result){
+            oauthUtil.saveUserPhoneCode({phone:path.phone,code:captcha},function(error,result){
                 if (error) {
                     logger.error(' regSms savePhoneCode ' + error.message);
                     reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
