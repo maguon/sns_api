@@ -74,10 +74,6 @@ let PRIVACY_SETTINGS_ID_NULL_ERROR ="隐私设置信息不存在！" ;
  */
 let NOTIFICATION_SETTINGS_ID_NULL_ERROR ="通知设置信息不存在！" ;
 /**
- * The module for blacklist
- */
-let BLACK_LIST_ID_NULL_ERROR ="黑名单信息不存在！" ;
-/**
  * The module for about
  */
 let ABOUT_ID_NULL_ERROR ="关于我们信息不存在！" ;
@@ -134,8 +130,6 @@ module.exports = {
     PRIVACY_SETTINGS_ID_NULL_ERROR,
 
     NOTIFICATION_SETTINGS_ID_NULL_ERROR,
-
-    BLACK_LIST_ID_NULL_ERROR,
 
     ABOUT_ID_NULL_ERROR,
 

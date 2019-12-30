@@ -80,10 +80,6 @@
       "description": "NotificationSettings version and url management api (通知设置)"
     },
     {
-      "name": "blacklist",
-      "description": "Blacklist version and url management api (黑名单设置)"
-    },
-    {
       "name": "about",
       "description": "About version and url management api (关于我们)"
     },
@@ -4760,158 +4756,6 @@
       }
     },
 
-    "/user/{userId}/blacklist": {
-      "post": {
-        "tags": [
-          "blacklist"
-        ],
-        "summary": "Add blacklist",
-        "description": "",
-        "operationId": "add blacklist",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"blacklistInfo",
-            "description": "blacklistInfo object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Blacklist"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
-      "get": {
-        "tags": [
-          "blacklist"
-        ],
-        "summary": "Select blacklist Info",
-        "description": "get blacklist info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/blacklist/{blacklistId}": {
-      "delete": {
-        "tags": [
-          "blacklist"
-        ],
-        "summary": "Delete blacklist",
-        "description": "Delete blacklist",
-        "operationId": "Delete blacklist by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "blacklistId",
-            "in": "path",
-            "description": "blacklist unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "addedUserId",
-            "in": "query",
-            "description": "added User Id",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or blacklistId not found"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/blacklist": {
-      "get": {
-        "tags": [
-          "blacklist"
-        ],
-        "summary": "Administrator select blacklist Info",
-        "description": "Administrator get blacklist info",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "userID",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "blacklistId",
-            "in": "query",
-            "description": "blacklistId",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-
     "/user/{userId}/about": {
       "get": {
         "tags": [
@@ -6096,20 +5940,6 @@
       },
       "xml": {
         "name": "NotificationSettings"
-      }
-    },
-    "Blacklist": {
-      "type": "object",
-      "required": [
-        "_addedUserId"
-      ],
-      "properties": {
-        "_addedUserId": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Blacklist"
       }
     },
     "City": {

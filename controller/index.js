@@ -15,7 +15,6 @@ exports.ApplicationContactController = require('./ApplicationContactController')
 exports.SystemMessageController = require('./SystemMessageController');
 exports.PrivacySettingsController = require('./PrivacySettingsController');
 exports.NotificationSettingsController = require('./NotificationSettingsController');
-exports.BlacklistController = require('./BlacklistController');
 exports.AboutController = require('./AboutController');
 exports.AppController = require('./AppController');
 exports.SmsController = require('./SmsController');

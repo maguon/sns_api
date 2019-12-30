@@ -22,7 +22,6 @@ import {ApplicationContactController} from  './controller';
 import {SystemMessageController} from  './controller';
 import {PrivacySettingsController} from  './controller';
 import {NotificationSettingsController} from  './controller';
-import {BlacklistController} from  './controller';
 import {AboutController} from './controller';
 import {AppController} from './controller';
 import {SmsController} from './controller';
@@ -248,14 +247,6 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/notificationSettings/:notificationSettingsId/notificationSettings',contentType: 'application/json'} ,NotificationSettingsController.updateNotificationSettings);
 
     server.get('/api/admin/:adminId/notificationSettings', NotificationSettingsController.getNotificationSettingsByAdmin);
-    /**
-     blacklist     - 黑名单设置
-     */
-    server.get('/api/user/:userId/blacklist', BlacklistController.getBlacklistByUser);
-    server.post({path:'/api/user/:userId/blacklist',contentType: 'application/json'}, BlacklistController.createBlacklist);
-    server.del({path:'/api/user/:userId/blacklist/:blacklistId',contentType: 'application/json'},BlacklistController.deleteBlacklist);
-
-    server.get('/api/admin/:adminId/blacklist', BlacklistController.getBlacklistByAdmin);
     /**
      about     - 关于我们
      */
