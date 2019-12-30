@@ -110,10 +110,10 @@ const createAdminUser = (req, res, next) => {
 const updateAdminUserInfo = (req, res, next) => {
     let bodyParams = req.body;
     let query = AdminUserModel.find({});
-    let params = req.params;
-    if(params.adminUserId){
-        if(params.adminUserId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
+    let path = req.params;
+    if(path.adminUserId){
+        if(path.adminUserId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.adminUserId));
         }else{
             logger.info('updateAdminUserInfo  ID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -134,10 +134,10 @@ const updateAdminUserInfo = (req, res, next) => {
 const updateAdminUserStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = AdminUserModel.find({});
-    let params = req.params;
-    if(params.adminUserId){
-        if(params.adminUserId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.adminUserId));
+    let path = req.params;
+    if(path.adminUserId){
+        if(path.adminUserId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.adminUserId));
         }else{
             logger.info('updateAdminUserStatus  ID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
