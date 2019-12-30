@@ -47,10 +47,10 @@ const createAbout = (req, res, next) => {
 const updateAbout = (req, res, next) =>{
     let bodyParams = req.body;
     let query = AboutModel.find();
-    let params = req.params;
-    if(params.aboutId){
-        if(params.aboutId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.aboutId));
+    let path = req.params;
+    if(path.aboutId){
+        if(path.aboutId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.aboutId));
         }else{
             logger.info('updateAbout aboutId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
