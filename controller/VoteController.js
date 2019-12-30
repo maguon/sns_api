@@ -79,13 +79,13 @@ const getVoteByAdmin = (req, res, next) => {
     });
 }
 const createVote = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let bodyParams = req.body;
     let voteObj = bodyParams;
     voteObj.participantsNum = 0;
-    if(params.adminId){
-        if(params.adminId.length == 24){
-            voteObj._adminId = mongoose.mongo.ObjectId(params.adminId);
+    if(path.adminId){
+        if(path.adminId.length == 24){
+            voteObj._adminId = mongoose.mongo.ObjectId(path.adminId);
         }else{
             logger.info('createVote adminID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -108,11 +108,11 @@ const updateVote = (req, res, next) =>{
     let bodyParams = req.body;
     let query = VoteModel.find();
     let queryStatus = VoteModel.find({});
-    let params = req.params;
-    if(params.voteId){
-        if(params.voteId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId ));
-            queryStatus.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
+    let path = req.params;
+    if(path.voteId){
+        if(path.voteId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.voteId ));
+            queryStatus.where('_id').equals(mongoose.mongo.ObjectId(path.voteId));
         }else{
             logger.info('getVote voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
@@ -165,11 +165,11 @@ const updateVote = (req, res, next) =>{
 }
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
-    let params = req.params;
+    let path = req.params;
     let query = VoteModel.find({});
-    if(params.voteId){
-        if(params.voteId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
+    if(path.voteId){
+        if(path.voteId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.voteId));
         }else{
             logger.info('updateStatusByAdmin  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
@@ -188,11 +188,11 @@ const updateStatusByAdmin = (req, res, next) => {
     })
 }
 const deleteVoteByAdmin = (req, res, next) => {
-    var params = req.params;
+    var path = req.params;
     let query = VoteModel.find({});
-    if(params.voteId){
-        if(params.voteId .length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId ));
+    if(path.voteId){
+        if(path.voteId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.voteId ));
         }else{
             logger.info('deleteVoteByAdmin vodeId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
