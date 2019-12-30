@@ -123,13 +123,13 @@ const getUserToken = (req, res, next) => {
         })
 }
 const getUserInfoAndDetail = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
     let aggregate_limit = [];
-    if(params.userId){
-        if(params.userId.length == 24){
+    if(path.userId){
+        if(path.userId.length == 24){
             aggregate_limit.push({
                 $match: {
-                    _id :  mongoose.mongo.ObjectId(params.userId)
+                    _id :  mongoose.mongo.ObjectId(path.userId)
                 }
             });
         }else{
@@ -480,10 +480,10 @@ const createUser = (req, res, next) => {
 const updateUserType = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserType userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -505,10 +505,10 @@ const updateUserType = (req, res, next) => {
 const updatePassword = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserStatus userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -575,11 +575,11 @@ const updatePassword = (req, res, next) => {
 }
 const updatePasswordByPhone = (req, res, next) => {
     let bodyParams = req.body;
-    let params = req.params;
+    let path = req.params;
     //判断验证码是否正确
     const getCode =()=>{
         return new Promise((resolve, reject) => {
-            oAuthUtil.getUserPhoneCode({phone:params.phone},(error,rows)=>{
+            oAuthUtil.getUserPhoneCode({phone:path.phone},(error,rows)=>{
                 if(error){
                     logger.error('updatePasswordByPhone getCode ' + error.message);
                     reject(error);
@@ -653,19 +653,42 @@ const updatePasswordByPhone = (req, res, next) => {
 const updatePhone = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserStatus userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
+    //判断手机号是否已经注册
+    const getUserPhone = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUserPhone = UserModel.find({},{password:0});
+            if(bodyParams.phone){
+                queryUserPhone.where('phone').equals(bodyParams.phone);
+            }
+            queryUserPhone.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' updatePhone getUserPhone ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' updatePhone getUserPhone ' + 'success');
+                    if(rows.length > 0){
+                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+
     const getCode =()=>{
         return new Promise((resolve, reject) => {
-            oAuthUtil.getUserPhoneCode({phone:params.phone},(error,rows)=>{
+            oAuthUtil.getUserPhoneCode({phone:bodyParams.phone},(error,rows)=>{
                 if(error){
                     logger.error('updatePhone getUserPhoneCode ' + error.message);
                     reject(error);
@@ -697,7 +720,8 @@ const updatePhone = (req, res, next) => {
             })
         });
     }
-    getCode()
+    getUserPhone()
+        .then(getCode)
         .then(updateUserPhone)
         .catch((reject)=>{
             if(reject.err){
@@ -710,10 +734,10 @@ const updatePhone = (req, res, next) => {
 const updateUserStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserStatus userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -735,10 +759,10 @@ const updateUserStatus = (req, res, next) => {
 const updateUserAuthStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = UserModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserAuthStatus userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
