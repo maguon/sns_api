@@ -4332,6 +4332,13 @@
             "type": "string"
           },
           {
+            "name": "userId",
+            "in": "query",
+            "description": "接收人ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "phone",
             "in": "query",
             "description": "接收人电话",

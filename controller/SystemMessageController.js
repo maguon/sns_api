@@ -164,6 +164,15 @@ const getSystemMessageByAdmin = (req, res, next) => {
             return next();
         }
     }
+    if(params.userId){
+        if(params.userId.length == 24){
+            matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+        }else{
+            logger.info('getSystemMessageByAdmin userId format incorrect!');
+            resUtil.resetQueryRes(res,[],systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.systemMessageId){
         if(params.systemMessageId.length == 24){
             matchObj._id = mongoose.mongo.ObjectId(params.systemMessageId);
