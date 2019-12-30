@@ -4,7 +4,7 @@ const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const messageSchema = new Schema({
         type          : {type:Number,default:0,min:0,max:3,display: '消息类型(1.文章 2.求助 )'},
-        carrier       : {type:Number,default:0,min:0,max:3,display: '载体类型(1.文本 2.图片 3.视频 4.位置分享 )'},
+        carrier       : {type:Number,default:0,min:0,max:5,display: '载体类型(1.文本 2.图片 3.视频 4.位置分享 )'},
         info          : {type:String,default:'',trim:true,display: '内容'},
         address       : {type:Array,index: {type: '2d',sparse: true},display: '发布文章-地理位置(格式： [纬度，经度])'},
         addressName   : {type:String,default:'',trim:true,display: '发布文章-地理位置名称'},
