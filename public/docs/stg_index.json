@@ -5059,7 +5059,7 @@
           },
           {
             "name": "appId",
-            "in": "path",
+            "in": "query",
             "description": "appID",
             "required": false,
             "type": "string"

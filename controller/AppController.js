@@ -61,10 +61,10 @@ const createApp = (req, res, next) => {
 const updateApp = (req, res, next) =>{
     let bodyParams = req.body;
     let query = AppModel.find();
-    let params = req.params;
-    if(params.appId){
-        if(params.appId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.appId));
+    let path = req.params;
+    if(path.appId){
+        if(path.appId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.appId));
         }else{
             logger.info('updateApp appId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -86,10 +86,10 @@ const updateApp = (req, res, next) =>{
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = AppModel.find({});
-    let params = req.params;
-    if(params.appId){
-        if(params.appId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.appId));
+    let path = req.params;
+    if(path.appId){
+        if(path.appId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.appId));
         }else{
             logger.info('updateStatus  ID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.APP_ID_NULL_ERROR);
