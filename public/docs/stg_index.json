@@ -4535,47 +4535,6 @@
     },
 
     "/user/{userId}/privacySettings": {
-      "post": {
-        "tags": [
-          "privacySettings"
-        ],
-        "summary": "Add privacySettings",
-        "description": "",
-        "operationId": "add privacySettings",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"privacySettingsInfo",
-            "description": "privacySettingsInfo object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrivacySettings"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "privacySettings"
@@ -4689,47 +4648,6 @@
     },
 
     "/user/{userId}/notificationSettings": {
-      "post": {
-        "tags": [
-          "notificationSettings"
-        ],
-        "summary": "Add notificationSettings",
-        "description": "",
-        "operationId": "add notificationSettings",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"notificationSettingsInfo",
-            "description": "notificationSettingsInfo object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NotificationSettings"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
       "get": {
         "tags": [
           "notificationSettings"

@@ -71,31 +71,6 @@ const getPrivacySettingsByAdmin = (req, res, next) => {
         }
     });
 }
-const createPrivacySettings = (req, res, next) => {
-    let params = req.params;
-    let bodyParams = req.body;
-    let privacySettingsObj = bodyParams;
-    if(params.userId){
-        if(params.userId.length == 24){
-            privacySettingsObj._userId = mongoose.mongo.ObjectId(params.userId);
-        }else{
-            logger.info('createPrivacySettings userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    let privacySettingsModel = new PrivacySettingsModel(privacySettingsObj);
-    privacySettingsModel.save(function(error,result){
-        if (error) {
-            logger.error(' createPrivacySettings ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createPrivacySettings ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
-}
 const updatePrivacySettings = (req, res, next) => {
     let bodyParams = req.body;
     let query = PrivacySettingsModel.find({});
@@ -133,6 +108,5 @@ const updatePrivacySettings = (req, res, next) => {
 module.exports = {
     getPrivacySettingsByUser,
     getPrivacySettingsByAdmin,
-    createPrivacySettings,
     updatePrivacySettings
 };

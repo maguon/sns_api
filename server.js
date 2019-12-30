@@ -238,7 +238,6 @@ const createServer=()=>{
      privacySettings     - 隐私设置
      */
     server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettingsByUser);
-    server.post({path:'/api/user/:userId/privacySettings',contentType: 'application/json'}, PrivacySettingsController.createPrivacySettings);
     server.put({path:'/api/user/:userId/privacySettings/:privacySettingsId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
 
     server.get('/api/admin/:adminId/privacySettings', PrivacySettingsController.getPrivacySettingsByAdmin);
@@ -246,7 +245,6 @@ const createServer=()=>{
      notificationSettings     - 通知设置
      */
     server.get('/api/user/:userId/notificationSettings', NotificationSettingsController.getNotificationSettingsByUser);
-    server.post({path:'/api/user/:userId/notificationSettings',contentType: 'application/json'}, NotificationSettingsController.createNotificationSettings);
     server.put({path:'/api/user/:userId/notificationSettings/:notificationSettingsId/notificationSettings',contentType: 'application/json'} ,NotificationSettingsController.updateNotificationSettings);
 
     server.get('/api/admin/:adminId/notificationSettings', NotificationSettingsController.getNotificationSettingsByAdmin);

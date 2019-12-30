@@ -71,31 +71,6 @@ const getNotificationSettingsByAdmin = (req, res, next) => {
         }
     });
 }
-const createNotificationSettings = (req, res, next) => {
-    let params = req.params;
-    let bodyParams = req.body;
-    let notificationSettingsObj = bodyParams;
-    if(params.userId){
-        if(params.userId.length == 24){
-            notificationSettingsObj._userId = mongoose.mongo.ObjectId(params.userId);
-        }else{
-            logger.info('createNotificationSettings userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    let notificationSettingsModel = new NotificationSettingsModel(notificationSettingsObj);
-    notificationSettingsModel.save(function(error,result){
-        if (error) {
-            logger.error(' createNotificationSettings ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' createNotificationSettings ' + 'success');
-            resUtil.resetCreateRes(res, result);
-            return next();
-        }
-    })
-}
 const updateNotificationSettings = (req, res, next) => {
     let bodyParams = req.body;
     let query = NotificationSettingsModel.find({});
@@ -133,6 +108,5 @@ const updateNotificationSettings = (req, res, next) => {
 module.exports = {
     getNotificationSettingsByUser,
     getNotificationSettingsByAdmin,
-    createNotificationSettings,
     updateNotificationSettings
 };
