@@ -8,8 +8,8 @@ const logger = serverLogger.createLogger('PrivacySettingsController');
 const {PrivacySettingsModel} = require('../modules');
 
 const getPrivacySettingsByUser = (req, res, next) => {
-    let path = req.query;
-    let params = req.params;
+    let path = req.params;
+    let params = req.query;
     let query = PrivacySettingsModel.find({});
 
     if(path.userId){
@@ -36,7 +36,8 @@ const getPrivacySettingsByUser = (req, res, next) => {
     });
 }
 const getPrivacySettingsByAdmin = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
+    let params = req.query;
     let query = PrivacySettingsModel.find({});
 
     if(params.userId){
@@ -74,19 +75,19 @@ const getPrivacySettingsByAdmin = (req, res, next) => {
 const updatePrivacySettings = (req, res, next) => {
     let bodyParams = req.body;
     let query = PrivacySettingsModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updatePrivacySettings userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    if(params.privacySettingsId){
-        if(params.privacySettingsId .length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.privacySettingsId ));
+    if(path.privacySettingsId){
+        if(path.privacySettingsId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.privacySettingsId ));
         }else{
             logger.info('updatePrivacySettings privacySettingsId  format incorrect!');
             resUtil.resetQueryRes(res,[],null);

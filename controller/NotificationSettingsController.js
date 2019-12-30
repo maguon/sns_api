@@ -8,7 +8,7 @@ const logger = serverLogger.createLogger('NotificationSettingsController');
 const {NotificationSettingsModel} = require('../modules');
 
 const getNotificationSettingsByUser = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let params = req.query;
     let query = NotificationSettingsModel.find({});
 
@@ -74,19 +74,19 @@ const getNotificationSettingsByAdmin = (req, res, next) => {
 const updateNotificationSettings = (req, res, next) => {
     let bodyParams = req.body;
     let query = NotificationSettingsModel.find({});
-    let params = req.params;
-    if(params.userId){
-        if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+    let path = req.params;
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateNotificationSettings userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    if(params.notificationSettingsId){
-        if(params.notificationSettingsId .length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.notificationSettingsId ));
+    if(path.notificationSettingsId){
+        if(path.notificationSettingsId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.notificationSettingsId ));
         }else{
             logger.info('updateNotificationSettings privacySettingsId  format incorrect!');
             resUtil.resetQueryRes(res,[],null);
