@@ -188,7 +188,7 @@ const getUserByAdmin = (req, res, next) => {
         if (params.userId.length == 24) {
             matchObj._userId = mongoose.mongo.ObjectId(params.userId);
         } else {
-            logger.info('getUserByAdmian userID format incorrect!');
+            logger.info('getUserByAdmin userID format incorrect!');
             resUtil.resetQueryRes(res, [], null);
             return next();
         }
@@ -197,7 +197,7 @@ const getUserByAdmin = (req, res, next) => {
         if (params.phone.length == 11) {
             matchObj["user_login_info.phone"] = params.phone;
         } else {
-            logger.info('getUserByAdmian phone format incorrect!');
+            logger.info('getUserByAdmin phone format incorrect!');
             resUtil.resetQueryRes(res, [], null);
             return next();
         }
@@ -206,7 +206,7 @@ const getUserByAdmin = (req, res, next) => {
         if (params.phoneReg.length >= 4) {
             matchObj["user_login_info.phone"] = {"$regex": params.phoneReg, "$options": "$ig"};
         } else {
-            logger.info('getUserByAdmian phoneReg format incorrect!');
+            logger.info('getUserByAdmin phoneReg format incorrect!');
             resUtil.resetQueryRes(res, [], null);
             return next();
         }
@@ -245,11 +245,11 @@ const getUserByAdmin = (req, res, next) => {
     };
     UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserByAdmian ' + error.message);
+            logger.error(' getUserByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             console.log('rows:',rows);
-            logger.info(' getUserByAdmian ' + 'success');
+            logger.info(' getUserByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -510,7 +510,7 @@ const updatePassword = (req, res, next) => {
         if(path.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('updateUserStatus userID format incorrect!');
+            logger.info('updatePassword userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
@@ -585,10 +585,10 @@ const updatePasswordByPhone = (req, res, next) => {
                     reject(error);
                 }else{
                     if(rows && rows.result.code !=bodyParams.code ){
-                        logger.warn('updatePhone getCode ' + 'Verification code error!');
+                        logger.warn('updatePasswordByPhone getCode ' + 'Verification code error!');
                         resUtil.resetFailedRes(res,'验证码错误',null);
                     }else{
-                        logger.info('updatePhone getCode '+'success');
+                        logger.info('updatePasswordByPhone getCode '+'success');
                         resolve();
                     }
                 }
@@ -604,10 +604,10 @@ const updatePasswordByPhone = (req, res, next) => {
             }
             queryUser.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' regSms getUserPhone ' + error.message);
+                    logger.error(' updatePasswordByPhone getUserPhone ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' regSms getUserPhone ' + 'success');
+                    logger.info(' updatePasswordByPhone getUserPhone ' + 'success');
                     if(rows.length > 0){
                         if(rows[0]._doc.status == sysConsts.USER.status.disable){
                             reject({msg:systemMsg.USER_STATUS_ERROR});
@@ -658,7 +658,7 @@ const updatePhone = (req, res, next) => {
         if(path.userId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('updateUserStatus userID format incorrect!');
+            logger.info('updatePhone userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
