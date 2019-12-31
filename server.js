@@ -270,6 +270,7 @@ const createServer=()=>{
      * SMS Module
      */
     server.post({path:'/api/phone/:phone/regSms',contentType: 'application/json'},SmsController.regSms);
+    server.post({path:'/api/phone/:phone/passwordSms',contentType: 'application/json'},SmsController.passwordSms);
     server.post({path:'/api/user/:userId/phone/:phone/resetSms',contentType: 'application/json'},SmsController.resetSms);
 
 
