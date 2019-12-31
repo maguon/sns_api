@@ -53,12 +53,21 @@ const getMessage = (req, res, next) => {
         }
     });
 }
-const getAllMessage = (req, res, next) => {
+const getAllMessage = (req, res, next) =>{
     let params = req.query;
-    let query = MessageModel.find({status:sysConsts.INFO.status.available});
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_userId",
+            foreignField: "_userId",
+            as: "user_detail_info"
+        }
+    });
     if(params.messagesId){
         if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
+            matchObj._id = mongoose.mongo.ObjectId(params.messagesId);
         }else{
             logger.info('getAllMessage  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
@@ -66,19 +75,32 @@ const getAllMessage = (req, res, next) => {
         }
     }
     if(params.type){
-        query.where('type').equals(params.type);
+        matchObj.type = Number(params.type);
     }
-    if(params.status){
-        query.where('status').equals(params.status);
+    if(params.carrier){
+        matchObj.carrier = Number(params.carrier);
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+    if (params.status) {
+        matchObj.status = Number(params.status);
     }
-    query.exec((error,rows)=> {
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getAllMessage ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
+            console.log('rows:',rows);
             logger.info(' getAllMessage ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
