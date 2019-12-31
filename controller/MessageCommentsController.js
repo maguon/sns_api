@@ -45,6 +45,9 @@ const getUserMessageComments = (req, res, next) => {
             return next();
         }
     }
+    if(params.messagesType){
+        query.where('messages_type').equals(params.messagesType);
+    }
     if(params.level){
         query.where('level').equals(params.level);
     }

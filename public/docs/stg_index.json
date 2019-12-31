@@ -3283,7 +3283,15 @@
             "description": "评论ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
+            "name": "messagesType",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",
