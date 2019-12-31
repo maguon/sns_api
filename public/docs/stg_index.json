@@ -5833,11 +5833,15 @@
     "ApplicationContact": {
       "type": "object",
       "required": [
-        "beInvitedUserId"
+        "beInvitedUserId",
+        "remarks"
       ],
       "properties": {
         "_beInvitedUserId": {
           "type": "String"
+        },
+        "remarks": {
+          "type": "string"
         }
       },
       "xml": {
