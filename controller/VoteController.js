@@ -39,39 +39,63 @@ const getVote = (req, res, next) => {
 }
 const getVoteByAdmin = (req, res, next) => {
     let params = req.query;
-    let query = VoteModel.find({});
-    if(params.voteId){
-        if(params.voteId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
-        }else{
-            logger.info('getVoteByAdmin voteId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "admin_users",
+            localField: "_adminId",
+            foreignField: "_id",
+            as: "admin_info"
+        }
+    });
+    if (params.adminId ) {
+        if (params.adminId .length == 24) {
+            matchObj._adminId  = mongoose.mongo.ObjectId(params.adminId );
+        } else {
+            logger.info('getVoteByAdmin adminId format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
             return next();
         }
     }
     if(params.title){
-        query.where('title').equals({"$regex" : params.title,"$options":"$ig"});
+        matchObj["title"] = {"$regex": params.title, "$options": "$ig"};
     }
     if(params.info){
-        query.where('info').equals({"$regex" : params.info,"$options":"$ig"});
+        matchObj["info"] = {"$regex": params.info, "$options": "$ig"};
     }
-    if(params.maxNum){
-        query.where('maxNum').equals(params.maxNum);
+    if (params.maxNum) {
+        matchObj.maxNum = Number(params.maxNum);
     }
-    if(params.status){
-        query.where('status').equals(params.status);
+    if (params.status) {
+        matchObj.status = Number(params.status);
     }
-    if (params.createDateStart && params.createDateEnd ) {
-        query.where('created_at').equals({$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd) });
+    if (params.createDateStart && params.createDateEnd) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $project: {
+            "admin_info.password":0
+        }
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    VoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getVoteByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
+            console.log('rows:',rows);
             logger.info(' getVoteByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
