@@ -12,34 +12,49 @@ const {VoteModel} = require('../modules');
 const getUserVote = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = UserVoteModel.find({});
-
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
-        }else{
-            logger.info('getUserVote  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "vote_infos",
+            localField: "_voteId",
+            foreignField: "_id",
+            as: "vote_info"
+        }
+    });
+    if (path.userId) {
+        if (path.userId.length == 24) {
+            matchObj._userId = mongoose.mongo.ObjectId(path.userId);
+        } else {
+            logger.info('getUserVote userID format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
             return next();
         }
     }
     if(params.voteId){
         if(params.voteId.length == 24){
-            query.where('_voteId').equals(mongoose.mongo.ObjectId(params.voteId));
+            matchObj._voteId = mongoose.mongo.ObjectId(path.voteId);
         }else{
             logger.info('getUserVote  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserVoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserVote ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
+            console.log('rows:',rows);
             logger.info(' getUserVote ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
@@ -91,7 +106,6 @@ const createUserVote = (req, res, next) => {
     const getUserVoteInfo =()=>{
         return new Promise((resolve, reject) => {
             let queryUserVote = UserVoteModel.find({});
-
             if(path.userId){
                 if(path.userId.length == 24){
                     queryUserVote.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
