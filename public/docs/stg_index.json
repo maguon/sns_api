@@ -1060,7 +1060,7 @@
           {
             "name": "status",
             "in": "body",
-            "description": "状态（1-正常，2-禁言，4-停用，5-注销)",
+            "description": "状态（1-正常，2-禁言，4-停用)",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
