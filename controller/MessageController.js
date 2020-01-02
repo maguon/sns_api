@@ -155,7 +155,6 @@ const getMessageCount = (req, res, next) => {
 const createMessage = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let queryUser = UserModel.find({});
     let messageObj = bodyParams;
     messageObj.status = sysConsts.INFO.status.available;
     messageObj.comment_status = sysConsts.MESSAGE.comment_status.visible;
@@ -166,37 +165,11 @@ const createMessage = (req, res, next) => {
     if(path.userId){
         if(path.userId.length == 24){
             messageObj._userId = mongoose.mongo.ObjectId(path.userId);
-            queryUser.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('createMessage  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
-    }
-    //判断用户是否禁言
-    const getUserStatus = () =>{
-        return new Promise((resolve, reject) => {
-            queryUser.exec((error,rows)=> {
-                if (error) {
-                    logger.error(' createMessage getUserStatus ' + error.message);
-                    reject({err:error.message});
-                } else {
-                    logger.info(' createMessage getUserStatus ' + 'success');
-                    if(rows.length > 0){
-                        if(rows[0]._doc.status == sysConsts.USER.status.available){
-                            //可用状态
-                            resolve();
-                        }else{
-                            //用户已禁言或已停用
-                            reject({msg:systemMsg.CUST_STATUS_forbiddenWords_ERROR});
-                        }
-                    }else{
-                        //用户不存在
-                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
-                    }
-                }
-            });
-        });
     }
     const saveMessage =()=>{
         return new Promise((resolve, reject) => {
@@ -249,8 +222,7 @@ const createMessage = (req, res, next) => {
 
         });
     }
-    getUserStatus()
-        .then(saveMessage)
+    saveMessage()
         .then(updateUserNumber)
         .catch((reject)=>{
             if(reject.err){
