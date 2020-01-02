@@ -9,7 +9,6 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('MessageController');
 
 const {MessageModel} = require('../modules');
-const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
 const getMessage = (req, res, next) => {
