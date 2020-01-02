@@ -3024,7 +3024,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "文章状态（0-不可见，1-可见(默认)）",
+            "description": "文章状态（0-不可见，1-可见）",
             "required": false,
             "type": "integer"
           },
@@ -3180,7 +3180,7 @@
           {
             "name": "status",
             "in": "body",
-            "description": "status(0 or 1)",
+            "description": "文章状态（0-不可见，1-可见）",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Status"
