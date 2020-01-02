@@ -7,8 +7,9 @@ let SYS_INTERNAL_ERROR_MSG = "Web Service Internal Error.";
 let CUST_ID_NULL_ERROR ="该用户不存在！" ;
 let CUST_LOGIN_USER_PSWD_ERROR = "登录用户名或密码错误" ; // Customer enter a wrong password on login
 let CUST_SIGNUP_REGISTERED = "已被注册";//Cutomer do signup ,but the current phone has been exist in system.
-let CUST_LOGIN_PSWD_ERROR = "登录密码错误" ; // Customer enter a wrong password on login
-let CUST_STATUS_ERROR = "该用户已停用！" ; // Customer enter a wrong password on login
+let CUST_LOGIN_PSWD_ERROR = "登录密码错误" ;
+let CUST_STATUS_ERROR = "该用户已停用！" ;
+let CUST_STATUS_forbiddenWords_ERROR = "该用户已禁言！" ;
 /**
  * The module for user
  */
@@ -92,6 +93,7 @@ module.exports = {
     CUST_SIGNUP_REGISTERED,
     CUST_LOGIN_PSWD_ERROR,
     CUST_STATUS_ERROR,
+    CUST_STATUS_forbiddenWords_ERROR,
 
     USER_SIGNUP_PHONE_REGISTERED,
     USER_SMS_CAPTCHA_ERROR,
