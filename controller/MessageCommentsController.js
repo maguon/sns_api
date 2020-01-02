@@ -113,7 +113,41 @@ const createMessageComments = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let returnMessage;
-
+    //判断用户是否禁言
+    const getUserStatus = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUser = UserModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createMessageComments  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            queryUser.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createMessageComments getUserStatus ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createMessageComments getUserStatus ' + 'success');
+                    if(rows.length > 0){
+                        if(rows[0]._doc.status == sysConsts.USER.status.available){
+                            //可用状态
+                            resolve();
+                        }else{
+                            //用户已禁言或已停用
+                            reject({msg:systemMsg.CUST_STATUS_forbiddenWords_ERROR});
+                        }
+                    }else{
+                        //用户不存在
+                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
     //保存新评论信息
     const saveMessageComments = ()=>{
         return new Promise((resolve, reject) => {
@@ -230,7 +264,8 @@ const createMessageComments = (req, res, next) => {
             });
         }));
     }
-    saveMessageComments()
+    getUserStatus()
+        .then(saveMessageComments)
         .then(updateUserNumber)
         .then(()=>{
             if(bodyParams.level == sysConsts.COUMMENT.level.firstCoumment){

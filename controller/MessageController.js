@@ -198,7 +198,6 @@ const createMessage = (req, res, next) => {
             });
         });
     }
-
     const saveMessage =()=>{
         return new Promise((resolve, reject) => {
             let messageModel = new MessageModel(messageObj);
