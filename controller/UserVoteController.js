@@ -33,7 +33,7 @@ const getUserVote = (req, res, next) => {
     }
     if(params.voteId){
         if(params.voteId.length == 24){
-            matchObj._voteId = mongoose.mongo.ObjectId(path.voteId);
+            matchObj._voteId = mongoose.mongo.ObjectId(params.voteId);
         }else{
             logger.info('getUserVote  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
