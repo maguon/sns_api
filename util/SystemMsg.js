@@ -4,7 +4,7 @@ let SYS_INTERNAL_ERROR_MSG = "Web Service Internal Error.";
 /**
  * The module for admin
  */
-let CUST_ID_NULL_ERROR ="该用户不存在！" ;
+let CUST_ID_NULL_ERROR ="该用户不存在！" ;//The user does not exist
 let CUST_LOGIN_USER_PSWD_ERROR = "登录用户名或密码错误" ; // Customer enter a wrong password on login
 let CUST_SIGNUP_REGISTERED = "已被注册";//Cutomer do signup ,but the current phone has been exist in system.
 let CUST_LOGIN_PSWD_ERROR = "登录密码错误" ;
@@ -12,15 +12,15 @@ let CUST_STATUS_ERROR = "该用户已停用！" ;
 /**
  * The module for user
  */
-let USER_SIGNUP_PHONE_REGISTERED = "电话已被注册";
+let USER_SIGNUP_PHONE_REGISTERED = "电话已被注册";//Phone is registered
 let USER_SMS_CAPTCHA_ERROR = "短信验证码错误";
-let USER_CREATE_ERROR = "创建用户信息失败！" ; //Failed to create user information
-let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //Failed to create user details
-let USER_STATUS_ERROR = "该用户已停用！" ;
-let USER_DELETE_INFO = "删除用户信息失败" ; // Failed to delete user information
+let USER_CREATE_ERROR = "创建用户信息失败！" ; //
+let USER_CREATE_DETAIL_ERROR = "创建用户详细信息失败！" ; //
+let USER_STATUS_ERROR = "该用户已停用！" ;//The user has been deactivated
+let USER_DELETE_INFO = "删除用户信息失败" ; //
 let USER_DETAIL_ID_NULL_ERROR ="该用户详细信息不存在！" ;
 let USER_OLD_PASSWORD_ERROR = "原密码有误！";
-let USER_NEW_PASSWORD_ERROR = "新密码有误！";
+let USER_NEW_PASSWORD_ERROR = "新密码有误！";//New password error!
 /**
  * The module for userDrive
  */
