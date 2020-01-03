@@ -303,6 +303,7 @@ const createUser = (req, res, next) => {
                 } else {
                     logger.info(' createUser getUserPhone ' + 'success');
                     if(rows.length > 0){
+                        logger.info(' createUser getUserPhone '+ bodyParams.phone+ " Phone is registered! ");
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
                     }else{
                         resolve();
@@ -317,7 +318,7 @@ const createUser = (req, res, next) => {
             oAuthUtil.getUserPhoneCode({phone:bodyParams.phone},function (error,result) {
                 if (error) {
                     logger.error(' createUser getPhoneCode ' + error.message);
-                    reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                    reject({err: bodyParams.phone + "-" +systemMsg.SYS_INTERNAL_ERROR_MSG});
                 } else{
                     if(result == null || result.result== null || bodyParams.captcha != result.result.code){
                         logger.warn(' createUser getPhoneCode ' + 'failed');
@@ -349,6 +350,7 @@ const createUser = (req, res, next) => {
                         userId = result._doc._id
                         resolve();
                     }else{
+                        logger.info(' createUser createUserInfo '+ bodyParams.phone+ " Phone is registered! ");
                         reject({msg:systemMsg.USER_CREATE_ERROR});
                     }
                 }
@@ -523,9 +525,11 @@ const updatePassword = (req, res, next) => {
                 } else {
                     logger.info(' updatePassword getPassword ' + 'success');
                     if(rows.length < 1){
-                        reject({msg:"该用户未注册！"});
+                        logger.info(' updatePassword getPassword '+ path.userId + " The user does not exist！");
+                        reject({msg: systemMsg.CUST_ID_NULL_ERROR});
                     }else{
                         if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            logger.info(' updatePassword getPassword '+ path.userId + " The user has been deactivated!");
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
                             resolve(rows);
@@ -555,9 +559,11 @@ const updatePassword = (req, res, next) => {
                         }
                     })
                 }else{
+                    logger.info(' updatePassword updatePassword '+ bodyParams.newPassword + " New password error!");
                     reject({msg:systemMsg.USER_NEW_PASSWORD_ERROR});
                 }
             }else{
+                logger.info(' updatePassword updatePassword '+ bodyParams.oldPasswordEnc + " Old password error!");
                 reject({msg:systemMsg.USER_OLD_PASSWORD_ERROR});
             }
         });
@@ -584,7 +590,7 @@ const updatePasswordByPhone = (req, res, next) => {
                     reject(error);
                 }else{
                     if(rows && rows.result.code !=bodyParams.code ){
-                        logger.warn('updatePasswordByPhone getCode ' + 'Verification code error!');
+                        logger.info('updatePasswordByPhone getCode ' + 'Verification code error!');
                         resUtil.resetFailedRes(res,'验证码错误',null);
                     }else{
                         logger.info('updatePasswordByPhone getCode '+'success');
@@ -609,11 +615,13 @@ const updatePasswordByPhone = (req, res, next) => {
                     logger.info(' updatePasswordByPhone getUserPhone ' + 'success');
                     if(rows.length > 0){
                         if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            logger.info(' updatePasswordByPhone getUserPhone '+ path.phone + " The user has been deactivated!");
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
                             resolve(rows[0]._doc._id);
                         }
                     }else{
+                        logger.info(' updatePasswordByPhone getUserPhone '+ path.phone + " The user does not exist!");
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
                     }
                 }
@@ -676,6 +684,7 @@ const updatePhone = (req, res, next) => {
                 } else {
                     logger.info(' updatePhone getUserPhone ' + 'success');
                     if(rows.length > 0){
+                        logger.info(' updatePhone  getUserPhone ' + bodyParams.phone + " Phone is registered!");
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
                     }else{
                         resolve();
@@ -693,7 +702,7 @@ const updatePhone = (req, res, next) => {
                     reject(error);
                 }else{
                     if(rows && rows.result.code !=bodyParams.code ){
-                        logger.warn('updatePhone getUserPhoneCode ' + 'Verification code error!');
+                        logger.info('updatePhone getUserPhoneCode ' + 'Verification code error!');
                         resUtil.resetFailedRes(res,'验证码错误',null);
                     }else{
                         logger.info('updatePhone getUserPhoneCode '+'success');
@@ -802,12 +811,13 @@ const userLogin = (req, res, next) => {
                     if (rows.length != 0) {
                         logger.info(' userLogin getUser ' + 'success');
                         if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                            logger.info(' userLogin getUser ' + bodyParams.userName + ' The user has been deactivated ');
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
                             resolve(rows[0]);
                         }
                     } else {
-                        logger.warn(' userLogin username or password' + 'not verified!');
+                        logger.info(  bodyParams.userName +' userLogin username or password' + 'not verified!');
                         reject({msg:systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
                     }
 
@@ -827,7 +837,7 @@ const userLogin = (req, res, next) => {
             oAuthUtil.saveToken(user,function(error,result){
                 if(error){
                     logger.error('userLogin loginSaveToken ' + error.stack);
-                    return next(sysError.InternalError(error.message,sysMsg.InvalidArgument))
+                    reject({err:systemMsg.SYS_INTERNAL_ERROR_MSG});
                 }else{
                     logger.info('userLogin loginSaveToken ' + user.userId + " success");
                     resolve(user);
