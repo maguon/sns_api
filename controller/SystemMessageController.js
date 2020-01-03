@@ -287,7 +287,7 @@ const updateStatusByAdmin = (req, res, next) => {
     })
 }
 const deleteSystemMessage = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = SystemMessageModel.find({});
     if(path.systemMessageId){
         if(path.systemMessageId.length == 24){

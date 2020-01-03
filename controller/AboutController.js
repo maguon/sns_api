@@ -69,7 +69,7 @@ const updateAbout = (req, res, next) =>{
     })
 }
 const deleteAbout = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = AboutModel.find({});
     if(path.aboutId){
         if(path.appId.length == 24){

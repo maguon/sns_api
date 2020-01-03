@@ -285,7 +285,7 @@ const searchByRadius = (req, res, next) => {
     });
 }
 const deleteMessage = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = MessageModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
@@ -428,7 +428,7 @@ const getTodayMessageCountByAdmin = (req, res, next) => {
     });
 }
 const deleteMessageByAdmin = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = MessageModel.find({});
     if(path.messagesId){
         if(path.messagesId.length == 24){

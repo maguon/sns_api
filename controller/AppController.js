@@ -108,7 +108,7 @@ const updateStatus = (req, res, next) => {
     })
 }
 const deleteApp = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = AppModel.find({});
     if(path.appId){
         if(path.appId.length == 24){

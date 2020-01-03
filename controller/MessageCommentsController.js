@@ -365,7 +365,7 @@ const updateReadStatus = (req, res, next) => {
     })
 }
 const deleteComments = (req, res, next) => {
-    let path = req.path;
+    let path = req.params;
     let query = MessageModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
@@ -385,7 +385,7 @@ const deleteComments = (req, res, next) => {
             return next();
         }
     }
-    MessageModel.deleteOne(query,function(error,result){
+    MessageCommentsModel.deleteOne(query,function(error,result){
         if(error){
             logger.error('deleteComments ' + error.message);
             resUtil.resInternalError(error,res,next);
