@@ -537,7 +537,7 @@
         "parameters": [
           {
             "name": "userId",
-            "in": "path",
+            "in": "query",
             "description": "用户ID",
             "required": false,
             "type": "string"
@@ -3291,8 +3291,80 @@
         "tags": [
           "messageComments"
         ],
-        "summary": "Select messageComments Info",
+        "summary": "Select messageComments Info（我的评论）",
         "description": "get messageComments info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "messagesId",
+            "in": "query",
+            "description": "消息ID",
+            "required": false,
+            "type": "string"
+          },{
+            "name": "messageCommentsId",
+            "in": "query",
+            "description": "评论ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "messagesType",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "评论类型(1.一级评论 2.二级评论)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userBeMessageComments": {
+      "get": {
+        "tags": [
+          "messageComments"
+        ],
+        "summary": "Select be messageComments Info（评论我的）",
+        "description": "get be messageComments info",
         "produces": [
           "application/json"
         ],
@@ -3363,7 +3435,7 @@
         "tags": [
           "messageComments"
         ],
-        "summary": "Select messageComments Info",
+        "summary": "Select messageComments Info（查询所有评论）",
         "description": "get messageComments info",
         "produces": [
           "application/json"

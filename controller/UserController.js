@@ -16,12 +16,11 @@ const {PrivacySettingsModel} = require('../modules');
 const {NotificationSettingsModel} = require('../modules');
 
 const getUser = (req, res, next) => {
-    let path = req.params;
     let params = req.query;
     let query = UserModel.find({},{password:0});
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
+    if(params.userId){
+        if(params.userId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getUser userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
