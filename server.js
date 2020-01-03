@@ -195,6 +195,7 @@ const createServer=()=>{
      messageComments   - 评论
      */
     server.get('/api/user/:userId/userMessageComments', MessageCommentsController.getUserMessageComments);
+    server.get('/api/user/:userId/userBeMessageComments', MessageCommentsController.getUserBeMessageComments);
     server.get('/api/user/:userId/allMessageComments', MessageCommentsController.getAllMessageComments);
     server.post({path:'/api/user/:userId/messageComments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
     server.put({path:'/api/user/:userId/messageComments/:messageCommentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
