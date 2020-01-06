@@ -1997,7 +1997,7 @@
         "tags": [
           "userPraise"
         ],
-        "summary": "Select userPraise Info",
+        "summary": "Select userPraise Info（我的点赞）",
         "description": "Get userPraise Info",
         "produces": [
           "application/json"
@@ -2037,6 +2037,51 @@
             "description": "点赞类型(1.动态 2.评论)",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "read_status",
+            "in": "query",
+            "description": "未读状态(0-未读，1-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/getUserBePraise": {
+      "get": {
+        "tags": [
+          "userPraise"
+        ],
+        "summary": "Select userBePraise Info（赞我的）",
+        "description": "Get userBePraise Info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
           },
           {
             "name": "read_status",

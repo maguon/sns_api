@@ -72,6 +72,88 @@ const getUserPraise = (req, res, next) => {
         }
     });
 }
+const getUserBePraise = (req, res, next) => {
+    let path = req.params;
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_userId",
+            foreignField: "_userId",
+            as: "user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from: "messages_infos",
+            localField: "_messageId",
+            foreignField: "_id",
+            as: "messages_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from: "message_comments",
+            localField: "_messageCommentsId",
+            foreignField: "_id",
+            as: "message_comments"
+        }
+    });
+    if(params.read_status){
+        matchObj.read_status = Number(params.read_status);
+    }
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserPraiseModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getUserBePraise ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            let arrAttributeSort = [];
+            for(let i=0; i<rows.length; i++){
+                if (path.userId){
+                    if (path.userId.length == 24) {
+                        if(rows[i].type == sysConsts.COUMMENT.level.firstCoumment){
+                            //一级评论
+                            if(rows[i].messages_info.length > 0 ){
+                                if(rows[i].messages_info[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                                    arrAttributeSort.push(rows[i]);
+                                }
+                            }
+                        }
+                        if(rows[i].type == sysConsts.COUMMENT.level.twoCoumment){
+                            //二级评论
+                            if(rows[i].message_comments.length > 0 ){
+                                if(rows[i].message_comments[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                                    arrAttributeSort.push(rows[i]);
+                                }
+                            }
+                        }
+                    } else {
+                        logger.info('getUserBePraise userID format incorrect!');
+                        resUtil.resetQueryRes(res, [], null);
+                        return next();
+                    }
+                }
+            }
+            logger.info(' getUserBePraise ' + 'success');
+            resUtil.resetQueryRes(res, arrAttributeSort);
+            return next();
+        }
+    });
+}
 const createUserPraise = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
@@ -258,6 +340,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
 }
 module.exports = {
     getUserPraise,
+    getUserBePraise,
     createUserPraise,
     updateReadStatus,
     getUserPraiseByAdmin

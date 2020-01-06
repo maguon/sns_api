@@ -150,6 +150,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
+    server.get('/api/user/:userId/getUserBePraise', UserPraiseController.getUserBePraise);
     server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
 
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraiseByAdmin);
