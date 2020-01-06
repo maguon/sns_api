@@ -203,7 +203,7 @@ const createUserPraise = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createUserPraise updateMessageNum ' + 'success');
-                    if(bodyParams.type == sysConsts.COUMMENT.type.firstCoumment){
+                    if(bodyParams.type == sysConsts.COUMMENT.level.firstCoumment){
                         resUtil.resetQueryRes(res, returnMessage);
                         return next();
                     }else{
