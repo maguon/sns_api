@@ -127,14 +127,18 @@ const getUserBeMessageComments = (req, res, next) => {
                     if (path.userId.length == 24) {
                         if(rows[i].level == sysConsts.COUMMENT.level.firstCoumment){
                             //一级评论
-                            if(rows[i].messages_info[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
-                                arrAttributeSort.push(rows[i]);
+                            if(rows[i].messages_info.length > 0 ){
+                                if(rows[i].messages_info[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                                    arrAttributeSort.push(rows[i]);
+                                }
                             }
                         }
                         if(rows[i].level == sysConsts.COUMMENT.level.twoCoumment){
                             //二级评论
-                            if(rows[i].message_comments[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
-                                arrAttributeSort.push(rows[i]);
+                            if(rows[i].message_comments.length > 0 ){
+                                if(rows[i].message_comments[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                                    arrAttributeSort.push(rows[i]);
+                                }
                             }
                         }
                     } else {
