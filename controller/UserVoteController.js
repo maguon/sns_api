@@ -40,6 +40,9 @@ const getUserVote = (req, res, next) => {
             return next();
         }
     }
+    aggregate_limit.push({
+        $match: matchObj
+    });
     if (params.start && params.size) {
         aggregate_limit.push(
             {
