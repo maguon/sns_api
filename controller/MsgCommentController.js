@@ -210,37 +210,37 @@ const createMsgComment = (req, res, next) => {
     //保存新评论信息
     const saveMsgComment = ()=>{
         return new Promise((resolve, reject) => {
-            let MsgCommentObj = bodyParams;
+            let msgCommentObj = bodyParams;
             if(bodyParams.msgType){
-                MsgCommentObj.msg_type = bodyParams.msgType ;
+                msgCommentObj.msg_type = bodyParams.msgType ;
             }
             if(bodyParams.msgId){
-                MsgCommentObj._msg_id = bodyParams.msgId ;
+                msgCommentObj._msg_id = bodyParams.msgId ;
             }
             if(bodyParams.msgUserId){
-                MsgCommentObj._msg_user_id = bodyParams.msgUserId ;
+                msgCommentObj._msg_user_id = bodyParams.msgUserId ;
             }
             if(bodyParams.msgComId){
-                MsgCommentObj._msg_com_id = bodyParams.msgComId ;
+                msgCommentObj._msg_com_id = bodyParams.msgComId ;
             }
             if(bodyParams.msgComUserId){
-                MsgCommentObj._msg_com_user_id = bodyParams.msgComUserId ;
+                msgCommentObj._msg_com_user_id = bodyParams.msgComUserId ;
             }
-            MsgCommentObj.status = sysConsts.COMMENT.status.normal;
-            MsgCommentObj.read_status = sysConsts.INFO.read_status.unread;
-            MsgCommentObj.comment_num = 0;
-            MsgCommentObj.agree_num = 0;
+            msgCommentObj.status = sysConsts.COMMENT.status.normal;
+            msgCommentObj.read_status = sysConsts.INFO.read_status.unread;
+            msgCommentObj.comment_num = 0;
+            msgCommentObj.agree_num = 0;
             if(path.userId){
                 if(path.userId.length == 24){
-                    MsgCommentObj._user_id = mongoose.mongo.ObjectId(path.userId);
+                    msgCommentObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info('createMsgComment userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
-            let MsgCommentModel = new MsgCommentModel(MsgCommentObj);
-            MsgCommentModel.save(function(error,result){
+            let msgCommentModel = new MsgCommentModel(msgCommentObj);
+            msgCommentModel.save(function(error,result){
                 if (error) {
                     logger.error(' createMsgComment saveMsgComment ' + error.message);
                     reject({err:error.message});
