@@ -2493,7 +2493,7 @@
             "type": "string"
           },
           {
-            "name": "userLocaCollsId",
+            "name": "userLocaCollId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
