@@ -125,7 +125,7 @@ const getUserBePraise = (req, res, next) => {
             for(let i=0; i<rows.length; i++){
                 if (path.userId){
                     if (path.userId.length == 24) {
-                        if(rows[i].type == sysConsts.COUMMENT.level.firstCoumment){
+                        if(rows[i].type == sysConsts.COMMENT.level.firstCom){
                             //一级评论
                             if(rows[i].msg_info.length > 0 ){
                                 if(rows[i].msg_info[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
@@ -133,7 +133,7 @@ const getUserBePraise = (req, res, next) => {
                                 }
                             }
                         }
-                        if(rows[i].type == sysConsts.COUMMENT.level.twoCoumment){
+                        if(rows[i].type == sysConsts.COMMENT.level.twoCom){
                             //二级评论
                             if(rows[i].msg_comment.length > 0 ){
                                 if(rows[i].msg_comment[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
@@ -215,7 +215,7 @@ const createUserPraise = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createUserPraise updateMessageNum ' + 'success');
-                    if(bodyParams.type == sysConsts.COUMMENT.level.firstCoumment){
+                    if(bodyParams.type == sysConsts.COMMENT.level.firstCom){
                         resUtil.resetQueryRes(res, returnMessage);
                         return next();
                     }else{

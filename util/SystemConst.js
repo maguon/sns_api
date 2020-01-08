@@ -44,7 +44,7 @@ const USER ={
         certified:1//已认证
     }
 }
-const MESSAGE ={
+const MSG ={
     type:{
         article:1,//文章
         help:2//求助
@@ -55,15 +55,15 @@ const MESSAGE ={
         video:3,//视频
         help:4//地理位置
     },
-    comment_status:{
+    com_status:{
         visible:1,//可见的
         invisible:2//不可见
     }
 }
-const COUMMENT ={
+const COMMENT ={
     level:{
-        firstCoumment:1,//一级评论
-        twoCoumment:2//二级评论
+        firstCom:1,//一级评论
+        twoCom:2//二级评论
     },
     status: {
         shield:0,//屏蔽
@@ -77,7 +77,7 @@ const VOTE ={
         closed:2//已结束
     }
 }
-const SYSMESSAGE ={
+const SYSMSG ={
     status:{
         shield:0,//屏蔽
         normal:1//正常
@@ -88,8 +88,8 @@ module.exports = {
     INFO,
     ADMIN,
     USER,
-    MESSAGE,
-    COUMMENT,
+    MSG,
+    COMMENT,
     VOTE,
-    SYSMESSAGE
+    SYSMSG
 }

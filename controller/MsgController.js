@@ -139,7 +139,7 @@ const createMsg = (req, res, next) => {
         msgObj.location_real = bodyParams.locationReal ;
     }
     msgObj.status = sysConsts.INFO.status.available;
-    msgObj.comment_status = sysConsts.MESSAGE.comment_status.visible;
+    msgObj.comment_status = sysConsts.MSG.com_status.visible;
     msgObj.collect_num = 0;
     msgObj.comment_num = 0;
     msgObj.agree_num = 0;

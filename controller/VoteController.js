@@ -7,7 +7,6 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('VoteController');
 
 const {VoteModel} = require('../modules');
-const {UserVoteModel} = require('../modules');
 
 const getVote = (req, res, next) => {
     let path = req.params;

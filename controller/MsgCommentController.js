@@ -133,7 +133,7 @@ const getUserBeMsgComment = (req, res, next) => {
             for(let i=0; i<rows.length; i++){
                 if (path.userId){
                     if (path.userId.length == 24) {
-                        if(rows[i].level == sysConsts.COUMMENT.level.firstCoumment){
+                        if(rows[i].level == sysConsts.COMMENT.level.firstCom){
                             //一级评论
                             if(rows[i].msg_info.length > 0 ){
                                 if(rows[i].msg_info[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
@@ -141,7 +141,7 @@ const getUserBeMsgComment = (req, res, next) => {
                                 }
                             }
                         }
-                        if(rows[i].level == sysConsts.COUMMENT.level.twoCoumment){
+                        if(rows[i].level == sysConsts.COMMENT.level.twoCom){
                             //二级评论
                             if(rows[i].msg_comment.length > 0 ){
                                 if(rows[i].msg_comment[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
@@ -226,7 +226,7 @@ const createMsgComment = (req, res, next) => {
             if(bodyParams.msgComUserId){
                 MsgCommentObj._msg_com_user_id = bodyParams.msgComUserId ;
             }
-            MsgCommentObj.status = sysConsts.COUMMENT.status.normal;
+            MsgCommentObj.status = sysConsts.COMMENT.status.normal;
             MsgCommentObj.read_status = sysConsts.INFO.read_status.unread;
             MsgCommentObj.comment_num = 0;
             MsgCommentObj.agree_num = 0;
@@ -341,7 +341,7 @@ const createMsgComment = (req, res, next) => {
     saveMsgComment()
         .then(updateUserNumber)
         .then(()=>{
-            if(bodyParams.level == sysConsts.COUMMENT.level.firstCoumment){
+            if(bodyParams.level == sysConsts.COMMENT.level.firstCom){
                 //一级评论
                 updateMessageNum();
             }else{

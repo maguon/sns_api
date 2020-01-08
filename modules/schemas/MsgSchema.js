@@ -11,7 +11,7 @@ const msgSchema = new Schema({
         address_real  : {type:String,default:'',trim:true,display: '发布文章-真实地址'},
         address_show  : {type:Number,default:0,min:0,max:3,display: '发布文章-位置显示状态(0-不可见，1-可见)'},
         collect_num   : {type:Number,default:0,display: '收藏次数'},
-        comment_num  : {type:Number,default:0,display: '评论次数'},
+        comment_num   : {type:Number,default:0,display: '评论次数'},
         agree_num     : {type:Number,default:0,display: '点赞次数'},
         read_num      : {type:Number,default:0,display: '阅读次数'},
         label         : {type:String,default:'',trim:true,display: '消息标签'},

@@ -51,7 +51,7 @@ const createSysMsg = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let sysMsgObj = bodyParams;
-    sysMsgObj.status = sysConsts.SYSMESSAGE.status.normal;
+    sysMsgObj.status = sysConsts.SYSMSG.status.normal;
 
     //获取用户编号
     const getUserId = () =>{
