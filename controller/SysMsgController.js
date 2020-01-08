@@ -62,7 +62,7 @@ const createSysMsg = (req, res, next) => {
                 resolve();
             }
             //只有phone时
-            if((bodyParams.phone != null || bodyParams.phone != '' || bodyParams.phone != "undefined") && (bodyParams._user_id == '' || bodyParams._user_id == null ||  bodyParams._user_id == "undefined")){
+            if((bodyParams.phone != null || bodyParams.phone != '' || bodyParams.phone != "undefined") && (bodyParams.userId == '' || bodyParams.userId == null ||  bodyParams.userId == "undefined")){
                 let queryUser = UserModel.find({});
                 if(bodyParams.phone){
                     queryUser.where('phone').equals(bodyParams.phone);
@@ -100,6 +100,9 @@ const createSysMsg = (req, res, next) => {
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
+            }
+            if(sysMsgObj.userId){
+                sysMsgObj._user_id = sysMsgObj.userId;
             }
             let sysMsgModel = new SysMsgModel(sysMsgObj);
             sysMsgModel.save(function(error,result){
