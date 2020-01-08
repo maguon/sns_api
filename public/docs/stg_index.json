@@ -3446,7 +3446,7 @@
         }
       }
     },
-    "/user/{userId}/msgComment/{msgCommentId}/readStatus": {
+    "/user/{userId}/msgCom/{msgComId}/readStatus": {
       "put": {
         "tags": [
           "msgComment"
@@ -3466,7 +3466,7 @@
             "type": "string"
           },
           {
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "path",
             "description": "msgComment unique id",
             "required": true,
@@ -3501,7 +3501,7 @@
         }
       }
     },
-    "/user/{userId}/msgComment/{msgCommentId}/del": {
+    "/user/{userId}/msgCom/{msgComId}/del": {
       "delete": {
         "tags": [
           "msgComment"
@@ -3684,7 +3684,7 @@
         }
       }
     },
-    "/admin/{adminId}/msgComment/{msgCommentId}/status": {
+    "/admin/{adminId}/msgCom/{msgComId}/status": {
       "put": {
         "tags": [
           "msgComment"
@@ -3704,7 +3704,7 @@
             "type": "string"
           },
           {
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "path",
             "description": "评论ID",
             "required": true,
@@ -3739,7 +3739,7 @@
         }
       }
     },
-    "/admin/{adminId}/msgComment/{msgCommentId}/del": {
+    "/admin/{adminId}/msgCom/{msgComId}/del": {
       "delete": {
         "tags": [
           "msgComment"
@@ -3759,7 +3759,7 @@
             "type": "string"
           },
           {
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "path",
             "description": "msgComment unique id",
             "required": true,
