@@ -193,7 +193,7 @@ const createVote = (req, res, next) => {
     voteObj.participants_num = 0;
     if(path.adminId){
         if(path.adminId.length == 24){
-            voteObj._adminId = mongoose.mongo.ObjectId(path.adminId);
+            voteObj._admin_id = mongoose.mongo.ObjectId(path.adminId);
         }else{
             logger.info('createVote adminID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
