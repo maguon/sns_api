@@ -58,7 +58,7 @@ const createSysMsg = (req, res, next) => {
         return new Promise((resolve, reject) => {
 
             //userId存在
-            if(bodyParams._user_id){
+            if(bodyParams.userId){
                 resolve();
             }
             //只有phone时
