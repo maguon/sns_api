@@ -7,35 +7,110 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('VoteController');
 
 const {VoteModel} = require('../modules');
+const {UserVoteModel} = require('../modules');
 
 const getVote = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
-    let query = VoteModel.find({});
-    if(params.voteId){
-        if(params.voteId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
-        }else{
-            logger.info('getVote voteId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+    let returnMsg = [];
+
+    const getVoteInfo =()=>{
+        return new Promise((resolve, reject) => {
+            let query = VoteModel.find({});
+
+            if(params.voteId){
+                if(params.voteId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
+                }else{
+                    logger.info('getVote queryVote voteId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(params.status){
+                query.where('status').equals(params.status);
+            }
+            if(params.start && params.size){
+                query.skip(parseInt(params.start)).limit(parseInt(params.size));
+            }
+
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getVote queryVote ' + error.message);
+                    reject({err:reject.err});
+                } else {
+                    logger.info(' getVote queryVote ' + 'success');
+                    resolve(rows);
+                }
+            });
+        });
+    }
+
+    const getUserVoteInfo =(voteInfo)=>{
+        return new Promise((resolve, reject) => {
+
+            console.log("returnMsg222:" + returnMsg);
+            resUtil.resetQueryRes(res, voteInfo);
             return next();
-        }
+
+            //
+            // // 循环判断该用户是否已参加评论
+            // for(let i=0; i<voteInfo.length; i++) {
+            //     let voteObj = voteInfo[i]._doc;
+            //     let querUserVote = UserVoteModel.find({});
+            //
+            //     if(path.userId){
+            //         if(path.userId.length == 24){
+            //             querUserVote.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+            //         }else{
+            //             logger.info('getVote gerUserVote  userID format incorrect!');
+            //             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            //             return next();
+            //         }
+            //     }
+            //
+            //     if(voteObj._id){
+            //         querUserVote.where('_voteId').equals(mongoose.mongo.ObjectId(voteObj._id));
+            //     } else{
+            //         logger.info('getVote gerUserVote  voteId format incorrect!');
+            //         resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+            //         return next();
+            //     }
+            //
+            //     querUserVote.exec((error,rows)=> {
+            //         if (error) {
+            //             logger.error(' getVote gerUserVote ' + error.message);
+            //             resUtil.resInternalError(error,res);
+            //         } else {
+            //             logger.info(' getVote getUserVote ' + 'success');
+            //             if(rows.length>0){
+            //                 //该用户已投票
+            //                 voteObj.userVote = 1;
+            //             }else{
+            //                 voteObj.userVote = 0;
+            //             }
+            //             returnMsg.push(voteObj);
+            //             console.log("voteObj:" + voteObj);
+            //             console.log("returnMsg:" + returnMsg);
+            //         }
+            //     });
+            // }
+            //
+            // console.log("returnMsg111:" + returnMsg);
+            // resolve(returnMsg);
+
+        });
     }
-    if(params.status){
-        query.where('status').equals(params.status);
-    }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
-        if (error) {
-            logger.error(' getVote ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getVote ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
+
+    getVoteInfo()
+        .then(getUserVoteInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
 }
 const getVoteByAdmin = (req, res, next) => {
     let params = req.query;
@@ -44,7 +119,7 @@ const getVoteByAdmin = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "admin_users",
-            localField: "_adminId",
+            localField: "_admin_id",
             foreignField: "_id",
             as: "admin_info"
         }
@@ -65,7 +140,7 @@ const getVoteByAdmin = (req, res, next) => {
         matchObj["info"] = {"$regex": params.info, "$options": "$ig"};
     }
     if (params.maxNum) {
-        matchObj.maxNum = Number(params.maxNum);
+        matchObj.max_num = Number(params.maxNum);
     }
     if (params.status) {
         matchObj.status = Number(params.status);
@@ -106,7 +181,16 @@ const createVote = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let voteObj = bodyParams;
-    voteObj.participantsNum = 0;
+    if(bodyParams.maxNum){
+        voteObj.max_num = bodyParams.maxNum;
+    }
+    if(bodyParams.startTime){
+        voteObj.start_time = bodyParams.startTime;
+    }
+    if(bodyParams.endTime){
+        voteObj.end_time = bodyParams.endTime;
+    }
+    voteObj.participants_num = 0;
     if(path.adminId){
         if(path.adminId.length == 24){
             voteObj._adminId = mongoose.mongo.ObjectId(path.adminId);
@@ -164,6 +248,15 @@ const updateVote = (req, res, next) =>{
 
     const updateInfo =()=>{
         return new Promise(() => {
+            if(bodyParams.maxNum){
+                bodyParams.max_num = bodyParams.maxNum;
+            }
+            if(bodyParams.startTime){
+                bodyParams.start_time = bodyParams.startTime;
+            }
+            if(bodyParams.endTime){
+                bodyParams.end_time = bodyParams.endTime;
+            }
             VoteModel.updateOne(query,bodyParams,function(error,result){
                 if (error) {
                     logger.error(' updateVote ' + error.message);

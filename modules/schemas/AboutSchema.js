@@ -7,13 +7,13 @@ const aboutSchema = new Schema({
         info            : {type:String,default:'',display: '详细介绍'},
         phone           : {type:String,default:'',display: '电话'},
         remarks         : {type:String,default:'',display: '备注'},
-        _adminId: {
+        _admin_id       : {
             type: Schema.Types.ObjectId,
             ref: 'admin_user',
             display: '管理员ID'
-        },
+        }
     },
-    { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
+        { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
 const AboutModel = mongoose.model('about_info',aboutSchema)

@@ -12,8 +12,8 @@ const logger = serverLogger.createLogger('UserController');
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 const {UserDriveModel} = require('../modules');
-const {PrivacySettingsModel} = require('../modules');
-const {NotificationSettingsModel} = require('../modules');
+const {PrivacieModel} = require('../modules');
+const {NoticeModel} = require('../modules');
 
 const getUser = (req, res, next) => {
     let params = req.query;
@@ -36,8 +36,8 @@ const getUser = (req, res, next) => {
     if(params.status){
         query.where('status').equals(params.status);
     }
-    if(params.auth_status){
-        query.where('auth_status').equals(params.auth_status);
+    if(params.authStatus){
+        query.where('auth_status').equals(params.authStatus);
     }
     if(params.type){
         query.where('type').equals(params.type);
@@ -146,7 +146,7 @@ const getUserInfoAndDetail = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from:"user_details",
-            localField:"_userDetailId",
+            localField:"_user_detail_id",
             foreignField:"_id",
             as:"user_detail_info"
         }
@@ -154,7 +154,7 @@ const getUserInfoAndDetail = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from:"user_drive_infos",
-            localField:"_userDriveId",
+            localField:"_user_drive_id",
             foreignField:"_id",
             as:"user_drive_info"
         }
@@ -178,14 +178,14 @@ const getUserByAdmin = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "user_infos",
-            localField: "_userId",
+            localField: "_user_id",
             foreignField: "_id",
             as: "user_login_info"
         }
     });
     if (params.userId) {
         if (params.userId.length == 24) {
-            matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         } else {
             logger.info('getUserByAdmin userID format incorrect!');
             resUtil.resetQueryRes(res, [], null);
@@ -210,8 +210,8 @@ const getUserByAdmin = (req, res, next) => {
             return next();
         }
     }
-    if (params.auth_status) {
-        matchObj["user_login_info.auth_status"] = Number(params.auth_status);
+    if (params.authStatus) {
+        matchObj["user_login_info.auth_status"] = Number(params.authStatus);
     }
     if (params.nickName) {
         matchObj["nick_name"] = {"$regex": params.nickName, "$options": "$ig"};
@@ -362,7 +362,7 @@ const createUser = (req, res, next) => {
         return new Promise((resolve,reject)=>{
             let newName = encrypt.randomString(5);
             let userDetailModel = new UserDetailModel();
-            userDetailModel._userId = userId;
+            userDetailModel._user_id = userId;
             userDetailModel.nick_name = newName;
             userDetailModel.save(function(error,result){
                 if (error) {
@@ -383,7 +383,7 @@ const createUser = (req, res, next) => {
     const createUserDrive = (userDetailId) =>{
         return new Promise((resolve,reject)=>{
             let userDriveModel = new UserDriveModel();
-            userDriveModel._userId = userId;
+            userDriveModel._user_id = userId;
             userDriveModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDrive ' + error.message);
@@ -404,16 +404,16 @@ const createUser = (req, res, next) => {
         });
     }
     //创建用户隐私设置信息
-    const createUserPrivacy = (updateInfo) =>{
+    const createUserPrivacie = (updateInfo) =>{
         return new Promise((resolve,reject)=>{
-            let userPrivacyModel = new PrivacySettingsModel();
-            userPrivacyModel._userId = userId;
-            userPrivacyModel.save(function(error,result){
+            let userPrivacieModel = new PrivacieModel();
+            userPrivacieModel._user_id = userId;
+            userPrivacieModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createUser createUserPrivacy ' + error.message);
+                    logger.error(' createUser createUserPrivacie ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' createUser createUserPrivacy ' + 'success');
+                    logger.info(' createUser createUserPrivacie ' + 'success');
                     if (result._doc) {
                         resolve(updateInfo);
                     }else{
@@ -424,16 +424,16 @@ const createUser = (req, res, next) => {
         });
     }
     //创建用户通知设置信息
-    const createUserNotification = (updateInfo) =>{
+    const createUserNotice = (updateInfo) =>{
         return new Promise((resolve,reject)=>{
-            let userNotificationModel = new NotificationSettingsModel();
-            userNotificationModel._userId = userId;
-            userNotificationModel.save(function(error,result){
+            let userNoticeModel = new NoticeModel();
+            userNoticeModel._user_id = userId;
+            userNoticeModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createUser createUserNotification ' + error.message);
+                    logger.error(' createUser createUserNotice ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' createUser createUserNotification ' + 'success');
+                    logger.info(' createUser createUserNotice ' + 'success');
                     if (result._doc) {
                         resolve(updateInfo);
                     }else{
@@ -450,7 +450,7 @@ const createUser = (req, res, next) => {
             if(userId){
                 query.where('_id').equals(userId);
             }
-            UserModel.updateOne(query,{_userDetailId:updateInfo.userDetailId,_userDriveId:updateInfo.userDriveId},function(error,result){
+            UserModel.updateOne(query,{_user_detail_id:updateInfo.userDetailId,_user_drive_id:updateInfo.userDriveId},function(error,result){
                 if (error) {
                     logger.error(' createUser updateUserInfo ' + error.message);
                     resUtil.resInternalError(error);
@@ -467,8 +467,8 @@ const createUser = (req, res, next) => {
         .then(createUserInfo)
         .then(createUserDetail)
         .then(createUserDrive)
-        .then(createUserPrivacy)
-        .then(createUserNotification)
+        .then(createUserPrivacie)
+        .then(createUserNotice)
         .then(updateUserInfo)
         .catch((reject)=>{
             if(reject.err){
@@ -776,6 +776,13 @@ const updateUserAuthStatus = (req, res, next) => {
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
+    }
+    if(bodyParams.authStatus){
+        bodyParams.auth_status = bodyParams.authStatus;
+    }else{
+        logger.info('updateUserAuthStatus authStatus format incorrect!');
+        resUtil.resetQueryRes(res,[],null);
+        return next();
     }
     UserModel.updateOne(query,bodyParams,function(error,result){
         if (error) {

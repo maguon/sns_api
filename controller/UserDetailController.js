@@ -13,7 +13,7 @@ const getUserDetail = (req, res, next) => {
     let query = UserDetailModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getUserDetail  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -58,7 +58,7 @@ const updateUserDetailInfo = (req, res, next) => {
     let path = req.params;
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserDetailInfo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -73,6 +73,15 @@ const updateUserDetailInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);
             return next();
         }
+    }
+    if(bodyParams.nickName){
+        bodyParams.nick_name = bodyParams.nickName;
+    }
+    if(bodyParams.realName){
+        bodyParams.real_name = bodyParams.realName;
+    }
+    if(bodyParams.cityName){
+        bodyParams.city_name = bodyParams.cityName;
     }
     UserDetailModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
@@ -91,7 +100,7 @@ const updateAvatarImage = (req, res, next) => {
     let path = req.params;
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateAvatarImage  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);

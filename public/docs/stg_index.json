@@ -44,40 +44,40 @@
       "description": "UserVote version and url management api (用户投票记录)"
     },
     {
-      "name": "userLocationCollection",
-      "description": "UserLocationCollection version and url management api (用户地理位置收藏)"
+      "name": "userLocaColl",
+      "description": "UserLocaColl version and url management api (用户地理位置收藏)"
     },
     {
-      "name": "userMessageCollection",
-      "description": "UserMessageCollection version and url management api (用户微博收藏)"
+      "name": "userMsgColl",
+      "description": "UserMsgColl version and url management api (用户微博收藏)"
     },
     {
-      "name": "messages",
-      "description": "Messages version and url management api (消息动态)"
+      "name": "msg",
+      "description": "Msg version and url management api (消息动态)"
     },
     {
-      "name": "messageComments",
-      "description": "MessageComments version and url management api (消息评论)"
+      "name": "msgComment",
+      "description": "MsgComment version and url management api (消息评论)"
     },
     {
       "name": "vote",
       "description": "Vote version and url management api (投票信息)"
     },
     {
-      "name": "applicationContact",
-      "description": "ApplicationContact version and url management api (申请联系方式)"
+      "name": "contact",
+      "description": "Contact version and url management api (申请联系方式)"
     },
     {
-      "name": "systemMessage",
-      "description": "SystemMessage version and url management api (系统消息)"
+      "name": "sysMsg",
+      "description": "SysMsg version and url management api (系统消息)"
     },
     {
-      "name": "privacySettings",
-      "description": "PrivacySettings version and url management api (隐私设置)"
+      "name": "privacie",
+      "description": "Privacie version and url management api (隐私设置)"
     },
     {
-      "name": "notificationSettings",
-      "description": "NotificationSettings version and url management api (通知设置)"
+      "name": "notice",
+      "description": "Notice version and url management api (通知设置)"
     },
     {
       "name": "about",
@@ -298,8 +298,8 @@
         "tags": [
           "adminUser"
         ],
-        "summary": "Administrator finds messages status and update",
-        "description": "Administrator updates messages status",
+        "summary": "Administrator finds admin status and update",
+        "description": "Administrator updates admin status",
         "operationId": "administrator update adminUser status by adminId",
         "produces": [
           "application/json"
@@ -541,12 +541,6 @@
             "description": "用户ID",
             "required": false,
             "type": "string"
-          },{
-            "name": "userDetailId",
-            "in": "query",
-            "description": "用户详细信息ID",
-            "required": false,
-            "type": "string"
           },
           {
             "name": "phone",
@@ -562,7 +556,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "auth_status",
+            "name": "authStatus",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
             "required": false,
@@ -953,7 +947,7 @@
             "required": false,
             "type": "integer"
           },{
-            "name": "auth_status",
+            "name": "authStatus",
             "in": "query",
             "description": "认证状态(0-未认证,1-已认证)",
             "required": false,
@@ -1381,7 +1375,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1458,7 +1452,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1510,7 +1504,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1555,7 +1549,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1595,7 +1589,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1745,7 +1739,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1804,7 +1798,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1863,7 +1857,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -1922,7 +1916,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -2018,14 +2012,14 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息Id",
             "required": false,
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论Id",
             "required": false,
@@ -2039,7 +2033,7 @@
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -2084,7 +2078,7 @@
             "type": "string"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -2135,6 +2129,15 @@
             "description": "userPraiseId",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "readStatus",
+            "in": "body",
+            "description": "readStatus(0 or 1)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReadStatus"
+            }
           }
         ],
         "responses": {
@@ -2189,14 +2192,14 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息Id",
             "required": false,
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论Id",
             "required": false,
@@ -2210,7 +2213,7 @@
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -2378,14 +2381,14 @@
       }
     },
 
-    "/user/{userId}/userLocationCollection": {
+    "/user/{userId}/userLocaColl": {
       "post": {
         "tags": [
-          "userLocationCollection"
+          "userLocaColl"
         ],
-        "summary": "Add a new userLocationCollection info",
+        "summary": "Add a new userLocaColl info",
         "description": "",
-        "operationId": "addUserLocationCollection",
+        "operationId": "addUserLocaColl",
         "consumes": [
           "application/json"
         ],
@@ -2402,11 +2405,11 @@
           },
           {
             "in": "body",
-            "name":"userLocationCollectionInfo",
-            "description": "UserLocationCollection object that needs to be added to the store",
+            "name":"userLocaCollInfo",
+            "description": "UserLocaColl object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UserLocationCollection"
+              "$ref": "#/definitions/UserLocaColl"
             }
           }
         ],
@@ -2422,10 +2425,10 @@
       },
       "get": {
         "tags": [
-          "userLocationCollection"
+          "userLocaColl"
         ],
-        "summary": "Select userLocationCollection Info",
-        "description": "get userLocationCollection info",
+        "summary": "Select userLocaColl Info",
+        "description": "get userLocaColl info",
         "produces": [
           "application/json"
         ],
@@ -2438,7 +2441,7 @@
             "type": "string"
           },
           {
-            "name": "userLocationCollectionsId",
+            "name": "userLocaCollId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
@@ -2464,13 +2467,13 @@
         }
       }
     },
-    "/admin/adminId/userLocationCollection": {
+    "/admin/adminId/userLocaColl": {
       "get": {
         "tags": [
-          "userLocationCollection"
+          "userLocaColl"
         ],
-        "summary": "Administrators select userLocationCollection Info",
-        "description": "Administrators get userLocationCollection info",
+        "summary": "Administrators select userLocaColl Info",
+        "description": "Administrators get userLocaColl info",
         "produces": [
           "application/json"
         ],
@@ -2490,7 +2493,7 @@
             "type": "string"
           },
           {
-            "name": "userLocationCollectionsId",
+            "name": "userLocaCollsId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
@@ -2517,14 +2520,14 @@
       }
     },
 
-    "/user/{userId}/userMessageCollection": {
+    "/user/{userId}/userMsgColl": {
       "post": {
         "tags": [
-          "userMessageCollection"
+          "userMsgColl"
         ],
-        "summary": "Add a new userMessageCollection info",
+        "summary": "Add a new userMsgColl info",
         "description": "",
-        "operationId": "addUserMessageCollection",
+        "operationId": "addUserMsgColl",
         "consumes": [
           "application/json"
         ],
@@ -2541,11 +2544,11 @@
           },
           {
             "in": "body",
-            "name":"userMessageCollectionInfo",
-            "description": "UserMessageCollection object that needs to be added to the store",
+            "name":"userMsgCollInfo",
+            "description": "UserMsgColl object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UserMessageCollection"
+              "$ref": "#/definitions/UserMsgColl"
             }
           }
         ],
@@ -2561,10 +2564,10 @@
       },
       "get": {
         "tags": [
-          "userMessageCollection"
+          "userMsgColl"
         ],
-        "summary": "Select userMessageCollection Info",
-        "description": "get userMessageCollection info",
+        "summary": "Select userMsgColl Info",
+        "description": "get userMsgColl info",
         "produces": [
           "application/json"
         ],
@@ -2577,7 +2580,7 @@
             "type": "string"
           },
           {
-            "name": "userMessageCollectionsId",
+            "name": "userMsgCollsId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
@@ -2603,13 +2606,13 @@
         }
       }
     },
-    "/admin/adminId/userMessageCollection": {
+    "/admin/adminId/userMsgColl": {
       "get": {
         "tags": [
-          "userMessageCollection"
+          "userMsgColl"
         ],
-        "summary": "Administrators select userMessageCollection Info",
-        "description": "Administrators get userMessageCollection info",
+        "summary": "Administrators select userMsgColl Info",
+        "description": "Administrators get userMsgColl info",
         "produces": [
           "application/json"
         ],
@@ -2629,7 +2632,7 @@
             "type": "string"
           },
           {
-            "name": "userMessageCollectionsId",
+            "name": "userMsgCollsId",
             "in": "query",
             "description": "收藏信息ID",
             "required": false,
@@ -2656,54 +2659,13 @@
       }
     },
 
-    "/user/{userId}/messages": {
-      "post": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Add a new messages info",
-        "description": "",
-        "operationId": "addMessages",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "userId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name":"messageInfo",
-            "description": "Messages object that needs to be added to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Messages"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params "
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-
-      },
+    "/user/{userId}/msg": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Select messages Info",
-        "description": "get messages info",
+        "summary": "Select allMsg Info",
+        "description": "get allMsg info",
         "produces": [
           "application/json"
         ],
@@ -2716,12 +2678,20 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "sendMsgUserId",
+            "in": "query",
+            "description": "发布消息用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
             "type": "string"
-          },{
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
@@ -2760,13 +2730,13 @@
         }
       }
     },
-    "/user/{userId}/allMessages": {
+    "/user/{userId}/msgCount": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Select allMessages Info",
-        "description": "get allMessages info",
+        "summary": "Select msgCount",
+        "description": "get msgCount",
         "produces": [
           "application/json"
         ],
@@ -2779,70 +2749,7 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
-            "in": "query",
-            "description": "消息ID",
-            "required": false,
-            "type": "string"
-          },{
-            "name": "type",
-            "in": "query",
-            "description": "消息类型(1.文章 2.求助 )",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "carrier",
-            "in": "query",
-            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
-            "required": false,
-            "type": "integer"
-          },{
-            "name": "status",
-            "in": "query",
-            "description": "文章状态（0-不可见，1-可见(默认)）",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/messagesCount": {
-      "get": {
-        "tags": [
-          "messages"
-        ],
-        "summary": "Select messagesCount",
-        "description": "get messagesCount",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "_userId",
+            "name": "msgUserId",
             "in": "query",
             "description": "发布文章用户ID",
             "required": false,
@@ -2859,7 +2766,7 @@
     "/user/{userId}/searchByRadius": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
         "summary": "Select searchByRadius Info",
         "description": "Get searchByRadius info",
@@ -2907,14 +2814,14 @@
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/status":{
+    "/user/{userId}/msg/{msgId}/status":{
       "put": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Finds messages status and update",
-        "description": "Update messages status",
-        "operationId": "update messages status by userId",
+        "summary": "Finds msg status and update",
+        "description": "Update msg status",
+        "operationId": "update msg status by userId",
         "produces": [
           "application/json"
         ],
@@ -2927,9 +2834,9 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "path",
-            "description": "Messages unique id",
+            "description": "Msg unique id",
             "required": true,
             "type": "string"
           },
@@ -2957,19 +2864,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessagesId not found"
+            "description": "UserId or MsgId not found"
           }
         }
       }
     },
-    "/user/{userId}/messages/{messagesId}/del": {
+    "/user/{userId}/msg/{msgId}/del": {
       "delete": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Delete messages",
-        "description": "Delete messages",
-        "operationId": "Delete messages by id",
+        "summary": "Delete msg",
+        "description": "Delete msg",
+        "operationId": "Delete msg by id",
         "produces": [
           "application/json"
         ],
@@ -2982,9 +2889,9 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "path",
-            "description": "messages unique id",
+            "description": "msg unique id",
             "required": true,
             "type": "string"
           }
@@ -2994,18 +2901,18 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or messages not found"
+            "description": "UserId or msg not found"
           }
         }
       }
     },
-    "/admin/{adminId}/messages": {
+    "/admin/{adminId}/msg": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Administrator selects messages Info",
-        "description": "administrator get messages info",
+        "summary": "Administrator selects msg Info",
+        "description": "administrator get msg info",
         "produces": [
           "application/json"
         ],
@@ -3018,7 +2925,7 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
@@ -3093,13 +3000,13 @@
         }
       }
     },
-    "/admin/{adminId}/messageCount": {
+    "/admin/{adminId}/msgCount": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Administrators select message Count",
-        "description": "Administrators get message Count",
+        "summary": "Administrators select msg Count",
+        "description": "Administrators get msg Count",
         "produces": [
           "application/json"
         ],
@@ -3119,13 +3026,13 @@
         }
       }
     },
-    "/admin/{adminId}/todayMessageCount": {
+    "/admin/{adminId}/todayMsgCount": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Administrators select todayMessage Count",
-        "description": "Administrators get todayMessage Count",
+        "summary": "Administrators select todayMsg Count",
+        "description": "Administrators get todayMsg Count",
         "produces": [
           "application/json"
         ],
@@ -3148,7 +3055,7 @@
     "/admin/{adminId}/searchByRadius": {
       "get": {
         "tags": [
-          "messages"
+          "msg"
         ],
         "summary": "Administrator select searchByRadius Info",
         "description": "administrator get searchByRadius info",
@@ -3196,14 +3103,14 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/status":{
+    "/admin/{adminId}/msg/{msgId}/status":{
       "put": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Administrator finds messages status and update",
-        "description": "Administrator updates messages status",
-        "operationId": "administrator update messages status by adminId",
+        "summary": "Administrator finds msg status and update",
+        "description": "Administrator updates mesmsgsages status",
+        "operationId": "administrator update msgs status by adminId",
         "produces": [
           "application/json"
         ],
@@ -3216,9 +3123,9 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "path",
-            "description": "Messages unique id",
+            "description": "Msg unique id",
             "required": true,
             "type": "string"
           },
@@ -3251,14 +3158,14 @@
         }
       }
     },
-    "/admin/{adminId}/messages/{messagesId}/del": {
+    "/admin/{adminId}/msg/{msgId}/del": {
       "delete": {
         "tags": [
-          "messages"
+          "msg"
         ],
-        "summary": "Administrator delete messages",
-        "description": "Administrator delete messages",
-        "operationId": "Administrator delete messages by id",
+        "summary": "Administrator delete msg",
+        "description": "Administrator delete msg",
+        "operationId": "Administrator delete msg by id",
         "produces": [
           "application/json"
         ],
@@ -3271,9 +3178,9 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "path",
-            "description": "messages unique id",
+            "description": "msg unique id",
             "required": true,
             "type": "string"
           }
@@ -3283,20 +3190,20 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or messagesId not found"
+            "description": "AdminId or msgId not found"
           }
         }
       }
     },
 
-    "/user/{userId}/messageComments": {
+    "/user/{userId}/msgComment": {
       "post": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Add a new messageComments info and update messages info",
+        "summary": "Add a new msgComment info and update msg info",
         "description": "",
-        "operationId": "addMessageComments",
+        "operationId": "addMsgComment",
         "consumes": [
           "application/json"
         ],
@@ -3313,11 +3220,11 @@
           },
           {
             "in": "body",
-            "name":"messageCommentsInfo",
-            "description": "messageComments object that needs to be added to the store",
+            "name":"msgCommentInfo",
+            "description": "msgComment object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MessageComments"
+              "$ref": "#/definitions/MsgComment"
             }
           }
         ],
@@ -3331,13 +3238,13 @@
         }
       }
     },
-    "/user/{userId}/userMessageComments": {
+    "/user/{userId}/userMsgComment": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Select messageComments Info（我的评论）",
-        "description": "get messageComments info",
+        "summary": "Select msgComment Info（我的评论）",
+        "description": "get msgComment info",
         "produces": [
           "application/json"
         ],
@@ -3350,20 +3257,20 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
             "type": "string"
           },{
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },
           {
-            "name": "messagesType",
+            "name": "msgType",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
@@ -3377,7 +3284,7 @@
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -3403,13 +3310,13 @@
         }
       }
     },
-    "/user/{userId}/userBeMessageComments": {
+    "/user/{userId}/userBeMsgComment": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Select be messageComments Info（评论我的）",
-        "description": "get be messageComments info",
+        "summary": "Select be msgComment Info（评论我的）",
+        "description": "get be msgComment info",
         "produces": [
           "application/json"
         ],
@@ -3422,20 +3329,20 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
             "type": "string"
           },{
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "query",
             "description": "评论ID",
             "required": false,
             "type": "string"
           },
           {
-            "name": "messagesType",
+            "name": "msgType",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
@@ -3449,7 +3356,7 @@
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -3475,13 +3382,13 @@
         }
       }
     },
-    "/user/{userId}/allMessageComments": {
+    "/user/{userId}/allMsgComment": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Select messageComments Info（查询所有评论）",
-        "description": "get messageComments info",
+        "summary": "Select msgComment Info（查询所有评论）",
+        "description": "get msgComment info",
         "produces": [
           "application/json"
         ],
@@ -3494,13 +3401,13 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
             "type": "string"
           },{
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3513,7 +3420,7 @@
             "type": "integer"
           },
           {
-            "name": "read_status",
+            "name": "readStatus",
             "in": "query",
             "description": "未读状态(0-未读，1-已读)",
             "required": false,
@@ -3539,14 +3446,14 @@
         }
       }
     },
-    "/user/{userId}/messageComments/{messageCommentsId}/readStatus": {
+    "/user/{userId}/msgComment/{msgCommentId}/readStatus": {
       "put": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Finds messageComments readStatus and update",
-        "description": "Update messageComments readStatus ",
-        "operationId": "update messageComments readStatus by id",
+        "summary": "Finds msgComment readStatus and update",
+        "description": "Update msgComment readStatus ",
+        "operationId": "update msgComment readStatus by id",
         "produces": [
           "application/json"
         ],
@@ -3559,9 +3466,9 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "path",
-            "description": "messageComments unique id",
+            "description": "msgComment unique id",
             "required": true,
             "type": "string"
           },
@@ -3589,19 +3496,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessageCommentsId not found"
+            "description": "UserId or MsgCommentId not found"
           }
         }
       }
     },
-    "/user/{userId}/messageComments/{messageCommentsId}/del": {
+    "/user/{userId}/msgComment/{msgCommentId}/del": {
       "delete": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Delete messageComments",
-        "description": "Delete messageComments",
-        "operationId": "Delete messageComments by id",
+        "summary": "Delete msgComment",
+        "description": "Delete msgComment",
+        "operationId": "Delete msgComment by id",
         "produces": [
           "application/json"
         ],
@@ -3614,9 +3521,9 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "path",
-            "description": "messageComments unique id",
+            "description": "msgComment unique id",
             "required": true,
             "type": "string"
           }
@@ -3626,18 +3533,18 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or messageComments not found"
+            "description": "UserId or msgComment not found"
           }
         }
       }
     },
-    "/admin/{adminId}/messageComments": {
+    "/admin/{adminId}/msgComment": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Administrator select messageComments Info",
-        "description": "Administrator get messageComments info",
+        "summary": "Administrator select msgComment Info",
+        "description": "Administrator get msgComment info",
         "produces": [
           "application/json"
         ],
@@ -3650,7 +3557,7 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3671,14 +3578,14 @@
             "type": "string"
           },
           {
-            "name": "messagesId",
+            "name": "msgId",
             "in": "query",
             "description": "消息ID",
             "required": false,
             "type": "string"
           },
           {
-            "name": "type",
+            "name": "msgType",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
             "required": false,
@@ -3725,13 +3632,13 @@
         }
       }
     },
-    "/admin/{adminId}/messageCommentsCount": {
+    "/admin/{adminId}/msgCommentCount": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Administrators select messageComments Count",
-        "description": "Administrators get messageComments Count",
+        "summary": "Administrators select msgComment Count",
+        "description": "Administrators get msgComment Count",
         "produces": [
           "application/json"
         ],
@@ -3751,13 +3658,13 @@
         }
       }
     },
-    "/admin/{adminId}/todayMessageCommentsCount": {
+    "/admin/{adminId}/todayMsgCommentCount": {
       "get": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Administrators select todayMessageComments Count",
-        "description": "Administrators get todayMessageComments Count",
+        "summary": "Administrators select todayMsgComment Count",
+        "description": "Administrators get todayMsgComment Count",
         "produces": [
           "application/json"
         ],
@@ -3777,14 +3684,14 @@
         }
       }
     },
-    "/admin/{adminId}/messageComments/{messageCommentsId}/status": {
+    "/admin/{adminId}/msgComment/{msgCommentId}/status": {
       "put": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Administrator finds messageComments status and update",
-        "description": "Administrator update messageComments status ",
-        "operationId": "Administrator update messageComments status by id",
+        "summary": "Administrator finds msgComment status and update",
+        "description": "Administrator update msgComment status ",
+        "operationId": "Administrator update msgComment status by id",
         "produces": [
           "application/json"
         ],
@@ -3797,7 +3704,7 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "path",
             "description": "评论ID",
             "required": true,
@@ -3827,19 +3734,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or MessageCommentsId not found"
+            "description": "AdminId or MsgCommentId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/messageComments/{messageCommentsId}/del": {
+    "/admin/{adminId}/msgComment/{msgCommentId}/del": {
       "delete": {
         "tags": [
-          "messageComments"
+          "msgComment"
         ],
-        "summary": "Administrator delete messageComments",
-        "description": "Administrator delete messageComments",
-        "operationId": "Administrator delete messageComments by id",
+        "summary": "Administrator delete msgComment",
+        "description": "Administrator delete msgComment",
+        "operationId": "Administrator delete msgComment by id",
         "produces": [
           "application/json"
         ],
@@ -3852,9 +3759,9 @@
             "type": "string"
           },
           {
-            "name": "messageCommentsId",
+            "name": "msgCommentId",
             "in": "path",
-            "description": "messageComments unique id",
+            "description": "msgComment unique id",
             "required": true,
             "type": "string"
           }
@@ -3864,7 +3771,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or messageCommentsId not found"
+            "description": "AdminId or msgCommentId not found"
           }
         }
       }
@@ -4179,14 +4086,14 @@
       }
     },
 
-    "/user/{userId}/applicationContact": {
+    "/user/{userId}/contact": {
       "post": {
         "tags": [
-          "applicationContact"
+          "contact"
         ],
-        "summary": "Add applicationContact",
+        "summary": "Add contact",
         "description": "",
-        "operationId": "add applicationContact",
+        "operationId": "add contact",
         "consumes": [
           "application/json"
         ],
@@ -4207,7 +4114,7 @@
             "description": "contactInfo object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ApplicationContact"
+              "$ref": "#/definitions/Contact"
             }
           }
         ],
@@ -4223,10 +4130,10 @@
       },
       "get": {
         "tags": [
-          "applicationContact"
+          "contact"
         ],
-        "summary": "Select applicationContact Info",
-        "description": "get applicationContact info",
+        "summary": "Select contact Info",
+        "description": "get contact info",
         "produces": [
           "application/json"
         ],
@@ -4246,7 +4153,7 @@
             "type": "string"
           },
           {
-            "name": "applicationContactId",
+            "name": "contactId",
             "in": "query",
             "description": "申请联系方式ID",
             "required": false,
@@ -4279,14 +4186,14 @@
         }
       }
     },
-    "/user/{userId}/applicationContact/{applicationContactId}/status": {
+    "/user/{userId}/contact/{contactId}/status": {
       "put": {
         "tags": [
-          "applicationContact"
+          "contact"
         ],
-        "summary": "Finds applicationContact status and update",
-        "description": "Update applicationContact status ",
-        "operationId": "update applicationContact status by id",
+        "summary": "Finds contact status and update",
+        "description": "Update contact status ",
+        "operationId": "update contact status by id",
         "produces": [
           "application/json"
         ],
@@ -4299,7 +4206,7 @@
             "type": "string"
           },
           {
-            "name": "applicationContactId",
+            "name": "contactId",
             "in": "path",
             "description": "申请联系方式ID",
             "required": true,
@@ -4329,18 +4236,18 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or applicationContactId not found"
+            "description": "UserId or contactId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/applicationContact": {
+    "/admin/{adminId}/contact": {
       "get": {
         "tags": [
-          "applicationContact"
+          "contact"
         ],
-        "summary": "Administrator select applicationContact Info",
-        "description": "Administrator get applicationContact info",
+        "summary": "Administrator select contact Info",
+        "description": "Administrator get contact info",
         "produces": [
           "application/json"
         ],
@@ -4367,7 +4274,7 @@
             "type": "string"
           },
           {
-            "name": "applicationContactId",
+            "name": "contactId",
             "in": "query",
             "description": "申请联系方式ID",
             "required": false,
@@ -4401,13 +4308,13 @@
       }
     },
 
-    "/user/{userId}/systemMessage": {
+    "/user/{userId}/sysMsg": {
       "get": {
         "tags": [
-          "systemMessage"
+          "sysMsg"
         ],
-        "summary": "Select systemMessage Info",
-        "description": "get systemMessage info",
+        "summary": "Select sysMsg Info",
+        "description": "get sysMsg info",
         "produces": [
           "application/json"
         ],
@@ -4427,7 +4334,7 @@
             "type": "string"
           },
           {
-            "name": "systemMessageId",
+            "name": "sysMsgId",
             "in": "query",
             "description": "系统消息ID",
             "required": false,
@@ -4460,13 +4367,13 @@
         }
       }
     },
-    "/admin/{adminId}/systemMessage": {
+    "/admin/{adminId}/sysMsg": {
       "get": {
         "tags": [
-          "systemMessage"
+          "sysMsg"
         ],
-        "summary": "Administrator select systemMessage Info",
-        "description": "Administrator get systemMessage info",
+        "summary": "Administrator select sysMsg Info",
+        "description": "Administrator get sysMsg info",
         "produces": [
           "application/json"
         ],
@@ -4500,7 +4407,7 @@
             "type": "string"
           },
           {
-            "name": "systemMessageId",
+            "name": "sysMsgId",
             "in": "query",
             "description": "系统消息ID",
             "required": false,
@@ -4555,11 +4462,11 @@
       },
       "post": {
         "tags": [
-          "systemMessage"
+          "sysMsg"
         ],
-        "summary": "Administrator add systemMessage",
+        "summary": "Administrator add sysMsg",
         "description": "",
-        "operationId": "Administrator add systemMessage",
+        "operationId": "Administrator add sysMsg",
         "consumes": [
           "application/json"
         ],
@@ -4576,11 +4483,11 @@
           },
           {
             "in": "body",
-            "name":"systemMessageInfo",
-            "description": "systemMessageInfo object that needs to be added to the store",
+            "name":"sysMsgInfo",
+            "description": "sysMsgInfo object that needs to be added to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/SystemMessage"
+              "$ref": "#/definitions/SysMsg"
             }
           }
         ],
@@ -4595,14 +4502,14 @@
 
       }
     },
-    "/admin/{adminId}/systemMessage/{systemMessageId}/status": {
+    "/admin/{adminId}/sysMsg/{sysMsgId}/status": {
       "put": {
         "tags": [
-          "systemMessage"
+          "sysMsg"
         ],
-        "summary": "Administrator finds systemMessage status and update",
-        "description": "Administrator update systemMessage status ",
-        "operationId": "Administrator update systemMessage status by id",
+        "summary": "Administrator finds sysMsg status and update",
+        "description": "Administrator update sysMsg status ",
+        "operationId": "Administrator update sysMsg status by id",
         "produces": [
           "application/json"
         ],
@@ -4615,7 +4522,7 @@
             "type": "string"
           },
           {
-            "name": "systemMessageId",
+            "name": "sysMsgId",
             "in": "path",
             "description": "系统消息ID",
             "required": true,
@@ -4645,19 +4552,19 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MessageCommentsId not found"
+            "description": "UserId or MsgCommentId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/systemMessage/{systemMessageId}/del": {
+    "/admin/{adminId}/sysMsg/{sysMsgId}/del": {
       "delete": {
         "tags": [
-          "systemMessage"
+          "sysMsg"
         ],
-        "summary": "Administrator delete systemMessage",
-        "description": "Administrator delete systemMessage",
-        "operationId": "Administrator delete systemMessage by id",
+        "summary": "Administrator delete sysMsg",
+        "description": "Administrator delete sysMsg",
+        "operationId": "Administrator delete sysMsg by id",
         "produces": [
           "application/json"
         ],
@@ -4670,9 +4577,9 @@
             "type": "string"
           },
           {
-            "name": "systemMessageId",
+            "name": "sysMsgId",
             "in": "query",
-            "description": "systemMessage Id",
+            "description": "sysMsg Id",
             "required": false,
             "type": "string"
           }
@@ -4688,13 +4595,13 @@
       }
     },
 
-    "/user/{userId}/privacySettings": {
+    "/user/{userId}/privacie": {
       "get": {
         "tags": [
-          "privacySettings"
+          "privacie"
         ],
-        "summary": "Select privacySettings Info",
-        "description": "get privacySettings info",
+        "summary": "Select privacie Info",
+        "description": "get privacie info",
         "produces": [
           "application/json"
         ],
@@ -4714,14 +4621,14 @@
         }
       }
     },
-    "/user/{userId}/privacySettings/{privacySettingsId}/privacySettings": {
+    "/user/{userId}/privacie/{privacieId}/privacie": {
       "put": {
         "tags": [
-          "privacySettings"
+          "privacie"
         ],
-        "summary": "Finds privacySettings info",
-        "description": "Update privacySettings info ",
-        "operationId": "update privacySettings info by id",
+        "summary": "Finds privacie info",
+        "description": "Update privacie info ",
+        "operationId": "update privacie info by id",
         "produces": [
           "application/json"
         ],
@@ -4734,19 +4641,19 @@
             "type": "string"
           },
           {
-            "name": "privacySettingsId",
+            "name": "privacieId",
             "in": "path",
-            "description": "privacySettings unique id",
+            "description": "privacie unique id",
             "required": true,
             "type": "string"
           },
           {
-            "name": "privacySettingsInfo",
+            "name": "privacieInfo",
             "in": "body",
-            "description": "privacySettingsInfo",
+            "description": "privacieInfo",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/PrivacySettings"
+              "$ref": "#/definitions/Privacie"
             }
           }
         ],
@@ -4755,18 +4662,18 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or PrivacySettingsId not found"
+            "description": "UserId or PrivacieId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/privacySettings": {
+    "/admin/{adminId}/privacie": {
       "get": {
         "tags": [
-          "privacySettings"
+          "privacie"
         ],
-        "summary": "Administrator select privacySettings Info",
-        "description": "Administrator get privacySettings info",
+        "summary": "Administrator select privacie Info",
+        "description": "Administrator get privacie info",
         "produces": [
           "application/json"
         ],
@@ -4786,9 +4693,9 @@
             "type": "string"
           },
           {
-            "name": "privacySettingsId",
+            "name": "privacieId",
             "in": "query",
-            "description": "privacySettingsID",
+            "description": "privacieID",
             "required": false,
             "type": "string"
           }
@@ -4801,13 +4708,13 @@
       }
     },
 
-    "/user/{userId}/notificationSettings": {
+    "/user/{userId}/notice": {
       "get": {
         "tags": [
-          "notificationSettings"
+          "notice"
         ],
-        "summary": "Select notificationSettings Info",
-        "description": "get notificationSettings info",
+        "summary": "Select notice Info",
+        "description": "get notice info",
         "produces": [
           "application/json"
         ],
@@ -4827,14 +4734,14 @@
         }
       }
     },
-    "/user/{userId}/notificationSettings/{notificationSettingsId}/notificationSettings": {
+    "/user/{userId}/notice/{noticeId}/notice": {
       "put": {
         "tags": [
-          "notificationSettings"
+          "notice"
         ],
-        "summary": "Finds notificationSettings info",
-        "description": "Update notificationSettings info ",
-        "operationId": "update notificationSettings info by id",
+        "summary": "Finds notice info",
+        "description": "Update notice info ",
+        "operationId": "update notice info by id",
         "produces": [
           "application/json"
         ],
@@ -4847,19 +4754,19 @@
             "type": "string"
           },
           {
-            "name": "notificationSettingsId",
+            "name": "noticeId",
             "in": "path",
-            "description": "notificationSettings unique id",
+            "description": "notice unique id",
             "required": true,
             "type": "string"
           },
           {
-            "name": "notificationSettingsInfo",
+            "name": "noticeInfo",
             "in": "body",
-            "description": "notificationSettingsInfo",
+            "description": "noticeInfo",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NotificationSettings"
+              "$ref": "#/definitions/Notice"
             }
           }
         ],
@@ -4868,18 +4775,18 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or notificationSettingsId not found"
+            "description": "UserId or noticeId not found"
           }
         }
       }
     },
-    "/admin/{adminId}/notificationSettings": {
+    "/admin/{adminId}/notice": {
       "get": {
         "tags": [
-          "notificationSettings"
+          "notice"
         ],
-        "summary": "Administrator select notificationSettings Info",
-        "description": "Administrator get notificationSettings info",
+        "summary": "Administrator select notice Info",
+        "description": "Administrator get notice info",
         "produces": [
           "application/json"
         ],
@@ -4899,9 +4806,9 @@
             "type": "string"
           },
           {
-            "name": "notificationSettingsId",
+            "name": "noticeId",
             "in": "query",
-            "description": "notificationSettingsId",
+            "description": "noticeId",
             "required": false,
             "type": "string"
           }
@@ -5577,9 +5484,9 @@
       "type": "object",
       "required": [
         "sex",
-        "nick_name",
-        "real_name",
-        "city_name",
+        "nickName",
+        "realName",
+        "cityName",
         "intro"
       ],
       "properties": {
@@ -5591,13 +5498,13 @@
             1
           ]
         },
-        "nick_name": {
+        "nickName": {
           "type": "string"
         },
-        "real_name": {
+        "realName": {
           "type": "string"
         },
-        "city_name": {
+        "cityName": {
           "type": "string"
         },
         "intro": {
@@ -5611,15 +5518,15 @@
     "UserDrive": {
       "type": "object",
       "required": [
-        "driving_type",
-        "certification_date"
+        "drivingType",
+        "certificationDate"
       ],
       "properties": {
-        "driving_type": {
+        "drivingType": {
           "type": "integer",
           "format": "int64"
         },
-        "certification_date": {
+        "certificationDate": {
           "type": "string"
         }
       },
@@ -5698,10 +5605,10 @@
     "Relation": {
       "type": "object",
       "required": [
-        "_userById"
+        "userById"
       ],
       "properties": {
-        "_userById": {
+        "userById": {
           "type": "string"
         }
       },
@@ -5713,18 +5620,26 @@
       "type": "object",
       "required": [
         "type",
-        "_messageId",
-        "_messageCommentsId"
+        "msgId",
+        "msgUserId",
+        "msgComId",
+        "msgComUserId"
       ],
       "properties": {
         "type": {
           "type": "integer",
           "format": "int64"
         },
-        "_messageId": {
+        "msgId": {
           "type": "string"
         },
-        "_messageCommentsId": {
+        "msgUserId": {
+          "type": "string"
+        },
+        "msgComId": {
+          "type": "string"
+        },
+        "msgComUserId": {
           "type": "string"
         }
       },
@@ -5739,7 +5654,7 @@
         "option"
       ],
       "properties": {
-        "_voteId": {
+        "voteId": {
           "type": "string"
         },
         "optionItem": {
@@ -5771,7 +5686,7 @@
         "name": "OptionArray"
       }
     },
-    "UserLocationCollection": {
+    "UserLocaColl": {
       "type": "object",
       "required": [
         "address",
@@ -5794,17 +5709,17 @@
         }
       },
       "xml": {
-        "name": "UserLocationCollection"
+        "name": "UserLocaColl"
       }
     },
-    "UserMessageCollection": {
+    "UserMsgColl": {
       "type": "object",
       "required": [
-        "_messageId",
+        "msgId",
         "remarks"
       ],
       "properties": {
-        "_messageId": {
+        "msgId": {
           "type": "string"
         },
         "remarks": {
@@ -5812,10 +5727,10 @@
         }
       },
       "xml": {
-        "name": "UserMessageCollection"
+        "name": "UserMsgColl"
       }
     },
-    "Messages": {
+    "Msg": {
       "type": "object",
       "required": [
         "type",
@@ -5862,7 +5777,7 @@
         "media": {
           "type": "array",
           "items":{
-            "$ref": "#/definitions/MessagesMedia"
+            "$ref": "#/definitions/MsgMedia"
           }
         },
         "location": {
@@ -5876,10 +5791,10 @@
         }
       },
       "xml": {
-        "name": "Messages"
+        "name": "Msg"
       }
     },
-    "MessagesMedia": {
+    "MsgMedia": {
       "type": "object",
       "required": [
         "url",
@@ -5894,20 +5809,22 @@
         }
       },
       "xml": {
-        "name": "MessagesMedia"
+        "name": "MsgMedia"
       }
     },
-    "MessageComments": {
+    "MsgComment": {
       "type": "object",
       "required": [
-        "messages_type",
+        "msgType",
         "level",
-        "commentsMsg",
-        "_messageId",
-        "_messageCommentsId"
+        "comment",
+        "msgId",
+        "msgUserId",
+        "msgComId",
+        "msgComUserId"
       ],
       "properties": {
-        "messages_type": {
+        "msgType": {
           "type": "Integer",
           "format": "int64"
         },
@@ -5915,18 +5832,24 @@
           "type": "Integer",
           "format": "int64"
         },
-        "commentsMsg": {
+        "comment": {
           "type": "String"
         },
-        "_messageId": {
+        "msgId": {
           "type": "string"
         },
-        "_messageCommentsId": {
+        "msgUserId": {
+          "type": "string"
+        },
+        "msgComId": {
+          "type": "string"
+        },
+        "msgComUserId": {
           "type": "string"
         }
       },
       "xml": {
-        "name": "MessageComments"
+        "name": "MsgComment"
       }
     },
     "Vote": {
@@ -5974,13 +5897,13 @@
       "type": "object",
       "required": [
         "txt",
-        "voteNum"
+        "num"
       ],
       "properties": {
         "txt": {
           "type": "String"
         },
-        "voteNum": {
+        "num": {
           "type": "integer"
         }
       },
@@ -5988,14 +5911,14 @@
         "name": "OptionArray"
       }
     },
-    "ApplicationContact": {
+    "Contact": {
       "type": "object",
       "required": [
         "beInvitedUserId",
         "remarks"
       ],
       "properties": {
-        "_beInvitedUserId": {
+        "beInvitedUserId": {
           "type": "String"
         },
         "remarks": {
@@ -6003,14 +5926,14 @@
         }
       },
       "xml": {
-        "name": "ApplicationContact"
+        "name": "Contact"
       }
     },
-    "SystemMessage": {
+    "SysMsg": {
       "type": "object",
       "required": [
         "type",
-        "_userId",
+        "userId",
         "phone",
         "info"
       ],
@@ -6018,7 +5941,7 @@
         "type": {
           "type": "integer"
         },
-        "_userId": {
+        "userId": {
           "type": "String"
         },
         "phone": {
@@ -6029,79 +5952,75 @@
         }
       },
       "xml": {
-        "name": "SystemMessage"
+        "name": "SysMsg"
       }
     },
-    "PrivacySettings": {
+    "Privacie": {
       "type": "object",
       "required": [
-        "name_display",
-        "phone_display",
-        "city_display",
-        "car_display",
+        "name",
+        "phone",
+        "city",
+        "car",
         "recommend_to_friends",
-        "message_authority"
+        "msg_authority"
       ],
       "properties": {
-        "name_display": {
+        "name": {
           "type": "integer"
         },
-        "phone_display": {
+        "phone": {
           "type": "integer"
         },
-        "city_display": {
+        "city": {
           "type": "integer"
         },
-        "car_display": {
+        "car": {
           "type": "integer"
         },
-        "recommend_to_friends": {
+        "recommendToFriends": {
           "type": "integer"
         },
-        "message_authority": {
+        "msgAuthority": {
           "type": "integer"
         }
       },
       "xml": {
-        "name": "PrivacySettings"
+        "name": "Privacie"
       }
     },
-    "NotificationSettings": {
+    "Notice": {
       "type": "object",
       "required": [
-        "info",
+        "sysmsg",
         "praise",
-        "comments",
-        "beConcernedAbout",
+        "comment",
+        "attention",
         "others",
-        "worksReleasedByFollowers",
-        "recommendedWorks"
+        "followAddmsg"
       ],
       "properties": {
-        "info": {
+        "sysmsg": {
           "type": "integer"
         },
         "praise": {
           "type": "integer"
         },
-        "comments": {
+        "comment": {
           "type": "integer"
         },
-        "beConcernedAbout": {
+        "attention": {
           "type": "integer"
         },
         "others": {
           "type": "integer"
         },
-        "worksReleasedByFollowers": {
-          "type": "integer"
-        },
-        "recommendedWorks": {
+        "followAddmsg": {
           "type": "integer"
         }
       },
       "xml": {
-        "name": "NotificationSettings"
+        "name": "Notice"
       }
     },
     "City": {
@@ -6147,17 +6066,17 @@
     "App": {
       "type": "object",
       "required": [
-        "app_type",
-        "device_type",
+        "appType",
+        "deviceType",
         "version",
-        "version_num",
-        "min_version_num",
-        "force_update",
+        "versionNum",
+        "minVersionNum",
+        "forceUpdate",
         "url",
         "remarks"
       ],
       "properties": {
-        "app_type": {
+        "appType": {
           "type": "integer",
           "format": "int64",
           "enum": [
@@ -6165,7 +6084,7 @@
             2
           ]
         },
-        "device_type": {
+        "deviceType": {
           "type": "integer",
           "format": "int64",
           "enum": [
@@ -6176,15 +6095,15 @@
         "version": {
           "type": "string"
         },
-        "version_num": {
+        "versionNum": {
           "type": "integer",
           "format": "int64"
         },
-        "min_version_num": {
+        "minVersionNum": {
           "type": "integer",
           "format": "int64"
         },
-        "force_update": {
+        "forceUpdate": {
           "type": "integer",
           "format": "int64"
         },
@@ -6218,10 +6137,10 @@
     "AuthStatus": {
       "type": "object",
       "required": [
-        "auth_status"
+        "authStatus"
       ],
       "properties": {
-        "auth_status": {
+        "authStatus": {
           "type": "integer",
           "format": "int64",
           "enum": [
@@ -6237,10 +6156,10 @@
     "ReadStatus": {
       "type": "object",
       "required": [
-        "status"
+        "readStatus"
       ],
       "properties": {
-        "read_status": {
+        "readStatus": {
           "type": "integer",
           "format": "int64",
           "enum": [

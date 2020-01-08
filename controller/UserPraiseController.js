@@ -8,8 +8,8 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserPraiseController');
 
 const {UserPraiseModel} = require('../modules');
-const {MessageModel} = require('../modules');
-const {MessageCommentsModel} = require('../modules');
+const {MsgModel} = require('../modules');
+const {MsgCommentModel} = require('../modules');
 
 const getUserPraise = (req, res, next) => {
     let path = req.params;
@@ -18,7 +18,7 @@ const getUserPraise = (req, res, next) => {
 
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getUserPraise  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -34,20 +34,20 @@ const getUserPraise = (req, res, next) => {
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
         }else{
-            logger.info('getUserPraise  messagesId format incorrect!');
+            logger.info('getUserPraise  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(params.msgComId){
+        if(params.MsgCommentId.length == 24){
+            query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(params.MsgCommentId));
         }else{
-            logger.info('getUserPraise  messageCommentsId format incorrect!');
+            logger.info('getUserPraise  MsgCommentId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -55,8 +55,8 @@ const getUserPraise = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -80,29 +80,29 @@ const getUserBePraise = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_userId",
-            foreignField: "_userId",
+            localField: "_user_id",
+            foreignField: "_user_id",
             as: "user_detail_info"
         }
     });
     aggregate_limit.push({
         $lookup: {
-            from: "messages_infos",
-            localField: "_messageId",
+            from: "msg_infos",
+            localField: "_msg_id",
             foreignField: "_id",
-            as: "messages_info"
+            as: "msg_info"
         }
     });
     aggregate_limit.push({
         $lookup: {
-            from: "message_comments",
-            localField: "_messageCommentsId",
+            from: "msg_comments",
+            localField: "_msg_com_id",
             foreignField: "_id",
-            as: "message_comments"
+            as: "msg_comment"
         }
     });
-    if(params.read_status){
-        matchObj.read_status = Number(params.read_status);
+    if(params.readStatus){
+        matchObj.read_status = Number(params.readStatus);
     }
     aggregate_limit.push({
         $match: matchObj
@@ -127,16 +127,16 @@ const getUserBePraise = (req, res, next) => {
                     if (path.userId.length == 24) {
                         if(rows[i].type == sysConsts.COUMMENT.level.firstCoumment){
                             //一级评论
-                            if(rows[i].messages_info.length > 0 ){
-                                if(rows[i].messages_info[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                            if(rows[i].msg_info.length > 0 ){
+                                if(rows[i].msg_info[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
                             }
                         }
                         if(rows[i].type == sysConsts.COUMMENT.level.twoCoumment){
                             //二级评论
-                            if(rows[i].message_comments.length > 0 ){
-                                if(rows[i].message_comments[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                            if(rows[i].msg_comment.length > 0 ){
+                                if(rows[i].msg_comment[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
                             }
@@ -164,12 +164,24 @@ const createUserPraise = (req, res, next) => {
             let userPraiseObj = bodyParams;
             if(path.userId){
                 if(path.userId.length == 24){
-                    userPraiseObj._userId = mongoose.mongo.ObjectId(path.userId);
+                    userPraiseObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info('createUserPraise savePraise userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
+            }
+            if(bodyParams.msgId){
+                bodyParams._msg_id = bodyParams.msgId;
+            }
+            if(bodyParams.msgUserId){
+                bodyParams._msg_user_id = bodyParams.msgUserId;
+            }
+            if(bodyParams.msgComId){
+                bodyParams._msg_com_id = bodyParams.msgComId;
+            }
+            if(bodyParams.msgComUserId){
+                bodyParams._msg_com_user_id = bodyParams.msgComUserId;
             }
             userPraiseObj.read_status = sysConsts.INFO.read_status.unread;
             let userPraiseModel = new UserPraiseModel(userPraiseObj);
@@ -187,17 +199,17 @@ const createUserPraise = (req, res, next) => {
     }
     const updateMessageNum = () =>{
         return new Promise((resolve, reject) => {
-            let query = MessageModel.find({});
-            if(bodyParams._messageId){
-                if(bodyParams._messageId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageId));
+            let query = MsgModel.find({});
+            if(bodyParams.msgId){
+                if(bodyParams.msgId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.msgId));
                 }else{
-                    logger.info('createUserPraise updateMessageNum _messageId format incorrect!');
+                    logger.info('createUserPraise updateMessageNum messageId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
-            MessageModel.findOneAndUpdate(query,{ $inc: { agreeNum: 1 } }).exec((error,rows)=> {
+            MsgModel.findOneAndUpdate(query,{ $inc: { agree_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserPraise updateMessageNum ' + error.message);
                     resUtil.resInternalError(error,res);
@@ -213,24 +225,24 @@ const createUserPraise = (req, res, next) => {
             });
         });
     }
-    const updateMessageCommentsNum = () =>{
+    const updateMsgCommentNum = () =>{
         return new Promise(() => {
-            let queryComment = MessageCommentsModel.find({});
-            if(bodyParams._messageCommentsId){
-                if(bodyParams._messageCommentsId.length == 24){
-                    queryComment.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageCommentsId));
+            let queryComment = MsgCommentModel.find({});
+            if(bodyParams.msgComId){
+                if(bodyParams.msgComId.length == 24){
+                    queryComment.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.msgComId));
                 }else{
-                    logger.info('createUserPraise updateMessageCommentsNum _messageCommentsId format incorrect!');
+                    logger.info('createUserPraise updateMsgCommentNum msgComId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
                     return next();
                 }
             }
-            MessageCommentsModel.findOneAndUpdate(queryComment,{ $inc: { agreeNum: 1 } }).exec((error,rows)=> {
+            MsgCommentModel.findOneAndUpdate(queryComment,{ $inc: { agree_num: 1 } }).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createUserPraise updateMessageCommentsNum ' + error.message);
+                    logger.error(' createUserPraise updateMsgCommentNum ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info(' createUserPraise updateMessageCommentsNum ' + 'success');
+                    logger.info(' createUserPraise updateMsgCommentNum ' + 'success');
                     resUtil.resetQueryRes(res, returnMessage);
                     return next();
                 }
@@ -239,7 +251,7 @@ const createUserPraise = (req, res, next) => {
     }
     savePraise()
         .then(updateMessageNum)
-        .then(updateMessageCommentsNum)
+        .then(updateMsgCommentNum)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
@@ -247,11 +259,12 @@ const createUserPraise = (req, res, next) => {
         })
 }
 const updateReadStatus = (req, res, next) => {
+    let bodyParams = req.body;
     let path = req.params;
     let query = UserPraiseModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateReadStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -267,7 +280,10 @@ const updateReadStatus = (req, res, next) => {
             return next();
         }
     }
-    UserPraiseModel.updateOne(query,{read_status:sysConsts.INFO.read_status.read},function(error,result){
+    if(bodyParams.readStatus) {
+        bodyParams.read_status = bodyParams.readStatus;
+    }
+    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -284,7 +300,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
 
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getUserPraiseByAdmin  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -300,20 +316,20 @@ const getUserPraiseByAdmin = (req, res, next) => {
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
         }else{
             logger.info('getUserPraiseByAdmin  messagesId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_messageCommentsId').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(params.msgComId){
+        if(params.msgComId.length == 24){
+            query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(params.msgComId));
         }else{
-            logger.info('getUserPraiseByAdmin  messageCommentsId format incorrect!');
+            logger.info('getUserPraiseByAdmin  MsgCommentId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -321,8 +337,8 @@ const getUserPraiseByAdmin = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));

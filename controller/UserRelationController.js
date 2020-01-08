@@ -14,7 +14,7 @@ const getFollow = (req, res, next) => {
     let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getFollow userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -30,8 +30,8 @@ const getFollow = (req, res, next) => {
             return next();
         }
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -52,7 +52,7 @@ const getFollowCount = (req, res, next) => {
     let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getFollowCount userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -79,7 +79,7 @@ const getFollowUserInfo = (req, res, next) => {
         {
             $lookup: {
                 from: "user_infos",
-                localField: "_userById",
+                localField: "_user_by_id",
                 foreignField: "_id",
                 as: "follow_user_login_info"
             }
@@ -87,15 +87,15 @@ const getFollowUserInfo = (req, res, next) => {
         {
             $lookup: {
                 from: "user_details",
-                localField: "_userById",
-                foreignField: "_userId",
+                localField: "_user_by_id",
+                foreignField: "_user_id",
                 as: "follow_user_detail_info"
             }
         }
     )
     if(path.userId){
         if(path.userId.length == 24){
-            matchObj._userId = mongoose.mongo.ObjectId(path.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('getFollowUserInfo userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -111,8 +111,8 @@ const getFollowUserInfo = (req, res, next) => {
             return next();
         }
     }
-    if(params.read_status){
-        matchObj.read_status = Number(params.read_status);
+    if(params.readStatus){
+        matchObj.read_status = Number(params.readStatus);
     }
     aggregate_limit.push({
         $match: matchObj
@@ -150,7 +150,7 @@ const getAttention = (req, res, next) => {
     let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getAttention userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -169,8 +169,8 @@ const getAttention = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
@@ -192,15 +192,15 @@ const getAttentionCount = (req, res, next) => {
     let query = UserRelationModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getAttentionCount userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     query.countDocuments().exec((error,rows)=> {
         if (error) {
@@ -223,7 +223,7 @@ const getAttentionUserInfo = (req, res, next) => {
         {
             $lookup: {
                 from: "user_infos",
-                localField: "_userId",
+                localField: "_user_id",
                 foreignField: "_id",
                 as: "attention_user_login_info"
             }
@@ -231,15 +231,15 @@ const getAttentionUserInfo = (req, res, next) => {
         {
             $lookup: {
                 from: "user_details",
-                localField: "_userId",
-                foreignField: "_userId",
+                localField: "_user_id",
+                foreignField: "_user_id",
                 as: "attention_user_detail_info"
             }
         }
     )
     if(path.userId){
         if(path.userId.length == 24){
-            matchObj._userById = mongoose.mongo.ObjectId(path.userId);
+            matchObj._user_by_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('getAttentionUserInfo userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -255,8 +255,8 @@ const getAttentionUserInfo = (req, res, next) => {
             return next();
         }
     }
-    if(params.read_status){
-        matchObj.read_status = Number(params.read_status);
+    if(params.readStatus){
+        matchObj.read_status = Number(params.readStatus);
     }
     aggregate_limit.push({
         $match: matchObj
@@ -300,16 +300,16 @@ const createUserRelation = (req, res, next) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' createUserRelation getRelInfo userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
-            if(bodyParams._userById){
-                if(bodyParams._userById.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+            if(bodyParams.userById){
+                if(bodyParams.userById.length == 24){
+                    query.where('_user_by_id').equals(mongoose.mongo.ObjectId(bodyParams.userById));
                 }else{
                     logger.info(' createUserRelation getRelInfo userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -338,16 +338,16 @@ const createUserRelation = (req, res, next) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+                    query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' createUserRelation friendJudgement userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
-            if(bodyParams._userById){
-                if(bodyParams._userById.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+            if(bodyParams.userById){
+                if(bodyParams.userById.length == 24){
+                    query.where('_user_id').equals(mongoose.mongo.ObjectId(bodyParams.userById));
                 }else{
                     logger.info(' createUserRelation friendJudgement userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -372,13 +372,13 @@ const createUserRelation = (req, res, next) => {
             let queryUser = UserDetailModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createUserRelation updateFollowNum _userId format incorrect!');
+                    logger.info('createUserRelation updateFollowNum _user_id format incorrect!');
                     return next();
                 }
             }
-            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { followNum: 1 } }).exec((error,rows)=> {
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { follow_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserRelation updateFollowNum ' + error.message);
                 } else {
@@ -392,15 +392,15 @@ const createUserRelation = (req, res, next) => {
     const updateAttentionNum =(relationInfo)=>{
         return new Promise((resolve, reject) => {
             let queryUser = UserDetailModel.find({});
-            if(bodyParams._userById){
-                if(bodyParams._userById.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(bodyParams._userById));
+            if(bodyParams.userById){
+                if(bodyParams.userById.length == 24){
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(bodyParams.userById));
                 }else{
-                    logger.info('createUserRelation updateAttentionNum _userById format incorrect!');
+                    logger.info('createUserRelation updateAttentionNum userById format incorrect!');
                     return next();
                 }
             }
-            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { attentionNum: 1 } }).exec((error,rows)=> {
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { attention_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserRelation updateAttentionNum ' + error.message);
                 } else {
@@ -413,15 +413,23 @@ const createUserRelation = (req, res, next) => {
     //保存新关注信息
     const saveRelation = (relationInfo) =>{
         return new Promise((resolve, reject) => {
-            bodyParams._userById;
             if(relationInfo.length > 0){
                 userRelationObj.type = 1;
             }
             if(path.userId){
                 if(path.userId.length == 24){
-                    userRelationObj._userId = mongoose.mongo.ObjectId(path.userId);
+                    userRelationObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info(' createUserRelation userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams.userById){
+                if(bodyParams.userById.length == 24){
+                    bodyParams._user_by_id = mongoose.mongo.ObjectId(bodyParams.userById);
+                }else{
+                    logger.info(' createUserRelation userByID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
@@ -435,8 +443,8 @@ const createUserRelation = (req, res, next) => {
                 } else {
                     logger.info(' createUserRelation saveRelation ' + 'success');
                     if(relationInfo.length > 0){
-                        resolve(relationInfo);
                         returnMessage = result;
+                        resolve(relationInfo);
                     }else{
                         resUtil.resetCreateRes(res, result);
                         return next();
@@ -480,7 +488,7 @@ const updateUserRelationReadStatus = (req, res, next) => {
     let path = req.params;
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserRelationReadStatus userById format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -495,6 +503,9 @@ const updateUserRelationReadStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
+    }
+    if(bodyParams.readStatus) {
+        bodyParams.read_status = bodyParams.readStatus;
     }
     UserRelationModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
@@ -516,7 +527,7 @@ const deleteUserRelation = (req, res, next) => {
             let query = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    query.where('_userById').equals(mongoose.mongo.ObjectId(path.userId));
+                    query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' deleteUserRelation friendJudgement userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -525,7 +536,7 @@ const deleteUserRelation = (req, res, next) => {
             }
             if(path.followUserId){
                 if(path.followUserId.length == 24){
-                    query.where('_userId').equals(mongoose.mongo.ObjectId(path.followUserId));
+                    query.where('_user_id').equals(mongoose.mongo.ObjectId(path.followUserId));
                 }else{
                     logger.info(' deleteUserRelation friendJudgement userById format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -550,7 +561,7 @@ const deleteUserRelation = (req, res, next) => {
             let queryRel = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryRel.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryRel.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' deleteUserRelation delRelation userID format incorrect!');
                     reject({err:error.message});
@@ -558,7 +569,7 @@ const deleteUserRelation = (req, res, next) => {
             }
             if(path.followUserId){
                 if(path.followUserId.length == 24){
-                    queryRel.where('_userById').equals(mongoose.mongo.ObjectId(path.followUserId));
+                    queryRel.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.followUserId));
                 }else{
                     logger.info(' deleteUserRelation delRelation followUserId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);

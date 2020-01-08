@@ -13,7 +13,7 @@ const getUserDrive = (req, res, next) => {
     let query = UserDriveModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getUserDrive  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -55,7 +55,7 @@ const updateUserDriveInfo = (req, res, next) => {
     let path = req.params;
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateUserDriveInfo  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -70,6 +70,12 @@ const updateUserDriveInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.USER_ID_NULL_ERROR);
             return next();
         }
+    }
+    if(bodyParams.drivingType){
+        bodyParams.driving_type = bodyParams.drivingType;
+    }
+    if(bodyParams.certificationDate){
+        bodyParams.certification_date = bodyParams.certificationDate;
     }
     UserDriveModel.updateOne(query,bodyParams,function(error,result){
         if (error) {

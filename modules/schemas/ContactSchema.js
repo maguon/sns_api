@@ -2,15 +2,15 @@
 
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
-const applicationContactSchema = new Schema({
+const contactSchema = new Schema({
         status          : {type:Number,default:0,display: '申请状态（0-未读，1-拒绝，2-同意）'},
         remarks         : {type:String,default:'',display: '备注'},
-        _userId: {
+        _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
             display: '申请人ID'
         },
-        _beInvitedUserId: {
+        _be_invited_user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
             display: '被邀请人ID'
@@ -19,7 +19,7 @@ const applicationContactSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const ApplicationContactModel = mongoose.model('application_contact',applicationContactSchema);
+const ContactModel = mongoose.model('contact',contactSchema);
 module.exports = {
-    ApplicationContactModel
+    ContactModel
 }

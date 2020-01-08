@@ -6,69 +6,69 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('MessageCommentsController');
+const logger = serverLogger.createLogger('MsgCommentController');
 
-const {MessageCommentsModel} = require('../modules');
-const {MessageModel} = require('../modules');
+const {MsgCommentModel} = require('../modules');
+const {MsgModel} = require('../modules');
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
-const getUserMessageComments = (req, res, next) => {
+const getUserMsgComment = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let query = MessageCommentsModel.find({});
+    let query = MsgCommentModel.find({});
 
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserMessageComments  userID format incorrect!');
+            logger.info('getUserMsgComment  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
         }else{
-            logger.info('getUserMessageComments  messagesId format incorrect!');
+            logger.info('getUserMsgComment  _msg_id format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(params.msgComId){
+        if(params.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.msgComId));
         }else{
-            logger.info('getUserMessageComments  messageCommentsId format incorrect!');
+            logger.info('getUserMsgComment  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesType){
-        query.where('messages_type').equals(params.messagesType);
+    if(params.msgType){
+        query.where('msg_type').equals(params.msgType);
     }
     if(params.level){
         query.where('level').equals(params.level);
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserMessageComments ' + error.message);
+            logger.error(' getUserMsgComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserMessageComments ' + 'success');
+            logger.info(' getUserMsgComment ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getUserBeMessageComments = (req, res, next) => {
+const getUserBeMsgComment = (req, res, next) => {
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
@@ -76,32 +76,40 @@ const getUserBeMessageComments = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_userId",
-            foreignField: "_userId",
+            localField: "_user_id",
+            foreignField: "_user_id",
             as: "user_detail_info"
         }
     });
     aggregate_limit.push({
         $lookup: {
-            from: "messages_infos",
-            localField: "_messageId",
-            foreignField: "_id",
-            as: "messages_info"
+            from: "user_details",
+            localField: "_msg_user_id",
+            foreignField: "_user_id",
+            as: "msg_user_detail_info"
         }
     });
     aggregate_limit.push({
         $lookup: {
-            from: "message_comments",
-            localField: "_messageCommentsId",
+            from: "msg_infos",
+            localField: "_msg_id",
             foreignField: "_id",
-            as: "message_comments"
+            as: "msg_info"
         }
     });
-    if(params.messagesType){
-        matchObj.messages_type = Number(params.messagesType);
+    aggregate_limit.push({
+        $lookup: {
+            from: "msg_comments",
+            localField: "_msg_com_id",
+            foreignField: "_id",
+            as: "msg_comment"
+        }
+    });
+    if(params.msgType){
+        matchObj.msg_type = Number(params.msgType);
     }
-    if(params.read_status){
-        matchObj.read_status = Number(params.read_status);
+    if(params.readStatus){
+        matchObj.read_status = Number(params.readStatus);
     }
     aggregate_limit.push({
         $match: matchObj
@@ -115,9 +123,9 @@ const getUserBeMessageComments = (req, res, next) => {
             }
         );
     };
-    MessageCommentsModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgCommentModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserBeMessageComments ' + error.message);
+            logger.error(' getUserBeMsgComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             // console.log('rows:',rows);
@@ -127,50 +135,50 @@ const getUserBeMessageComments = (req, res, next) => {
                     if (path.userId.length == 24) {
                         if(rows[i].level == sysConsts.COUMMENT.level.firstCoumment){
                             //一级评论
-                            if(rows[i].messages_info.length > 0 ){
-                                if(rows[i].messages_info[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                            if(rows[i].msg_info.length > 0 ){
+                                if(rows[i].msg_info[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
                             }
                         }
                         if(rows[i].level == sysConsts.COUMMENT.level.twoCoumment){
                             //二级评论
-                            if(rows[i].message_comments.length > 0 ){
-                                if(rows[i].message_comments[0]._userId.equals(mongoose.mongo.ObjectId(path.userId))){
+                            if(rows[i].msg_comment.length > 0 ){
+                                if(rows[i].msg_comment[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
                             }
                         }
                     } else {
-                        logger.info('getUserBeMessageComments userID format incorrect!');
+                        logger.info('getUserBeMsgComment userID format incorrect!');
                         resUtil.resetQueryRes(res, [], null);
                         return next();
                     }
                 }
             }
-            logger.info(' getUserBeMessageComments ' + 'success');
+            logger.info(' getUserBeMsgComment ' + 'success');
             resUtil.resetQueryRes(res, arrAttributeSort);
             return next();
         }
     });
 }
-const getAllMessageComments = (req, res, next) => {
+const getAllMsgComment = (req, res, next) => {
     let params = req.query;
-    let query = MessageCommentsModel.find({});
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_messageId').equals(mongoose.mongo.ObjectId(params.messagesId));
+    let query = MsgCommentModel.find({});
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
         }else{
-            logger.info('getAllMessageComments  messagesId format incorrect!');
+            logger.info('getAllMsgComment  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messageCommentsId));
+    if(params.msgComId){
+        if(params.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.msgComId));
         }else{
-            logger.info('getAllMessageComments  messageCommentsId format incorrect!');
+            logger.info('getAllMsgComment  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
@@ -178,51 +186,66 @@ const getAllMessageComments = (req, res, next) => {
     if(params.level){
         query.where('level').equals(params.level);
     }
-    if(params.read_status){
-        query.where('read_status').equals(params.read_status);
+    if(params.readStatus){
+        query.where('read_status').equals(params.readStatus);
     }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllMessageComments ' + error.message);
+            logger.error(' getAllMsgComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAllMessageComments ' + 'success');
+            logger.info(' getAllMsgComment ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createMessageComments = (req, res, next) => {
+const createMsgComment = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let returnMessage;
     //保存新评论信息
-    const saveMessageComments = ()=>{
+    const saveMsgComment = ()=>{
         return new Promise((resolve, reject) => {
-            let messageCommentsObj = bodyParams;
-            messageCommentsObj.status = sysConsts.COUMMENT.status.normal;
-            messageCommentsObj.read_status = sysConsts.INFO.read_status.unread;
-            messageCommentsObj.commentsNum = 0;
-            messageCommentsObj.agreeNum = 0;
+            let MsgCommentObj = bodyParams;
+            if(bodyParams.msgType){
+                MsgCommentObj.msg_type = bodyParams.msgType ;
+            }
+            if(bodyParams.msgId){
+                MsgCommentObj._msg_id = bodyParams.msgId ;
+            }
+            if(bodyParams.msgUserId){
+                MsgCommentObj._msg_user_id = bodyParams.msgUserId ;
+            }
+            if(bodyParams.msgComId){
+                MsgCommentObj._msg_com_id = bodyParams.msgComId ;
+            }
+            if(bodyParams.msgComUserId){
+                MsgCommentObj._msg_com_user_id = bodyParams.msgComUserId ;
+            }
+            MsgCommentObj.status = sysConsts.COUMMENT.status.normal;
+            MsgCommentObj.read_status = sysConsts.INFO.read_status.unread;
+            MsgCommentObj.comment_num = 0;
+            MsgCommentObj.agree_num = 0;
             if(path.userId){
                 if(path.userId.length == 24){
-                    messageCommentsObj._userId = mongoose.mongo.ObjectId(path.userId);
+                    MsgCommentObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
-                    logger.info('createMessageComments userID format incorrect!');
+                    logger.info('createMsgComment userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
-            let messageCommentsModel = new MessageCommentsModel(messageCommentsObj);
-            messageCommentsModel.save(function(error,result){
+            let MsgCommentModel = new MsgCommentModel(MsgCommentObj);
+            MsgCommentModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createMessageComments saveMessageComments ' + error.message);
+                    logger.error(' createMsgComment saveMsgComment ' + error.message);
                     reject({err:error.message});
                 } else {
-                    logger.info(' createMessageComments saveMessageComments ' + 'success');
+                    logger.info(' createMsgComment saveMsgComment ' + 'success');
                     returnMessage = result;
                     resolve();
                 }
@@ -235,29 +258,29 @@ const createMessageComments = (req, res, next) => {
             let queryUser = UserDetailModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createMessageComments updateUserNumber _userId format incorrect!');
+                    logger.info('createMsgComment updateUserNumber _user_id format incorrect!');
                     return next();
                 }
             }
             if(bodyParams.level == 1){
                 //文章评论数加一
-                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsNum: 1 } }).exec((error,rows)=> {
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { comment_num: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessageComments updateUserNumber ' + error.message);
+                        logger.error(' createMsgComment updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessageComments updateUserNumber ' + 'success');
+                        logger.info(' createMsgComment updateUserNumber ' + 'success');
                         resolve();
                     }
                 });
             }else{
                 //回复评论数加一
-                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { commentsReplyNum: 1 } }).exec((error,rows)=> {
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { comment_reply_num: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessageComments updateUserNumber ' + error.message);
+                        logger.error(' createMsgComment updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessageComments updateUserNumber ' + 'success');
+                        logger.info(' createMsgComment updateUserNumber ' + 'success');
                         resolve();
                     }
                 });
@@ -268,22 +291,22 @@ const createMessageComments = (req, res, next) => {
     //更新动态的评论数（一级评论）
     const updateMessageNum = () =>{
         return new Promise(() => {
-            let query = MessageModel.find({});
-            if(bodyParams._messageId){
-                if(bodyParams._messageId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageId));
+            let query = MsgModel.find({});
+            if(bodyParams.msgId){
+                if(bodyParams.msgId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.msgId));
                 }else{
-                    logger.info('createMessageComments updateMessageNum _messageId format incorrect!');
+                    logger.info('createMsgComment updateMessageNum msgId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
                     return next();
                 }
             }
-            MessageModel.findOneAndUpdate(query,{ $inc: { commentsNum: 1 } },).exec((error,rows)=> {
+            MsgModel.findOneAndUpdate(query,{ $inc: { comment_num: 1 } },).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createMessageComments updateMessageNum ' + error.message);
+                    logger.error(' createMsgComment updateMessageNum ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info(' createMessageComments updateMessageNum ' + 'success');
+                    logger.info(' createMsgComment updateMessageNum ' + 'success');
                     resUtil.resetQueryRes(res, returnMessage);
                     return next();
                 }
@@ -291,31 +314,31 @@ const createMessageComments = (req, res, next) => {
         });
     }
     //更新评论的评论数（二级评论）
-    const updateMessageCommentsNum = () =>{
+    const updateMsgCommentNum = () =>{
         return new Promise((() => {
-            let query = MessageCommentsModel.find({});
-            if(bodyParams._messageCommentsId){
-                if(bodyParams._messageCommentsId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._messageCommentsId));
+            let query = MsgCommentModel.find({});
+            if(bodyParams.msgComId){
+                if(bodyParams.msgComId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.msgComId));
                 }else{
-                    logger.info('createMessageComments updateMessageCommentsNum _messageCommentsId format incorrect!');
+                    logger.info('createMsgComment updateMsgCommentNum msgComId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
                     return next();
                 }
             }
-            MessageCommentsModel.findOneAndUpdate(query,{ $inc: { commentsNum: 1 } }).exec((error,rows)=> {
+            MsgCommentModel.findOneAndUpdate(query,{ $inc: { comment_num: 1 } }).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createMessageComments updateMessageCommentsNum ' + error.message);
+                    logger.error(' createMsgComment updateMsgCommentNum ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info(' createMessageComments updateMessageCommentsNum ' + 'success');
+                    logger.info(' createMsgComment updateMsgCommentNum ' + 'success');
                     resUtil.resetCreateRes(res,returnMessage);
                     return next();
                 }
             });
         }));
     }
-    saveMessageComments()
+    saveMsgComment()
         .then(updateUserNumber)
         .then(()=>{
             if(bodyParams.level == sysConsts.COUMMENT.level.firstCoumment){
@@ -323,7 +346,7 @@ const createMessageComments = (req, res, next) => {
                 updateMessageNum();
             }else{
                 //二级评论
-                updateMessageCommentsNum();
+                updateMsgCommentNum();
             }
         })
         .catch((reject)=>{
@@ -337,27 +360,27 @@ const createMessageComments = (req, res, next) => {
 const updateReadStatus = (req, res, next) => {
     let bodyParams = req.body;
     let path = req.params;
-    let query = MessageCommentsModel.find({});
+    let query = MsgCommentModel.find({});
 
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateReadStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.messageCommentsId){
-        if(path.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
+    if(path.msgComId){
+        if(path.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('updateReadStatus  messageCommentsId format incorrect!');
+            logger.info('updateReadStatus  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageCommentsModel.updateOne(query,bodyParams,function(error,result){
+    MsgCommentModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReadStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -370,26 +393,26 @@ const updateReadStatus = (req, res, next) => {
 }
 const deleteComments = (req, res, next) => {
     let path = req.params;
-    let query = MessageModel.find({});
+    let query = MsgModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('deleteComments userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.messageCommentsId){
-        if(path.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
+    if(path.msgComId){
+        if(path.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('deleteComments messageCommentsId format incorrect!');
+            logger.info('deleteComments msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageCommentsModel.deleteOne(query,function(error,result){
+    MsgCommentModel.deleteOne(query,function(error,result){
         if(error){
             logger.error('deleteComments ' + error.message);
             resUtil.resInternalError(error,res,next);
@@ -400,23 +423,23 @@ const deleteComments = (req, res, next) => {
         }
     })
 }
-const getMessageCommentsByAdmin = (req, res, next) => {
+const getMsgCommentByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
     aggregate_limit.push(
         {
             $lookup: {
-                from: "messages_infos",
-                localField: "_messageId",
+                from: "msg_infos",
+                localField: "_msg_id",
                 foreignField: "_id",
-                as: "messages_info"
+                as: "msg_info"
             }
         },
         {
             $lookup: {
                 from: "user_infos",
-                localField: "_userId",
+                localField: "_user_id",
                 foreignField: "_id",
                 as: "user_login_info"
             }
@@ -424,42 +447,42 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         {
             $lookup: {
                 from: "user_details",
-                localField: "_userId",
-                foreignField: "_userId",
+                localField: "_user_id",
+                foreignField: "_user_id",
                 as: "user_detail_info"
             }
         }
     );
 
-    if(params.messageCommentsId){
-        if(params.messageCommentsId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.messageCommentsId);
+    if(params.msgComId){
+        if(params.msgComId.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
-            logger.info('getMessageCommentsByAdmin  messageCommentsId format incorrect!');
+            logger.info('getMsgCommentByAdmin  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            matchObj._messageId = mongoose.mongo.ObjectId(params.messagesId);
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            matchObj._msg_id = mongoose.mongo.ObjectId(params.msgId);
         }else{
-            logger.info('getMessageCommentsByAdmin  messageCommentsId format incorrect!');
+            logger.info('getMsgCommentByAdmin  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
     if(params.userId && (params.phone == '' || params.phone == null ||  params.phone == "undefined")){
         if(params.userId.length == 24){
-            matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
-            logger.info('getMessageCommentsByAdmin  _userId format incorrect!');
+            logger.info('getMsgCommentByAdmin  _user_id format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if (params.type){
-        matchObj.messages_type = Number(params.type);
+    if (params.msgType){
+        matchObj.msg_type = Number(params.msgType);
     }
     if (params.status){
         matchObj.status = Number(params.status);
@@ -478,16 +501,16 @@ const getMessageCommentsByAdmin = (req, res, next) => {
                 }
                 query.exec((error,rows)=> {
                     if (error) {
-                        logger.error(' getMessageCommentsByAdmin getUserId ' + error.message);
+                        logger.error(' getMsgCommentByAdmin getUserId ' + error.message);
                         resUtil.resInternalError(error,res);
                     } else {
-                        logger.info(' getMessageCommentsByAdmin getUserId ' + 'success');
+                        logger.info(' getMsgCommentByAdmin getUserId ' + 'success');
                         if(params.userId){
                             if(mongoose.mongo.ObjectId(params.userId) == rows[0]._doc._id){
-                                matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+                                matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
                             }
                         }else{
-                            matchObj._userId = mongoose.mongo.ObjectId(rows[0]._doc._id);
+                            matchObj._user_id = mongoose.mongo.ObjectId(rows[0]._doc._id);
                         }
                         resolve();
                     }
@@ -498,7 +521,7 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         });
     }
     const getComment =()=>{
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
             aggregate_limit.push({
                 $match: matchObj
             });
@@ -519,12 +542,12 @@ const getMessageCommentsByAdmin = (req, res, next) => {
                 }
             });
 
-            MessageCommentsModel.aggregate(aggregate_limit).exec((error,rows)=> {
+            MsgCommentModel.aggregate(aggregate_limit).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' getMessageCommentsByAdmin getComment ' + error.message);
+                    logger.error(' getMsgCommentByAdmin getComment ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    logger.info(' getMessageCommentsByAdmin getComment ' + 'success');
+                    logger.info(' getMsgCommentByAdmin getComment ' + 'success');
                     resUtil.resetQueryRes(res, rows);
                     return next();
                 }
@@ -540,20 +563,20 @@ const getMessageCommentsByAdmin = (req, res, next) => {
         })
 
 }
-const getMessageCommentsCountByAdmin = (req, res, next) => {
-    let query = MessageCommentsModel.find({});
+const getMsgCommentCountByAdmin = (req, res, next) => {
+    let query = MsgCommentModel.find({});
     query.countDocuments().exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageCommentsCountByAdmin ' + error.message);
+            logger.error(' getMsgCommentCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMessageCommentsCountByAdmin ' + 'success');
+            logger.info(' getMsgCommentCountByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
+const getMsgCommentTodayCountByAdmin = (req, res, next) => {
     let aggregate_limit = [];
     let today = new Date();
     let startDay = new Date(moment(today).format('YYYY-MM-DD'));
@@ -561,10 +584,10 @@ const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
     aggregate_limit.push(
         {
             $lookup: {
-                from: "messages_infos",
-                localField: "_messageId",
+                from: "msg_infos",
+                localField: "_msg_id",
                 foreignField: "_id",
-                as: "messages_info"
+                as: "msg_info"
             }
         }
     );
@@ -577,17 +600,17 @@ const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
     }
     aggregate_limit.push({
         $group: {
-            _id: {type:"$messages_info.type"},
+            _id: {type:"$msg_info.type"},
             count:{$sum:1}
         }
     });
-    MessageCommentsModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgCommentModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageCommentsTodayCountByAdmin getComment ' + error.message);
+            logger.error(' getMsgCommentTodayCountByAdmin getComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             console.log('rows:',rows);
-            logger.info(' getMessageCommentsTodayCountByAdmin getComment ' + 'success');
+            logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -597,17 +620,17 @@ const getMessageCommentsTodayCountByAdmin = (req, res, next) => {
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
     let path = req.params;
-    let query = MessageCommentsModel.find({});
-    if(path.messageCommentsId){
-        if(path.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
+    let query = MsgCommentModel.find({});
+    if(path.msgComId){
+        if(path.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('updateStatusByAdmin  messageCommentsId format incorrect!');
+            logger.info('updateStatusByAdmin  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageCommentsModel.updateOne(query,bodyParams,function(error,result){
+    MsgCommentModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateStatusByAdmin ' + error.message);
             resUtil.resInternalError(error);
@@ -620,17 +643,17 @@ const updateStatusByAdmin = (req, res, next) => {
 }
 const deleteCommentsByAdmin = (req, res, next) => {
     let path = req.params;
-    let query = MessageCommentsModel.find({});
-    if(path.messageCommentsId){
-        if(path.messageCommentsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messageCommentsId));
+    let query = MsgCommentModel.find({});
+    if(path.msgComId){
+        if(path.msgComId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('deleteCommentsByAdmin messageCommentsId format incorrect!');
+            logger.info('deleteCommentsByAdmin msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENTS_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageCommentsModel.deleteOne(query,function(error,result){
+    MsgCommentModel.deleteOne(query,function(error,result){
         if(error){
             logger.error('deleteCommentsByAdmin ' + error.message);
             resUtil.resInternalError(error,res,next);
@@ -642,15 +665,15 @@ const deleteCommentsByAdmin = (req, res, next) => {
     })
 }
 module.exports = {
-    getUserMessageComments,
-    getUserBeMessageComments,
-    getAllMessageComments,
-    createMessageComments,
+    getUserMsgComment,
+    getUserBeMsgComment,
+    getAllMsgComment,
+    createMsgComment,
     updateReadStatus,
     deleteComments,
-    getMessageCommentsByAdmin,
-    getMessageCommentsCountByAdmin,
-    getMessageCommentsTodayCountByAdmin,
+    getMsgCommentByAdmin,
+    getMsgCommentCountByAdmin,
+    getMsgCommentTodayCountByAdmin,
     updateStatusByAdmin,
     deleteCommentsByAdmin
 };

@@ -6,70 +6,38 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('MessageController');
+const logger = serverLogger.createLogger('MsgController');
 
-const {MessageModel} = require('../modules');
+const {MsgModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
-const getMessage = (req, res, next) => {
-    let params = req.query;
-    let path = req.params;
-    let query = MessageModel.find({status:sysConsts.INFO.status.available});
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
-        }else{
-            logger.info('getMessage  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.messagesId));
-        }else{
-            logger.info('getMessage  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.type){
-        query.where('type').equals(params.type);
-    }
-    if(params.status){
-        query.where('status').equals(params.status);
-    }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
-        if (error) {
-            logger.error(' getMessage ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getMessage ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
-}
-const getAllMessage = (req, res, next) =>{
+const getMsg = (req, res, next) =>{
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_userId",
-            foreignField: "_userId",
+            localField: "_user_id",
+            foreignField: "_user_id",
             as: "user_detail_info"
         }
     });
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.messagesId);
+
+    if(params.sendMsgUserId){
+        if(params.sendMsgUserId.length == 24){
+            matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
         }else{
-            logger.info('getAllMessage  messagesId format incorrect!');
+            logger.info('getAllMsg  sendMsgUserId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.msgId);
+        }else{
+            logger.info('getAllMsg  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -95,30 +63,30 @@ const getAllMessage = (req, res, next) =>{
             }
         );
     };
-    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllMessage ' + error.message);
+            logger.error(' getAllMsg ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             console.log('rows:',rows);
-            logger.info(' getAllMessage ' + 'success');
+            logger.info(' getAllMsg ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getMessageCount = (req, res, next) => {
+const getMsgCount = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
-    if(params._userId){
-        if(params._userId.length == 24){
+    if(params.msgUserId){
+        if(params.msgUserId.length == 24){
             aggregate_limit.push({
                 $match: {
-                    _userId :  mongoose.mongo.ObjectId(params._userId)
+                    _user_id :  mongoose.mongo.ObjectId(params.msgUserId)
                 }
             });
         }else{
-            logger.info('getMessageCount userID format incorrect!');
+            logger.info('getMsgCount userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
@@ -130,13 +98,13 @@ const getMessageCount = (req, res, next) => {
         }
     });
 
-    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageCount ' + error.message);
+            logger.error(' getMsgCount ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             console.log('rows:',rows);
-            logger.info(' getMessageCount ' + 'success');
+            logger.info(' getMsgCount ' + 'success');
 
             let total = 0;
             for (let num in rows) {
@@ -151,69 +119,84 @@ const getMessageCount = (req, res, next) => {
         }
     });
 }
-const createMessage = (req, res, next) => {
+const createMsg = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let messageObj = bodyParams;
-    messageObj.status = sysConsts.INFO.status.available;
-    messageObj.comment_status = sysConsts.MESSAGE.comment_status.visible;
-    messageObj.collectNum = 0;
-    messageObj.commentsNum = 0;
-    messageObj.agreeNum = 0;
-    messageObj.readNum = 0;
+    let msgObj = bodyParams;
+    if(bodyParams.addressName){
+        msgObj.address_name = bodyParams.addressName ;
+    }
+    if(bodyParams.addressReal){
+        msgObj.address_real = bodyParams.addressReal ;
+    }
+    if(bodyParams.addressShow){
+        msgObj.address_show = bodyParams.addressShow ;
+    }
+    if(bodyParams.locationName){
+        msgObj.location_name = bodyParams.locationName ;
+    }
+    if(bodyParams.locationReal){
+        msgObj.location_real = bodyParams.locationReal ;
+    }
+    msgObj.status = sysConsts.INFO.status.available;
+    msgObj.comment_status = sysConsts.MESSAGE.comment_status.visible;
+    msgObj.collect_num = 0;
+    msgObj.comment_num = 0;
+    msgObj.agree_num = 0;
+    msgObj.read_num = 0;
     if(path.userId){
         if(path.userId.length == 24){
-            messageObj._userId = mongoose.mongo.ObjectId(path.userId);
+            msgObjs._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createMessage  userID format incorrect!');
+            logger.info('createMsg  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    const saveMessage =()=>{
+    const saveMsg =()=>{
         return new Promise((resolve, reject) => {
-            let messageModel = new MessageModel(messageObj);
-            messageModel.save(function(error,result){
+            let msgModel = new MsgModel(msgObj);
+            msgModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createMessage saveMessage ' + error.message);
+                    logger.error(' createMsg saveMsg ' + error.message);
                     reject({err:reject.message});
                 } else {
-                    logger.info(' createMessage saveMessage ' + 'success');
+                    logger.info(' createMsg saveMsg ' + 'success');
                     resolve(result);
                 }
             })
         });
     }
-    const updateUserNumber =(returnMessage)=>{
+    const updateUserNumber =(returnMsg)=>{
         return new Promise(() => {
             let queryUser = UserDetailModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createMessage updateUserNumber _userId format incorrect!');
+                    logger.info('createMsg updateUserNumber _user_id format incorrect!');
                     return next();
                 }
             }
             if(bodyParams.type == 1){
                 //文章字段加一
-                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesNum: 1 } }).exec((error,rows)=> {
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { msg_num: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessage updateUserNumber ' + error.message);
+                        logger.error(' createMsg updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessage updateUserNumber ' + 'success');
-                        resUtil.resetCreateRes(res, returnMessage);
+                        logger.info(' createMsg updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMsg);
                         return next();
                     }
                 });
             }else{
                 //求助字段加一
-                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { messagesHelpNum: 1 } }).exec((error,rows)=> {
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { msg_help_num: 1 } }).exec((error,rows)=> {
                     if (error) {
-                        logger.error(' createMessage updateUserNumber ' + error.message);
+                        logger.error(' createMsg updateUserNumber ' + error.message);
                     } else {
-                        logger.info(' createMessage updateUserNumber ' + 'success');
-                        resUtil.resetCreateRes(res, returnMessage);
+                        logger.info(' createMsg updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMsg);
                         return next();
                     }
                 });
@@ -221,7 +204,7 @@ const createMessage = (req, res, next) => {
 
         });
     }
-    saveMessage()
+    saveMsg()
         .then(updateUserNumber)
         .catch((reject)=>{
             if(reject.err){
@@ -231,33 +214,33 @@ const createMessage = (req, res, next) => {
             }
         })
 }
-const updateMessageStatus = (req, res, next) => {
+const updateMsgStatus = (req, res, next) => {
     let path = req.params;
-    let queryMessge = MessageModel.find({});
+    let queryMessge = MsgModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            queryMessge.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            queryMessge.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('updateMessageStatus  userID format incorrect!');
+            logger.info('updateMsgStatus  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.messagesId){
-        if(path.messagesId.length == 24){
-            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
+    if(path.msgId){
+        if(path.msgId.length == 24){
+            queryMessge.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
-            logger.info('updateMessageStatus  messagesId format incorrect!');
+            logger.info('updateMsgStatus  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageModel.updateOne(queryMessge,{status:sysConsts.INFO.status.disable},function(error,result){
+    MsgModel.updateOne(queryMessge,{status:sysConsts.INFO.status.disable},function(error,result){
         if (error) {
-            logger.error(' updateMessageStatus updateMessage ' + error.message);
+            logger.error(' updateMsgStatus updateMsg ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateMessageStatus updateMessage ' + 'success');
+            logger.info(' updateMsgStatus updateMsg ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -269,7 +252,7 @@ const searchByRadius = (req, res, next) => {
     let str=params.address.slice(1,params.address.length-1);
     arr = str.split(',');
     let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
-    let query = MessageModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
+    let query = MsgModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -284,64 +267,64 @@ const searchByRadius = (req, res, next) => {
         }
     });
 }
-const deleteMessage = (req, res, next) => {
+const deleteMsg = (req, res, next) => {
     let path = req.params;
-    let query = MessageModel.find({});
+    let query = MsgModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('deleteMessage userID format incorrect!');
+            logger.info('deleteMsg userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.messagesId){
-        if(path.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
+    if(path.msgId){
+        if(path.msgId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
-            logger.info('deleteMessage messagesId format incorrect!');
+            logger.info('deleteMsg msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageModel.deleteOne(query,function(error,result){
+    MsgModel.deleteOne(query,function(error,result){
         if(error){
-            logger.error('deleteMessage ' + error.message);
+            logger.error('deleteMsg ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteMessage ' + 'success');
+            logger.info('deleteMsg ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
-const getMessageByAdmin = (req, res, next) => {
+const getMsgByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_userId",
-            foreignField: "_userId",
+            localField: "_user_id",
+            foreignField: "_user_id",
             as: "user_detail_info"
         }
     });
     if (params.userId){
         if (params.userId.length == 24) {
-            matchObj._userId = mongoose.mongo.ObjectId(params.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         } else {
-            logger.info('getMessageByAdmin userID format incorrect!');
+            logger.info('getMsgByAdmin userID format incorrect!');
             resUtil.resetQueryRes(res, [], null);
             return next();
         }
     }
-    if(params.messagesId){
-        if(params.messagesId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.messagesId);
+    if(params.msgId){
+        if(params.msgId.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.msgId);
         }else{
-            logger.info('getMessageByAdmin  messagesId format incorrect!');
+            logger.info('getMsgByAdmin  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
@@ -373,32 +356,32 @@ const getMessageByAdmin = (req, res, next) => {
             }
         );
     };
-    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageByAdmin ' + error.message);
+            logger.error(' getMsgByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             console.log('rows:',rows);
-            logger.info(' getMessageByAdmin ' + 'success');
+            logger.info(' getMsgByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getMessageCountByAdmin = (req, res, next) => {
-    let query = MessageModel.find({});
+const getMsgCountByAdmin = (req, res, next) => {
+    let query = MsgModel.find({});
     query.countDocuments().exec((error,rows)=> {
         if (error) {
-            logger.error(' getMessageCountByAdmin ' + error.message);
+            logger.error(' getMsgCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMessageCountByAdmin ' + 'success');
+            logger.info(' getMsgCountByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getTodayMessageCountByAdmin = (req, res, next) => {
+const getTodayMsgCountByAdmin = (req, res, next) => {
     let aggregate_limit = [];
     let today = new Date();
     let startDay = new Date(moment(today).format('YYYY-MM-DD'));
@@ -416,50 +399,49 @@ const getTodayMessageCountByAdmin = (req, res, next) => {
             count:{$sum:1}
         }
     });
-    MessageModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getTodayMessageCountByAdmin ' + error.message);
+            logger.error(' getTodayMsgCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getTodayMessageCountByAdmin ' + 'success');
+            logger.info(' getTodayMsgCountByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const deleteMessageByAdmin = (req, res, next) => {
+const deleteMsgByAdmin = (req, res, next) => {
     let path = req.params;
-    let query = MessageModel.find({});
-    if(path.messagesId){
-        if(path.messagesId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.messagesId));
+    let query = MsgModel.find({});
+    if(path.msgId){
+        if(path.msgId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
-            logger.info('deleteMessageByAdmin messagesId format incorrect!');
+            logger.info('deleteMsgByAdmin msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
             return next();
         }
     }
-    MessageModel.deleteOne(query,function(error,result){
+    MsgModel.deleteOne(query,function(error,result){
         if(error){
-            logger.error('deleteMessageByAdmin ' + error.message);
+            logger.error('deleteMsgByAdmin ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteMessageByAdmin ' + 'success');
+            logger.info('deleteMsgByAdmin ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
     })
 }
 module.exports = {
-    getMessage,
-    getAllMessage,
-    getMessageCount,
-    createMessage,
-    updateMessageStatus,
+    getMsg,
+    getMsgCount,
+    createMsg,
+    updateMsgStatus,
     searchByRadius,
-    deleteMessage,
-    getMessageByAdmin,
-    getMessageCountByAdmin,
-    getTodayMessageCountByAdmin,
-    deleteMessageByAdmin
+    deleteMsg,
+    getMsgByAdmin,
+    getMsgCountByAdmin,
+    getTodayMsgCountByAdmin,
+    deleteMsgByAdmin
 };

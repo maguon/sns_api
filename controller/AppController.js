@@ -47,6 +47,21 @@ const createApp = (req, res, next) => {
     let bodyParams = req.body;
     let appObj = bodyParams
     appObj.status = sysConsts.INFO.status.available;
+    if(bodyParams.appType){
+        appObj.app_type  = bodyParams.appType;
+    }
+    if(bodyParams.deviceType){
+        appObj.device_type  = bodyParams.deviceType;
+    }
+    if(bodyParams.versionNum){
+        appObj.version_num  = bodyParams.versionNum;
+    }
+    if(bodyParams.minVersionNum){
+        appObj.min_version_num  = bodyParams.minVersionNum;
+    }
+    if(bodyParams.forceUpdate){
+        appObj.force_update  = bodyParams.forceUpdate;
+    }
     let appModel = new AppModel(appObj)
     appModel.save(function(error,result){
         if (error) {
@@ -70,6 +85,21 @@ const updateApp = (req, res, next) =>{
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
+    }
+    if(bodyParams.appType){
+        bodyParams.app_type  = bodyParams.appType;
+    }
+    if(bodyParams.deviceType){
+        bodyParams.device_type  = bodyParams.deviceType;
+    }
+    if(bodyParams.versionNum){
+        bodyParams.version_num  = bodyParams.versionNum;
+    }
+    if(bodyParams.minVersionNum){
+        bodyParams.min_version_num  = bodyParams.minVersionNum;
+    }
+    if(bodyParams.forceUpdate){
+        bodyParams.force_update  = bodyParams.forceUpdate;
     }
     AppModel.updateOne(query,bodyParams,function(error,result){
         if (error) {

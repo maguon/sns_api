@@ -2,23 +2,23 @@
 
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
-const userMessageCollectionSchema = new Schema({
+const userMsgCollSchema = new Schema({
         remarks       : {type:String,default:'',display: '备注'},
-        _userId: {
+        _user_id: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
+            ref: 'user_info',
             display: '用户信息ID'
         },
-        _messageId: {
+        _msg_id: {
             type: Schema.Types.ObjectId,
-            ref: 'messages',
+            ref: 'msg_info',
             display: '动态ID'
         }
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserMessageCollectionsModel = mongoose.model('user_message_collections',userMessageCollectionSchema);
+const UserMsgCollModel = mongoose.model('user_msg_coll',userMsgCollSchema);
 module.exports = {
-    UserMessageCollectionsModel
+    UserMsgCollModel
 }

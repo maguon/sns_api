@@ -3,9 +3,9 @@
 const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
-const sysConsts = require('../util/SystemConst');
 const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('AboutController');
+
 const {AboutModel} = require('../modules');
 
 const getAbout = (req, res, next) => {
@@ -31,9 +31,19 @@ const getAbout = (req, res, next) => {
     });
 }
 const createAbout = (req, res, next) => {
+    let path = req.params;
     let bodyParams = req.body;
     let aboutObj = bodyParams
-    let aboutModel = new AboutModel(aboutObj)
+    if(path.adminId){
+        if(path.adminId .length == 24){
+            aboutObj._admin_id = mongoose.mongo.ObjectId(path.adminId );
+        }else{
+            logger.info('updateAbout aboutId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    let aboutModel = new AboutModel(aboutObj);
     aboutModel.save(function(error,result){
         if (error) {
             logger.error(' createAbout ' + error.message);

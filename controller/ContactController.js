@@ -3,18 +3,27 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
-const logger = serverLogger.createLogger('ApplicationContactController');
+const logger = serverLogger.createLogger('ContactController');
 
-const {ApplicationContactModel} = require('../modules');
+const {ContactModel} = require('../modules');
 
-const getApplicationContact = (req, res, next) => {
+const getContact = (req, res, next) => {
     let params = req.query;
-    let query = ApplicationContactModel.find({});
+    let query = ContactModel.find({});
     if(params.beInvitedUserId){
         if(params.beInvitedUserId.length == 24){
-            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(params.beInvitedUserId));
+            query.where('_be_invited_user_id').equals(mongoose.mongo.ObjectId(params.beInvitedUserId));
         }else{
-            logger.info('getApplicationContact beInvitedUserId format incorrect!');
+            logger.info('getContact beInvitedUserId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    if(params.contactId){
+        if(params.contactId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.contactId));
+        }else{
+            logger.info('getContact contactId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
@@ -27,41 +36,41 @@ const getApplicationContact = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getApplicationContact ' + error.message);
+            logger.error(' getContact ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getApplicationContact ' + 'success');
+            logger.info(' getContact ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const getApplicationContactByAdmin = (req, res, next) => {
+const getContactByAdmin = (req, res, next) => {
     let params = req.query;
-    let query = ApplicationContactModel.find({});
+    let query = ContactModel.find({});
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
-            logger.info('getApplicationContact userId format incorrect!');
+            logger.info('getContact userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
     if(params.beInvitedUserId){
         if(params.beInvitedUserId.length == 24){
-            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(params.beInvitedUserId));
+            query.where('_be_invited_user_id').equals(mongoose.mongo.ObjectId(params.beInvitedUserId));
         }else{
-            logger.info('getApplicationContact beInvitedUserId format incorrect!');
+            logger.info('getContact beInvitedUserId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    if(params.applicationContactId){
-        if(params.applicationContactId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.applicationContactId));
+    if(params.contactId){
+        if(params.contactId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.contactId));
         }else{
-            logger.info('getApplicationContact applicationContactId format incorrect!');
+            logger.info('getContact contactId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
@@ -74,45 +83,45 @@ const getApplicationContactByAdmin = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getApplicationContact ' + error.message);
+            logger.error(' getContact ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getApplicationContact ' + 'success');
+            logger.info(' getContact ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createApplicationContact = (req, res, next) => {
+const createContact = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let voteObj = bodyParams;
-    voteObj.status = 0;
+    let contactObj = bodyParams;
+    contactObj.status = 0;
     if(path.userId){
         if(path.userId.length == 24){
-            voteObj._userId = mongoose.mongo.ObjectId(path.userId);
+            contactObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
-            logger.info('createApplicationContact userID format incorrect!');
+            logger.info('createContact userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(path.userId){
-        if(path.userId.length == 24){
-            voteObj._userId = mongoose.mongo.ObjectId(path.userId);
+    if(bodyParams.beInvitedUserId){
+        if(bodyParams.beInvitedUserId.length == 24){
+            contactObj._be_invited_user_id = mongoose.mongo.ObjectId(bodyParams.beInvitedUserId);
         }else{
-            logger.info('createApplicationContact userID format incorrect!');
+            logger.info('createContact beInvitedUserId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    let voteModel = new ApplicationContactModel(voteObj);
-    voteModel.save(function(error,result){
+    let ContactModel = new ContactModel(contactObj);
+    ContactModel.save(function(error,result){
         if (error) {
-            logger.error(' createApplicationContact ' + error.message);
+            logger.error(' createContact ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' createApplicationContact ' + 'success');
+            logger.info(' createContact ' + 'success');
             resUtil.resetCreateRes(res, result);
             return next();
         }
@@ -120,18 +129,18 @@ const createApplicationContact = (req, res, next) => {
 }
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
-    let query = ApplicationContactModel.find({});
+    let query = ContactModel.find({});
     let path = req.params;
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_beInvitedUserId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_be_invited_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('updateStatus userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    ApplicationContactModel.updateOne(query,bodyParams,function(error,result){
+    ContactModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateStatus ' + error.message);
             resUtil.resInternalError(error);
@@ -144,8 +153,8 @@ const updateStatus = (req, res, next) => {
     })
 }
 module.exports = {
-    getApplicationContact,
-    getApplicationContactByAdmin,
-    createApplicationContact,
+    getContact,
+    getContactByAdmin,
+    createContact,
     updateStatus
 };

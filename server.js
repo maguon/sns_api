@@ -12,16 +12,16 @@ import {UserDetailController} from './controller';
 import {UserDriveController} from './controller';
 import {UserRelationController} from './controller';
 import {UserVoteController} from './controller';
-import {UserLocationCollectionsController} from './controller';
-import {UserMessageCollectionsController} from './controller';
+import {UserLocaCollController} from './controller';
+import {UserMsgCollController} from './controller';
 import {UserPraiseController} from './controller';
-import {MessageController} from './controller';
-import {MessageCommentsController} from './controller';
+import {MsgController} from './controller';
+import {MsgCommentController} from './controller';
 import {VoteController} from  './controller';
-import {ApplicationContactController} from  './controller';
-import {SystemMessageController} from  './controller';
-import {PrivacySettingsController} from  './controller';
-import {NotificationSettingsController} from  './controller';
+import {ContactController} from  './controller';
+import {SysMsgController} from  './controller';
+import {PrivacieController} from  './controller';
+import {NoticeController} from  './controller';
 import {AboutController} from './controller';
 import {AppController} from './controller';
 import {SmsController} from './controller';
@@ -162,51 +162,50 @@ const createServer=()=>{
 
     server.get('/api/admin/:adminId/getUserVote', UserVoteController.getUserVoteByAdmin);
     /**
-     userLocationCollections    -用户地理位置收藏
+     userLocaColls    -用户地理位置收藏
      */
-    server.post({path:'/api/user/:userId/userLocationCollection',contentType: 'application/json'}, UserLocationCollectionsController.createUserLocationCollections);
-    server.get('/api/user/:userId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
+    server.post({path:'/api/user/:userId/userLocaColl',contentType: 'application/json'}, UserLocaCollController.createUserLocaColl);
+    server.get('/api/user/:userId/userLocaColl', UserLocaCollController.getUserLocaColl);
 
-    server.get('/api/admin/:adminId/userLocationCollection', UserLocationCollectionsController.getUserLocationCollections);
+    server.get('/api/admin/:adminId/userLocaColl', UserLocaCollController.getUserLocaColl);
     /**
-     userMessageCollections    -用户微博收藏
+     userMsgColls    -用户微博收藏
      */
-    server.post({path:'/api/user/:userId/userMessageCollection',contentType: 'application/json'}, UserMessageCollectionsController.createUserMessageCollections);
-    server.get('/api/user/:userId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
-    server.get('/api/admin/:adminId/userMessageCollection', UserMessageCollectionsController.getUserMessageCollections);
+    server.post({path:'/api/user/:userId/userMsgColl',contentType: 'application/json'}, UserMsgCollController.createUserMsgColl);
+    server.get('/api/user/:userId/userMsgColl', UserMsgCollController.getUserMsgColl);
+    server.get('/api/admin/:adminId/userMsgColl', UserMsgCollController.getUserMsgColl);
 
     /**
      messages    -微博动态
      */
-    server.post({path:'/api/user/:userId/messages',contentType: 'application/json'}, MessageController.createMessage);
-    server.get('/api/user/:userId/messages', MessageController.getMessage);
-    server.get('/api/user/:userId/allMessages', MessageController.getAllMessage);
-    server.get('/api/user/:userId/messagesCount', MessageController.getMessageCount);
-    server.get('/api/user/:userId/searchByRadius', MessageController.searchByRadius);
-    server.put({path:'/api/user/:userId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
-    server.del({path:'/api/user/:userId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessage);
+    server.post({path:'/api/user/:userId/msg',contentType: 'application/json'}, MsgController.createMsg);
+    server.get('/api/user/:userId/msg', MsgController.getMsg);
+    server.get('/api/user/:userId/msgCount', MsgController.getMsgCount);
+    server.get('/api/user/:userId/searchByRadius', MsgController.searchByRadius);
+    server.put({path:'/api/user/:userId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
+    server.del({path:'/api/user/:userId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsg);
 
-    server.get('/api/admin/:adminId/messages', MessageController.getMessageByAdmin);
-    server.get('/api/admin/:adminId/messageCount', MessageController.getMessageCountByAdmin);
-    server.get('/api/admin/:adminId/todayMessageCount', MessageController.getTodayMessageCountByAdmin);
-    server.get('/api/admin/:adminId/searchByRadius', MessageController.searchByRadius);
-    server.put({path:'/api/admin/:adminId/messages/:messagesId/status',contentType: 'application/json'} ,MessageController.updateMessageStatus);
-    server.del({path:'/api/admin/:adminId/messages/:messagesId/del',contentType: 'application/json'},MessageController.deleteMessageByAdmin);
+    server.get('/api/admin/:adminId/msg', MsgController.getMsgByAdmin);
+    server.get('/api/admin/:adminId/msgCount', MsgController.getMsgCountByAdmin);
+    server.get('/api/admin/:adminId/todayMsgCount', MsgController.getTodayMsgCountByAdmin);
+    server.get('/api/admin/:adminId/searchByRadius', MsgController.searchByRadius);
+    server.put({path:'/api/admin/:adminId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
+    server.del({path:'/api/admin/:adminId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsgByAdmin);
      /**
-     messageComments   - 评论
+     MsgComment   - 评论
      */
-    server.get('/api/user/:userId/userMessageComments', MessageCommentsController.getUserMessageComments);
-    server.get('/api/user/:userId/userBeMessageComments', MessageCommentsController.getUserBeMessageComments);
-    server.get('/api/user/:userId/allMessageComments', MessageCommentsController.getAllMessageComments);
-    server.post({path:'/api/user/:userId/messageComments',contentType: 'application/json'}, MessageCommentsController.createMessageComments);
-    server.put({path:'/api/user/:userId/messageComments/:messageCommentsId/readStatus',contentType: 'application/json'} ,MessageCommentsController.updateReadStatus);
-    server.del({path:'/api/user/:userId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteComments);
+    server.get('/api/user/:userId/userMsgComment', MsgCommentController.getUserMsgComment);
+    server.get('/api/user/:userId/userBeMsgComment', MsgCommentController.getUserBeMsgComment);
+    server.get('/api/user/:userId/allMsgComment', MsgCommentController.getAllMsgComment);
+    server.post({path:'/api/user/:userId/msgComment',contentType: 'application/json'}, MsgCommentController.createMsgComment);
+    server.put({path:'/api/user/:userId/msgCom/:msgComId/readStatus',contentType: 'application/json'} ,MsgCommentController.updateReadStatus);
+    server.del({path:'/api/user/:userId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteComments);
 
-    server.get('/api/admin/:adminId/messageComments', MessageCommentsController.getMessageCommentsByAdmin);
-    server.get('/api/admin/:adminId/messageCommentsCount', MessageCommentsController.getMessageCommentsCountByAdmin);
-    server.get('/api/admin/:adminId/todayMessageCommentsCount', MessageCommentsController.getMessageCommentsTodayCountByAdmin);
-    server.put({path:'/api/admin/:adminId/messageComments/:messageCommentsId/status',contentType: 'application/json'} ,MessageCommentsController.updateStatusByAdmin);
-    server.del({path:'/api/admin/:adminId/messageComments/:messageCommentsId/del',contentType: 'application/json'},MessageCommentsController.deleteCommentsByAdmin);
+    server.get('/api/admin/:adminId/msgComment', MsgCommentController.getMsgCommentByAdmin);
+    server.get('/api/admin/:adminId/msgCommentCount', MsgCommentController.getMsgCommentCountByAdmin);
+    server.get('/api/admin/:adminId/todayMsgCommentCount', MsgCommentController.getMsgCommentTodayCountByAdmin);
+    server.put({path:'/api/admin/:adminId/msgCom/:msgComId/status',contentType: 'application/json'} ,MsgCommentController.updateStatusByAdmin);
+    server.del({path:'/api/admin/:adminId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteCommentsByAdmin);
     /**
      vote      - 投票信息
      */
@@ -219,36 +218,36 @@ const createServer=()=>{
     server.del({path:'/api/admin/:adminId/vote/:voteId/del',contentType: 'application/json'},VoteController.deleteVoteByAdmin);
 
     /**
-     applicationContact     - 申请联系方式
+     contact     - 申请联系方式
      */
-    server.post({path:'/api/user/:userId/applicationContact',contentType: 'application/json'}, ApplicationContactController.createApplicationContact);
-    server.get('/api/user/:userId/applicationContact', ApplicationContactController.getApplicationContact);
-    server.put({path:'/api/user/:userId/applicationContact/:applicationContactId/status',contentType: 'application/json'} ,ApplicationContactController.updateStatus);
+    server.post({path:'/api/user/:userId/contact',contentType: 'application/json'}, ContactController.createContact);
+    server.get('/api/user/:userId/contact', ContactController.getContact);
+    server.put({path:'/api/user/:userId/contact/:contact Id/status',contentType: 'application/json'} ,ContactController.updateStatus);
 
-    server.get('/api/admin/:adminId/applicationContact', ApplicationContactController.getApplicationContactByAdmin);
+    server.get('/api/admin/:adminId/contact', ContactController.getContactByAdmin);
     /**
-     systemMessage     - 系统消息
+     sysMsg     - 系统消息
      */
-    server.get('/api/user/:userId/systemMessage', SystemMessageController.getSystemMessage);
+    server.get('/api/user/:userId/sysMsg', SysMsgController.getSysMsg);
 
-    server.get('/api/admin/:adminId/systemMessage', SystemMessageController.getSystemMessageByAdmin);
-    server.post({path:'/api/admin/:adminId/systemMessage',contentType: 'application/json'}, SystemMessageController.createSystemMessage);
-    server.put({path:'/api/admin/:adminId/systemMessage/:systemMessageId/status',contentType: 'application/json'} ,SystemMessageController.updateStatusByAdmin);
-    server.del({path:'/api/admin/:adminId/systemMessage/:systemMessageId/del',contentType: 'application/json'},SystemMessageController.deleteSystemMessage);
+    server.get('/api/admin/:adminId/sysMsg', SysMsgController.getSysMsgByAdmin);
+    server.post({path:'/api/admin/:adminId/sysMsg',contentType: 'application/json'}, SysMsgController.createSysMsg);
+    server.put({path:'/api/admin/:adminId/sysMsg/:sysMsgId/status',contentType: 'application/json'} ,SysMsgController.updateStatusByAdmin);
+    server.del({path:'/api/admin/:adminId/sysMsg/:sysMsgId/del',contentType: 'application/json'},SysMsgController.deleteSysMsg);
     /**
-     privacySettings     - 隐私设置
+     privacie     - 隐私设置
      */
-    server.get('/api/user/:userId/privacySettings', PrivacySettingsController.getPrivacySettingsByUser);
-    server.put({path:'/api/user/:userId/privacySettings/:privacySettingsId/privacySettings',contentType: 'application/json'} ,PrivacySettingsController.updatePrivacySettings);
+    server.get('/api/user/:userId/privacie', PrivacieController.getPrivacieByUser);
+    server.put({path:'/api/user/:userId/privacie/:privacieId/privacie',contentType: 'application/json'} ,PrivacieController.updatePrivacie);
 
-    server.get('/api/admin/:adminId/privacySettings', PrivacySettingsController.getPrivacySettingsByAdmin);
+    server.get('/api/admin/:adminId/privacie', PrivacieController.getPrivacieByAdmin);
     /**
-     notificationSettings     - 通知设置
+     notice     - 通知设置
      */
-    server.get('/api/user/:userId/notificationSettings', NotificationSettingsController.getNotificationSettingsByUser);
-    server.put({path:'/api/user/:userId/notificationSettings/:notificationSettingsId/notificationSettings',contentType: 'application/json'} ,NotificationSettingsController.updateNotificationSettings);
+    server.get('/api/user/:userId/notice', NoticeController.getNoticeByUser);
+    server.put({path:'/api/user/:userId/notice/:noticeId/notice',contentType: 'application/json'} ,NoticeController.updateNotice);
 
-    server.get('/api/admin/:adminId/notificationSettings', NotificationSettingsController.getNotificationSettingsByAdmin);
+    server.get('/api/admin/:adminId/notice', NoticeController.getNoticeByAdmin);
     /**
      about     - 关于我们
      */

@@ -17,14 +17,14 @@ const getUserVote = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "vote_infos",
-            localField: "_voteId",
+            localField: "voteId",
             foreignField: "_id",
             as: "vote_info"
         }
     });
     if (path.userId) {
         if (path.userId.length == 24) {
-            matchObj._userId = mongoose.mongo.ObjectId(path.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
         } else {
             logger.info('getUserVote userID format incorrect!');
             resUtil.resetQueryRes(res, [], null);
@@ -33,7 +33,7 @@ const getUserVote = (req, res, next) => {
     }
     if(params.voteId){
         if(params.voteId.length == 24){
-            matchObj._voteId = mongoose.mongo.ObjectId(params.voteId);
+            matchObj._vote_id = mongoose.mongo.ObjectId(params.voteId);
         }else{
             logger.info('getUserVote  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
@@ -70,7 +70,7 @@ const getUserVoteByAdmin = (req, res, next) => {
 
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(params.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getUserVote  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -79,7 +79,7 @@ const getUserVoteByAdmin = (req, res, next) => {
     }
     if(params.voteId){
         if(params.voteId.length == 24){
-            query.where('_voteId').equals(mongoose.mongo.ObjectId(params.voteId));
+            query.where('_vote_id').equals(mongoose.mongo.ObjectId(params.voteId));
         }else{
             logger.info('getUserVote  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
@@ -111,7 +111,7 @@ const createUserVote = (req, res, next) => {
             let queryUserVote = UserVoteModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUserVote.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUserVote.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info(' createUserVote getUserVoteInfo  userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -120,7 +120,7 @@ const createUserVote = (req, res, next) => {
             }
             if(bodyParams.voteId){
                 if(bodyParams.voteId.length == 24){
-                    queryUserVote.where('_voteId').equals(mongoose.mongo.ObjectId(bodyParams.voteId));
+                    queryUserVote.where('_vote_id').equals(mongoose.mongo.ObjectId(bodyParams.voteId));
                 }else{
                     logger.info(' createUserVote getUserVoteInfo  voteId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
@@ -147,12 +147,15 @@ const createUserVote = (req, res, next) => {
         return new Promise((resolve, reject) => {
             if(path.userId){
                 if(path.userId.length == 24){
-                    userVoteObj._userId = mongoose.mongo.ObjectId(path.userId);
+                    userVoteObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
                     logger.info('createUserVote saveUserVote userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
+            }
+            if(bodyParams.voteId){
+                userVoteObj._vote_id = bodyParams.voteId;
             }
             let userVoteModel = new UserVoteModel(userVoteObj);
             userVoteModel.save(function(error,result){
@@ -171,11 +174,11 @@ const createUserVote = (req, res, next) => {
     const getVoteInfo =()=>{
         return new Promise((resolve, reject) => {
             let queryVote = VoteModel.find({});
-            if(bodyParams._voteId){
+            if(bodyParams.voteId){
                 if(path.userId.length == 24){
-                    queryVote.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._voteId));
+                    queryVote.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.voteId));
                 }else{
-                    logger.info('createUserVote getVoteInfo _userId format incorrect!');
+                    logger.info('createUserVote getVoteInfo _user_id format incorrect!');
                     return next();
                 }
             }
@@ -202,8 +205,8 @@ const createUserVote = (req, res, next) => {
                 for (let index = 0; index < voteInfo.option.length; index++) {
                     if (index == optionArray[i].index) {
                         //更新选项投票数
-                        voteInfo.option[index].voteNum = voteInfo.option[index].voteNum + 1;
-                        VoteModel.updateOne({"option.txt" : optionArray[i].txt},{$set:{"option.$.voteNum":voteInfo.option[index].voteNum}}).exec((error,result)=> {
+                        voteInfo.option[index].num = voteInfo.option[index].num + 1;
+                        VoteModel.updateOne({"option.txt" : optionArray[i].txt},{$set:{"option.$.num":voteInfo.option[index].num}}).exec((error,result)=> {
                             if (error) {
                                 logger.error(' createUserVote updateOptionVoteNum ' + error.message);
                             } else {
@@ -221,16 +224,16 @@ const createUserVote = (req, res, next) => {
     const updateVoteNum =()=>{
         return new Promise((resolve, reject) => {
             let queryVote = VoteModel.find({});
-            if(bodyParams._voteId){
+            if(bodyParams.voteId){
                 if(path.userId.length == 24){
-                    queryVote.where('_id').equals(mongoose.mongo.ObjectId(bodyParams._voteId));
+                    queryVote.where('_id').equals(mongoose.mongo.ObjectId(bodyParams.voteId));
                 }else{
-                    logger.info('createUserVote updateVoteNum _userId format incorrect!');
+                    logger.info('createUserVote updateVoteNum _user_id format incorrect!');
                     return next();
                 }
             }
             //投票数数加一
-            VoteModel.findOneAndUpdate(queryVote,{ $inc: { participantsNum: 1 } }).exec((error,rows)=> {
+            VoteModel.findOneAndUpdate(queryVote,{ $inc: { participants_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserVote updateVoteNum ' + error.message);
                 } else {
@@ -246,14 +249,14 @@ const createUserVote = (req, res, next) => {
             let queryUser = UserDetailModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createUserVote updateUserVoteNum _userId format incorrect!');
+                    logger.info('createUserVote updateUserVoteNum _user_id format incorrect!');
                     return next();
                 }
             }
             //投票数数加一
-            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { voteNum: 1 } }).exec((error,rows)=> {
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { vote_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createUserVote updateUserVoteNum ' + error.message);
                 } else {

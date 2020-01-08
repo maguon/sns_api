@@ -4,29 +4,29 @@ const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
-const logger = serverLogger.createLogger('UserLocationCollectionsController');
+const logger = serverLogger.createLogger('UserLocaCollController');
 
-const {UserLocationCollectionsModel} = require('../modules');
+const {UserLocaCollModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
-const getUserLocationCollections = (req, res, next) => {
+const getUserLocaColl = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserLocationCollectionsModel.find({status:sysConsts.INFO.status.available});
+    let query = UserLocaCollModel.find({status:sysConsts.INFO.status.available});
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getUserLocationCollections  userId format incorrect!');
+            logger.info('getUserLocaColl  userId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.userLocationCollectionsId){
-        if(params.userLocationCollectionsId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocationCollectionsId));
+    if(params.userLocaCollId){
+        if(params.userLocaCollId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocaCollId));
         }else{
-            logger.info('getUserLocationCollections  userLocationCollectionsId format incorrect!');
+            logger.info('getUserLocaColl  userLocaCollId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.ADDRESS_COLLECTIONS_ID_NULL);
             return next();
         }
@@ -36,37 +36,43 @@ const getUserLocationCollections = (req, res, next) => {
     }
     query.exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserLocationCollections ' + error.message);
+            logger.error(' getUserLocaColl ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserLocationCollections ' + 'success');
+            logger.info(' getUserLocaColl ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
     });
 }
-const createUserLocationCollections = (req, res, next) => {
+const createUserLocaColl = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
-    let userLocationCollectionsObj = bodyParams;
+    let userLocaCollObj = bodyParams;
     const saveCollections =()=>{
         return new Promise((resolve, reject) => {
             if(path.userId){
                 if(path.userId.length == 24){
-                    userLocationCollectionsObj._userId = mongoose.mongo.ObjectId(path.userId);
+                    userLocaCollObj._user_id = mongoose.mongo.ObjectId(path.userId);
                 }else{
-                    logger.info('createUserLocationCollections  userID format incorrect!');
+                    logger.info('createUserLocaColl  userID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
                     return next();
                 }
             }
-            let userLocationCollectionsModel = new UserLocationCollectionsModel(userLocationCollectionsObj);
-            userLocationCollectionsModel.save(function(error,result){
+            if(bodyParams.addressName){
+                userLocaCollObj.address_name = bodyParams.addressName;
+            }
+            if(bodyParams.addressReal){
+                userLocaCollObj.address_real = bodyParams.addressReal;
+            }
+            let userLocaCollModel = new UserLocaCollModel(userLocaCollObj);
+            userLocaCollModel.save(function(error,result){
                 if (error) {
-                    logger.error(' createUserLocationCollections ' + error.message);
+                    logger.error(' createUserLocaColl ' + error.message);
                     reject({err:reject.err});
                 } else {
-                    logger.info(' createUserLocationCollections ' + 'success');
+                    logger.info(' createUserLocaColl ' + 'success');
                     resolve(result);
                 }
             })
@@ -78,18 +84,18 @@ const createUserLocationCollections = (req, res, next) => {
             let queryUser = UserDetailModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
-                    queryUser.where('_userId').equals(mongoose.mongo.ObjectId(path.userId));
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info('createUserLocationCollections updateCollectionNum _userId format incorrect!');
+                    logger.info('createUserLocaColl updateCollectionNum _user_id format incorrect!');
                     return next();
                 }
             }
             //投票数数加一
-            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { locationCollectionNum: 1 } }).exec((error,rows)=> {
+            UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { loca_coll_num: 1 } }).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' createUserLocationCollections updateCollectionNum ' + error.message);
+                    logger.error(' createUserLocaColl updateCollectionNum ' + error.message);
                 } else {
-                    logger.info(' createUserLocationCollections updateCollectionNum ' + 'success');
+                    logger.info(' createUserLocaColl updateCollectionNum ' + 'success');
                     resUtil.resetCreateRes(res, result);
                     return next();
                 }
@@ -106,6 +112,6 @@ const createUserLocationCollections = (req, res, next) => {
 
 }
 module.exports = {
-    getUserLocationCollections,
-    createUserLocationCollections
+    getUserLocaColl,
+    createUserLocaColl
 };
