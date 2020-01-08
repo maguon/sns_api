@@ -53,7 +53,7 @@ const getPrivacieByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.privacieId));
         }else{
             logger.info('getPrivacieByAdmin  privacieId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRIVACY_SETTINGS_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.PRIVACIE_ID_NULL_ERROR);
             return next();
         }
     }

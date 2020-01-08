@@ -572,7 +572,7 @@ const deleteUserRelation = (req, res, next) => {
                     queryRel.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.followUserId));
                 }else{
                     logger.info(' deleteUserRelation delRelation followUserId format incorrect!');
-                    resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
                     return next();
                 }
             }

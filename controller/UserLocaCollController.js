@@ -27,7 +27,7 @@ const getUserLocaColl = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocaCollId));
         }else{
             logger.info('getUserLocaColl  userLocaCollId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.ADDRESS_COLLECTIONS_ID_NULL);
+            resUtil.resetUpdateRes(res,null,systemMsg.LOCA_COLL_ID_NULL);
             return next();
         }
     }

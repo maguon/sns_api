@@ -26,7 +26,7 @@ const getSysMsg = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.sysMsgId));
         }else{
             logger.info('getSysMsg sysMsgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.SYS_MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -181,7 +181,7 @@ const getSysMsgByAdmin = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.sysMsgId);
         }else{
             logger.info('getSysMsgByAdmin sysMsgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.SYS_MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -274,7 +274,7 @@ const updateStatusByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(path.sysMsgId));
         }else{
             logger.info('updateStatusByAdmin  sysMsgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.SYS_MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -297,7 +297,7 @@ const deleteSysMsg = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(path.sysMsgId));
         }else{
             logger.info(' deleteApp sysMsgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.SYSTEM_MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.SYS_MSG_ID_NULL_ERROR);
             return next();
         }
     }

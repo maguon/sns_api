@@ -27,7 +27,7 @@ const getUserMsgColl = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userMsgCollId));
         }else{
             logger.info('getUserMsgColl  userMsgCollId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_COLLECTIONS_ID_NULL);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_COLL_ID_NULL);
             return next();
         }
     }

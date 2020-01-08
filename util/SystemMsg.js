@@ -40,39 +40,39 @@ let PRAISE_TYPE_ERROR ="点赞类型不存在！" ;
  */
 let USER_VOTE_CREATE_ERROR ="该用户已投票！" ;
 /**
- * The module for userLocationCollection
+ * The module for userLocaColl
  */
-let ADDRESS_COLLECTIONS_ID_NULL ="收藏位置不存在！" ;
+let LOCA_COLL_ID_NULL ="收藏位置不存在！" ;
 /**
- * The module for userMessageCollection
+ * The module for userMsgColl
  */
-let MESSAGE_COLLECTIONS_ID_NULL ="收藏动态不存在！" ;
+let MSG_COLL_ID_NULL ="收藏动态不存在！" ;
 /**
- * The module for messages
+ * The module for msg
  */
-let MESSAGE_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
-let MESSAGE_ID_NULL_ERROR ="该动态不存在！" ;
+let MSG_DELETE_ADMIN_ERROR = "该管理员无权删除此消息！" ; // The admin has no right to delete this message
+let MSG_ID_NULL_ERROR ="该动态不存在！" ;
 /**
- * The module for comments
+ * The module for comment
  */
-let COMMENTS_ID_NULL_ERROR ="该评论不存在！" ;
+let COMMENT_ID_NULL_ERROR ="该评论不存在！" ;
 /**
  * The module for vote
  */
 let VOTE_ID_NULL_ERROR ="投票信息不存在！" ;
 let VOTE_STATUS_NULL_ERROR ="该状态下，投票信息不允许修改！" ;
 /**
- * The module for system_message
+ * The module for sys_msg
  */
-let SYSTEM_MESSAGE_ID_NULL_ERROR ="系统消息不存在！" ;
+let SYS_MSG_ID_NULL_ERROR ="系统消息不存在！" ;
 /**
- * The module for privacy_settings
+ * The module for privacie
  */
-let PRIVACY_SETTINGS_ID_NULL_ERROR ="隐私设置信息不存在！" ;
+let PRIVACIE_ID_NULL_ERROR ="隐私设置信息不存在！" ;
 /**
- * The module for notification_settings
+ * The module for notice
  */
-let NOTIFICATION_SETTINGS_ID_NULL_ERROR ="通知设置信息不存在！" ;
+let NOTICE_ID_NULL_ERROR ="通知设置信息不存在！" ;
 /**
  * The module for about
  */
@@ -113,23 +113,23 @@ module.exports = {
 
     USER_VOTE_CREATE_ERROR,
 
-    ADDRESS_COLLECTIONS_ID_NULL,
+    LOCA_COLL_ID_NULL,
 
-    MESSAGE_COLLECTIONS_ID_NULL,
+    MSG_COLL_ID_NULL,
 
-    MESSAGE_DELETE_ADMIN_ERROR,
-    MESSAGE_ID_NULL_ERROR,
+    MSG_DELETE_ADMIN_ERROR,
+    MSG_ID_NULL_ERROR,
 
-    COMMENTS_ID_NULL_ERROR,
+    COMMENT_ID_NULL_ERROR,
 
     VOTE_ID_NULL_ERROR,
     VOTE_STATUS_NULL_ERROR,
 
-    SYSTEM_MESSAGE_ID_NULL_ERROR,
+    SYS_MSG_ID_NULL_ERROR,
 
-    PRIVACY_SETTINGS_ID_NULL_ERROR,
+    PRIVACIE_ID_NULL_ERROR,
 
-    NOTIFICATION_SETTINGS_ID_NULL_ERROR,
+    NOTICE_ID_NULL_ERROR,
 
     ABOUT_ID_NULL_ERROR,
 

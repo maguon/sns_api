@@ -38,7 +38,7 @@ const getMsg = (req, res, next) =>{
             matchObj._id = mongoose.mongo.ObjectId(params.msgId);
         }else{
             logger.info('getAllMsg  msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -231,7 +231,7 @@ const updateMsgStatus = (req, res, next) => {
             queryMessge.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
             logger.info('updateMsgStatus  msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -284,7 +284,7 @@ const deleteMsg = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
             logger.info('deleteMsg msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -325,7 +325,7 @@ const getMsgByAdmin = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.msgId);
         }else{
             logger.info('getMsgByAdmin  msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
@@ -418,7 +418,7 @@ const deleteMsgByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(path.msgId));
         }else{
             logger.info('deleteMsgByAdmin msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MESSAGE_ID_NULL_ERROR);
+            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
