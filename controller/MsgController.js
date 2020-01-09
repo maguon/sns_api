@@ -71,7 +71,6 @@ const getMsg = (req, res, next) =>{
             logger.error(' getAllMsg ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getAllMsg ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
