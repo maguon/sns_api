@@ -54,6 +54,9 @@ const getMsg = (req, res, next) =>{
     aggregate_limit.push({
         $match: matchObj
     });
+    aggregate_limit.push({
+        $sort: { "created_at": -1 }
+    });
     if (params.start && params.size) {
         aggregate_limit.push(
             {
@@ -347,6 +350,9 @@ const getMsgByAdmin = (req, res, next) => {
     aggregate_limit.push({
         $match: matchObj
     });
+    aggregate_limit.push({
+        $sort: { "created_at": -1 }
+    });
     if (params.start && params.size) {
         aggregate_limit.push(
             {
@@ -398,6 +404,9 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
             _id: {type:"$type"},
             count:{$sum:1}
         }
+    });
+    aggregate_limit.push({
+        $sort: { "created_at": -1 }
     });
     MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
