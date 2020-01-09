@@ -2776,8 +2776,8 @@
         "tags": [
           "msg"
         ],
-        "summary": "Select popularMsg Info",
-        "description": "get popularMsg info",
+        "summary": "Select popular Msg Info",
+        "description": "get popular Msg info",
         "produces": [
           "application/json"
         ],
