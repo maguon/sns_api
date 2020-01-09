@@ -496,14 +496,14 @@ const updateReadStatus = (req, res, next) => {
         }
     })
 }
-const deleteComments = (req, res, next) => {
+const deleteComment = (req, res, next) => {
     let path = req.params;
     let query = MsgModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('deleteComments userID format incorrect!');
+            logger.info('deleteComment userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -512,17 +512,17 @@ const deleteComments = (req, res, next) => {
         if(path.msgComId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('deleteComments msgComId format incorrect!');
+            logger.info('deleteComment msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
     }
     MsgCommentModel.deleteOne(query,function(error,result){
         if(error){
-            logger.error('deleteComments ' + error.message);
+            logger.error('deleteComment ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteComments ' + 'success');
+            logger.info('deleteComment ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -783,24 +783,24 @@ const updateStatusByAdmin = (req, res, next) => {
         }
     })
 }
-const deleteCommentsByAdmin = (req, res, next) => {
+const deleteCommentByAdmin = (req, res, next) => {
     let path = req.params;
     let query = MsgCommentModel.find({});
     if(path.msgComId){
         if(path.msgComId.length == 24){
             query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
         }else{
-            logger.info('deleteCommentsByAdmin msgComId format incorrect!');
+            logger.info('deleteCommentByAdmin msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
             return next();
         }
     }
     MsgCommentModel.deleteOne(query,function(error,result){
         if(error){
-            logger.error('deleteCommentsByAdmin ' + error.message);
+            logger.error('deleteCommentByAdmin ' + error.message);
             resUtil.resInternalError(error,res,next);
         }else{
-            logger.info('deleteCommentsByAdmin ' + 'success');
+            logger.info('deleteCommentByAdmin ' + 'success');
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -812,10 +812,10 @@ module.exports = {
     getAllMsgComment,
     createMsgComment,
     updateReadStatus,
-    deleteComments,
+    deleteComment,
     getMsgCommentByAdmin,
     getMsgCommentCountByAdmin,
     getMsgCommentTodayCountByAdmin,
     updateStatusByAdmin,
-    deleteCommentsByAdmin
+    deleteCommentByAdmin
 };
