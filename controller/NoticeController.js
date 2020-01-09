@@ -93,7 +93,7 @@ const updateNotice = (req, res, next) => {
             return next();
         }
     }
-    if(bodyParams.followAddmsg){
+    if(bodyParams.followAddmsg != undefined){
         bodyParams.follow_addmsg = bodyParams.followAddmsg;
     }
     NoticeModel.updateOne(query,bodyParams,function(error,result){

@@ -93,10 +93,10 @@ const updatePrivacie = (req, res, next) => {
             return next();
         }
     }
-    if(bodyParams.recommendToFriends){
+    if(bodyParams.recommendToFriends != undefined){
         bodyParams.recommend_to_friends = bodyParams.recommendToFriends;
     }
-    if(bodyParams.msgAuthority){
+    if(bodyParams.msgAuthority != undefined){
         bodyParams.msg_authority = bodyParams.msgAuthority;
     }
     PrivacieModel.updateOne(query,bodyParams,function(error,result){
