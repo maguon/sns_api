@@ -123,9 +123,9 @@ const getVoteByAdmin = (req, res, next) => {
             as: "admin_info"
         }
     });
-    if (params.adminId ) {
-        if (params.adminId .length == 24) {
-            matchObj._adminId  = mongoose.mongo.ObjectId(params.adminId );
+    if (params.voteId ) {
+        if (params.voteId .length == 24) {
+            matchObj._id  = mongoose.mongo.ObjectId(params.voteId );
         } else {
             logger.info('getVoteByAdmin adminId format incorrect!');
             resUtil.resetQueryRes(res, [], null);
