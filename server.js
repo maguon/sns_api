@@ -176,10 +176,11 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/userMsgColl', UserMsgCollController.getUserMsgColl);
 
     /**
-     messages    -微博动态
+     msg    -微博动态
      */
     server.post({path:'/api/user/:userId/msg',contentType: 'application/json'}, MsgController.createMsg);
     server.get('/api/user/:userId/msg', MsgController.getMsg);
+    server.get('/api/user/:userId/popularMsg', MsgController.getPopularMsg);
     server.get('/api/user/:userId/msgCount', MsgController.getMsgCount);
     server.get('/api/user/:userId/searchByRadius', MsgController.searchByRadius);
     server.put({path:'/api/user/:userId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
@@ -199,13 +200,13 @@ const createServer=()=>{
     server.get('/api/user/:userId/allMsgComment', MsgCommentController.getAllMsgComment);
     server.post({path:'/api/user/:userId/msgComment',contentType: 'application/json'}, MsgCommentController.createMsgComment);
     server.put({path:'/api/user/:userId/msgCom/:msgComId/readStatus',contentType: 'application/json'} ,MsgCommentController.updateReadStatus);
-    server.del({path:'/api/user/:userId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteComments);
+    server.del({path:'/api/user/:userId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteComment);
 
     server.get('/api/admin/:adminId/msgComment', MsgCommentController.getMsgCommentByAdmin);
     server.get('/api/admin/:adminId/msgCommentCount', MsgCommentController.getMsgCommentCountByAdmin);
     server.get('/api/admin/:adminId/todayMsgCommentCount', MsgCommentController.getMsgCommentTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/msgCom/:msgComId/status',contentType: 'application/json'} ,MsgCommentController.updateStatusByAdmin);
-    server.del({path:'/api/admin/:adminId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteCommentsByAdmin);
+    server.del({path:'/api/admin/:adminId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteCommentByAdmin);
     /**
      vote      - 投票信息
      */

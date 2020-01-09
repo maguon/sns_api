@@ -2771,6 +2771,51 @@
         }
       }
     },
+    "/user/{userId}/popularMsg": {
+      "get": {
+        "tags": [
+          "msg"
+        ],
+        "summary": "Select popularMsg Info",
+        "description": "get popularMsg info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "文章状态（0-不可见，1-可见(默认)）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
     "/user/{userId}/msgCount": {
       "get": {
         "tags": [

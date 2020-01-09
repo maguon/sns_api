@@ -28,7 +28,7 @@ const getMsg = (req, res, next) =>{
         if(params.sendMsgUserId.length == 24){
             matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
         }else{
-            logger.info('getAllMsg  sendMsgUserId format incorrect!');
+            logger.info('getMsg  sendMsgUserId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
@@ -37,7 +37,7 @@ const getMsg = (req, res, next) =>{
         if(params.msgId.length == 24){
             matchObj._id = mongoose.mongo.ObjectId(params.msgId);
         }else{
-            logger.info('getAllMsg  msgId format incorrect!');
+            logger.info('getMsg  msgId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
             return next();
         }
@@ -68,10 +68,52 @@ const getMsg = (req, res, next) =>{
     };
     MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getAllMsg ' + error.message);
+            logger.error(' getMsg ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getAllMsg ' + 'success');
+            logger.info(' getMsg ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+const getPopularMsg = (req, res, next) =>{
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_id",
+            foreignField: "_user_id",
+            as: "user_detail_info"
+        }
+    });
+
+    if (params.status) {
+        matchObj.status = Number(params.status);
+    }
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $sort: { "agree_num": -1 ,"comment_num": -1}
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getPopularMsg ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getPopularMsg ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -443,6 +485,7 @@ const deleteMsgByAdmin = (req, res, next) => {
 }
 module.exports = {
     getMsg,
+    getPopularMsg,
     getMsgCount,
     createMsg,
     updateMsgStatus,
