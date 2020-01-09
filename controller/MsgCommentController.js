@@ -307,7 +307,7 @@ const createMsgComment = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createMsgComment updateMessageNum ' + 'success');
-                    resUtil.resetQueryRes(res, returnMessage);
+                    resUtil.resetCreateRes(res, returnMessage);
                     return next();
                 }
             });
