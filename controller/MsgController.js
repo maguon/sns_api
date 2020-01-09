@@ -146,7 +146,7 @@ const createMsg = (req, res, next) => {
     msgObj.read_num = 0;
     if(path.userId){
         if(path.userId.length == 24){
-            msgObjs._user_id = mongoose.mongo.ObjectId(path.userId);
+            msgObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('createMsg  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);

@@ -2660,6 +2660,47 @@
     },
 
     "/user/{userId}/msg": {
+      "post": {
+        "tags": [
+          "msg"
+        ],
+        "summary": "Add a new msg info",
+        "description": "",
+        "operationId": "addMsg",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"msgInfo",
+            "description": "Msg object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Msg"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
       "get": {
         "tags": [
           "msg"
