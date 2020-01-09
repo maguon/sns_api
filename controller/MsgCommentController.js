@@ -752,7 +752,6 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
             logger.error(' getMsgCommentTodayCountByAdmin getComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
