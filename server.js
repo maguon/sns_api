@@ -181,6 +181,7 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/msg',contentType: 'application/json'}, MsgController.createMsg);
     server.get('/api/user/:userId/msg', MsgController.getMsg);
     server.get('/api/user/:userId/popularMsg', MsgController.getPopularMsg);
+    server.get('/api/user/:userId/followUserMsg', MsgController.getFollowUserMsg);
     server.get('/api/user/:userId/msgCount', MsgController.getMsgCount);
     server.get('/api/user/:userId/searchByRadius', MsgController.searchByRadius);
     server.put({path:'/api/user/:userId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);

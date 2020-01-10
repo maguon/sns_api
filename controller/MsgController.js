@@ -10,6 +10,7 @@ const logger = serverLogger.createLogger('MsgController');
 
 const {MsgModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
+const {UserRelationModel} = require('../modules');
 
 const getMsg = (req, res, next) =>{
     let params = req.query;
@@ -118,6 +119,101 @@ const getPopularMsg = (req, res, next) =>{
             return next();
         }
     });
+}
+const getFollowUserMsg = (req, res, next) =>{
+    let path = req.params;
+    let params = req.query;
+    //查询关注人的ID
+    const getFollowUserId =()=>{
+        return new Promise((resolve, reject) => {
+            let queryRelation = UserRelationModel.find({},{_id:1});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryRelation.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('getFollowUserMsg getFollowUserId userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            queryRelation.exec((error,rows)=> {
+                if (error) {
+                    logger.error('getFollowUserMsg getFollowUserId ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info('getFollowUserMsg getFollowUserId ' + 'success');
+                    if(rows.length >0){
+                        resolve(rows);
+                    }else{
+                        resUtil.resetQueryRes(res, [],null);
+                        return next();
+                    }
+                }
+            });
+        });
+    }
+
+    //根据用户编号数组查询文章
+    const getMsgInfo =(followUserInfo)=>{
+        return new Promise(()=>{
+
+            let aggregate_limit = [];
+            let matchObj = {};
+            aggregate_limit.push({
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            });
+            let queryId =[];
+            for(let i=0; i < followUserInfo.length; i++ ){
+                queryId.push(followUserInfo[i]._doc._id);
+            }
+            // if(followUserInfo.length > 0){
+            //     matchObj["$in"]= [{"_user_id" :followUserInfo}];
+            // }
+            if (params.status) {
+                matchObj.status = Number(params.status);
+            }
+            aggregate_limit.push({
+                $match: matchObj
+            });
+            aggregate_limit.push({
+                $sort: { "created_at": -1 }
+            });
+            if (params.start && params.size) {
+                aggregate_limit.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+            MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getFollowUserMsg getMsgInfo ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getFollowUserMsg getMsgInfo ' + 'success');
+                    resUtil.resetQueryRes(res, rows);
+                    return next();
+                }
+            });
+        });
+    }
+    getFollowUserId()
+        .then(getMsgInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
 }
 const getMsgCount = (req, res, next) => {
     let params = req.query;
@@ -486,6 +582,7 @@ const deleteMsgByAdmin = (req, res, next) => {
 module.exports = {
     getMsg,
     getPopularMsg,
+    getFollowUserMsg,
     getMsgCount,
     createMsg,
     updateMsgStatus,
