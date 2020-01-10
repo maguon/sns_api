@@ -126,7 +126,7 @@ const getFollowUserMsg = (req, res, next) =>{
     //查询关注人的ID
     const getFollowUserId =()=>{
         return new Promise((resolve, reject) => {
-            let queryRelation = UserRelationModel.find({},{_id:1});
+            let queryRelation = UserRelationModel.find({});
             if(path.userId){
                 if(path.userId.length == 24){
                     queryRelation.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
@@ -169,11 +169,11 @@ const getFollowUserMsg = (req, res, next) =>{
             });
             let queryId =[];
             for(let i=0; i < followUserInfo.length; i++ ){
-                queryId.push(followUserInfo[i]._doc._id);
+                queryId[i] = mongoose.mongo.ObjectId(followUserInfo[i]._doc._user_by_id);
             }
-            // if(followUserInfo.length > 0){
-            //     matchObj["$in"]= [{"_user_id" :followUserInfo}];
-            // }
+            if(followUserInfo.length > 0){
+                matchObj._user_id = {$in : queryId};
+            }
             if (params.status) {
                 matchObj.status = Number(params.status);
             }
@@ -213,7 +213,6 @@ const getFollowUserMsg = (req, res, next) =>{
                 resUtil.resetFailedRes(res,reject.msg);
             }
         })
-
 }
 const getMsgCount = (req, res, next) => {
     let params = req.query;
