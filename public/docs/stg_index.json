@@ -4460,8 +4460,8 @@
         "tags": [
           "sysMsg"
         ],
-        "summary": "Select sysMsg Info",
-        "description": "get sysMsg info",
+        "summary": "Select sys Msg Info",
+        "description": "get sys Msg info",
         "produces": [
           "application/json"
         ],
