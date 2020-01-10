@@ -4474,13 +4474,6 @@
             "type": "string"
           },
           {
-            "name": "publisherId",
-            "in": "query",
-            "description": "发布人ID",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "sysMsgId",
             "in": "query",
             "description": "系统消息ID",

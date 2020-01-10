@@ -10,13 +10,14 @@ const {SysMsgModel} = require('../modules');
 const {UserModel} = require('../modules');
 
 const getSysMsg = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
     let query = SysMsgModel.find({});
-    if(params.publisherId){
-        if(params.publisherId.length == 24){
-            query.where('_admin_id').equals(mongoose.mongo.ObjectId(params.publisherId));
+    if(path.userId ){
+        if(path.userId .length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
-            logger.info('getSysMsg publisherId format incorrect!');
+            logger.info('getSysMsg userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
