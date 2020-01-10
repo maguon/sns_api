@@ -30,6 +30,16 @@ const getFollow = (req, res, next) => {
             return next();
         }
     }
+    //被关注用户编号
+    if(params.userById){
+        if(params.userById.length == 24){
+            query.where('_user_by_id').equals(mongoose.mongo.ObjectId(params.userById));
+        }else{
+            logger.info('getFollow userById format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.readStatus){
         query.where('read_status').equals(params.readStatus);
     }
@@ -108,6 +118,16 @@ const getFollowUserInfo = (req, res, next) => {
         }else{
             logger.info('getFollowUserInfo userRelationId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    //被关注用户编号
+    if(params.userById){
+        if(params.userById.length == 24){
+            matchObj._user_by_id = mongoose.mongo.ObjectId(params.userById);
+        }else{
+            logger.info('getFollow userById format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }

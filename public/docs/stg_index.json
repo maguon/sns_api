@@ -1367,10 +1367,18 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userById",
+            "in": "query",
+            "description": "被关注用户Id",
             "required": false,
             "type": "string"
           },
@@ -1444,10 +1452,18 @@
             "description": "用户ID",
             "required": true,
             "type": "string"
-          },          {
+          },
+          {
             "name": "userRelationId",
             "in": "query",
             "description": "用户关系Id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userById",
+            "in": "query",
+            "description": "被关注用户Id",
             "required": false,
             "type": "string"
           },
