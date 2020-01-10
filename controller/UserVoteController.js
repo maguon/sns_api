@@ -66,35 +66,58 @@ const getUserVote = (req, res, next) => {
 }
 const getUserVoteByAdmin = (req, res, next) => {
     let params = req.query;
-    let query = UserVoteModel.find({});
+
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_id",
+            foreignField: "_user_id",
+            as: "user_detail_info"
+        }
+    });
 
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
+            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
-            logger.info('getUserVote  userID format incorrect!');
+            logger.info('getUserVoteByAdmin  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
     }
     if(params.voteId){
         if(params.voteId.length == 24){
-            query.where('_vote_id').equals(mongoose.mongo.ObjectId(params.voteId));
+            matchObj._vote_id = mongoose.mongo.ObjectId(params.voteId);
         }else{
-            logger.info('getUserVote  voteId format incorrect!');
+            logger.info('getUserVoteByAdmin  voteId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
             return next();
         }
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $sort: { "created_at": -1 }
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserVoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getUserVote ' + error.message);
+            logger.error(' getUserVoteByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getUserVote ' + 'success');
+            logger.info(' getUserVoteByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
