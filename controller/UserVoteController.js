@@ -67,61 +67,130 @@ const getUserVote = (req, res, next) => {
 const getUserVoteByAdmin = (req, res, next) => {
     let params = req.query;
 
-    let aggregate_limit = [];
-    let matchObj = {};
-    aggregate_limit.push({
-        $lookup: {
-            from: "user_details",
-            localField: "_user_id",
-            foreignField: "_user_id",
-            as: "user_detail_info"
-        }
-    });
+    const getUserVoteId =()=>{
+        return new Promise((resolve, reject) => {
+            let aggregate_limit = [];
+            let matchObj = {};
+            aggregate_limit.push({
+                $unwind: "$option_item"
+            });
 
-    if(params.userId){
-        if(params.userId.length == 24){
-            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
-        }else{
-            logger.info('getUserVoteByAdmin  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.voteId){
-        if(params.voteId.length == 24){
-            matchObj._vote_id = mongoose.mongo.ObjectId(params.voteId);
-        }else{
-            logger.info('getUserVoteByAdmin  voteId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
-            return next();
-        }
-    }
-
-    aggregate_limit.push({
-        $match: matchObj
-    });
-    aggregate_limit.push({
-        $sort: { "created_at": -1 }
-    });
-    if (params.start && params.size) {
-        aggregate_limit.push(
-            {
-                $skip : Number(params.start)
-            },{
-                $limit : Number(params.size)
+            if(params.userId){
+                if(params.userId.length == 24){
+                    matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
+                }else{
+                    logger.info('getUserVoteByAdmin  getUserVoteId userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
             }
-        );
-    };
-    UserVoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getUserVoteByAdmin ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getUserVoteByAdmin ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
+            if(params.voteId){
+                if(params.voteId.length == 24){
+                    matchObj._vote_id = mongoose.mongo.ObjectId(params.voteId);
+                }else{
+                    logger.info('getUserVoteByAdmin  getUserVoteId voteId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(params.phone){
+                matchObj['user_login_info.phone']  = params.phone;
+            }
+
+            let queryIndex =[];
+            if(params.optionIndex){
+                var result = params.optionIndex.split(",");
+                for(var i=0;i<result.length;i++){
+                    queryIndex[i] = Number(result[i]);
+                }
+                matchObj["option_item.index"] = { "$in" : queryIndex};
+            }
+            aggregate_limit.push({
+                $match: matchObj
+            });
+            aggregate_limit.push({
+                $group:{
+                    _id: "$_id"
+                }
+            });
+            UserVoteModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserVoteByAdmin getUserVoteId ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getUserVoteByAdmin getUserVoteId ' + 'success');
+                    resolve(rows);
+                    // resUtil.resetQueryRes(res, rows);
+                    // return next();
+                }
+            });
+        });
+    }
+
+    const getUserVoteInfo =(userVoteIds)=>{
+        return new Promise(()=>{
+            let aggregate_limit_info = [];
+            let matchObjInfo = {};
+            aggregate_limit_info.push({
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            },{
+                $lookup: {
+                    from: "user_infos",
+                    localField: "_user_id",
+                    foreignField: "_id",
+                    as: "user_login_info"
+                }
+            });
+            let queryId =[];
+            for(let i=0; i < userVoteIds.length; i++ ){
+                queryId[i] = mongoose.mongo.ObjectId(userVoteIds[i]._id);
+            }
+            if(userVoteIds.length > 0){
+                matchObjInfo._id = {$in : queryId};
+            }
+            aggregate_limit_info.push({
+                $sort: { "created_at": -1 }
+            });
+            aggregate_limit_info.push({
+                $match: matchObjInfo
+            });
+            if (params.start && params.size) {
+                aggregate_limit_info.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+            UserVoteModel.aggregate(aggregate_limit_info).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserVoteByAdmin getUserVoteId ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getUserVoteByAdmin getUserVoteId ' + 'success');
+                    resUtil.resetQueryRes(res, rows);
+                    return next();
+                }
+            });
+        });
+    }
+
+    getUserVoteId()
+        .then(getUserVoteInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
 }
 const createUserVote = (req, res, next) => {
     let path = req.params;

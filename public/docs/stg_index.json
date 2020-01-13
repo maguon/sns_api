@@ -2370,9 +2370,23 @@
             "type": "string"
           },
           {
+            "name": "phone",
+            "in": "query",
+            "description": "投票用户电话",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "voteId",
             "in": "query",
             "description": "投票ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "optionIndex",
+            "in": "query",
+            "description": "选项",
             "required": false,
             "type": "string"
           },
@@ -4460,8 +4474,8 @@
         "tags": [
           "sysMsg"
         ],
-        "summary": "Select sys Msg Info",
-        "description": "get sys Msg info",
+        "summary": "Select sysMsg Info",
+        "description": "get sysMsg info",
         "produces": [
           "application/json"
         ],
