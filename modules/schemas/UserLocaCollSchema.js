@@ -3,10 +3,10 @@
 const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const userLocaCollSchema = new Schema({
-        address       : {type:Array,index: {type: '2d',sparse: true},display: '地理位置'},
+        address        : {type:Array,index: {type: '2d',sparse: true},display: '地理位置'},
         address_name   : {type:String,default:'',trim:true,display: '地理位置名称'},
         address_real   : {type:String,default:'',trim:true,display: '真实地址'},
-        remarks       : {type:String,default:'',display: '备注'},
+        remarks        : {type:String,default:'',display: '备注'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',

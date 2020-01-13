@@ -12,7 +12,6 @@ const getVote = (req, res, next) => {
     let path = req.params;
     let params = req.query;
     let returnMsg = [];
-
     const getVoteInfo =()=>{
         return new Promise((resolve, reject) => {
             let query = VoteModel.find({});
@@ -44,7 +43,6 @@ const getVote = (req, res, next) => {
             });
         });
     }
-
     const getUserVoteInfo =(voteInfo)=>{
         return new Promise((resolve, reject) => {
 
@@ -100,7 +98,6 @@ const getVote = (req, res, next) => {
 
         });
     }
-
     getVoteInfo()
         .then(getUserVoteInfo)
         .catch((reject)=>{
@@ -244,7 +241,6 @@ const updateVote = (req, res, next) =>{
             });
         });
     }
-
     const updateInfo =()=>{
         return new Promise(() => {
             if(bodyParams.maxNum){

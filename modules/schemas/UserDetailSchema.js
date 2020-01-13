@@ -14,8 +14,8 @@ const userDetailSchema = new Schema({
         msg_help_num            : {type:Number,default:0,display: '发布求助数'},
         follow_num              : {type:Number,default:0,display: '我的关注数'},
         attention_num           : {type:Number,default:0,display: '被关注数'},
-        comment_num            : {type:Number,default:0,display: '评论次数'},
-        comment_reply_num      : {type:Number,default:0,display: '评论回复次数'},
+        comment_num             : {type:Number,default:0,display: '评论次数'},
+        comment_reply_num       : {type:Number,default:0,display: '评论回复次数'},
         vote_num                : {type:Number,default:0,display: '参与投票数'},
         msg_coll_num            : {type:Number,default:0,display: '收藏文章数'},
         loca_coll_num           : {type:Number,default:0,display: '收藏位置数'},
@@ -28,7 +28,7 @@ const userDetailSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserDetailModel = mongoose.model('user_detail',userDetailSchema)
+const UserDetailModel = mongoose.model('user_detail',userDetailSchema);
 module.exports = {
     UserDetailModel
 }

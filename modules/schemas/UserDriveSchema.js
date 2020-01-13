@@ -15,7 +15,7 @@ const userDriveSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserDriveModel = mongoose.model('user_drive',userDriveSchema)
+const UserDriveModel = mongoose.model('user_drive',userDriveSchema);
 module.exports = {
     UserDriveModel
 }

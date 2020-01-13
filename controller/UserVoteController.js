@@ -66,7 +66,6 @@ const getUserVote = (req, res, next) => {
 }
 const getUserVoteByAdmin = (req, res, next) => {
     let params = req.query;
-
     const getUserVoteId =()=>{
         return new Promise((resolve, reject) => {
             let aggregate_limit = [];
@@ -138,7 +137,6 @@ const getUserVoteByAdmin = (req, res, next) => {
             });
         });
     }
-
     const getUserVoteInfo =(userVoteIds)=>{
         return new Promise(()=>{
             let aggregate_limit_info = [];
@@ -192,7 +190,6 @@ const getUserVoteByAdmin = (req, res, next) => {
             });
         });
     }
-
     getUserVoteId()
         .then(getUserVoteInfo)
         .catch((reject)=>{

@@ -693,7 +693,6 @@ const updatePhone = (req, res, next) => {
             });
         });
     }
-
     const getCode =()=>{
         return new Promise((resolve, reject) => {
             oAuthUtil.getUserPhoneCode({phone:bodyParams.phone},(error,rows)=>{

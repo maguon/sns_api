@@ -16,7 +16,7 @@ const appSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const AppModel = mongoose.model('app_info',appSchema)
+const AppModel = mongoose.model('app_info',appSchema);
 module.exports = {
     AppModel
 }

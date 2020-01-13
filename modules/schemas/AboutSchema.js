@@ -16,7 +16,7 @@ const aboutSchema = new Schema({
         { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const AboutModel = mongoose.model('about_info',aboutSchema)
+const AboutModel = mongoose.model('about_info',aboutSchema);
 module.exports = {
     AboutModel
 }

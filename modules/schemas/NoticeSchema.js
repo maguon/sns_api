@@ -8,7 +8,7 @@ const noticeSchema = new Schema({
         comment                 : {type:Number,default:1,display: '评论(0-不通知，1-通知(默认))'},
         attention               : {type:Number,default:1,display: '被关注(0-不通知，1-通知(默认))'},
         others                  : {type:Number,default:1,display: '@其他人(0-不通知，1-通知(默认))'},
-        follow_addmsg        : {type:Number,default:1,display: '关注人发布的作品(0-不通知，1-通知(默认))'},
+        follow_addmsg           : {type:Number,default:1,display: '关注人发布的作品(0-不通知，1-通知(默认))'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user',
