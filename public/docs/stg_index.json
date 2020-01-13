@@ -2924,13 +2924,13 @@
         }
       }
     },
-    "/user/{userId}/searchByRadius": {
+    "/user/{userId}/nearbyMsg": {
       "get": {
         "tags": [
           "msg"
         ],
-        "summary": "Select searchByRadius Info",
-        "description": "Get searchByRadius info",
+        "summary": "Select nearbyMsg Info",
+        "description": "Get nearbyMsg info",
         "produces": [
           "application/json"
         ],
