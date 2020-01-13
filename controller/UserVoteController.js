@@ -72,7 +72,19 @@ const getUserVoteByAdmin = (req, res, next) => {
             let aggregate_limit = [];
             let matchObj = {};
             aggregate_limit.push({
-                $unwind: "$option_item"
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            },{
+                $lookup: {
+                    from: "user_infos",
+                    localField: "_user_id",
+                    foreignField: "_id",
+                    as: "user_login_info"
+                }
             });
 
             if(params.userId){
