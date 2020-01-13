@@ -385,22 +385,22 @@ const updateMsgStatus = (req, res, next) => {
         }
     })
 }
-const searchByRadius = (req, res, next) => {
+const getNearbyMsg = (req, res, next) => {
     let params = req.query;
     let arr =[];
     let str=params.address.slice(1,params.address.length-1);
     arr = str.split(',');
-    let sort = {'updated_at':-1};                              //排序（按登录时间倒序）
+    let sort = {'created_at':-1};                              //排序（按登录时间倒序）
     let query = MsgModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
     query.exec((error, rows)=> {
         if (error) {
-            logger.error(' SearchByRadius ' + error.message);
+            logger.error(' getNearbyMsg ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' SearchByRadius ' + 'success');
+            logger.info(' getNearbyMsg ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
         }
@@ -585,7 +585,7 @@ module.exports = {
     getMsgCount,
     createMsg,
     updateMsgStatus,
-    searchByRadius,
+    getNearbyMsg,
     deleteMsg,
     getMsgByAdmin,
     getMsgCountByAdmin,

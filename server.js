@@ -190,7 +190,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/msg', MsgController.getMsgByAdmin);
     server.get('/api/admin/:adminId/msgCount', MsgController.getMsgCountByAdmin);
     server.get('/api/admin/:adminId/todayMsgCount', MsgController.getTodayMsgCountByAdmin);
-    server.get('/api/admin/:adminId/searchByRadius', MsgController.searchByRadius);
+    server.get('/api/admin/:adminId/nearbyMsg', MsgController.getNearbyMsg);
     server.put({path:'/api/admin/:adminId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
     server.del({path:'/api/admin/:adminId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsgByAdmin);
      /**

@@ -3213,13 +3213,13 @@
         }
       }
     },
-    "/admin/{adminId}/searchByRadius": {
+    "/admin/{adminId}/nearbyMsg": {
       "get": {
         "tags": [
           "msg"
         ],
-        "summary": "Administrator select searchByRadius Info",
-        "description": "administrator get searchByRadius info",
+        "summary": "Administrator select nearbyMsg Info",
+        "description": "administrator get nearbyMsg info",
         "produces": [
           "application/json"
         ],
