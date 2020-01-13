@@ -183,7 +183,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/popularMsg', MsgController.getPopularMsg);
     server.get('/api/user/:userId/followUserMsg', MsgController.getFollowUserMsg);
     server.get('/api/user/:userId/msgCount', MsgController.getMsgCount);
-    server.get('/api/user/:userId/searchByRadius', MsgController.searchByRadius);
+    server.get('/api/user/:userId/nearbyMsg', MsgController.getNearbyMsg);
     server.put({path:'/api/user/:userId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
     server.del({path:'/api/user/:userId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsg);
 
