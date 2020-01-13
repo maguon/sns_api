@@ -21,10 +21,6 @@ const INFO = {
     status: {
         disable:0,//停用
         available:1//可用
-    },
-    read_status:{
-        unread:0,//未读
-        read:1//已读
     }
 }
 const ADMIN ={

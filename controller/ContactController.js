@@ -8,11 +8,33 @@ const logger = serverLogger.createLogger('ContactController');
 const {ContactModel} = require('../modules');
 
 const getContact = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
-    let query = ContactModel.find({});
+
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_user_id",
+                foreignField: "_user_id",
+                as: "follow_user_detail_info"
+            }
+        }
+    )
+    if(path.userId){
+        if(path.userId.length == 24){
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('getContact userId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
     if(params.beInvitedUserId){
         if(params.beInvitedUserId.length == 24){
-            query.where('_be_invited_user_id').equals(mongoose.mongo.ObjectId(params.beInvitedUserId));
+            matchObj._be_invited_user_id = mongoose.mongo.ObjectId(params.beInvitedUserId);
         }else{
             logger.info('getContact beInvitedUserId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -21,7 +43,7 @@ const getContact = (req, res, next) => {
     }
     if(params.contactId){
         if(params.contactId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.contactId));
+            matchObj._id = mongoose.mongo.ObjectId(params.contactId);
         }else{
             logger.info('getContact contactId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -29,12 +51,21 @@ const getContact = (req, res, next) => {
         }
     }
     if(params.status){
-        query.where('status').equals(params.status);
+        matchObj.status = Number(params.status);
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+    if (params.start && params.size){
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    ContactModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getContact ' + error.message);
             resUtil.resInternalError(error,res);

@@ -1383,13 +1383,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1468,13 +1461,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1520,13 +1506,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1563,13 +1542,6 @@
             "description": "被关注用户ID",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -1605,13 +1577,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1627,61 +1592,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/userRelation/{userRelationId}/readStatus": {
-      "put": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Finds userRelation readStatus and update",
-        "description": "Update userRelation readStatus ",
-        "operationId": "update userRelation readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "被关注用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userRelationId",
-            "in": "path",
-            "description": "userRelation unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId not found"
           }
         }
       }
@@ -1755,13 +1665,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1812,13 +1715,6 @@
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
           },
           {
             "in": "query",
@@ -1873,13 +1769,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -1930,13 +1819,6 @@
             "description": "用户关系Id",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
           },
           {
             "in": "query",
@@ -2049,13 +1931,6 @@
             "type": "integer"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2094,13 +1969,6 @@
             "type": "string"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -2116,61 +1984,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/userPraise/{userPraiseId}/readStatus": {
-      "put": {
-        "tags": [
-          "userPraise"
-        ],
-        "summary": "Finds readStatus and update",
-        "description": "Update readStatus ",
-        "operationId": "update readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "被点赞用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userPraiseId",
-            "in": "path",
-            "description": "userPraiseId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or userPraiseId not found"
           }
         }
       }
@@ -2225,13 +2038,6 @@
             "name": "type",
             "in": "query",
             "description": "点赞类型(1.动态 2.评论)",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
             "required": false,
             "type": "integer"
           },
@@ -3445,13 +3251,6 @@
             "type": "integer"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -3517,13 +3316,6 @@
             "type": "integer"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -3581,13 +3373,6 @@
             "type": "integer"
           },
           {
-            "name": "readStatus",
-            "in": "query",
-            "description": "未读状态(0-未读，1-已读)",
-            "required": false,
-            "type": "integer"
-          },
-          {
             "in": "query",
             "name": "start",
             "required": false,
@@ -3603,61 +3388,6 @@
         "responses": {
           "400": {
             "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/user/{userId}/msgCom/{msgComId}/readStatus": {
-      "put": {
-        "tags": [
-          "msgComment"
-        ],
-        "summary": "Finds msgComment readStatus and update",
-        "description": "Update msgComment readStatus ",
-        "operationId": "update msgComment readStatus by id",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "user unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "msgComId",
-            "in": "path",
-            "description": "msgComment unique id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readStatus",
-            "in": "body",
-            "description": "readStatus(0 or 1)",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ReadStatus"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/StatusResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid params "
-          },
-          "404": {
-            "description": "UserId or MsgCommentId not found"
           }
         }
       }
@@ -6305,25 +6035,6 @@
       },
       "xml": {
         "name": "AuthStatus"
-      }
-    },
-    "ReadStatus": {
-      "type": "object",
-      "required": [
-        "readStatus"
-      ],
-      "properties": {
-        "readStatus": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
-        }
-      },
-      "xml": {
-        "name": "ReadStatus"
       }
     },
     "StatusResponse": {

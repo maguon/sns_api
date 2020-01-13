@@ -55,9 +55,6 @@ const getUserPraise = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.readStatus){
-        query.where('read_status').equals(params.readStatus);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -101,9 +98,6 @@ const getUserBePraise = (req, res, next) => {
             as: "msg_comment"
         }
     });
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
-    }
     aggregate_limit.push({
         $match: matchObj
     });
@@ -183,7 +177,6 @@ const createUserPraise = (req, res, next) => {
             if(bodyParams.msgComUserId){
                 bodyParams._msg_com_user_id = bodyParams.msgComUserId;
             }
-            userPraiseObj.read_status = sysConsts.INFO.read_status.unread;
             let userPraiseModel = new UserPraiseModel(userPraiseObj);
             userPraiseModel.save(function(error,result){
                 if (error) {
@@ -258,42 +251,6 @@ const createUserPraise = (req, res, next) => {
             }
         })
 }
-const updateReadStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let path = req.params;
-    let query = UserPraiseModel.find({});
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
-        }else{
-            logger.info('updateReadStatus  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(path.userPraiseId){
-        if(path.userPraiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.userPraiseId));
-        }else{
-            logger.info('updateReadStatus  userPraiseId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(bodyParams.readStatus) {
-        bodyParams.read_status = bodyParams.readStatus;
-    }
-    UserPraiseModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateReadStatus ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateReadStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 const getUserPraiseByAdmin = (req, res, next) => {
     let params = req.query;
     let query = UserPraiseModel.find({});
@@ -337,9 +294,6 @@ const getUserPraiseByAdmin = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.readStatus){
-        query.where('read_status').equals(params.readStatus);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -358,6 +312,5 @@ module.exports = {
     getUserPraise,
     getUserBePraise,
     createUserPraise,
-    updateReadStatus,
     getUserPraiseByAdmin
 };

@@ -40,9 +40,6 @@ const getFollow = (req, res, next) => {
             return next();
         }
     }
-    if(params.readStatus){
-        query.where('read_status').equals(params.readStatus);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -131,9 +128,6 @@ const getFollowUserInfo = (req, res, next) => {
             return next();
         }
     }
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
-    }
     aggregate_limit.push({
         $match: matchObj
     });
@@ -189,9 +183,6 @@ const getAttention = (req, res, next) => {
     if(params.type){
         query.where('type').equals(params.type);
     }
-    if(params.readStatus){
-        query.where('read_status').equals(params.readStatus);
-    }
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
@@ -218,9 +209,6 @@ const getAttentionCount = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
             return next();
         }
-    }
-    if(params.readStatus){
-        query.where('read_status').equals(params.readStatus);
     }
     query.countDocuments().exec((error,rows)=> {
         if (error) {
@@ -274,9 +262,6 @@ const getAttentionUserInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
             return next();
         }
-    }
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
     }
     aggregate_limit.push({
         $match: matchObj
@@ -502,42 +487,6 @@ const createUserRelation = (req, res, next) => {
             }
         })
 }
-const updateUserRelationReadStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let query = UserRelationModel.find({});
-    let path = req.params;
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
-        }else{
-            logger.info('updateUserRelationReadStatus userById format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(path.userRelationId) {
-        if (path.userRelationId.length == 24) {
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.userRelationId));
-        } else {
-            logger.info('updateUserRelationReadStatus userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(bodyParams.readStatus) {
-        bodyParams.read_status = bodyParams.readStatus;
-    }
-    UserRelationModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateUserRelationReadStatus ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateUserRelationReadStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 const deleteUserRelation = (req, res, next) => {
     let path = req.params;
     let returnMessage;
@@ -647,6 +596,5 @@ module.exports = {
     getAttentionCount,
     getAttentionUserInfo,
     createUserRelation,
-    updateUserRelationReadStatus,
     deleteUserRelation
 };

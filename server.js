@@ -138,7 +138,6 @@ const createServer=()=>{
     server.get('/api/user/:userId/attention', UserRelationController.getAttention);
     server.get('/api/user/:userId/attentionCount', UserRelationController.getAttentionCount);
     server.get('/api/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
-    server.put({path:'/api/user/:userId/userRelation/:userRelationId/readStatus',contentType: 'application/json'} ,UserRelationController.updateUserRelationReadStatus);
     server.del({path:'/api/user/:userId/followUser/:followUserId/del',contentType: 'application/json'},UserRelationController.deleteUserRelation);
 
     server.get('/api/admin/:adminId/user/:userId/follow', UserRelationController.getFollow);
@@ -151,7 +150,6 @@ const createServer=()=>{
     server.post({path:'/api/user/:userId/userPraise',contentType: 'application/json'}, UserPraiseController.createUserPraise);
     server.get('/api/user/:userId/getUserPraise', UserPraiseController.getUserPraise);
     server.get('/api/user/:userId/getUserBePraise', UserPraiseController.getUserBePraise);
-    server.put({path:'/api/user/:userId/userPraise/:userPraiseId/readStatus',contentType: 'application/json'} ,UserPraiseController.updateReadStatus);
 
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraiseByAdmin);
     /**
@@ -200,7 +198,6 @@ const createServer=()=>{
     server.get('/api/user/:userId/userBeMsgComment', MsgCommentController.getUserBeMsgComment);
     server.get('/api/user/:userId/allMsgComment', MsgCommentController.getAllMsgComment);
     server.post({path:'/api/user/:userId/msgComment',contentType: 'application/json'}, MsgCommentController.createMsgComment);
-    server.put({path:'/api/user/:userId/msgCom/:msgComId/readStatus',contentType: 'application/json'} ,MsgCommentController.updateReadStatus);
     server.del({path:'/api/user/:userId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteComment);
 
     server.get('/api/admin/:adminId/msgComment', MsgCommentController.getMsgCommentByAdmin);

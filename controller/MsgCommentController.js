@@ -96,9 +96,6 @@ const getUserMsgComment = (req, res, next) => {
     if(params.level){
         matchObj.level = Number(params.level);
     }
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
-    }
     aggregate_limit.push({
         $match: matchObj
     });
@@ -208,9 +205,6 @@ const getUserBeMsgComment = (req, res, next) => {
     if(params.level){
         matchObj.level = Number(params.level);
     }
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
-    }
     aggregate_limit.push({
         $match: matchObj
     });
@@ -278,9 +272,6 @@ const getAllMsgComment = (req, res, next) => {
     if(params.level){
         matchObj.level = Number(params.level);
     }
-    if(params.readStatus){
-        matchObj.read_status = Number(params.readStatus);
-    }
     aggregate_limit.push({
         $match: matchObj
     });
@@ -332,7 +323,6 @@ const createMsgComment = (req, res, next) => {
                 msgCommentObj._msg_com_user_id = bodyParams.msgComUserId ;
             }
             msgCommentObj.status = sysConsts.COMMENT.status.normal;
-            msgCommentObj.read_status = sysConsts.INFO.read_status.unread;
             msgCommentObj.comment_num = 0;
             msgCommentObj.agree_num = 0;
             if(path.userId){
