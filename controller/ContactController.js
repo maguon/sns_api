@@ -115,8 +115,8 @@ const createContact = (req, res, next) => {
             return next();
         }
     }
-    let ContactModel = new ContactModel(contactObj);
-    ContactModel.save(function(error,result){
+    let contactModel = new ContactModel(contactObj);
+    contactModel.save(function(error,result){
         if (error) {
             logger.error(' createContact ' + error.message);
             resUtil.resInternalError(error,res);
