@@ -95,9 +95,7 @@ const getVote = (req, res, next) => {
     const getRes =()=>{
         return new Promise(() => {
             for(let i=0; i< resInfo.voteInfo.length; i++){
-                console.log("i:"+i);
                 for(let j=0; j<resInfo.userVoteInfo.length; j++ ){
-                    console.log("j:"+j);
                     if(resInfo.voteInfo[i]._doc._id == resInfo.userVoteInfo[j]._doc_id){
                         resInfo.voteInfo[i]._doc.type = 1;//已参与投票
                     }else{
