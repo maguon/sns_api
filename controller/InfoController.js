@@ -67,6 +67,7 @@ const getInfoCount = (req, res, next) => {
     if (params.type) {
         matchObj.type = Number(params.type);
     }
+    matchObj.status = Number(sysConsts.INFO.status.unread);
     aggregate_limit.push({
         $match: matchObj
     });
@@ -89,7 +90,6 @@ const getInfoCount = (req, res, next) => {
     });
 }
 const updateStatus = (req, res, next) => {
-    let bodyParams = req.body;
     let query = InfoModel.find({});
     let path = req.params;
     if(path.userId){

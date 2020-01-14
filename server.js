@@ -229,7 +229,7 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/info', InfoController.getInfo);
     server.get('/api/user/:userId/infoCount', InfoController.getInfoCount);
-    server.put({path:'/api/user/:userId/type/:type',contentType: 'application/json'} ,InfoController.updateStatus);
+    server.put({path:'/api/user/:userId/type/:type/status',contentType: 'application/json'} ,InfoController.updateStatus);
 
     /**
      privacie     - 隐私设置
