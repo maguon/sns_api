@@ -102,6 +102,9 @@ const getVote = (req, res, next) => {
                         resInfo.voteInfo[i]._doc.type = 0;//未已参与投票
                     }
                 }
+                if(resInfo.userVoteInfo.length <= 0 ){
+                    resInfo.voteInfo[i]._doc.type = 0;//未已参与投票
+                }
             }
             logger.info(' getVote getRes ' + 'success');
             resUtil.resetQueryRes(res, resInfo.voteInfo);
