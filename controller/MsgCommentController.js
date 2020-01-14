@@ -56,7 +56,7 @@ const getUserMsgComment = (req, res, next) => {
                 from: "user_details",
                 localField: "_msg_com_user_id",
                 foreignField: "_user_id",
-                as: "comment_user_detail_info"
+                as: "msg_com_user_detail_info"
             }
         }
     );
@@ -165,7 +165,7 @@ const getUserBeMsgComment = (req, res, next) => {
                 from: "user_details",
                 localField: "_msg_com_user_id",
                 foreignField: "_user_id",
-                as: "comment_user_detail_info"
+                as: "msg_com_user_detail_info"
             }
         }
     );
@@ -534,7 +534,7 @@ const getMsgCommentByAdmin = (req, res, next) => {
                 from: "user_details",
                 localField: "_msg_com_user_id",
                 foreignField: "_user_id",
-                as: "comment_user_detail_info"
+                as: "msg_com_user_detail_info"
             }
         }
     );
