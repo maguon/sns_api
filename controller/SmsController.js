@@ -1,5 +1,4 @@
 "use strict"
-
 const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const oauthUtil = require('../util/OAuthUtil.js');

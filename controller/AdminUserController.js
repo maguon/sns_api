@@ -10,7 +10,6 @@ const logger = serverLogger.createLogger('AdminUserController');
 
 const {AdminUserModel} = require('../modules');
 
-
 const getAdminUser = (req, res, next) => {
     let params = req.query;
     let query = AdminUserModel.find({},{password:0});

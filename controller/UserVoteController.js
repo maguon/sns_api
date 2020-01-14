@@ -131,8 +131,6 @@ const getUserVoteByAdmin = (req, res, next) => {
                 } else {
                     logger.info(' getUserVoteByAdmin getUserVoteId ' + 'success');
                     resolve(rows);
-                    // resUtil.resetQueryRes(res, rows);
-                    // return next();
                 }
             });
         });

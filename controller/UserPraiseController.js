@@ -13,7 +13,6 @@ const {MsgCommentModel} = require('../modules');
 const {InfoModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 
-
 const getUserPraise = (req, res, next) => {
     let path = req.params;
     let params = req.query;

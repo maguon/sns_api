@@ -7,11 +7,13 @@ const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('VoteController');
 
 const {VoteModel} = require('../modules');
+const {UserVoteModel} = require('../modules');
 
 const getVote = (req, res, next) => {
     let path = req.params;
     let params = req.query;
-    let returnMsg = [];
+    let resInfo = {};
+    //获取投票信息
     const getVoteInfo =()=>{
         return new Promise((resolve, reject) => {
             let query = VoteModel.find({});
@@ -20,7 +22,7 @@ const getVote = (req, res, next) => {
                 if(params.voteId.length == 24){
                     query.where('_id').equals(mongoose.mongo.ObjectId(params.voteId));
                 }else{
-                    logger.info('getVote queryVote voteId format incorrect!');
+                    logger.info('getVote getVoteInfo voteId format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
                     return next();
                 }
@@ -34,72 +36,82 @@ const getVote = (req, res, next) => {
 
             query.exec((error,rows)=> {
                 if (error) {
-                    logger.error(' getVote queryVote ' + error.message);
+                    logger.error(' getVote getVoteInfo ' + error.message);
                     reject({err:reject.err});
                 } else {
-                    logger.info(' getVote queryVote ' + 'success');
+                    logger.info(' getVote getVoteInfo ' + 'success');
+                    resInfo.voteInfo = rows;
                     resolve(rows);
                 }
             });
         });
     }
-    const getUserVoteInfo =(voteInfo)=>{
+    //根据结果查询该用户是否投票
+    const getUserVote =(voteInfo)=>{
         return new Promise((resolve, reject) => {
+            let aggregate_limit_info = [];
+            let matchObjInfo = {};
+            aggregate_limit_info.push({
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            });
 
-            console.log("returnMsg222:" + returnMsg);
-            resUtil.resetQueryRes(res, voteInfo);
-            return next();
-
-            //
-            // // 循环判断该用户是否已参加评论
-            // for(let i=0; i<voteInfo.length; i++) {
-            //     let voteObj = voteInfo[i]._doc;
-            //     let querUserVote = UserVoteModel.find({});
-            //
-            //     if(path.userId){
-            //         if(path.userId.length == 24){
-            //             querUserVote.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
-            //         }else{
-            //             logger.info('getVote gerUserVote  userID format incorrect!');
-            //             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            //             return next();
-            //         }
-            //     }
-            //
-            //     if(voteObj._id){
-            //         querUserVote.where('_voteId').equals(mongoose.mongo.ObjectId(voteObj._id));
-            //     } else{
-            //         logger.info('getVote gerUserVote  voteId format incorrect!');
-            //         resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
-            //         return next();
-            //     }
-            //
-            //     querUserVote.exec((error,rows)=> {
-            //         if (error) {
-            //             logger.error(' getVote gerUserVote ' + error.message);
-            //             resUtil.resInternalError(error,res);
-            //         } else {
-            //             logger.info(' getVote getUserVote ' + 'success');
-            //             if(rows.length>0){
-            //                 //该用户已投票
-            //                 voteObj.userVote = 1;
-            //             }else{
-            //                 voteObj.userVote = 0;
-            //             }
-            //             returnMsg.push(voteObj);
-            //             console.log("voteObj:" + voteObj);
-            //             console.log("returnMsg:" + returnMsg);
-            //         }
-            //     });
-            // }
-            //
-            // console.log("returnMsg111:" + returnMsg);
-            // resolve(returnMsg);
-
+            if(path.userId) {
+                if (path.userId.length == 24) {
+                    matchObjInfo._user_id = mongoose.mongo.ObjectId(path.userId);
+                } else {
+                    logger.info('getVote getUserVote  msgId format incorrect!');
+                    resUtil.resetUpdateRes(res, null, systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            let queryId =[];
+            for(let i=0; i < voteInfo.length; i++ ){
+                queryId[i] = mongoose.mongo.ObjectId(voteInfo[i]._doc._id);
+            }
+            if(voteInfo.length > 0){
+                matchObjInfo._vote_id = {$in : queryId};
+            }
+            aggregate_limit_info.push({
+                $match: matchObjInfo
+            });
+            UserVoteModel.aggregate(aggregate_limit_info).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getVote getUserVote ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' getVote getUserVote ' + 'success');
+                    resInfo.userVoteInfo = rows;
+                    resolve();
+                }
+            });
+        });
+    }
+    //合并查询结果，并添加已投票标记
+    const getRes =()=>{
+        return new Promise(() => {
+            for(let i=0; i< resInfo.voteInfo.length; i++){
+                console.log("i:"+i);
+                for(let j=0; j<resInfo.userVoteInfo.length; j++ ){
+                    console.log("j:"+j);
+                    if(resInfo.voteInfo[i]._doc._id == resInfo.userVoteInfo[j]._doc_id){
+                        resInfo.voteInfo[i]._doc.type = 1;//已参与投票
+                    }else{
+                        resInfo.voteInfo[i]._doc.type = 0;//未已参与投票
+                    }
+                }
+            }
+            logger.info(' getVote getRes ' + 'success');
+            resUtil.resetQueryRes(res, resInfo.voteInfo);
         });
     }
     getVoteInfo()
-        .then(getUserVoteInfo)
+        .then(getUserVote)
+        .then(getRes)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);

@@ -6,6 +6,7 @@ const serverLogger = require('../util/ServerLogger');
 const sysConsts = require('../util/SystemConst');
 const systemMsg = require('../util/SystemMsg');
 const logger = serverLogger.createLogger('AppController');
+
 const {AppModel} = require('../modules');
 
 const getApp = (req, res, next) => {

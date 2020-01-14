@@ -77,7 +77,6 @@ const getInfoCount = (req, res, next) => {
             count:{$sum:1}
         }
     });
-
     InfoModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getInfoCount ' + error.message);
@@ -101,7 +100,6 @@ const updateStatus = (req, res, next) => {
             return next();
         }
     }
-
     if(path.type){
         query.where('type').equals(path.type);
     }else{
