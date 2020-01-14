@@ -228,6 +228,7 @@ const createServer=()=>{
      info     - 提示消息
      */
     server.get('/api/user/:userId/info', InfoController.getInfo);
+    server.get('/api/user/:userId/infoCount', InfoController.getInfoCount);
     server.put({path:'/api/user/:userId/type/:type',contentType: 'application/json'} ,InfoController.updateStatus);
 
     /**

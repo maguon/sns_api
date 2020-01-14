@@ -4316,6 +4316,39 @@
         }
       }
     },
+    "/user/{userId}/infoCount": {
+      "get": {
+        "tags": [
+          "info"
+        ],
+        "summary": "Select info Count",
+        "description": "get info Count ",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.关注我 2.评论我 3.赞我 4.投票提醒 5.系统消息 )",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/privacie": {
       "get": {

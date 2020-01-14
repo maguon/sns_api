@@ -50,6 +50,44 @@ const getInfo = (req, res, next) => {
         }
     });
 }
+const getInfoCount = (req, res, next) => {
+    let path = req.params;
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
+    if(path.userId){
+        if(path.userId.length == 24){
+            matchObj["content._user_id"] = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('getInfoCount  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if (params.type) {
+        matchObj.type = Number(params.type);
+    }
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $group: {
+            _id: "$type",
+            count:{$sum:1}
+        }
+    });
+
+    InfoModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getInfoCount ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getInfoCount ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
     let query = InfoModel.find({});
@@ -84,5 +122,6 @@ const updateStatus = (req, res, next) => {
 }
 module.exports = {
     getInfo,
+    getInfoCount,
     updateStatus
 };
