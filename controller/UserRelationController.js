@@ -437,7 +437,7 @@ const createUserRelation = (req, res, next) => {
                 } else {
                     logger.info(' createUserRelation getNickName ' + 'success');
                     if(rows.length > 0){
-                        relationInfo.nick_name = rows[0]._doc.nick_name
+                        relationInfo.nick_name = rows[0]._doc.nick_name;
                         resolve(relationInfo);
                     }else{
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});

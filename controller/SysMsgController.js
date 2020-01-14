@@ -8,6 +8,7 @@ const logger = serverLogger.createLogger('SysMsgController');
 
 const {SysMsgModel} = require('../modules');
 const {UserModel} = require('../modules');
+const {InfoModel} = require('../modules');
 
 const getSysMsg = (req, res, next) => {
     let path = req.params;
@@ -52,6 +53,7 @@ const createSysMsg = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let sysMsgObj = bodyParams;
+    let returnMessage;
     sysMsgObj.status = sysConsts.SYSMSG.status.normal;
 
     //获取用户编号
@@ -89,7 +91,6 @@ const createSysMsg = (req, res, next) => {
             }
         });
     }
-
     //保存新系统消息
     const saveSysMsg = () =>{
         return new Promise((resolve, reject) => {
@@ -109,18 +110,49 @@ const createSysMsg = (req, res, next) => {
             sysMsgModel.save(function(error,result){
                 if (error) {
                     logger.error(' createSysMsg ' + error.message);
-                    resUtil.resInternalError(error,res);
+                    reject({err:error.message});
                 } else {
                     logger.info(' createSysMsg ' + 'success');
-                    resUtil.resetCreateRes(res, result);
+                    returnMessage = result;
+                    resolve();
+                }
+            })
+        });
+    }
+    //添加消息提醒
+    const createInfo = () =>{
+        return new Promise(()=>{
+            let infoObj = bodyParams;
+            let content ={};
+            if(bodyParams.userId){
+                if(bodyParams.userId.length == 24){
+                    content._user_id = mongoose.mongo.ObjectId(bodyParams.userId);
+                    content.txt =  " 有一条系统推送消息 ";
+                }else{
+                    logger.info(' createSysMsg userByID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            infoObj.type = sysConsts.INFO.type.sys;
+            infoObj.status = sysConsts.INFO.status.unread;
+            infoObj.content = content;
+            let infoModel = new InfoModel(infoObj);
+            infoModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createSysMsg createInfo ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' createSysMsg createInfo ' + 'success');
+                    resUtil.resetCreateRes(res, returnMessage);
                     return next();
                 }
             })
         });
     }
-
     getUserId()
         .then(saveSysMsg)
+        .then(createInfo)
         .catch((reject)=>{
             if(reject.err){
                 resUtil.resetFailedRes(res,reject.err);
