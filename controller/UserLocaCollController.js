@@ -12,7 +12,7 @@ const {UserDetailModel} = require('../modules');
 const getUserLocaColl = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserLocaCollModel.find({status:sysConsts.INFO.status.available});
+    let query = UserLocaCollModel.find({status:sysConsts.USERLOCACOLL.status.available});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));

@@ -17,12 +17,6 @@ const DRIVE_TYPE = {
     N:15,
     P:16
 }
-const INFO = {
-    status: {
-        disable:0,//停用
-        available:1//可用
-    }
-}
 const ADMIN ={
     status: {
         disable:0,//停用
@@ -40,6 +34,18 @@ const USER ={
         certified:1//已认证
     }
 }
+const USERLOCACOLL = {
+    status: {
+        disable:0,//停用
+        available:1//可用
+    }
+}
+const USERMSGCOLL = {
+    status: {
+        disable:0,//停用
+        available:1//可用
+    }
+}
 const MSG ={
     type:{
         article:1,//文章
@@ -54,6 +60,23 @@ const MSG ={
     com_status:{
         visible:1,//可见的
         invisible:2//不可见
+    },
+    status: {
+        disable:0,//停用
+        available:1//可用
+    }
+}
+const INFO = {
+    type: {
+        follow:1,//关注我
+        com:2,//评论我
+        praise:3,//赞我
+        vote:4,//投票提醒
+        sys:5//系统消息
+    },
+    status: {
+        unread:1,//未读
+        read:2//已读
     }
 }
 const COMMENT ={
@@ -79,13 +102,22 @@ const SYSMSG ={
         normal:1//正常
     }
 }
+const APP = {
+    status: {
+        disable:0,//停用
+        available:1//可用
+    }
+}
 module.exports = {
     DRIVE_TYPE,
-    INFO,
     ADMIN,
     USER,
+    USERLOCACOLL,
+    USERMSGCOLL,
     MSG,
     COMMENT,
     VOTE,
-    SYSMSG
+    SYSMSG,
+    INFO,
+    APP
 }

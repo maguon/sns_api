@@ -277,7 +277,7 @@ const createMsg = (req, res, next) => {
     if(bodyParams.locationReal){
         msgObj.location_real = bodyParams.locationReal ;
     }
-    msgObj.status = sysConsts.INFO.status.available;
+    msgObj.status = sysConsts.MSG.status.available;
     msgObj.comment_status = sysConsts.MSG.com_status.visible;
     msgObj.collect_num = 0;
     msgObj.comment_num = 0;
@@ -374,7 +374,7 @@ const updateMsgStatus = (req, res, next) => {
             return next();
         }
     }
-    MsgModel.updateOne(queryMessge,{status:sysConsts.INFO.status.disable},function(error,result){
+    MsgModel.updateOne(queryMessge,{status:sysConsts.MSG.status.disable},function(error,result){
         if (error) {
             logger.error(' updateMsgStatus updateMsg ' + error.message);
             resUtil.resInternalError(error);

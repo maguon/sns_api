@@ -15,3 +15,4 @@ exports.PrivacieModel = require('./schemas/PrivacieSchema').PrivacieModel;
 exports.NoticeModel = require('./schemas/NoticeSchema').NoticeModel;
 exports.AboutModel = require('./schemas/AboutSchema').AboutModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
+exports.InfoModel = require('./schemas/InfoSchema').InfoModel;

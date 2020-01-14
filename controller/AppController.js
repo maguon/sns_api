@@ -46,7 +46,7 @@ const getApp = (req, res, next) => {
 const createApp = (req, res, next) => {
     let bodyParams = req.body;
     let appObj = bodyParams
-    appObj.status = sysConsts.INFO.status.available;
+    appObj.status = sysConsts.APP.status.available;
     if(bodyParams.appType){
         appObj.app_type  = bodyParams.appType;
     }

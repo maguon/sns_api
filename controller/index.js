@@ -17,3 +17,4 @@ exports.NoticeController = require('./NoticeController');
 exports.AboutController = require('./AboutController');
 exports.AppController = require('./AppController');
 exports.SmsController = require('./SmsController');
+exports.InfoController = require('./InfoController');

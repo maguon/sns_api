@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserRelationController');
 
 const {UserRelationModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
+const {InfoModel} = require('../modules');
 
 const getFollow = (req, res, next) => {
     let path = req.params;
@@ -415,6 +417,65 @@ const createUserRelation = (req, res, next) => {
             });
         });
     }
+    //查询用户昵称
+    const getNickName = (relationInfo) =>{
+        return new Promise((resolve, reject) => {
+            let queryUserDetail = UserDetailModel.find({},{nick_name:1});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUserDetail.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createUserRelation getNickName  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            queryUserDetail.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserRelation getNickName ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUserRelation getNickName ' + 'success');
+                    if(rows.length > 0){
+                        relationInfo.nick_name = rows[0]._doc.nick_name
+                        resolve(relationInfo);
+                    }else{
+                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    //添加消息提醒
+    const createInfo = (relationInfo) =>{
+        return new Promise((resolve, reject)=>{
+            let infoObj = bodyParams;
+            let content ={};
+            if(bodyParams.userById){
+                if(bodyParams.userById.length == 24){
+                    content._user_id = mongoose.mongo.ObjectId(bodyParams.userById);
+                    content.txt = relationInfo.nick_name + " 关注了你";
+                }else{
+                    logger.info(' createUserRelation userByID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            infoObj.type = sysConsts.INFO.type.follow;
+            infoObj.status = sysConsts.INFO.status.unread;
+            infoObj.content = content;
+            let infoModel = new InfoModel(infoObj);
+            infoModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUserRelation createInfo ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUserRelation createInfo ' + 'success');
+                    resolve(relationInfo);
+                }
+            })
+        });
+    }
     //保存新关注信息
     const saveRelation = (relationInfo) =>{
         return new Promise((resolve, reject) => {
@@ -460,7 +521,7 @@ const createUserRelation = (req, res, next) => {
     }
     //更新原关注信息
     const updateRelation =(relationInfo)=>{
-        return new Promise(() => {
+        return new Promise((resolve, reject) => {
             UserRelationModel.updateOne({_id:relationInfo[0]._doc._id},{type:1},function(error,result){
                 if (error) {
                     logger.error(' createUserRelation updateRelation ' + error.message);
@@ -477,6 +538,8 @@ const createUserRelation = (req, res, next) => {
         .then(friendJudgement)
         .then(updateFollowNum)
         .then(updateAttentionNum)
+        .then(getNickName)
+        .then(createInfo)
         .then(saveRelation)
         .then(updateRelation)
         .catch((reject)=>{

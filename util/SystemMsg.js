@@ -66,6 +66,10 @@ let VOTE_STATUS_NULL_ERROR ="该状态下，投票信息不允许修改！" ;
  */
 let SYS_MSG_ID_NULL_ERROR ="系统消息不存在！" ;
 /**
+ * The module for info
+ */
+let INFO_ID_NULL_ERROR ="消息提醒不存在！" ;
+/**
  * The module for privacie
  */
 let PRIVACIE_ID_NULL_ERROR ="隐私设置信息不存在！" ;
@@ -126,6 +130,8 @@ module.exports = {
     VOTE_STATUS_NULL_ERROR,
 
     SYS_MSG_ID_NULL_ERROR,
+
+    INFO_ID_NULL_ERROR,
 
     PRIVACIE_ID_NULL_ERROR,
 

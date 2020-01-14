@@ -76,9 +76,9 @@ const createAdminUser = (req, res, next) => {
     }
     //保存管理员新数据
     const saveAdmin = ()=>{
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
             let adminUserObj = bodyParams;
-            adminUserObj.status = sysConsts.INFO.status.available;
+            adminUserObj.status = sysConsts.ADMIN.status.available;
             if(bodyParams.password){
                 console.log(bodyParams.password);
                 bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);

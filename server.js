@@ -24,6 +24,7 @@ import {NoticeController} from  './controller';
 import {AboutController} from './controller';
 import {AppController} from './controller';
 import {SmsController} from './controller';
+import {InfoController} from './controller';
 
 /**
  * Returns a server with all routes defined on it
@@ -223,6 +224,12 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/sysMsg',contentType: 'application/json'}, SysMsgController.createSysMsg);
     server.put({path:'/api/admin/:adminId/sysMsg/:sysMsgId/status',contentType: 'application/json'} ,SysMsgController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/sysMsg/:sysMsgId/del',contentType: 'application/json'},SysMsgController.deleteSysMsg);
+    /**
+     info     - 提示消息
+     */
+    server.get('/api/user/:userId/info', InfoController.getInfo);
+    server.put({path:'/api/user/:userId/type/:type',contentType: 'application/json'} ,InfoController.updateStatus);
+
     /**
      privacie     - 隐私设置
      */

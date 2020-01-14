@@ -68,6 +68,10 @@
       "description": "SysMsg version and url management api (系统消息)"
     },
     {
+      "name": "info",
+      "description": "Info version and url management api (消息提醒)"
+    },
+    {
       "name": "privacie",
       "description": "Privacie version and url management api (隐私设置)"
     },
@@ -4248,6 +4252,66 @@
           },
           "404": {
             "description": "AdminId or appId not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/info": {
+      "get": {
+        "tags": [
+          "info"
+        ],
+        "summary": "Select info Info",
+        "description": "get info info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "infoId",
+            "in": "query",
+            "description": "消息提醒ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.关注我 2.评论我 3.赞我 4.投票提醒 5.系统消息 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态(1-未读，2-已读)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
