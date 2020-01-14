@@ -90,8 +90,8 @@ const getInfoCount = (req, res, next) => {
     });
 }
 const updateStatus = (req, res, next) => {
-    let query = InfoModel.find({});
     let path = req.params;
+    let query = InfoModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('content._user_id').equals(mongoose.mongo.ObjectId(path.userId));
