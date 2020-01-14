@@ -12,6 +12,7 @@ const {MsgCommentModel} = require('../modules');
 const {MsgModel} = require('../modules');
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
+const {InfoModel} = require('../modules');
 
 const getUserMsgComment = (req, res, next) => {
     let path = req.params;
@@ -347,6 +348,75 @@ const createMsgComment = (req, res, next) => {
             });
         });
     }
+    //查询用户昵称
+    const getNickName = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUserDetail = UserDetailModel.find({},{nick_name:1});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUserDetail.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createMsgComment getNickName  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            queryUserDetail.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createMsgComment getNickName ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createMsgComment getNickName ' + 'success');
+                    if(rows.length > 0){
+                        resolve(rows[0]._doc.nick_name);
+                    }else{
+                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    //添加消息提醒
+    const createInfo = (nickName) =>{
+        return new Promise((resolve, reject)=>{
+            let infoObj = bodyParams;
+            let content ={};
+            if(bodyParams.msgComUserId){
+                //如果一级评论用户存在 则提示一级评论用户
+                if(bodyParams.msgComUserId.length == 24){
+                    content._user_id = mongoose.mongo.ObjectId(bodyParams.msgComUserId);
+                    content.txt = nickName + " 评论了你的评论";
+                }else{
+                    logger.info('createUserPraise createInfo msgComUserId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
+                    return next();
+                }
+            }else{
+                //如果一级评论用户不存在 则通知文章用户
+                if(bodyParams.msgUserId.length == 24){
+                    content._user_id = mongoose.mongo.ObjectId(bodyParams.msgUserId);
+                    content.txt = nickName + " 评论了你的文章";
+                }else{
+                    logger.info('createUserPraise createInfo msgUserId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            infoObj.type = sysConsts.INFO.type.com;
+            infoObj.status = sysConsts.INFO.status.unread;
+            infoObj.content = content;
+            let infoModel = new InfoModel(infoObj);
+            infoModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createUserPraise createInfo ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createUserPraise createInfo ' + 'success');
+                    resolve();
+                }
+            })
+        });
+    }
     //更新用户的评论数
     const updateUserNumber =()=>{
         return new Promise((resolve, reject) => {
@@ -434,6 +504,8 @@ const createMsgComment = (req, res, next) => {
         }));
     }
     saveMsgComment()
+        .then(getNickName)
+        .then(createInfo)
         .then(updateUserNumber)
         .then(()=>{
             if(bodyParams.level == sysConsts.COMMENT.level.firstCom){
