@@ -4354,7 +4354,7 @@
         "tags": [
           "info"
         ],
-        "summary": "Finds and update info status",
+        "summary": "Update info status",
         "description": "Update info status by type",
         "operationId": "update info status by type",
         "produces": [
