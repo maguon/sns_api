@@ -452,40 +452,6 @@ const createMsgComment = (req, res, next) => {
             }
         })
 }
-const updateReadStatus = (req, res, next) => {
-    let bodyParams = req.body;
-    let path = req.params;
-    let query = MsgCommentModel.find({});
-
-    if(path.userId){
-        if(path.userId.length == 24){
-            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
-        }else{
-            logger.info('updateReadStatus  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(path.msgComId){
-        if(path.msgComId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.msgComId));
-        }else{
-            logger.info('updateReadStatus  msgComId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    MsgCommentModel.updateOne(query,bodyParams,function(error,result){
-        if (error) {
-            logger.error(' updateReadStatus ' + error.message);
-            resUtil.resInternalError(error);
-        } else {
-            logger.info(' updateReadStatus ' + 'success');
-            resUtil.resetUpdateRes(res,result,null);
-            return next();
-        }
-    })
-}
 const deleteComment = (req, res, next) => {
     let path = req.params;
     let query = MsgModel.find({});
@@ -801,7 +767,6 @@ module.exports = {
     getUserBeMsgComment,
     getAllMsgComment,
     createMsgComment,
-    updateReadStatus,
     deleteComment,
     getMsgCommentByAdmin,
     getMsgCommentCountByAdmin,

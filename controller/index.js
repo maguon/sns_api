@@ -11,7 +11,6 @@ exports.UserMsgCollController = require('./UserMsgCollController');
 exports.MsgController = require('./MsgController');
 exports.MsgCommentController = require('./MsgCommentController');
 exports.VoteController = require('./VoteController');
-exports.ContactController = require('./ContactController');
 exports.SysMsgController = require('./SysMsgController');
 exports.PrivacieController = require('./PrivacieController');
 exports.NoticeController = require('./NoticeController');

@@ -18,7 +18,6 @@ import {UserPraiseController} from './controller';
 import {MsgController} from './controller';
 import {MsgCommentController} from './controller';
 import {VoteController} from  './controller';
-import {ContactController} from  './controller';
 import {SysMsgController} from  './controller';
 import {PrivacieController} from  './controller';
 import {NoticeController} from  './controller';
@@ -215,15 +214,6 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/vote/:voteId/info',contentType: 'application/json'} ,VoteController.updateVote);
     server.put({path:'/api/admin/:adminId/vote/:voteId/status',contentType: 'application/json'} ,VoteController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/vote/:voteId/del',contentType: 'application/json'},VoteController.deleteVoteByAdmin);
-
-    /**
-     contact     - 申请联系方式
-     */
-    server.post({path:'/api/user/:userId/contact',contentType: 'application/json'}, ContactController.createContact);
-    server.get('/api/user/:userId/contact', ContactController.getContact);
-    server.put({path:'/api/user/:userId/contact/:contact Id/status',contentType: 'application/json'} ,ContactController.updateStatus);
-
-    server.get('/api/admin/:adminId/contact', ContactController.getContactByAdmin);
     /**
      sysMsg     - 系统消息
      */

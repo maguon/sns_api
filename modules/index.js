@@ -10,7 +10,6 @@ exports.UserMsgCollModel = require('./schemas/UserMsgCollSchema').UserMsgCollMod
 exports.MsgModel = require('./schemas/MsgSchema').MsgModel;
 exports.MsgCommentModel = require('./schemas/MsgCommentSchema').MsgCommentModel;
 exports.VoteModel = require('./schemas/VoteSchema').VoteModel;
-exports.ContactModel = require('./schemas/ContactSchema').ContactModel;
 exports.SysMsgModel = require('./schemas/SysMsgSchema').SysMsgModel;
 exports.PrivacieModel = require('./schemas/PrivacieSchema').PrivacieModel;
 exports.NoticeModel = require('./schemas/NoticeSchema').NoticeModel;
