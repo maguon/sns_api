@@ -256,6 +256,9 @@ const createUserVote = (req, res, next) => {
             if(bodyParams.voteId){
                 userVoteObj._vote_id = bodyParams.voteId;
             }
+            if(bodyParams.optionItem){
+                userVoteObj.option_item = bodyParams.optionItem;
+            }
             let userVoteModel = new UserVoteModel(userVoteObj);
             userVoteModel.save(function(error,result){
                 if (error) {
