@@ -962,16 +962,18 @@ const userLogin = (req, res, next) => {
                 }
             })
     }else{
-        getUserDetail()
-            .then(loginSaveToken)
-            .then(updateLastLogin)
-            .catch((reject)=>{
-                if(reject.err) {
-                    resUtil.resetFailedRes(res, reject.err);
-                }else{
-                    resUtil.resetFailedRes(res, reject.msg);
-                }
-            })
+        logger.info(  bodyParams.userName +' userLogin username or password' + 'not verified!');
+        resUtil.resetFailedRes(res, systemMsg.CUST_LOGIN_USER_PSWD_ERROR);
+        // getUserDetail()
+        //     .then(loginSaveToken)
+        //     .then(updateLastLogin)
+        //     .catch((reject)=>{
+        //         if(reject.err) {
+        //             resUtil.resetFailedRes(res, reject.err);
+        //         }else{
+        //             resUtil.resetFailedRes(res, reject.msg);
+        //         }
+        //     })
     }
 }
 module.exports = {
