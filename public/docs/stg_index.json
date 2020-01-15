@@ -3230,7 +3230,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3295,7 +3295,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3360,7 +3360,7 @@
             "required": false,
             "type": "string"
           },{
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3412,7 +3412,7 @@
             "type": "string"
           },
           {
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "path",
             "description": "msgComment unique id",
             "required": true,
@@ -3448,7 +3448,7 @@
             "type": "string"
           },
           {
-            "name": "msgCommentId",
+            "name": "msgComId",
             "in": "query",
             "description": "评论ID",
             "required": false,
@@ -3625,7 +3625,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or MsgCommentId not found"
+            "description": "AdminId or msgComId not found"
           }
         }
       }
@@ -3662,7 +3662,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "AdminId or msgCommentId not found"
+            "description": "AdminId or msgComId not found"
           }
         }
       }
@@ -4214,7 +4214,7 @@
             "description": "Invalid params "
           },
           "404": {
-            "description": "UserId or MsgCommentId not found"
+            "description": "UserId or msgComId not found"
           }
         }
       }
@@ -4354,8 +4354,8 @@
         "tags": [
           "info"
         ],
-        "summary": "Update info status",
-        "description": "Update info status by type",
+        "summary": "Finds and update info status",
+        "description": "Update info status ",
         "operationId": "update info status by type",
         "produces": [
           "application/json"
