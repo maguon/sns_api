@@ -771,7 +771,7 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
     });
     aggregate_limit.push({
         $group: {
-            _id: {type:"$msg_info.type"},
+            _id: "$msg_type",
             count:{$sum:1}
         }
     });
@@ -780,13 +780,49 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
             logger.error(' getMsgCommentTodayCountByAdmin getComment ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
+            if(rows.length >1){
+                logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');
+                resUtil.resetQueryRes(res, rows);
+                return next();
+            }else{
+                let resObj = rows;
+                if(rows[0]._id == 1){
+                    //添加求助
+                    let help = {};
+                    help._id = 2;
+                    help.count = 0;
+                    resObj.push(help);
+                }else{
+
+                    if(rows[0]._id == 2){
+                        //添加文章
+                        let articleObj = {};
+                        articleObj._id = 1;
+                        articleObj.count = 0;
+                        resObj.push(articleObj);
+                    }else{
+                        //添加求助
+                        let help = {};
+                        help._id = 2;
+                        help.count = 0;
+                        resObj.push(help);
+                        //添加文章
+                        let articleObj = {};
+                        articleObj._id = 1;
+                        articleObj.count = 0;
+                        resObj.push(articleObj);
+                    }
+
+                }
+                logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success')
+                resUtil.resetQueryRes(res, resObj);
+                return next();
+            }
         }
     });
-
 }
+
+
 const updateStatusByAdmin = (req, res, next) => {
     let bodyParams = req.body;
     let path = req.params;
