@@ -79,7 +79,6 @@ const createAdminUser = (req, res, next) => {
             let adminUserObj = bodyParams;
             adminUserObj.status = sysConsts.ADMIN.status.available;
             if(bodyParams.password){
-                console.log(bodyParams.password);
                 bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
             }
             let adminUserModel = new AdminUserModel(adminUserObj);

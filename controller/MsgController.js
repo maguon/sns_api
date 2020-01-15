@@ -242,7 +242,6 @@ const getMsgCount = (req, res, next) => {
             logger.error(' getMsgCount ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getMsgCount ' + 'success');
 
             let total = 0;
@@ -503,7 +502,6 @@ const getMsgByAdmin = (req, res, next) => {
             logger.error(' getMsgByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getMsgByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();

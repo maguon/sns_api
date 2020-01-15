@@ -179,7 +179,6 @@ const getVoteByAdmin = (req, res, next) => {
             logger.error(' getVoteByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getVoteByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
@@ -271,7 +270,6 @@ const updateVote = (req, res, next) =>{
                     resUtil.resInternalError(error);
                 } else {
                     logger.info(' updateVote ' + 'success');
-                    console.log('rows:',result);
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }

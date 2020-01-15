@@ -164,7 +164,6 @@ const getUserInfoAndDetail = (req, res, next) => {
             logger.error(' getUserInfoAndDetail ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getUserInfoAndDetail ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
@@ -247,7 +246,6 @@ const getUserByAdmin = (req, res, next) => {
             logger.error(' getUserByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getUserByAdmin ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();
@@ -497,7 +495,6 @@ const updateUserType = (req, res, next) => {
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateUserType ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -553,7 +550,6 @@ const updatePassword = (req, res, next) => {
                             resUtil.resInternalError(error);
                         } else {
                             logger.info(' updatePassword  updatePassword ' + 'success');
-                            console.log('rows:',result);
                             resUtil.resetUpdateRes(res,result,null);
                             return next();
                         }
@@ -756,8 +752,7 @@ const updateUserStatus = (req, res, next) => {
             logger.error(' updateUserStatus ' + error.message);
             resUtil.resInternalError(error);
         } else {
-            logger.info(' updateUserStatus ' + 'success');
-            console.log('rows:',result);
+            logger.info(' updateUserStatus ' + 'success');;
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -789,7 +784,6 @@ const updateUserAuthStatus = (req, res, next) => {
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateUserAuthStatus ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
@@ -885,7 +879,6 @@ const userLogin = (req, res, next) => {
                     logger.error(' getUserDetail ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    console.log('rows:',rows);
                     logger.info(' getUserDetail ' + 'success');
                     if (rows.length != 0) {
                         logger.info(' userLogin getUserDetail ' + 'success');
@@ -940,7 +933,6 @@ const userLogin = (req, res, next) => {
                     resUtil.resInternalError(error);
                 } else {
                     logger.info(' userLogin updateLastLogin ' + 'success');
-                    console.log('rows:',result);
                     resUtil.resetQueryRes(res,user,null);
                     return next();
                 }

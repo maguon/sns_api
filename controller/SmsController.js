@@ -75,7 +75,6 @@ const sendSms = (params, callback) =>{
 const regSms = (req,res,next) =>{
     let path = req.params;
     let captcha = ""
-
     const getUserPhone = () =>{
         return new Promise((resolve, reject) => {
             let queryUser = UserModel.find({});
@@ -97,11 +96,9 @@ const regSms = (req,res,next) =>{
             });
         });
     }
-
     const savePhoneCode = () =>{
         return new Promise((resolve, reject) => {
             captcha = encrypt.getSmsRandomKey();
-            console.log(captcha);
             oauthUtil.saveUserPhoneCode({phone:path.phone,code:captcha},function(error,result){
                 if (error) {
                     logger.error(' regSms savePhoneCode ' + error.message);
@@ -113,7 +110,6 @@ const regSms = (req,res,next) =>{
             })
         });
     }
-
     const sendPhoneSms = () =>{
         return new Promise((resolve, reject) => {
             sendSms({phone:path.phone,captcha:captcha,templateId:smsConfig.smsOptions.signTemplateId},function (error,result) {
@@ -128,7 +124,6 @@ const regSms = (req,res,next) =>{
             })
         });
     }
-
     getUserPhone()
         .then(savePhoneCode)
         .then(sendPhoneSms)
@@ -144,7 +139,6 @@ const regSms = (req,res,next) =>{
 const passwordSms = (req,res,next) =>{
     let path = req.params;
     let captcha = ""
-
     const getUserPhone = () =>{
         return new Promise((resolve, reject) => {
             let queryUser = UserModel.find({});
@@ -166,11 +160,9 @@ const passwordSms = (req,res,next) =>{
             });
         });
     }
-
     const savePhoneCode = () =>{
         return new Promise((resolve, reject) => {
             captcha = encrypt.getSmsRandomKey();
-            console.log(captcha);
             oauthUtil.saveUserPhoneCode({phone:path.phone,code:captcha},function(error,result){
                 if (error) {
                     logger.error(' passwordSms savePhoneCode ' + error.message);
@@ -182,7 +174,6 @@ const passwordSms = (req,res,next) =>{
             })
         });
     }
-
     const sendPhoneSms = () =>{
         return new Promise((resolve, reject) => {
             sendSms({phone:path.phone,captcha:captcha,templateId:smsConfig.smsOptions.signTemplateId},function (error,result) {
@@ -197,7 +188,6 @@ const passwordSms = (req,res,next) =>{
             })
         });
     }
-
     getUserPhone()
         .then(savePhoneCode)
         .then(sendPhoneSms)
@@ -243,12 +233,10 @@ const resetSms = (req, res, next) => {
             });
         });
     }
-
     //保存验证码
     const savePhoneCode = () =>{
         return new Promise((resolve, reject) => {
             captcha = encrypt.getSmsRandomKey();
-            console.log(captcha);
             oauthUtil.saveUserPhoneCode({phone:path.phone,code:captcha},function(error,result){
                 if (error) {
                     logger.error(' resetSms savePhoneCode ' + error.message);
@@ -260,7 +248,6 @@ const resetSms = (req, res, next) => {
             })
         });
     }
-
     //发送验证码
     const sendServerSms = () =>{
         return new Promise((resolve, reject) => {
@@ -276,7 +263,6 @@ const resetSms = (req, res, next) => {
             })
         });
     }
-
     getUserPhone()
         .then(savePhoneCode)
         .then(sendServerSms)

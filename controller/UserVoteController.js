@@ -57,7 +57,6 @@ const getUserVote = (req, res, next) => {
             logger.error(' getUserVote ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            console.log('rows:',rows);
             logger.info(' getUserVote ' + 'success');
             resUtil.resetQueryRes(res, rows);
             return next();

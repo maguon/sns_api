@@ -108,7 +108,6 @@ const updateApp = (req, res, next) =>{
             resUtil.resInternalError(error);
         } else {
             logger.info(' updateApp ' + 'success');
-            console.log('rows:',result);
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
