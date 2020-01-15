@@ -464,7 +464,7 @@ const getMsgByAdmin = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.msgId);
         }else{
             logger.info('getMsgByAdmin  msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

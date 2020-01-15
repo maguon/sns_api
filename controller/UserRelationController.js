@@ -19,7 +19,7 @@ const getFollow = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getFollow userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -28,7 +28,7 @@ const getFollow = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
         }else{
             logger.info('getFollow userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -38,7 +38,7 @@ const getFollow = (req, res, next) => {
             query.where('_user_by_id').equals(mongoose.mongo.ObjectId(params.userById));
         }else{
             logger.info('getFollow userById format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -116,7 +116,7 @@ const getFollowUserInfo = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.userRelationId);
         }else{
             logger.info('getFollowUserInfo userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -126,7 +126,7 @@ const getFollowUserInfo = (req, res, next) => {
             matchObj._user_by_id = mongoose.mongo.ObjectId(params.userById);
         }else{
             logger.info('getFollow userById format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -169,7 +169,7 @@ const getAttention = (req, res, next) => {
             query.where('_user_by_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getAttention userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -178,7 +178,7 @@ const getAttention = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userRelationId));
         }else{
             logger.info('getAttention userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -261,7 +261,7 @@ const getAttentionUserInfo = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.userRelationId);
         }else{
             logger.info('getAttentionUserInfo userRelationId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.RELATION_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

@@ -44,7 +44,7 @@ const getNoticeByAdmin = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getNoticeByAdmin  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -53,7 +53,7 @@ const getNoticeByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.noticeId));
         }else{
             logger.info('getNoticeByAdmin  noticeId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.NOTICE_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

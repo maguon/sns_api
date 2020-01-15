@@ -205,7 +205,7 @@ const getSysMsgByAdmin = (req, res, next) => {
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
             logger.info('getSysMsgByAdmin userId format incorrect!');
-            resUtil.resetQueryRes(res,[],systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -214,7 +214,7 @@ const getSysMsgByAdmin = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.sysMsgId);
         }else{
             logger.info('getSysMsgByAdmin sysMsgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.SYS_MSG_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

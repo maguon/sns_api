@@ -44,7 +44,7 @@ const getPrivacieByAdmin = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getPrivacieByAdmin  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -53,7 +53,7 @@ const getPrivacieByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.privacieId));
         }else{
             logger.info('getPrivacieByAdmin  privacieId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRIVACIE_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

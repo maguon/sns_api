@@ -91,7 +91,7 @@ const getUserVoteByAdmin = (req, res, next) => {
                     matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
                 }else{
                     logger.info('getUserVoteByAdmin  getUserVoteId userID format incorrect!');
-                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    resUtil.resetQueryRes(res,[],null);
                     return next();
                 }
             }
@@ -100,7 +100,7 @@ const getUserVoteByAdmin = (req, res, next) => {
                     matchObj._vote_id = mongoose.mongo.ObjectId(params.voteId);
                 }else{
                     logger.info('getUserVoteByAdmin  getUserVoteId voteId format incorrect!');
-                    resUtil.resetUpdateRes(res,null,systemMsg.VOTE_ID_NULL_ERROR);
+                    resUtil.resetQueryRes(res,[],null);
                     return next();
                 }
             }

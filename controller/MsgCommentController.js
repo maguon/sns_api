@@ -616,7 +616,7 @@ const getMsgCommentByAdmin = (req, res, next) => {
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
             logger.info('getUserMsgComment  userId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -625,7 +625,7 @@ const getMsgCommentByAdmin = (req, res, next) => {
             matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getMsgCommentByAdmin  msgComId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -634,7 +634,7 @@ const getMsgCommentByAdmin = (req, res, next) => {
             matchObj._msg_id = mongoose.mongo.ObjectId(params.msgId);
         }else{
             logger.info('getMsgCommentByAdmin  msgComId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -643,7 +643,7 @@ const getMsgCommentByAdmin = (req, res, next) => {
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
             logger.info('getMsgCommentByAdmin  _user_id format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

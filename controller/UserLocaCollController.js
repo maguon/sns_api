@@ -18,7 +18,7 @@ const getUserLocaColl = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getUserLocaColl  userId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -27,7 +27,7 @@ const getUserLocaColl = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userLocaCollId));
         }else{
             logger.info('getUserLocaColl  userLocaCollId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.LOCA_COLL_ID_NULL);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }

@@ -337,7 +337,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
         }else{
             logger.info('getUserPraiseByAdmin  userID format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -346,7 +346,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
         }else{
             logger.info('getUserPraiseByAdmin  userPraiseId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_RECORD_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -355,7 +355,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
             query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
         }else{
             logger.info('getUserPraiseByAdmin  messagesId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -364,7 +364,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
             query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(params.msgComId));
         }else{
             logger.info('getUserPraiseByAdmin  MsgCommentId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
