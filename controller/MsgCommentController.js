@@ -81,10 +81,10 @@ const getUserMsgComment = (req, res, next) => {
             return next();
         }
     }
-    //评论ID
+    //评论ID  查询一级评论下的所有二级评论
     if(params.msgComId){
         if(params.msgComId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
+            matchObj._msg_com_id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getUserMsgComment  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
