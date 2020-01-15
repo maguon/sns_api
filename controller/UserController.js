@@ -797,26 +797,102 @@ const updateUserAuthStatus = (req, res, next) => {
 }
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
-    let UserId;
     let user = {};
+    let LogerFlag = 1;//1:手机号，2：昵称
+    let userName = bodyParams.userName;
+    if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(userName))){
+        //不是手机号 是昵称
+        LogerFlag = 2;
+    }
     const getUser = () =>{
         return new Promise((resolve,reject)=> {
-            let query = UserModel.find({});
-            if (bodyParams.userName) {
-                query.where('phone').equals(Number(bodyParams.userName));
+            let aggregate_limit_user = [];
+            let user_matchObj = {};
+            aggregate_limit_user.push({
+                $lookup: {
+                    from:"user_details",
+                    localField:"_user_detail_id",
+                    foreignField:"_id",
+                    as:"user_detail_info"
+                }
+            });
+            if(bodyParams.userName){
+                user_matchObj.phone =  bodyParams.userName;
             }
             if (bodyParams.password) {
-                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
-                query.where('password').equals(bodyParams.password);
+                user_matchObj.password =  encrypt.encryptByMd5NoKey(bodyParams.password);
             }
-            query.exec((error, rows) => {
+            aggregate_limit_user.push({
+                $match: user_matchObj
+            });
+            aggregate_limit_user.push({
+                $project: {
+                    password:0,
+                    auth_time:0,
+                }
+            });
+            UserModel.aggregate(aggregate_limit_user).exec((error,rows)=> {
                 if (error) {
-                    logger.error(' userLogin getUser ' + error.message);
-                    reject({err: error});
+                    logger.error(' getUser ' + error.message);
+                    resUtil.resInternalError(error,res);
                 } else {
+                    console.log('rows:',rows);
+                    logger.info(' getUser ' + 'success');
                     if (rows.length != 0) {
                         logger.info(' userLogin getUser ' + 'success');
-                        if(rows[0]._doc.status == sysConsts.USER.status.disable){
+                        if(rows[0].status == sysConsts.USER.status.disable){
+                            logger.info(' userLogin getUser ' + bodyParams.userName + ' The user has been deactivated ');
+                            reject({msg:systemMsg.USER_STATUS_ERROR});
+                        }else{
+                            resolve(rows[0]);
+                        }
+                    } else {
+                        logger.info(  bodyParams.userName +' userLogin username or password' + 'not verified!');
+                        reject({msg: systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    const getUserDetail = () =>{
+        return new Promise((resolve,reject)=> {
+            let aggregate_limit = [];
+            let matchObj = {};
+            aggregate_limit.push({
+                $lookup: {
+                    from:"user_details",
+                    localField:"_user_detail_id",
+                    foreignField:"_id",
+                    as:"user_detail_info"
+                }
+            });
+            if(bodyParams.userName){
+                matchObj["user_detail_info.nick_name"] =  bodyParams.userName;
+            }
+            if (bodyParams.password) {
+                matchObj.password =  encrypt.encryptByMd5NoKey(bodyParams.password);
+            }
+            aggregate_limit.push({
+                $match: matchObj
+            });
+            aggregate_limit.push({
+                $project: {
+                    password:0,
+                    auth_time:0,
+                }
+            });
+            UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserDetail ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    console.log('rows:',rows);
+                    logger.info(' getUserDetail ' + 'success');
+                    console.log('rows:',rows);
+                    logger.info(' getUser ' + 'success');
+                    if (rows.length != 0) {
+                        logger.info(' userLogin getUser ' + 'success');
+                        if(rows[0].status == sysConsts.USER.status.disable){
                             logger.info(' userLogin getUser ' + bodyParams.userName + ' The user has been deactivated ');
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
@@ -826,19 +902,16 @@ const userLogin = (req, res, next) => {
                         logger.info(  bodyParams.userName +' userLogin username or password' + 'not verified!');
                         reject({msg:systemMsg.CUST_LOGIN_USER_PSWD_ERROR});
                     }
-
                 }
             });
         });
     }
     const loginSaveToken = (userInfo) =>{
         return new Promise((resolve, reject)=>{
-            UserId = userInfo._doc._id.toString();
-            user.userId = userInfo._doc._id.toString();
-            user.userName = userInfo.nickName;
+            user.userId = userInfo._id.toString();
+            user.userName = userInfo.user_detail_info[0].nick_name;
             user.status = userInfo.status;
             user.type = userInfo.type;
-
             user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
             oAuthUtil.saveToken(user,function(error,result){
                 if(error){
@@ -855,11 +928,11 @@ const userLogin = (req, res, next) => {
     const updateLastLogin = (user) =>{
         return new Promise(() => {
             let query = UserModel.find({});
-            if(UserId){
-                if(UserId.length == 24){
-                    query.where('_id').equals(mongoose.mongo.ObjectId(UserId));
+            if(user.userId){
+                if(user.userId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(user.userId));
                 }else{
-                    logger.info('userLogin updateLastLogin userID format incorrect!');
+                    logger.info('userLogin updateLastLogin userId format incorrect!');
                     resUtil.resetQueryRes(res,[],null);
                     return next();
                 }
@@ -877,16 +950,29 @@ const userLogin = (req, res, next) => {
             })
         });
     }
-    getUser()
-        .then(loginSaveToken)
-        .then(updateLastLogin)
-        .catch((reject)=>{
-            if(reject.err) {
-                resUtil.resetFailedRes(res, reject.err);
-            }else{
-                resUtil.resetFailedRes(res, reject.msg);
-            }
-        })
+    if(LogerFlag == 1){
+        getUser()
+            .then(loginSaveToken)
+            .then(updateLastLogin)
+            .catch((reject)=>{
+                if(reject.err) {
+                    resUtil.resetFailedRes(res, reject.err);
+                }else{
+                    resUtil.resetFailedRes(res, reject.msg);
+                }
+            })
+    }else{
+        getUserDetail()
+            .then(loginSaveToken)
+            .then(updateLastLogin)
+            .catch((reject)=>{
+                if(reject.err) {
+                    resUtil.resetFailedRes(res, reject.err);
+                }else{
+                    resUtil.resetFailedRes(res, reject.msg);
+                }
+            })
+    }
 }
 module.exports = {
     getUser,
