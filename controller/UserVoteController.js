@@ -130,7 +130,12 @@ const getUserVoteByAdmin = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' getUserVoteByAdmin getUserVoteId ' + 'success');
-                    resolve(rows);
+                    if(rows.length>0){
+                        resolve(rows);
+                    }else{
+                        resUtil.resetQueryRes(res, []);
+                        return next();
+                    }
                 }
             });
         });
