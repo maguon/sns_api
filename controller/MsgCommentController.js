@@ -193,7 +193,7 @@ const getUserBeMsgComment = (req, res, next) => {
     //评论ID
     if(params.msgComId){
         if(params.msgComId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
+            matchObj._msg_com_id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getUserBeMsgComment  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
@@ -260,7 +260,7 @@ const getAllMsgComment = (req, res, next) => {
     //评论ID
     if(params.msgComId){
         if(params.msgComId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
+            matchObj._msg_com_id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getAllMsgComment  msgComId format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
