@@ -537,7 +537,7 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
     }
     aggregate_limit.push({
         $group: {
-            _id: {type:"$type"},
+            _id: "$type",
             count:{$sum:1}
         }
     });
@@ -549,9 +549,42 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
             logger.error(' getTodayMsgCountByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getTodayMsgCountByAdmin ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
+            if(rows.length >1){
+                logger.info(' getTodayMsgCountByAdmin ' + 'success');
+                resUtil.resetQueryRes(res, rows);
+                return next();
+            }else{
+                let resObj = rows;
+                if(rows[0]._id == 1){
+                    //添加求助
+                    let help = {};
+                    help._id = 2;
+                    help.count = 0;
+                    resObj.push(help);
+                }else{
+                    if(rows[0]._id == 2){
+                        //添加文章
+                        let articleObj = {};
+                        articleObj._id = 1;
+                        articleObj.count = 0;
+                        resObj.push(articleObj);
+                    }else{
+                        //添加求助
+                        let help = {};
+                        help._id = 2;
+                        help.count = 0;
+                        resObj.push(help);
+                        //添加文章
+                        let articleObj = {};
+                        articleObj._id = 1;
+                        articleObj.count = 0;
+                        resObj.push(articleObj);
+                    }
+                }
+                logger.info(' getTodayMsgCountByAdmin ' + 'success');
+                resUtil.resetQueryRes(res, resObj);
+                return next();
+            }
         }
     });
 }
