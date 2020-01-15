@@ -106,7 +106,6 @@ const getUserVoteByAdmin = (req, res, next) => {
             if(params.phone){
                 matchObj['user_login_info.phone']  = params.phone;
             }
-
             let queryIndex =[];
             if(params.optionIndex){
                 var result = params.optionIndex.split(",");
@@ -117,6 +116,11 @@ const getUserVoteByAdmin = (req, res, next) => {
             }
             aggregate_limit.push({
                 $match: matchObj
+            });
+            aggregate_limit.push({
+                $project: {
+                    "user_login_info.password": 0
+                }
             });
             aggregate_limit.push({
                 $group:{
@@ -170,6 +174,11 @@ const getUserVoteByAdmin = (req, res, next) => {
             });
             aggregate_limit_info.push({
                 $match: matchObjInfo
+            });
+            aggregate_limit_info.push({
+                $project: {
+                    "user_login_info.password": 0
+                }
             });
             if (params.start && params.size) {
                 aggregate_limit_info.push(
