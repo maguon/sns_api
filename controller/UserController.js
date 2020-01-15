@@ -836,7 +836,6 @@ const userLogin = (req, res, next) => {
                     logger.error(' getUser ' + error.message);
                     resUtil.resInternalError(error,res);
                 } else {
-                    console.log('rows:',rows);
                     logger.info(' getUser ' + 'success');
                     if (rows.length != 0) {
                         logger.info(' userLogin getUser ' + 'success');
@@ -888,12 +887,10 @@ const userLogin = (req, res, next) => {
                 } else {
                     console.log('rows:',rows);
                     logger.info(' getUserDetail ' + 'success');
-                    console.log('rows:',rows);
-                    logger.info(' getUser ' + 'success');
                     if (rows.length != 0) {
-                        logger.info(' userLogin getUser ' + 'success');
+                        logger.info(' userLogin getUserDetail ' + 'success');
                         if(rows[0].status == sysConsts.USER.status.disable){
-                            logger.info(' userLogin getUser ' + bodyParams.userName + ' The user has been deactivated ');
+                            logger.info(' userLogin getUserDetail ' + bodyParams.userName + ' The user has been deactivated ');
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
                             resolve(rows[0]);
