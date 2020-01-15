@@ -18,7 +18,7 @@ const getUserMsgColl = (req, res, next) => {
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
         }else{
             logger.info('getUserMsgColl  userId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -27,7 +27,7 @@ const getUserMsgColl = (req, res, next) => {
             query.where('_id').equals(mongoose.mongo.ObjectId(params.userMsgCollId));
         }else{
             logger.info('getUserMsgColl  userMsgCollId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MSG_COLL_ID_NULL);
+            resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
@@ -107,7 +107,40 @@ const createUserMsgColl = (req, res, next) => {
             }
         })
 }
+const deleteMsgColl = (req, res, next) => {
+    let path = req.params;
+    let query = UserMsgCollModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('deleteMsgColl userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(path.userMsgCollId){
+        if(path.userMsgCollId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userMsgCollId));
+        }else{
+            logger.info('deleteMsgColl userMsgCollId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.LOCA_COLL_ID_NULL);
+            return next();
+        }
+    }
+    UserMsgCollModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteMsgColl ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteMsgColl ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
 module.exports = {
     getUserMsgColl,
-    createUserMsgColl
+    createUserMsgColl,
+    deleteMsgColl
 };

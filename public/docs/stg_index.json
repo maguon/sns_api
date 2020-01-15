@@ -2303,6 +2303,43 @@
         }
       }
     },
+    "/user/{userId}/userLocaColl/{userLocaCollId}/del": {
+      "delete": {
+        "tags": [
+          "userLocaColl"
+        ],
+        "summary": "Delete userLocaColl",
+        "description": "Delete userLocaColl",
+        "operationId": "Delete userLocaColl by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userLocaCollId",
+            "in": "path",
+            "description": "userLocaColl unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or userLocaColl not found"
+          }
+        }
+      }
+    },
     "/admin/adminId/userLocaColl": {
       "get": {
         "tags": [
@@ -2438,6 +2475,43 @@
         "responses": {
           "400": {
             "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/userMsgColl/{userMsgCollId}/del": {
+      "delete": {
+        "tags": [
+          "userMsgColl"
+        ],
+        "summary": "Delete userMsgColl",
+        "description": "Delete userMsgColl",
+        "operationId": "Delete userMsgColl by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userMsgCollId",
+            "in": "path",
+            "description": "userMsgColl unique id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or userMsgColl not found"
           }
         }
       }

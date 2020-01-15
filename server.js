@@ -164,6 +164,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userLocaColl',contentType: 'application/json'}, UserLocaCollController.createUserLocaColl);
     server.get('/api/user/:userId/userLocaColl', UserLocaCollController.getUserLocaColl);
+    server.del({path:'/api/user/:userId/userLocaColl/:userLocaCollId/del',contentType: 'application/json'},UserLocaCollController.deleteLocaColl);
 
     server.get('/api/admin/:adminId/userLocaColl', UserLocaCollController.getUserLocaColl);
     /**
@@ -171,6 +172,8 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userMsgColl',contentType: 'application/json'}, UserMsgCollController.createUserMsgColl);
     server.get('/api/user/:userId/userMsgColl', UserMsgCollController.getUserMsgColl);
+    server.del({path:'/api/user/:userId/userMsgColl/:userMsgCollId/del',contentType: 'application/json'},UserMsgCollController.deleteMsgColl);
+
     server.get('/api/admin/:adminId/userMsgColl', UserMsgCollController.getUserMsgColl);
 
     /**

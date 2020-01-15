@@ -111,7 +111,40 @@ const createUserLocaColl = (req, res, next) => {
         })
 
 }
-module.exports = {
+const deleteLocaColl = (req, res, next) => {
+    let path = req.params;
+    let query = UserLocaCollModel.find({});
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('deleteLocaColl userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(path.userLocaCollId ){
+        if(path.userLocaCollId .length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.userLocaCollId ));
+        }else{
+            logger.info('deleteLocaColl userMsgCollId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.LOCA_COLL_ID_NULL);
+            return next();
+        }
+    }
+    UserLocaCollModel.deleteOne(query,function(error,result){
+        if(error){
+            logger.error('deleteLocaColl ' + error.message);
+            resUtil.resInternalError(error,res,next);
+        }else{
+            logger.info('deleteLocaColls ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    })
+}
+    module.exports = {
     getUserLocaColl,
-    createUserLocaColl
+    createUserLocaColl,
+    deleteLocaColl
 };
