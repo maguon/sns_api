@@ -798,11 +798,11 @@ const updateUserAuthStatus = (req, res, next) => {
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
     let user = {};
-    let LogerFlag = 1;//1:手机号，2：昵称
+    let LogerFlag = 0;//1:手机号，2：昵称
     let userName = bodyParams.userName;
-    if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(userName))){
-        //不是手机号 是昵称
-        LogerFlag = 2;
+    if(/^1(3|4|5|6|7|8|9)\d{9}$/.test(userName)){
+        //手机号
+        LogerFlag = 1;
     }
     const getUser = () =>{
         return new Promise((resolve,reject)=> {
