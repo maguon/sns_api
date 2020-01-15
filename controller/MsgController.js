@@ -232,7 +232,7 @@ const getMsgCount = (req, res, next) => {
     }
     aggregate_limit.push({
         $group: {
-            _id: {type:"$type"},
+            _id: "$type",
             count:{$sum:1}
         }
     });
