@@ -555,34 +555,48 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
                 return next();
             }else{
                 let resObj = [];
-                if(rows[0]._id == 1){
-                    //添加求助
-                    let help = {};
-                    help._id = 2;
-                    help.count = 0;
-                    resObj.push(rows[0]);
-                    resObj.push(help);
-                }else{
-                    if(rows[0]._id == 2){
-                        //添加文章
-                        let articleObj = {};
-                        articleObj._id = 1;
-                        articleObj.count = 0;
-                        resObj.push(articleObj);
-                        resObj.push(rows[0]);
-                    }else{
-                        //添加文章
-                        let articleObj = {};
-                        articleObj._id = 1;
-                        articleObj.count = 0;
-                        resObj.push(articleObj);
+                if(rows.length > 0){
+                    if(rows[0]._id == 1){
                         //添加求助
                         let help = {};
                         help._id = 2;
                         help.count = 0;
+                        resObj.push(rows[0]);
                         resObj.push(help);
+                    }else{
+                        if(rows[0]._id == 2){
+                            //添加文章
+                            let articleObj = {};
+                            articleObj._id = 1;
+                            articleObj.count = 0;
+                            resObj.push(articleObj);
+                            resObj.push(rows[0]);
+                        }else{
+                            //添加文章
+                            let articleObj = {};
+                            articleObj._id = 1;
+                            articleObj.count = 0;
+                            resObj.push(articleObj);
+                            //添加求助
+                            let help = {};
+                            help._id = 2;
+                            help.count = 0;
+                            resObj.push(help);
+                        }
                     }
+                }else{
+                    //添加文章
+                    let articleObj = {};
+                    articleObj._id = 1;
+                    articleObj.count = 0;
+                    resObj.push(articleObj);
+                    //添加求助
+                    let help = {};
+                    help._id = 2;
+                    help.count = 0;
+                    resObj.push(help);
                 }
+
                 logger.info(' getTodayMsgCountByAdmin ' + 'success');
                 resUtil.resetQueryRes(res, resObj);
                 return next();
