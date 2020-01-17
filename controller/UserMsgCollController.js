@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
-const sysConsts = require('../util/SystemConst');
 const logger = serverLogger.createLogger('UserMsgCollController');
 
 const {UserMsgCollModel} = require('../modules');
@@ -12,7 +11,7 @@ const {UserDetailModel} = require('../modules');
 const getUserMsgColl = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserMsgCollModel.find({status:sysConsts.USERMSGCOLL.status.available});
+    let query = UserMsgCollModel.find({});
     if(path.userId){
         if(path.userId.length == 24){
             query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));

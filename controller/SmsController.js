@@ -208,7 +208,7 @@ const resetSms = (req, res, next) => {
             let queryUser = UserModel.find({});
             if(path.userId ){
                 if(path.userId .length == 24){
-                    queryUser.where('_id').equals(mongoose.mongo.ObjectId(path.userId ));
+                    queryUser.where('_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
                     logger.info('resetSms getUserPhone userId format incorrect!');
                     resUtil.resetQueryRes(res,[],null);
