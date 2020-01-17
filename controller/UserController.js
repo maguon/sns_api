@@ -345,7 +345,7 @@ const createUser = (req, res, next) => {
                 } else {
                     logger.info(' createUser createUserInfo ' + 'success');
                     if (result._doc) {
-                        userId = result._doc._id
+                        userId = result._doc._id;
                         resolve();
                     }else{
                         logger.info(' createUser createUserInfo '+ bodyParams.phone+ " Phone is registered! ");
@@ -443,7 +443,7 @@ const createUser = (req, res, next) => {
     }
     //更新用户信息的关联ID
     const updateUserInfo = (updateInfo) =>{
-        return new Promise((() => {
+        return new Promise(() => {
             let query = UserModel.find({});
             if(userId){
                 query.where('_id').equals(userId);
@@ -458,7 +458,7 @@ const createUser = (req, res, next) => {
                     return next();
                 }
             })
-        }));
+        });
     }
     getUserPhone()
         .then(getPhoneCode)

@@ -3440,6 +3440,12 @@
             "required": false,
             "type": "string"
           },{
+            "name": "oneMsgComId",
+            "in": "query",
+            "description": "获取单条评论",
+            "required": false,
+            "type": "string"
+          },{
             "name": "level",
             "in": "query",
             "description": "评论类型(1.一级评论 2.二级评论)",

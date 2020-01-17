@@ -267,6 +267,16 @@ const getAllMsgComment = (req, res, next) => {
             return next();
         }
     }
+    //获取单条评论编号
+    if(params.oneMsgComId){
+        if(params.oneMsgComId.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.oneMsgComId);
+        }else{
+            logger.info('getAllMsgComment  oneMsgComId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
+            return next();
+        }
+    }
     if(params.msgType){
         matchObj.msg_type = Number(params.msgType);
     }
@@ -466,7 +476,7 @@ const createMsgComment = (req, res, next) => {
                     return next();
                 }
             }
-            MsgModel.findOneAndUpdate(query,{ $inc: { comment_num: 1 } },).exec((error,rows)=> {
+            MsgModel.findOneAndUpdate(query,{ $inc: { comment_num: 1 } }).exec((error,rows)=> {
                 if (error) {
                     logger.error(' createMsgComment updateMessageNum ' + error.message);
                     resUtil.resInternalError(error,res);
@@ -480,7 +490,7 @@ const createMsgComment = (req, res, next) => {
     }
     //更新评论的评论数（二级评论）
     const updateMsgCommentNum = () =>{
-        return new Promise((() => {
+        return new Promise(() => {
             let query = MsgCommentModel.find({});
             if(bodyParams.msgComId){
                 if(bodyParams.msgComId.length == 24){
@@ -501,7 +511,7 @@ const createMsgComment = (req, res, next) => {
                     return next();
                 }
             });
-        }));
+        });
     }
     saveMsgComment()
         .then(getNickName)
