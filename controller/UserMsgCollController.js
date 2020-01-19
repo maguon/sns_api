@@ -62,6 +62,9 @@ const createUserMsgColl = (req, res, next) => {
             if(bodyParams.msgId){
                 userMsgCollObj._msg_id = bodyParams.msgId;
             }
+            if(bodyParams.msgUserId){
+                userMsgCollObj._msg_user_id = bodyParams.msgUserId;
+            }
             let userMsgCollModel = new UserMsgCollModel(userMsgCollObj);
             userMsgCollModel.save(function(error,result){
                 if (error) {

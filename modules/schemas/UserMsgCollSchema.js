@@ -13,6 +13,11 @@ const userMsgCollSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'msg_info',
             display: '动态ID'
+        },
+        _msg_user_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'user_info',
+            display: '动态用户ID'
         }
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }

@@ -5588,10 +5588,14 @@
       "type": "object",
       "required": [
         "msgId",
+        "msgUserId",
         "remarks"
       ],
       "properties": {
         "msgId": {
+          "type": "string"
+        },
+        "msgUserId": {
           "type": "string"
         },
         "remarks": {
