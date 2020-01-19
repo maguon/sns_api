@@ -11,10 +11,29 @@ const {UserDetailModel} = require('../modules');
 const getUserMsgColl = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let query = UserMsgCollModel.find({});
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "msg_infos",
+                localField: "_msg_id",
+                foreignField: "_id",
+                as: "msg_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_msg_user_id",
+                foreignField: "_user_id",
+                as: "msg_user_detail_info"
+            }
+        }
+    );
     if(path.userId){
         if(path.userId.length == 24){
-            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('getUserMsgColl  userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -23,17 +42,30 @@ const getUserMsgColl = (req, res, next) => {
     }
     if(params.userMsgCollId){
         if(params.userMsgCollId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userMsgCollId));
+            matchObj._id = mongoose.mongo.ObjectId(params.userMsgCollId);
         }else{
             logger.info('getUserMsgColl  userMsgCollId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $sort: { "created_at": -1 }
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },
+            {
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserMsgCollModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserMsgColl ' + error.message);
             resUtil.resInternalError(error,res);
