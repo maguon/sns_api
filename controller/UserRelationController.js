@@ -301,6 +301,7 @@ const createUserRelation = (req, res, next) => {
     let userRelationObj = bodyParams;
     userRelationObj.type = 0;
     let returnMessage;
+    let nick_name;
     //判断是否重复关注
     const getRelInfo =()=>{
         return new Promise((resolve, reject) => {
@@ -437,7 +438,7 @@ const createUserRelation = (req, res, next) => {
                 } else {
                     logger.info(' createUserRelation getNickName ' + 'success');
                     if(rows.length > 0){
-                        relationInfo.nick_name = rows[0]._doc.nick_name;
+                        nick_name = rows[0]._doc.nick_name;
                         resolve(relationInfo);
                     }else{
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
@@ -454,7 +455,7 @@ const createUserRelation = (req, res, next) => {
             if(bodyParams.userById){
                 if(bodyParams.userById.length == 24){
                     content._user_id = mongoose.mongo.ObjectId(bodyParams.userById);
-                    content.txt = relationInfo.nick_name + " 关注了你";
+                    content.txt = nick_name + " 关注了你";
                 }else{
                     logger.info(' createUserRelation userByID format incorrect!');
                     resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
