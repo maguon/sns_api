@@ -35,6 +35,8 @@ let RELATION_ID_NULL_ERROR ="该用户关系不存在！" ;
  */
 let PRAISE_RECORD_ID_NULL_ERROR ="该点赞记录不存在！" ;
 let PRAISE_TYPE_ERROR ="点赞类型不存在！" ;
+let PRAISE_MSG_CREATE_ERROR ="该文章已点赞！" ;
+let PRAISE_COM_CREATE_ERROR ="该评论已点赞！" ;
 /**
  * The module for userVote
  */
@@ -47,6 +49,7 @@ let LOCA_COLL_ID_NULL ="收藏位置不存在！" ;
  * The module for userMsgColl
  */
 let MSG_COLL_ID_NULL ="收藏动态不存在！" ;
+let MSG_COLL_CREATE_ERROR ="该文章已收藏！" ;
 /**
  * The module for msg
  */
@@ -114,12 +117,15 @@ module.exports = {
 
     PRAISE_RECORD_ID_NULL_ERROR,
     PRAISE_TYPE_ERROR,
+    PRAISE_MSG_CREATE_ERROR,
+    PRAISE_COM_CREATE_ERROR,
 
     USER_VOTE_CREATE_ERROR,
 
     LOCA_COLL_ID_NULL,
 
     MSG_COLL_ID_NULL,
+    MSG_COLL_CREATE_ERROR,
 
     MSG_DELETE_ADMIN_ERROR,
     MSG_ID_NULL_ERROR,

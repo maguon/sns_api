@@ -154,6 +154,60 @@ const createUserPraise = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let returnMessage;
+    //判断是否已点赞
+    const getPraise =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserPraiseModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' createUserPraise getPraise  userID format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams.msgId){
+                if(bodyParams.msgId.length == 24){
+                    query.where('_msg_id').equals(mongoose.mongo.ObjectId(bodyParams.msgId));
+                }else{
+                    logger.info(' createUserPraise getPraise  msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(bodyParams.type == 2){
+                if(bodyParams.msgComId){
+                    if(bodyParams.msgComId.length == 24){
+                        query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(bodyParams.msgComId));
+                    }else{
+                        logger.info(' createUserPraise getPraise  msgComId format incorrect!');
+                        resUtil.resetUpdateRes(res,null,systemMsg.COMMENT_ID_NULL_ERROR);
+                        return next();
+                    }
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserPraise getPraise ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' createUserPraise getPraise ' + 'success');
+                    if(rows.length > 0){
+                        if(bodyParams.type ==1){
+                            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_MSG_CREATE_ERROR);
+                            return next();
+                        }else{
+                            resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_COM_CREATE_ERROR);
+                            return next();
+                        }
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
     //保存点赞数据
     const savePraise =()=>{
         return new Promise((resolve, reject) => {
@@ -315,7 +369,8 @@ const createUserPraise = (req, res, next) => {
             });
         });
     }
-    savePraise()
+    getPraise()
+        .then(savePraise)
         .then(getNickName)
         .then(createInfo)
         .then(updateMessageNum)

@@ -424,7 +424,7 @@ const createMsgComment = (req, res, next) => {
                     logger.info(' createUserPraise createInfo ' + 'success');
                     resolve();
                 }
-            })
+            });
         });
     }
     //更新用户的评论数
@@ -839,7 +839,7 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
                     resObj.push(help);
                 }
 
-                logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success')
+                logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');
                 resUtil.resetQueryRes(res, resObj);
                 return next();
             }

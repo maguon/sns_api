@@ -80,6 +80,46 @@ const createUserMsgColl = (req, res, next) => {
     let path = req.params;
     let bodyParams = req.body;
     let userMsgCollObj = bodyParams;
+    //判断是否该用户已收藏该文章
+    const getMsgColl =()=>{
+        return new Promise((resolve, reject) => {
+            let query = UserMsgCollModel.find({});
+            if(path.userId ){
+                if(path.userId .length == 24){
+                    query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createUserMsgColl getMsgColl userId format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
+            }
+            if(bodyParams.msgId){
+                if(bodyParams.msgId.length == 24){
+                    query.where('_msg_id').equals(mongoose.mongo.ObjectId(bodyParams.msgId));
+                }else{
+                    logger.info('createUserMsgColl getMsgColl msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            query.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createUserMsgColl getMsgColl ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' createUserMsgColl getMsgColl ' + 'success');
+                    if(rows.length > 0){
+                        logger.info('createUserMsgColl getMsgColl msgInfo Already created!');
+                        resUtil.resetUpdateRes(res,null,systemMsg.MSG_COLL_CREATE_ERROR);
+                        return next();
+                    }else{
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+    //保存用户收藏数据
     const saveCollections =()=>{
         return new Promise((resolve, reject) => {
             if(path.userId){
@@ -106,7 +146,7 @@ const createUserMsgColl = (req, res, next) => {
                     logger.info(' createUserMsgColl ' + 'success');
                     resolve(result);
                 }
-            })
+            });
         });
     }
     //更新用户投票数
@@ -133,7 +173,8 @@ const createUserMsgColl = (req, res, next) => {
             });
         });
     }
-    saveCollections()
+    getMsgColl()
+        .then(saveCollections)
         .then(updateCollectionNum)
         .catch((reject)=>{
             if(reject.err){
@@ -171,7 +212,7 @@ const deleteMsgColl = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getUserMsgColl,
