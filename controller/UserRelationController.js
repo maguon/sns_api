@@ -474,7 +474,7 @@ const createUserRelation = (req, res, next) => {
                     logger.info(' createUserRelation createInfo ' + 'success');
                     resolve(relationInfo);
                 }
-            })
+            });
         });
     }
     //保存新关注信息
@@ -517,7 +517,7 @@ const createUserRelation = (req, res, next) => {
                         return next();
                     }
                 }
-            })
+            });
         });
     }
     //更新原关注信息
@@ -532,7 +532,7 @@ const createUserRelation = (req, res, next) => {
                     resUtil.resetCreateRes(res, returnMessage);
                     return next();
                 }
-            })
+            });
         });
     }
     getRelInfo()
@@ -623,7 +623,7 @@ const deleteUserRelation = (req, res, next) => {
                         return next();
                     }
                 }
-            })
+            });
         });
     }
     //更新好友状态
@@ -638,7 +638,7 @@ const deleteUserRelation = (req, res, next) => {
                     resUtil.resetUpdateRes(res,returnMessage,null);
                     return next();
                 }
-            })
+            });
         });
     }
     friendJudgement()

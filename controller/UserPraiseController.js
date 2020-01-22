@@ -243,7 +243,7 @@ const createUserPraise = (req, res, next) => {
                     returnMessage = result;
                     resolve();
                 }
-            })
+            });
         });
     }
     //查询用户昵称
@@ -312,7 +312,7 @@ const createUserPraise = (req, res, next) => {
                     logger.info(' createUserPraise createInfo ' + 'success');
                     resolve();
                 }
-            })
+            });
         });
     }
     //更新文章点赞数

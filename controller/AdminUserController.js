@@ -91,7 +91,7 @@ const createAdminUser = (req, res, next) => {
                     resUtil.resetCreateRes(res, result);
                     return next();
                 }
-            })
+            });
         });
     }
     getAdmin()
@@ -127,7 +127,7 @@ const updateAdminUserInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const updateAdminUserStatus = (req, res, next) => {
     let bodyParams = req.body;
@@ -151,7 +151,7 @@ const updateAdminUserStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const adminUserLogin = (req, res, next) => {
     let bodyParams = req.body;
@@ -206,8 +206,7 @@ const adminUserLogin = (req, res, next) => {
                     resUtil.resetQueryRes(res,admin,null);
                     return next();
                 }
-            })
-
+            });
         });
     }
     getAdmin()

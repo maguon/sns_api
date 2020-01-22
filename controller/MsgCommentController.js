@@ -564,7 +564,7 @@ const deleteComment = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const getMsgCommentByAdmin = (req, res, next) => {
     let params = req.query;
@@ -868,7 +868,7 @@ const updateStatusByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const deleteCommentByAdmin = (req, res, next) => {
     let path = req.params;
@@ -891,7 +891,7 @@ const deleteCommentByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getUserMsgComment,

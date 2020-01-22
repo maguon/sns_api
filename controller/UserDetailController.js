@@ -92,7 +92,7 @@ const updateUserDetailInfo = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const updateAvatarImage = (req, res, next) => {
     let bodyParams = req.body;
@@ -116,7 +116,7 @@ const updateAvatarImage = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 
 module.exports = {

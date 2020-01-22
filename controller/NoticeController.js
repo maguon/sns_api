@@ -105,8 +105,7 @@ const updateNotice = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
-
+    });
 }
 module.exports = {
     getNoticeByUser,

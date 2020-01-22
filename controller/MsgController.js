@@ -302,7 +302,7 @@ const createMsg = (req, res, next) => {
                     logger.info(' createMsg saveMsg ' + 'success');
                     resolve(result);
                 }
-            })
+            });
         });
     }
     const updateUserNumber =(returnMsg)=>{
@@ -382,7 +382,7 @@ const updateMsgStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const getNearbyMsg = (req, res, next) => {
     let params = req.query;
@@ -435,7 +435,7 @@ const deleteMsg = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const getMsgByAdmin = (req, res, next) => {
     let params = req.query;
@@ -623,7 +623,7 @@ const deleteMsgByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getMsg,

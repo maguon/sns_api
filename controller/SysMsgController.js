@@ -59,7 +59,6 @@ const createSysMsg = (req, res, next) => {
     //获取用户编号
     const getUserId = () =>{
         return new Promise((resolve, reject) => {
-
             //userId存在
             if(bodyParams.userId){
                 resolve();
@@ -116,7 +115,7 @@ const createSysMsg = (req, res, next) => {
                     returnMessage = result;
                     resolve();
                 }
-            })
+            });
         });
     }
     //添加消息提醒
@@ -147,7 +146,7 @@ const createSysMsg = (req, res, next) => {
                     resUtil.resetCreateRes(res, returnMessage);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserId()
@@ -289,7 +288,6 @@ const getSysMsgByAdmin = (req, res, next) => {
             });
         });
     }
-
     getUserId()
         .then(getSysMsg)
         .catch((reject)=>{
@@ -320,7 +318,7 @@ const updateStatusByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const deleteSysMsg = (req, res, next) => {
     let path = req.params;
@@ -343,7 +341,7 @@ const deleteSysMsg = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getSysMsg,

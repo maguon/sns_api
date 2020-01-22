@@ -389,7 +389,7 @@
         "tags": [
           "user"
         ],
-        "summary": "send reg phone sms",
+        "summary": "send reg phone sms（注册、更换手机号）",
         "description": "Send reg phone sms",
         "operationId": "send Reg Phone Sms",
         "consumes": [
@@ -422,7 +422,7 @@
         "tags": [
           "user"
         ],
-        "summary": "send reg phone passwordSms",
+        "summary": "send reg phone passwordSms（忘记密码）",
         "description": "Send reg phone passwordSms",
         "operationId": "send Reg Phone passwordSms",
         "consumes": [
@@ -455,7 +455,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Send rest mobile sms",
+        "summary": "Send rest mobile sms（更换密码）",
         "description": "Send rest mobile sms",
         "operationId": "sendRestMobileSms",
         "consumes": [
@@ -667,9 +667,9 @@
             "type": "string"
           },
           {
-            "name": "userInfo",
+            "name": "type",
             "in": "body",
-            "description": "User object that needs to be added to the store",
+            "description": "用户类型（1-普通，2-会员）",
             "required": true,
             "schema": {
               "$ref": "#/definitions/UserType"
@@ -700,7 +700,7 @@
         "tags": [
           "user"
         ],
-        "summary": "update user password",
+        "summary": "update user password（根据旧密码，更新密码）",
         "description": "user update password",
         "produces": [
           "application/json"
@@ -744,7 +744,7 @@
         "tags": [
           "user"
         ],
-        "summary": "reset user password",
+        "summary": "reset user password（根据电话验证码，更新密码）",
         "description": "reset update password",
         "produces": [
           "application/json"
@@ -2686,7 +2686,7 @@
         "tags": [
           "msg"
         ],
-        "summary": "Select popular Msg Info",
+        "summary": "Select popular Msg Info（热门文章）",
         "description": "get popular Msg info",
         "produces": [
           "application/json"
@@ -2731,7 +2731,7 @@
         "tags": [
           "msg"
         ],
-        "summary": "Select followUser Msg Info",
+        "summary": "Select followUser Msg Info（关注用户发布文章）",
         "description": "get followUser Msg info",
         "produces": [
           "application/json"
@@ -2776,7 +2776,7 @@
         "tags": [
           "msg"
         ],
-        "summary": "Select msgCount",
+        "summary": "Select msgCount（文章统计）",
         "description": "get msgCount",
         "produces": [
           "application/json"
@@ -2809,7 +2809,7 @@
         "tags": [
           "msg"
         ],
-        "summary": "Select nearbyMsg Info",
+        "summary": "Select nearbyMsg Info(附近文章)",
         "description": "Get nearbyMsg info",
         "produces": [
           "application/json"

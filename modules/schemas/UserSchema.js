@@ -17,7 +17,7 @@ const userSchema = new Schema({
         },
         _user_drive_id : {
             type: Schema.Types.ObjectId,
-            ref: 'user_drive_info',
+            ref: 'user_drive',
             display: '用户驾驶信息ID'
         }
     },

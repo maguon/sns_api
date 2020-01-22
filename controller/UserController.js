@@ -109,10 +109,9 @@ const getUserToken = (req, res, next) => {
                         }
                     })
                 }
-            })
+            });
         });
     }
-
     getUserStatus()
         .then(removeAndSaveToken)
         .catch((reject)=>{
@@ -153,7 +152,7 @@ const getUserInfoAndDetail = (req, res, next) => {
     });
     aggregate_limit.push({
         $lookup: {
-            from:"user_drive_infos",
+            from:"user_drives",
             localField:"_user_drive_id",
             foreignField:"_id",
             as:"user_drive_info"
@@ -176,15 +175,23 @@ const getUserByAdmin = (req, res, next) => {
     let matchObj = {};
     aggregate_limit.push({
         $lookup: {
-            from: "user_infos",
-            localField: "_user_id",
+            from: "user_details",
+            localField: "_user_detail_id",
             foreignField: "_id",
-            as: "user_login_info"
+            as: "user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_drives",
+            localField:"_user_drive_id",
+            foreignField:"_id",
+            as:"user_drive_info"
         }
     });
     if (params.userId) {
         if (params.userId.length == 24) {
-            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
+            matchObj._id = mongoose.mongo.ObjectId(params.userId);
         } else {
             logger.info('getUserByAdmin userID format incorrect!');
             resUtil.resetQueryRes(res, [], null);
@@ -193,7 +200,7 @@ const getUserByAdmin = (req, res, next) => {
     }
     if (params.phone) {
         if (params.phone.length == 11) {
-            matchObj["user_login_info.phone"] = params.phone;
+            matchObj.phone = params.phone;
         } else {
             logger.info('getUserByAdmin phone format incorrect!');
             resUtil.resetQueryRes(res, [], null);
@@ -202,7 +209,7 @@ const getUserByAdmin = (req, res, next) => {
     }
     if (params.phoneReg) {
         if (params.phoneReg.length >= 4) {
-            matchObj["user_login_info.phone"] = {"$regex": params.phoneReg, "$options": "$ig"};
+            matchObj.phone = {"$regex": params.phoneReg, "$options": "$ig"};
         } else {
             logger.info('getUserByAdmin phoneReg format incorrect!');
             resUtil.resetQueryRes(res, [], null);
@@ -210,23 +217,23 @@ const getUserByAdmin = (req, res, next) => {
         }
     }
     if (params.authStatus) {
-        matchObj["user_login_info.auth_status"] = Number(params.authStatus);
+        matchObj.auth_status = Number(params.authStatus);
     }
     if (params.nickName) {
-        matchObj["nick_name"] = {"$regex": params.nickName, "$options": "$ig"};
+        matchObj["user_detail_info.nick_name"] = {"$regex": params.nickName, "$options": "$ig"};
     }
     if (params.cityName) {
-        matchObj["city_name"] = {"$regex": params.cityName, "$options": "$ig"};
+        matchObj["user_detail_info.city_name"] = {"$regex": params.cityName, "$options": "$ig"};
     }
     if (params.sex) {
-        matchObj.sex = Number(params.sex);
+        matchObj["user_detail_info.sex"] = Number(params.sex);
     }
     if (params.createDateStart && params.createDateEnd) {
         matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
     aggregate_limit.push({
         $project: {
-            "user_login_info.password": 0
+            "password": 0
         }
     });
     aggregate_limit.push({
@@ -241,7 +248,7 @@ const getUserByAdmin = (req, res, next) => {
             }
         );
     };
-    UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
@@ -325,7 +332,7 @@ const createUser = (req, res, next) => {
                         resolve();
                     }
                 }
-            })
+            });
         });
     }
     //保存新用户
@@ -336,7 +343,8 @@ const createUser = (req, res, next) => {
             }
             let userObj = bodyParams;
             userObj.status = sysConsts.USER.status.available;
-            userObj.auth_status = sysConsts.USER.auth_status.uncertified;
+            userObj.auth_status = sysConsts.USER.auth_status.certified;
+            userObj.auth_time = new Date();
             let userModel = new UserModel(userObj);
             userModel.save(function(error,result){
                 if (error) {
@@ -352,13 +360,13 @@ const createUser = (req, res, next) => {
                         reject({msg:systemMsg.USER_CREATE_ERROR});
                     }
                 }
-            })
+            });
         });
     }
     //创建用户详细信息
     const createUserDetail = () =>{
         return new Promise((resolve,reject)=>{
-            let newName = encrypt.randomString(5);
+            let newName = encrypt.randomString(5); //随机生成5个字符，为昵称初始化
             let userDetailModel = new UserDetailModel();
             userDetailModel._user_id = userId;
             userDetailModel.nick_name = newName;
@@ -457,7 +465,7 @@ const createUser = (req, res, next) => {
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserPhone()
@@ -498,7 +506,7 @@ const updateUserType = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const updatePassword = (req, res, next) => {
     let bodyParams = req.body;
@@ -553,7 +561,7 @@ const updatePassword = (req, res, next) => {
                             resUtil.resetUpdateRes(res,result,null);
                             return next();
                         }
-                    })
+                    });
                 }else{
                     logger.info(' updatePassword updatePassword '+ bodyParams.newPassword + " New password error!");
                     reject({msg:systemMsg.USER_NEW_PASSWORD_ERROR});
@@ -593,7 +601,7 @@ const updatePasswordByPhone = (req, res, next) => {
                         resolve();
                     }
                 }
-            })
+            });
         });
     }
     //判断该用户是否存在
@@ -639,7 +647,7 @@ const updatePasswordByPhone = (req, res, next) => {
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
-            })
+            });
         });
     }
     getCode()
@@ -704,7 +712,7 @@ const updatePhone = (req, res, next) => {
                         resolve();
                     }
                 }
-            })
+            });
         });
     }
     const updateUserPhone =()=>{
@@ -720,7 +728,7 @@ const updatePhone = (req, res, next) => {
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserPhone()
@@ -756,7 +764,7 @@ const updateUserStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const updateUserAuthStatus = (req, res, next) => {
     let bodyParams = req.body;
@@ -787,7 +795,7 @@ const updateUserAuthStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const userLogin = (req, res, next) => {
     let bodyParams = req.body;
@@ -911,8 +919,7 @@ const userLogin = (req, res, next) => {
                     logger.info('userLogin loginSaveToken ' + user.userId + " success");
                     resolve(user);
                 }
-            })
-
+            });
         });
     }
     const updateLastLogin = (user) =>{
@@ -936,7 +943,7 @@ const userLogin = (req, res, next) => {
                     resUtil.resetQueryRes(res,user,null);
                     return next();
                 }
-            })
+            });
         });
     }
     if(LogerFlag == 1){

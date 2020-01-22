@@ -74,7 +74,7 @@ const createUserLocaColl = (req, res, next) => {
                     logger.info(' createUserLocaColl ' + 'success');
                     resolve(result);
                 }
-            })
+            });
         });
     }
     //更新用户地理位置收藏数
@@ -140,7 +140,7 @@ const deleteLocaColl = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
     module.exports = {
     getUserLocaColl,

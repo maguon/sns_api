@@ -107,7 +107,7 @@ const regSms = (req,res,next) =>{
                     logger.info(' regSms savePhoneCode ' + 'success');
                     resolve();
                 }
-            })
+            });
         });
     }
     const sendPhoneSms = () =>{
@@ -121,7 +121,7 @@ const regSms = (req,res,next) =>{
                     resUtil.resetCreateRes(res,{_id:1},null);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserPhone()
@@ -171,7 +171,7 @@ const passwordSms = (req,res,next) =>{
                     logger.info(' passwordSms savePhoneCode ' + 'success');
                     resolve();
                 }
-            })
+            });
         });
     }
     const sendPhoneSms = () =>{
@@ -185,7 +185,7 @@ const passwordSms = (req,res,next) =>{
                     resUtil.resetCreateRes(res,{_id:1},null);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserPhone()
@@ -245,7 +245,7 @@ const resetSms = (req, res, next) => {
                     logger.info(' resetSms savePhoneCode ' + 'success');
                     resolve();
                 }
-            })
+            });
         });
     }
     //发送验证码
@@ -260,7 +260,7 @@ const resetSms = (req, res, next) => {
                     resUtil.resetCreateRes(res,{_id:1},null);
                     return next();
                 }
-            })
+            });
         });
     }
     getUserPhone()

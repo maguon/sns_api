@@ -51,7 +51,7 @@ const createAbout = (req, res, next) => {
             logger.info(' createAbout ' + 'success');
             resUtil.resetCreateRes(res, result);
         }
-    })
+    });
 }
 const updateAbout = (req, res, next) =>{
     let bodyParams = req.body;
@@ -75,7 +75,7 @@ const updateAbout = (req, res, next) =>{
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const deleteAbout = (req, res, next) => {
     let path = req.params;
@@ -98,7 +98,7 @@ const deleteAbout = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getAbout,

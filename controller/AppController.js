@@ -72,7 +72,7 @@ const createApp = (req, res, next) => {
             logger.info(' createApp ' + 'success');
             resUtil.resetCreateRes(res, result);
         }
-    })
+    });
 }
 const updateApp = (req, res, next) =>{
     let bodyParams = req.body;
@@ -111,7 +111,7 @@ const updateApp = (req, res, next) =>{
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const updateStatus = (req, res, next) => {
     let bodyParams = req.body;
@@ -135,7 +135,7 @@ const updateStatus = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const deleteApp = (req, res, next) => {
     let path = req.params;
@@ -158,7 +158,7 @@ const deleteApp = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getApp,

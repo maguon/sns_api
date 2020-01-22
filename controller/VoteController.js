@@ -218,7 +218,7 @@ const createVote = (req, res, next) => {
             resUtil.resetCreateRes(res, result);
             return next();
         }
-    })
+    });
 }
 const updateVote = (req, res, next) =>{
     let bodyParams = req.body;
@@ -273,7 +273,7 @@ const updateVote = (req, res, next) =>{
                     resUtil.resetUpdateRes(res,result,null);
                     return next();
                 }
-            })
+            });
         });
     }
     queryConditionalStatus()
@@ -308,7 +308,7 @@ const updateStatusByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 const deleteVoteByAdmin = (req, res, next) => {
     var path = req.params;
@@ -331,7 +331,7 @@ const deleteVoteByAdmin = (req, res, next) => {
             resUtil.resetUpdateRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 module.exports = {
     getVote,

@@ -282,7 +282,7 @@ const createUserVote = (req, res, next) => {
                     returnMsg = result;
                     resolve();
                 }
-            })
+            });
         });
     }
     //查询投票信息
