@@ -82,14 +82,16 @@ const getPopularMsg = (req, res, next) =>{
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
-    aggregate_limit.push({
-        $lookup: {
-            from: "user_details",
-            localField: "_user_id",
-            foreignField: "_user_id",
-            as: "user_detail_info"
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_user_id",
+                foreignField: "_user_id",
+                as: "user_detail_info"
+            }
         }
-    });
+    );
 
     if (params.status) {
         matchObj.status = Number(params.status);
@@ -386,15 +388,45 @@ const updateMsgStatus = (req, res, next) => {
 }
 const getNearbyMsg = (req, res, next) => {
     let params = req.query;
-    let arr =[];
-    let str=params.address.slice(1,params.address.length-1);
-    arr = str.split(',');
-    let sort = {'created_at':-1};                              //排序（按登录时间倒序）
-    let query = MsgModel.find({ 'address' : { $geoWithin :{ $center : [ arr , params.radius ] }},status:1}).sort(sort);
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
+
+    let aggregate_limit = [];
+    let matchObj = {};
+    let addArr =[];
+    let strAdd = params.address.slice(1,params.address.length-1);
+    addArr = (strAdd.split(',')).map(Number);
+    console.log(addArr);
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_user_id",
+                foreignField: "_user_id",
+                as: "user_detail_info"
+            }
+        }
+    );
+    if (params.radius) {
+        console.log(params.radius);
+        matchObj.address = { $geoWithin: {$center: [addArr, Number(params.radius)]} };
     }
-    query.exec((error, rows)=> {
+
+    matchObj.status = sysConsts.MSG.status.available;
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    aggregate_limit.push({
+        $sort: { "created_at": -1}
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getNearbyMsg ' + error.message);
             resUtil.resInternalError(error,res);
