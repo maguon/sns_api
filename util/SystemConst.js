@@ -46,6 +46,12 @@ const USERMSGCOLL = {
         available:1//可用
     }
 }
+const USERPRAISE ={
+    type: {
+        msg:1,//动态
+        comment:2//评论
+    }
+}
 const MSG ={
     type:{
         article:1,//文章
@@ -114,6 +120,7 @@ module.exports = {
     USER,
     USERLOCACOLL,
     USERMSGCOLL,
+    USERPRAISE,
     MSG,
     COMMENT,
     VOTE,

@@ -79,9 +79,11 @@ const getMsg = (req, res, next) =>{
     });
 }
 const getPopularMsg = (req, res, next) =>{
+    let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
+    //用户详细信息
     aggregate_limit.push(
         {
             $lookup: {
@@ -92,7 +94,29 @@ const getPopularMsg = (req, res, next) =>{
             }
         }
     );
+    //用户点赞记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_praises",
+                let: { id: "$_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_msg_id",  "$$id" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                            { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
+                                        ]}
 
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_praises"
+            }
+        }
+    );
     if (params.status) {
         matchObj.status = Number(params.status);
     }
