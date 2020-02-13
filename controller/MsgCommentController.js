@@ -234,6 +234,7 @@ const getUserBeMsgComment = (req, res, next) => {
     });
 }
 const getAllMsgComment = (req, res, next) => {
+    let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
@@ -244,6 +245,29 @@ const getAllMsgComment = (req, res, next) => {
                 localField: "_user_id",
                 foreignField: "_user_id",
                 as: "user_detail_info"
+            }
+        }
+    );
+    //用户点赞记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_praises",
+                let: { id: "$_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_msg_com_id",  "$$id" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                            { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.comment) ] }
+                                        ]}
+
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_praises"
             }
         }
     );

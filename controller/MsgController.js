@@ -13,6 +13,7 @@ const {UserDetailModel} = require('../modules');
 const {UserRelationModel} = require('../modules');
 
 const getMsg = (req, res, next) =>{
+    let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
@@ -24,7 +25,50 @@ const getMsg = (req, res, next) =>{
             as: "user_detail_info"
         }
     });
+    //用户关注记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_relations",
+                let: { userId: "$_user_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_user_by_id",  "$$userId" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                        ]}
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_relations"
+            }
+        }
+    );
+    //用户点赞记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_praises",
+                let: { id: "$_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_msg_id",  "$$id" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                            { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
+                                        ]}
 
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_praises"
+            }
+        }
+    );
     if(params.sendMsgUserId){
         if(params.sendMsgUserId.length == 24){
             matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
