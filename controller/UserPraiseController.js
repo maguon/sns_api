@@ -177,6 +177,7 @@ const createUserPraise = (req, res, next) => {
                 }
             }
             if(bodyParams.type == 2){
+                query.where('type').equals(sysConsts.USERPRAISE.type.comment);
                 if(bodyParams.msgComId){
                     if(bodyParams.msgComId.length == 24){
                         query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(bodyParams.msgComId));
@@ -186,6 +187,8 @@ const createUserPraise = (req, res, next) => {
                         return next();
                     }
                 }
+            }else{
+                query.where('type').equals(sysConsts.USERPRAISE.type.msg);
             }
             query.exec((error,rows)=> {
                 if (error) {
