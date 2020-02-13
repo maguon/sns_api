@@ -94,6 +94,27 @@ const getPopularMsg = (req, res, next) =>{
             }
         }
     );
+    //用户关注记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_relations",
+                let: { userId: "$_user_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_user_by_id",  "$$userId" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                        ]}
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_relations"
+            }
+        }
+    );
     //用户点赞记录
     aggregate_limit.push(
         {
