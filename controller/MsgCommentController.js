@@ -654,9 +654,19 @@ const getMsgCommentByAdmin = (req, res, next) => {
             return next();
         }
     }
+    if(params.Id){
+        if(params.Id.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.Id);
+        }else{
+            logger.info('getMsgCommentByAdmin  Id format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    //查询一级评论下所有二级
     if(params.msgComId){
         if(params.msgComId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.msgComId);
+            matchObj._msg_com_id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getMsgCommentByAdmin  msgComId format incorrect!');
             resUtil.resetQueryRes(res,[],null);

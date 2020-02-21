@@ -3556,6 +3556,13 @@
             "type": "string"
           },
           {
+            "name": "msgComId",
+            "in": "query",
+            "description": "一级评论ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "msgType",
             "in": "query",
             "description": "消息类型(1.文章 2.求助 )",
