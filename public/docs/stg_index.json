@@ -3563,6 +3563,13 @@
             "type": "integer"
           },
           {
+            "name": "level",
+            "in": "query",
+            "description": "评论类型(1.一级评论 2.二级评论)",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态(0-屏蔽，1-正常（默认）)",

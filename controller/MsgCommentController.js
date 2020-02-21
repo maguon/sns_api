@@ -684,6 +684,9 @@ const getMsgCommentByAdmin = (req, res, next) => {
     if (params.msgType){
         matchObj.msg_type = Number(params.msgType);
     }
+    if (params.level){
+        matchObj.level = Number(params.level);
+    }
     if (params.status){
         matchObj.status = Number(params.status);
     }
