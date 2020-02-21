@@ -182,6 +182,8 @@ const getPopularMsg = (req, res, next) =>{
             }
         }
     );
+    //只查询文章
+    matchObj.type = sysConsts.MSG.type.article;
     if (params.status) {
         matchObj.status = Number(params.status);
     }
@@ -288,6 +290,8 @@ const getFollowUserMsg = (req, res, next) =>{
             if(followUserInfo.length > 0){
                 matchObj._user_id = {$in : queryId};
             }
+            //只查询文章
+            matchObj.type = sysConsts.MSG.type.article;
             if (params.status) {
                 matchObj.status = Number(params.status);
             }
@@ -344,6 +348,8 @@ const getMsgCount = (req, res, next) => {
             return next();
         }
     }
+    //可见文章
+    matchObj.status = sysConsts.MSG.status.available;
     aggregate_limit.push({
         $group: {
             _id: "$type",
@@ -565,7 +571,8 @@ const getNearbyMsg = (req, res, next) => {
         console.log(params.radius);
         matchObj.address = { $geoWithin: {$center: [addArr, Number(params.radius)]} };
     }
-
+    //只查询文章
+    matchObj.type = sysConsts.MSG.type.article;
     matchObj.status = sysConsts.MSG.status.available;
     aggregate_limit.push({
         $match: matchObj
