@@ -388,11 +388,19 @@ const createUserPraise = (req, res, next) => {
 }
 const getUserPraiseByAdmin = (req, res, next) => {
     let params = req.query;
-    let query = UserPraiseModel.find({});
-
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_id",
+            foreignField: "_user_id",
+            as: "user_detail_info"
+        }
+    });
     if(params.userId){
         if(params.userId.length == 24){
-            query.where('_user_id').equals(mongoose.mongo.ObjectId(params.userId));
+            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
         }else{
             logger.info('getUserPraiseByAdmin  userID format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -401,7 +409,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
     }
     if(params.userPraiseId){
         if(params.userPraiseId.length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(params.userPraiseId));
+            matchObj._id = mongoose.mongo.ObjectId(params.userPraiseId);
         }else{
             logger.info('getUserPraiseByAdmin  userPraiseId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -410,7 +418,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
     }
     if(params.msgId){
         if(params.msgId.length == 24){
-            query.where('_msg_id').equals(mongoose.mongo.ObjectId(params.msgId));
+            matchObj._msg_id = mongoose.mongo.ObjectId(params.msgId);
         }else{
             logger.info('getUserPraiseByAdmin  messagesId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -419,7 +427,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
     }
     if(params.msgComId){
         if(params.msgComId.length == 24){
-            query.where('_msg_com_id').equals(mongoose.mongo.ObjectId(params.msgComId));
+            matchObj._msg_com_id = mongoose.mongo.ObjectId(params.msgComId);
         }else{
             logger.info('getUserPraiseByAdmin  MsgCommentId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -427,12 +435,21 @@ const getUserPraiseByAdmin = (req, res, next) => {
         }
     }
     if(params.type){
-        query.where('type').equals(params.type);
+        matchObj.type = mongoose.mongo.ObjectId(params.type);
     }
-    if(params.start && params.size){
-        query.skip(parseInt(params.start)).limit(parseInt(params.size));
-    }
-    query.exec((error,rows)=> {
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserPraiseModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getUserPraiseByAdmin ' + error.message);
             resUtil.resInternalError(error,res);
