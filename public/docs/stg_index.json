@@ -3528,7 +3528,7 @@
             "type": "string"
           },
           {
-            "name": "msgComId",
+            "name": "Id",
             "in": "query",
             "description": "评论ID",
             "required": false,
