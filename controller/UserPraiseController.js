@@ -398,6 +398,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
             as: "user_detail_info"
         }
     });
+
     if(params.userId){
         if(params.userId.length == 24){
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
