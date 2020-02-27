@@ -1633,13 +1633,13 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/follow": {
+    "/admin/{adminId}/user/{userId}/friend": {
       "get": {
         "tags": [
           "userRelation"
         ],
-        "summary": "Administrators select followInfo",
-        "description": "Administrators get followInfo",
+        "summary": "Administrators select friend and userInfo",
+        "description": "Administrators get friend and userInfo",
         "produces": [
           "application/json"
         ],
@@ -1652,173 +1652,25 @@
             "type": "string"
           },
           {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },          {
-            "name": "userRelationId",
+            "name": "followId",
             "in": "query",
-            "description": "用户关系Id",
+            "description": "关注用户ID",
             "required": false,
             "type": "string"
           },
           {
+            "name": "attentionId",
             "in": "query",
-            "name": "start",
+            "description": "粉丝用户ID",
             "required": false,
-            "type": "integer"
+            "type": "string"
           },
           {
+            "name": "type",
             "in": "query",
-            "name": "size",
+            "description": "关系类型（0-关注,1-好友）",
             "required": false,
             "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/followUserInfo": {
-      "get": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Administrators select followInfo and userInfo",
-        "description": "Administrators get followInfo and userInfo",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userRelationId",
-            "in": "query",
-            "description": "用户关系Id",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/attention": {
-      "get": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Administrators select attentionInfo",
-        "description": "Administrators get attentionInfo",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "被关注用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userRelationId",
-            "in": "query",
-            "description": "用户关系Id",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "start",
-            "required": false,
-            "type": "integer"
-          },
-          {
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid params"
-          }
-        }
-      }
-    },
-    "/admin/{adminId}/user/{userId}/attentionUserInfo": {
-      "get": {
-        "tags": [
-          "userRelation"
-        ],
-        "summary": "Administrators select attentionInfo and userInfo",
-        "description": "Administrators get attentionInfo and userInfo",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "adminId",
-            "in": "path",
-            "description": "adminId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "被关注用户ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userRelationId",
-            "in": "query",
-            "description": "用户关系Id",
-            "required": false,
-            "type": "string"
           },
           {
             "in": "query",

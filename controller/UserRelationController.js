@@ -10,6 +10,167 @@ const {UserRelationModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 const {InfoModel} = require('../modules');
 
+const getFriend = (req, res, next) => {
+    let path = req.params;
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_infos",
+                localField: "_user_id",
+                foreignField: "_id",
+                as: "follow_login_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_user_id",
+                foreignField: "_user_id",
+                as: "follow_detail_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "user_infos",
+                localField: "_user_by_id",
+                foreignField: "_id",
+                as: "attention_login_info"
+            }
+        },
+        {
+            $lookup: {
+                from: "user_details",
+                localField: "_user_by_id",
+                foreignField: "_user_id",
+                as: "attention_detail_info"
+            }
+        }
+    )
+    if(params.followId){
+        if(params.followId.length == 24){
+            matchObj._user_id = mongoose.mongo.ObjectId(params.followId);
+        }else{
+            logger.info('getFriend followId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    //被关注用户编号
+    if(params.attentionId){
+        if(params.attentionId.length == 24){
+            matchObj._user_by_id = mongoose.mongo.ObjectId(params.attentionId);
+        }else{
+            logger.info('getFriend attentionId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    //关注类型
+    if(params.type){
+            matchObj.type = Number(params.type);
+    }else{
+        logger.info('getFriend type format incorrect!');
+        resUtil.resetQueryRes(res,[],null);
+        return next();
+    }
+    aggregate_limit.push({
+        $match: matchObj
+    });
+
+    if (params.start && params.size){
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+
+    aggregate_limit.push({
+        $project: {
+            "_user_id": 0,
+            "_user_by_id": 0,
+            "__v": 0,
+
+            "follow_login_info.password": 0,
+            "follow_login_info.auth_time": 0,
+            "follow_login_info.last_login_on": 0,
+            "follow_login_info.type": 0,
+            "follow_login_info.status": 0,
+            "follow_login_info.auth_status": 0,
+            "follow_login_info.created_at": 0,
+            "follow_login_info.updated_at": 0,
+            "follow_login_info.__v": 0,
+            "follow_login_info._user_detail_id": 0,
+            "follow_login_info._user_drive_id": 0,
+
+            "follow_detail_info._id": 0,
+            "follow_detail_info.sex": 0,
+            "follow_detail_info.city_name": 0,
+            "follow_detail_info.avatar": 0,
+            "follow_detail_info.intro": 0,
+            "follow_detail_info.created_at": 0,
+            "follow_detail_info.updated_at": 0,
+            "follow_detail_info.__v": 0,
+            "follow_detail_info.msg_num": 0,
+            "follow_detail_info.msg_help_num": 0,
+            "follow_detail_info.follow_num": 0,
+            "follow_detail_info.attention_num": 0,
+            "follow_detail_info.vote_num": 0,
+            "follow_detail_info.msg_coll_num": 0,
+            "follow_detail_info.loca_coll_num": 0,
+            "follow_detail_info._user_id": 0,
+            "follow_detail_info.comment_num": 0,
+            "follow_detail_info.comment_reply_num": 0,
+
+            "attention_login_info.password": 0,
+            "attention_login_info.auth_time": 0,
+            "attention_login_info.last_login_on": 0,
+            "attention_login_info.type": 0,
+            "attention_login_info.status": 0,
+            "attention_login_info.auth_status": 0,
+            "attention_login_info.created_at": 0,
+            "attention_login_info.updated_at": 0,
+            "attention_login_info.__v": 0,
+            "attention_login_info._user_detail_id": 0,
+            "attention_login_info._user_drive_id": 0,
+
+            "attention_detail_info._id": 0,
+            "attention_detail_info.sex": 0,
+            "attention_detail_info.city_name": 0,
+            "attention_detail_info.avatar": 0,
+            "attention_detail_info.intro": 0,
+            "attention_detail_info.created_at": 0,
+            "attention_detail_info.updated_at": 0,
+            "attention_detail_info.__v": 0,
+            "attention_detail_info.msg_num": 0,
+            "attention_detail_info.msg_help_num": 0,
+            "attention_detail_info.follow_num": 0,
+            "attention_detail_info.attention_num": 0,
+            "attention_detail_info.vote_num": 0,
+            "attention_detail_info.msg_coll_num": 0,
+            "attention_detail_info.loca_coll_num": 0,
+            "attention_detail_info._user_id": 0,
+            "attention_detail_info.comment_num": 0,
+            "attention_detail_info.comment_reply_num": 0,
+        }
+    });
+    UserRelationModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getFriend ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getFriend ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
+
 const getFollow = (req, res, next) => {
     let path = req.params;
     let params = req.query;
@@ -653,6 +814,7 @@ const deleteUserRelation = (req, res, next) => {
         })
 }
 module.exports = {
+    getFriend,
     getFollow,
     getFollowCount,
     getFollowUserInfo,

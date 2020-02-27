@@ -140,6 +140,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
     server.del({path:'/api/user/:userId/followUser/:followUserId/del',contentType: 'application/json'},UserRelationController.deleteUserRelation);
 
+    server.get('/api/admin/:adminId/user/:userId/friend', UserRelationController.getFriend);
     server.get('/api/admin/:adminId/user/:userId/follow', UserRelationController.getFollow);
     server.get('/api/admin/:adminId/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/admin/:adminId/user/:userId/attention', UserRelationController.getAttention);
