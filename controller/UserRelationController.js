@@ -70,7 +70,7 @@ const getFriend = (req, res, next) => {
     }
     //关注类型
     if(params.type){
-            matchObj.type = Number(params.type);
+        matchObj.type = Number(params.type);
     }
     aggregate_limit.push({
         $match: matchObj

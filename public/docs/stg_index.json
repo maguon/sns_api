@@ -1633,7 +1633,7 @@
         }
       }
     },
-    "/admin/{adminId}/user/{userId}/friend": {
+    "/admin/{adminId}/friend": {
       "get": {
         "tags": [
           "userRelation"
