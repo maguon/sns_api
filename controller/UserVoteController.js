@@ -17,7 +17,7 @@ const getUserVote = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "vote_infos",
-            localField: "voteId",
+            localField: "_vote_id",
             foreignField: "_id",
             as: "vote_info"
         }
