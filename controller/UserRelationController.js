@@ -71,10 +71,6 @@ const getFriend = (req, res, next) => {
     //关注类型
     if(params.type){
             matchObj.type = Number(params.type);
-    }else{
-        logger.info('getFriend type format incorrect!');
-        resUtil.resetQueryRes(res,[],null);
-        return next();
     }
     aggregate_limit.push({
         $match: matchObj
