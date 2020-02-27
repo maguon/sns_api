@@ -161,6 +161,20 @@ const getUserVoteByAdmin = (req, res, next) => {
                     foreignField: "_id",
                     as: "user_login_info"
                 }
+            },{
+                $lookup: {
+                    from: "vote_infos",
+                    localField: "_vote_id",
+                    foreignField: "_id",
+                    as: "vote_info"
+                }
+            },{
+                $lookup: {
+                    from: "admin_users",
+                    localField: "vote_info._admin_id",
+                    foreignField: "_id",
+                    as: "admin_info"
+                }
             });
             let queryId =[];
             for(let i=0; i < userVoteIds.length; i++ ){
@@ -177,7 +191,54 @@ const getUserVoteByAdmin = (req, res, next) => {
             });
             aggregate_limit_info.push({
                 $project: {
-                    "user_login_info.password": 0
+                    "user_login_info._id": 0,
+                    "user_login_info.password": 0,
+                    "user_login_info.auth_time": 0,
+                    "user_login_info.last_login_on": 0,
+                    "user_login_info.type": 0,
+                    "user_login_info.status": 0,
+                    "user_login_info.auth_status": 0,
+                    "user_login_info.created_at": 0,
+                    "user_login_info.updated_at": 0,
+                    "user_login_info.__v": 0,
+                    "user_login_info._user_detail_id": 0,
+                    "user_login_info._user_drive_id": 0,
+
+                    "user_detail_info._id": 0,
+                    "user_detail_info.sex": 0,
+                    "user_detail_info.city_name": 0,
+                    "user_detail_info.avatar": 0,
+                    "user_detail_info.intro": 0,
+                    "user_detail_info.created_at": 0,
+                    "user_detail_info.updated_at": 0,
+                    "user_detail_info.__v": 0,
+                    "user_detail_info.msg_num": 0,
+                    "user_detail_info.msg_help_num": 0,
+                    "user_detail_info.follow_num": 0,
+                    "user_detail_info.attention_num": 0,
+                    "user_detail_info.vote_num": 0,
+                    "user_detail_info.msg_coll_num": 0,
+                    "user_detail_info.loca_coll_num": 0,
+                    "user_detail_info._user_id": 0,
+                    "user_detail_info.comment_num": 0,
+                    "user_detail_info.comment_reply_num": 0,
+
+                    "vote_info._id": 0,
+                    "vote_info.created_at": 0,
+                    "vote_info.updated_at": 0,
+                    "vote_info.__v": 0,
+                    "vote_info._admin_id": 0,
+
+
+                    "admin_info._id": 0,
+                    "admin_info.phone": 0,
+                    "admin_info.gender": 0,
+                    "admin_info.password": 0,
+                    "admin_info.type": 0,
+                    "admin_info.status": 0,
+                    "admin_info.created_at": 0,
+                    "admin_info.updated_at": 0,
+                    "admin_info.__v": 0
                 }
             });
             if (params.start && params.size) {
