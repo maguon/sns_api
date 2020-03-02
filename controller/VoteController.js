@@ -51,8 +51,13 @@ const getVote = (req, res, next) => {
             return next();
         }
     }
+    let queryIndex =[];
     if(params.status){
-        matchObj.status = mongoose.mongo.ObjectId(params.status);
+        matchObj.status = Number(params.status);
+    }else{
+        queryIndex[0] = Number(sysConsts.VOTE.status.in_progress);
+        queryIndex[1] = Number(sysConsts.VOTE.status.closed);
+        matchObj.status = { "$in" : queryIndex};
     }
     aggregate_limit.push({
         $match: matchObj

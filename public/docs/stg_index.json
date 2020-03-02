@@ -3642,7 +3642,7 @@
           {
             "name": "status",
             "in": "query",
-            "description": "投票状态（0-未开启，1-进行中，3-已结束）",
+            "description": "投票状态（1-进行中，3-已结束）",
             "required": false,
             "type": "integer"
           },
