@@ -2677,7 +2677,7 @@
           {
             "name": "address",
             "in": "query",
-            "description": "地理位置（格式： [纬度，经度]）",
+            "description": "地理位置（格式： [经度, 纬度]）",
             "required": true,
             "type": "string"
           },{
@@ -2966,7 +2966,7 @@
           {
             "name": "address",
             "in": "query",
-            "description": "地理位置（格式： [纬度，经度]）",
+            "description": "地理位置（格式： [经度, 纬度]）",
             "required": true,
             "type": "string"
           },{
