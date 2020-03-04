@@ -99,7 +99,7 @@ const VOTE ={
     status:{
         not_open:0,//未开启
         in_progress:1,//进行中
-        closed:2//已结束
+        closed:3//已结束
     }
 }
 const SYSMSG ={
