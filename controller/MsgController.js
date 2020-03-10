@@ -191,7 +191,32 @@ const getPopularMsg = (req, res, next) =>{
         $match: matchObj
     });
     aggregate_limit.push({
-        $sort: { "agree_num": -1 ,"comment_num": -1}
+        $project: {
+            count: { $add: [ "$collect_num", "$agree_num" ] } ,
+            "type":1,
+            "carrier":1 ,
+            "info":1,
+            "address":1,
+            "label":1,
+            "location":1,
+            "status":1,
+            "comment_status":1,
+            "created_at":1,
+            "updated_at":1,
+            "_user_id":1,
+            "address_name":1,
+            "address_real":1,
+            "address_show":1,
+            "collect_num":1,
+            "agree_num":1,
+            "read_num":1,
+            "location_name":1,
+            "location_real":1,
+            "comment_num":1
+        }
+    });
+    aggregate_limit.push({
+        $sort: { "count" : -1}
     });
     if (params.start && params.size) {
         aggregate_limit.push(
