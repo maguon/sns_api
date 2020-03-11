@@ -15,114 +15,162 @@ const {UserRelationModel} = require('../modules');
 const getMsg = (req, res, next) =>{
     let path = req.params;
     let params = req.query;
-    let aggregate_limit = [];
-    let matchObj = {};
-    aggregate_limit.push({
-        $lookup: {
-            from: "user_details",
-            localField: "_user_id",
-            foreignField: "_user_id",
-            as: "user_detail_info"
-        }
-    });
-    //用户关注记录
-    aggregate_limit.push(
-        {
-            $lookup: {
-                from: "user_relations",
-                let: { userId: "$_user_id"},
-                pipeline: [
-                    { $match:
-                            { $expr:
-                                    {$and:[
-                                            { $eq: [ "$_user_by_id",  "$$userId" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
-                                        ]}
-                            }
-                    },
-                    { $project: { _id: 0 } }
-                ],
-                as: "user_relations"
-            }
-        }
-    );
-    //用户点赞记录
-    aggregate_limit.push(
-        {
-            $lookup: {
-                from: "user_praises",
-                let: { id: "$_id"},
-                pipeline: [
-                    { $match:
-                            { $expr:
-                                    {$and:[
-                                            { $eq: [ "$_msg_id",  "$$id" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
-                                            { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
-                                        ]}
+    let returnMessage;
 
-                            }
-                    },
-                    { $project: { _id: 0 } }
-                ],
-                as: "user_praises"
+    //查询文章信息
+    const getMsgInfo = () =>{
+        return new Promise((resolve, reject) => {
+            let aggregate_limit = [];
+            let matchObj = {};
+            aggregate_limit.push({
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            });
+            //用户关注记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_relations",
+                        let: { userId: "$_user_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_user_by_id",  "$$userId" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_relations"
+                    }
+                }
+            );
+            //用户点赞记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_praises",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_praises"
+                    }
+                }
+            );
+            if(params.sendMsgUserId){
+                if(params.sendMsgUserId.length == 24){
+                    matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
+                }else{
+                    logger.info('getMsg getMsgInfo sendMsgUserId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
             }
-        }
-    );
-    if(params.sendMsgUserId){
-        if(params.sendMsgUserId.length == 24){
-            matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
-        }else{
-            logger.info('getMsg  sendMsgUserId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.msgId){
-        if(params.msgId.length == 24){
-            matchObj._id = mongoose.mongo.ObjectId(params.msgId);
-        }else{
-            logger.info('getMsg  msgId format incorrect!');
-            resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
-            return next();
-        }
-    }
-    if(params.type){
-        matchObj.type = Number(params.type);
-    }
-    if(params.carrier){
-        matchObj.carrier = Number(params.carrier);
-    }
-    if (params.status) {
-        matchObj.status = Number(params.status);
-    }
-    aggregate_limit.push({
-        $match: matchObj
-    });
-    aggregate_limit.push({
-        $sort: { "created_at": -1 }
-    });
-    if (params.start && params.size) {
-        aggregate_limit.push(
-            {
-                $skip : Number(params.start)
-            },{
-                $limit : Number(params.size)
+            if(params.msgId){
+                if(params.msgId.length == 24){
+                    matchObj._id = mongoose.mongo.ObjectId(params.msgId);
+                }else{
+                    logger.info('getMsg getMsgInfo msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
             }
-        );
-    };
-    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getMsg ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getMsg ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
+            if(params.type){
+                matchObj.type = Number(params.type);
+            }
+            if(params.carrier){
+                matchObj.carrier = Number(params.carrier);
+            }
+            if (params.status) {
+                matchObj.status = Number(params.status);
+            }
+            aggregate_limit.push({
+                $match: matchObj
+            });
+            aggregate_limit.push({
+                $sort: { "created_at": -1 }
+            });
+            if (params.start && params.size) {
+                aggregate_limit.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+            MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getMsg getMsgInfo ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' getMsg getMsgInfo ' + 'success');
+                    returnMessage = rows;
+                    resolve();
+                }
+            });
+        });
+    }
+
+    //更新文章的阅读数
+    const updateMsgReadNum = () =>{
+        return new Promise(() => {
+            let query = MsgModel.find({});
+            if(params.msgId){
+                if(params.msgId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(params.msgId));
+                }else{
+                    logger.info('getMsg updateMsgReadNum msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            MsgModel.findOneAndUpdate(query,{ $inc: { read_num: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getMsg updateMsgReadNum ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getMsg updateMsgReadNum ' + 'success');
+                    resUtil.resetQueryRes(res, returnMessage);
+                    return next();
+                }
+            });
+        });
+    }
+
+    getMsgInfo()
+        .then(updateMsgReadNum)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
 }
 const getPopularMsg = (req, res, next) =>{
+    //文章热门
+    //48小时内发布文章
+    //排序：根据点赞和评论数 之和
+    //Map-Reduce
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
