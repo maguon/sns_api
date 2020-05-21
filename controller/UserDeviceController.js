@@ -69,7 +69,14 @@ const getUserDeviceByAdmin = (req, res, next) => {
             as: "user_login_info"
         }
     });
-
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_id",
+            foreignField: "_user_id",
+            as: "user_detail_info"
+        }
+    });
     if (params.userId) {
         if (params.userId.length == 24) {
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);

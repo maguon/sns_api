@@ -17,7 +17,7 @@ const userDeviceSchema = new Schema({
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });
 
-const UserDeviceModel = mongoose.model('user_deviceS',userDeviceSchema);
+const UserDeviceModel = mongoose.model('user_device',userDeviceSchema);
 module.exports = {
     UserDeviceModel
 }
