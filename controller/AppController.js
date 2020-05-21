@@ -99,7 +99,7 @@ const updateApp = (req, res, next) =>{
     if(bodyParams.minVersionNum){
         bodyParams.min_version_num  = bodyParams.minVersionNum;
     }
-    if(bodyParams.forceUpdate){
+    if(bodyParams.forceUpdate != undefined){
         bodyParams.force_update  = bodyParams.forceUpdate;
     }
     AppModel.updateOne(query,bodyParams,function(error,result){
