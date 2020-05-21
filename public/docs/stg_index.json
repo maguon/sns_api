@@ -1354,6 +1354,93 @@
 
       }
     },
+    "/admin/{adminId}/userDevice": {
+      "get": {
+        "tags": [
+          "userDevice"
+        ],
+        "summary": "Administrators select user Device",
+        "description": "Administrators get user Device",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "电话(11位)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phoneReg",
+            "in": "query",
+            "description": "电话(4位以上)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "设备版本",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "appType",
+            "in": "query",
+            "description": "app登录类型（1-司机之家）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deviceType",
+            "in": "query",
+            "description": "设备类型(1-android,2-ios)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "设备登录状态(-1-退出登录，1-登录中)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/userRelation": {
       "post": {

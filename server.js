@@ -137,6 +137,8 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/userDevice',contentType: 'application/json'}, UserDeviceController.createUserDevice);
 
+    server.get('/api/admin/:adminId/userDevice', UserDeviceController.getUserDeviceByAdmin);
+
     /**
      userRelation    -用户关系
      */
