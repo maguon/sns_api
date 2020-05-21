@@ -12,6 +12,7 @@ const logger = serverLogger.createLogger('UserController');
 const {UserModel} = require('../modules');
 const {UserDetailModel} = require('../modules');
 const {UserDriveModel} = require('../modules');
+const {UserDeviceModel} = require('../modules');
 const {PrivacieModel} = require('../modules');
 const {NoticeModel} = require('../modules');
 
@@ -972,6 +973,39 @@ const userLogin = (req, res, next) => {
         //     })
     }
 }
+const userLogout = (req, res, next) => {
+    let path = req.params;
+    let bodyParams = req.body;
+    //判断userId + deviceToken 唯一
+    if(path.userId && (bodyParams.deviceToken !== undefined) && (bodyParams.deviceType !== undefined )){
+        let queryUserDevice = UserDeviceModel.find({});
+        if(path.userId){
+            if(path.userId.length == 24){
+                queryUserDevice.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+            }else{
+                logger.info('createUserDevice _user_id format incorrect!');
+                return next();
+            }
+        }
+        if(bodyParams.deviceToken){
+            queryUserDevice.where('device_token').equals(bodyParams.deviceToken);
+        }
+        //根据 该用户 和 设备标号，更新status 为退出登录状态
+        UserDeviceModel.findOneAndUpdate(queryUserDevice,{ $set: { status: -1 } }).exec((error,rows)=> {
+            if (error) {
+                logger.error(' userLogout ' + error.message);
+            } else {
+                logger.info(' userLogout findOneAndUpdate ' + 'success');
+                resUtil.resetQueryRes(res, "OK",{});
+                return next();
+            }
+        });
+    }else{
+        logger.info(' userLogout ' + 'success');
+        resUtil.resetQueryRes(res, "OK",{});
+        return next();
+    }
+}
 module.exports = {
     getUser,
     getUserToken,
@@ -986,5 +1020,6 @@ module.exports = {
     updatePhone,
     updateUserStatus,
     updateUserAuthStatus,
-    userLogin
+    userLogin,
+    userLogout
 };

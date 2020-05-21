@@ -11,7 +11,7 @@ const appSchema = new Schema({
         force_update   : {type:Number,default:'',display: '是否强制更新(0-不更新 1-更新)'},
         url            : {type:String,default:'',display: '下载地址'},
         remarks        : {type:String,default:'',display: '备注'},
-        status         : {type:Number,default:1,min:0,max:3,display: '状态(0:启用,1:停用)'},
+        status         : {type:Number,default:1,min:0,max:3,display: '状态(0:停用,1:启用)'},
     },
     { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });

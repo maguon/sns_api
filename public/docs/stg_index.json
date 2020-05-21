@@ -388,6 +388,48 @@
         }
       }
     },
+    "/user/{userId}/userLogout": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User logout",
+        "description": "",
+        "operationId": "user logout",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "userInfo",
+            "description": "User base info",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogout"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
     "/phone/{phone}/regSms": {
       "post": {
         "tags": [
@@ -5308,6 +5350,27 @@
       },
       "xml": {
         "name": "UserLogin"
+      }
+    },
+    "UserLogout": {
+      "type": "object",
+      "required": [
+        "deviceToken",
+        "deviceType"
+      ],
+      "properties": {
+        "deviceToken": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "xml": {
+        "name": "UserLogout"
       }
     },
     "User": {

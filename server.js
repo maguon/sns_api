@@ -104,6 +104,7 @@ const createServer=()=>{
      userInfo   -用户管理
      */
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
+    server.post({path:'/api/user/:userId/userLogout',contentType: 'application/json'}, UserController.userLogout);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
     server.get('/api/user', UserController.getUser);
     server.get('/api/user/:userId/userInfoAndDetail', UserController.getUserInfoAndDetail);
