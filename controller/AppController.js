@@ -60,7 +60,7 @@ const createApp = (req, res, next) => {
     if(bodyParams.minVersionNum){
         appObj.min_version_num  = bodyParams.minVersionNum;
     }
-    if(bodyParams.forceUpdate){
+    if(bodyParams.forceUpdate != undefined){
         appObj.force_update  = bodyParams.forceUpdate;
     }
     let appModel = new AppModel(appObj)

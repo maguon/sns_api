@@ -5258,7 +5258,7 @@
           },
           {
             "name": "appId",
-            "in": "query",
+            "in": "path",
             "description": "app Id",
             "required": false,
             "type": "string"
