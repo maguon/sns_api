@@ -10,6 +10,7 @@ import {AdminUserController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserDriveController} from './controller';
+import {UserDeviceController} from './controller';
 import {UserRelationController} from './controller';
 import {UserVoteController} from './controller';
 import {UserLocaCollController} from './controller';
@@ -91,15 +92,16 @@ const createServer=()=>{
     );
 
     /**
-     admin_info   -管理员管理
+     adminInfo   -管理员管理
      */
     server.get('/api/admin/:adminId/adminUser', AdminUserController.getAdminUser);
     server.post({path:'/api/admin/:adminId/adminUser',contentType: 'application/json'}, AdminUserController.createAdminUser);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId/status',contentType: 'application/json'} ,AdminUserController.updateAdminUserStatus);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
+
     /**
-     user_info   -用户管理
+     userInfo   -用户管理
      */
     server.post({path:'/api/userLogin',contentType: 'application/json'}, UserController.userLogin);
     server.post({path:'/api/user',contentType: 'application/json'}, UserController.createUser);
@@ -116,17 +118,24 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/userCount', UserController.getUserCountByAdmin);
     server.get('/api/admin/:adminId/userTodayCount', UserController.getUserTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
+
     /**
-     user_detail    -用户详细信息
+     userDetail    -用户详细信息
      */
     server.get('/api/user/:userId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/user/:userId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/user/:userId/avatarImage',contentType: 'application/json'},UserDetailController.updateAvatarImage);
+
     /**
-     user_drive    -用户驾驶信息
+     userDrive    -用户驾驶信息
      */
     server.get('/api/user/:userId/userDrive', UserDriveController.getUserDrive);
     server.put({path:'/api/user/:userId/userDrive/:userDriveId',contentType: 'application/json'} ,UserDriveController.updateUserDriveInfo);
+
+    /**
+     userDevice    -用户设备信息
+     */
+    server.post({path:'/api/user/:userId/userDevice',contentType: 'application/json'}, UserDeviceController.createUserDevice);
 
     /**
      userRelation    -用户关系
@@ -145,6 +154,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/user/:userId/followUserInfo', UserRelationController.getFollowUserInfo);
     server.get('/api/admin/:adminId/user/:userId/attention', UserRelationController.getAttention);
     server.get('/api/admin/:adminId/user/:userId/attentionUserInfo', UserRelationController.getAttentionUserInfo);
+
     /**
      userPraise   -用户点赞记录
      */
@@ -153,6 +163,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/getUserBePraise', UserPraiseController.getUserBePraise);
 
     server.get('/api/admin/:adminId/getUserPraise', UserPraiseController.getUserPraiseByAdmin);
+
     /**
      userVote   -用户投票记录
      */
@@ -160,6 +171,7 @@ const createServer=()=>{
     server.get('/api/user/:userId/getUserVote', UserVoteController.getUserVote);
 
     server.get('/api/admin/:adminId/getUserVote', UserVoteController.getUserVoteByAdmin);
+
     /**
      userLocaColls    -用户地理位置收藏
      */
@@ -168,6 +180,7 @@ const createServer=()=>{
     server.del({path:'/api/user/:userId/userLocaColl/:userLocaCollId/del',contentType: 'application/json'},UserLocaCollController.deleteLocaColl);
 
     server.get('/api/admin/:adminId/userLocaColl', UserLocaCollController.getUserLocaColl);
+
     /**
      userMsgColls    -用户微博收藏
      */
@@ -195,6 +208,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/nearbyMsg', MsgController.getNearbyMsg);
     server.put({path:'/api/admin/:adminId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
     server.del({path:'/api/admin/:adminId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsgByAdmin);
+
      /**
      MsgComment   - 评论
      */
@@ -209,6 +223,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/todayMsgCommentCount', MsgCommentController.getMsgCommentTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/msgCom/:msgComId/status',contentType: 'application/json'} ,MsgCommentController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/msgCom/:msgComId/del',contentType: 'application/json'},MsgCommentController.deleteCommentByAdmin);
+
     /**
      vote      - 投票信息
      */
@@ -219,6 +234,7 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/vote/:voteId/info',contentType: 'application/json'} ,VoteController.updateVote);
     server.put({path:'/api/admin/:adminId/vote/:voteId/status',contentType: 'application/json'} ,VoteController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/vote/:voteId/del',contentType: 'application/json'},VoteController.deleteVoteByAdmin);
+
     /**
      sysMsg     - 系统消息
      */
@@ -228,6 +244,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/sysMsg',contentType: 'application/json'}, SysMsgController.createSysMsg);
     server.put({path:'/api/admin/:adminId/sysMsg/:sysMsgId/status',contentType: 'application/json'} ,SysMsgController.updateStatusByAdmin);
     server.del({path:'/api/admin/:adminId/sysMsg/:sysMsgId/del',contentType: 'application/json'},SysMsgController.deleteSysMsg);
+
     /**
      info     - 提示消息
      */
@@ -242,6 +259,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/privacie/:privacieId/privacie',contentType: 'application/json'} ,PrivacieController.updatePrivacie);
 
     server.get('/api/admin/:adminId/privacie', PrivacieController.getPrivacieByAdmin);
+
     /**
      notice     - 通知设置
      */
@@ -249,6 +267,7 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/notice/:noticeId/notice',contentType: 'application/json'} ,NoticeController.updateNotice);
 
     server.get('/api/admin/:adminId/notice', NoticeController.getNoticeByAdmin);
+
     /**
      about     - 关于我们
      */
@@ -258,6 +277,7 @@ const createServer=()=>{
     server.post({path:'/api/admin/:adminId/about',contentType: 'application/json'}, AboutController.createAbout);
     server.put({path:'/api/admin/:adminId/about/:aboutId/about',contentType: 'application/json'} ,AboutController.updateAbout);
     server.del({path:'/api/admin/:adminId/about/:aboutId/del',contentType: 'application/json'},AboutController.deleteAbout);
+
     /**
      app
      */

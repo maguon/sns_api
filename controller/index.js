@@ -3,6 +3,7 @@ exports.AdminUserController = require('./AdminUserController');
 exports.UserController = require('./UserController');
 exports.UserDetailController = require('./UserDetailController');
 exports.UserDriveController = require('./UserDriveController');
+exports.UserDeviceController = require('./UserDeviceController');
 exports.UserRelationController = require('./UserRelationController');
 exports.UserPraiseController = require('./UserPraiseController');
 exports.UserVoteController = require('./UserVoteController');

@@ -32,6 +32,10 @@
       "description": "UserDrive version and url management api (用户驾驶信息)"
     },
     {
+      "name": "userDevice",
+      "description": "UserDevice version and url management api (用户设备信息)"
+    },
+    {
       "name": "userRelation",
       "description": "Relation version and url management api (用户关注关系)"
     },
@@ -1304,6 +1308,50 @@
             "description": "UserDriveId not found"
           }
         }
+      }
+    },
+
+    "/user/{userId}/userDevice": {
+      "post": {
+        "tags": [
+          "userDevice"
+        ],
+        "summary": "Add a new userDevice info",
+        "description": "",
+        "operationId": "addRelation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"userDevice",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDevice"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
       }
     },
 
@@ -5270,6 +5318,34 @@
       },
       "xml": {
         "name": "UserDrive"
+      }
+    },
+    "UserDevice": {
+      "type": "object",
+      "required": [
+        "deviceToken",
+        "version",
+        "appType",
+        "deviceType"
+      ],
+      "properties": {
+        "deviceToken": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "appType": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "deviceType": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "UserDevice"
       }
     },
     "AvatarImage": {

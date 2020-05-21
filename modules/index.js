@@ -2,6 +2,7 @@ exports.AdminUserModel = require('./schemas/AdminUserSchema').AdminUserModel;
 exports.UserModel = require('./schemas/UserSchema').UserModel;
 exports.UserDetailModel = require('./schemas/UserDetailSchema').UserDetailModel;
 exports.UserDriveModel = require('./schemas/UserDriveSchema').UserDriveModel;
+exports.UserDeviceModel = require('./schemas/UserDeviceSchema').UserDeviceModel;
 exports.UserRelationModel = require('./schemas/UserRelationSchema').UserRelationModel;
 exports.UserPraiseModel = require('./schemas/UserPraiseSchema').UserPraiseModel;
 exports.UserVoteModel = require('./schemas/UserVoteSchema').UserVoteModel;
