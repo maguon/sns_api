@@ -990,6 +990,9 @@ const userLogout = (req, res, next) => {
         if(bodyParams.deviceToken){
             queryUserDevice.where('device_token').equals(bodyParams.deviceToken);
         }
+        if(bodyParams.deviceType){
+            queryUserDevice.where('device_type').equals(bodyParams.deviceType);
+        }
         //根据 该用户 和 设备标号，更新status 为退出登录状态
         UserDeviceModel.findOneAndUpdate(queryUserDevice,{ $set: { status: -1 } }).exec((error,rows)=> {
             if (error) {
