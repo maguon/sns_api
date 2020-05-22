@@ -31,6 +31,13 @@ const createUserDevice = (req, res, next) => {
     }
     //设备登录状态：登录中
     userDeviceObj.status = 1 ;
+    //系统信息
+    if(bodyParams.deviceInfo[0].deviceName){
+        userDeviceObj["device_info.device_name"] = bodyParams.deviceInfo[0].deviceName ;
+    }
+    if(bodyParams.deviceInfo[0].osVersion){
+        userDeviceObj["device_info.os_version"] = bodyParams.deviceInfo[0].osVersion ;
+    }
 
     //判断userId + deviceToken 唯一
     let queryUserDevice = UserDeviceModel.find({});

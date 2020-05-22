@@ -5492,10 +5492,34 @@
         "deviceType": {
           "type": "integer",
           "format": "int64"
+        },
+        "deviceInfo": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/UserDeviceInfo"
+          }
         }
       },
       "xml": {
         "name": "UserDevice"
+      }
+    },
+    "UserDeviceInfo": {
+      "type": "object",
+      "required": [
+        "deviceName",
+        "preview"
+      ],
+      "properties": {
+        "deviceName": {
+          "type": "string"
+        },
+        "osVersion": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserDeviceInfo"
       }
     },
     "AvatarImage": {

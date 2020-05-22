@@ -8,6 +8,7 @@ const userDeviceSchema = new Schema({
         app_type      : {type:Number,default:0,min:0,max:3,display: 'app登录类型（1-司机之家）'},
         device_type   : {type:Number,default:0,min:0,max:3,display: '设备类型(1-android,2-ios)'},
         status        : {type:Number,default:0,min:0,max:3,display: '设备登录状态(-1-退出登录，1-登录中)'},
+        device_info   : {type:Object,trim:true,display: '系统名称/系统版本号'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
