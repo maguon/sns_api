@@ -84,6 +84,15 @@ const getUserDeviceByAdmin = (req, res, next) => {
             as: "user_detail_info"
         }
     });
+    if (params.userDeviceId) {
+        if (params.userDeviceId.length == 24) {
+            matchObj._id = mongoose.mongo.ObjectId(params.userDeviceId);
+        } else {
+            logger.info(' getUserDeviceByAdmin userDeviceId format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
+    }
     if (params.userId) {
         if (params.userId.length == 24) {
             matchObj._user_id = mongoose.mongo.ObjectId(params.userId);

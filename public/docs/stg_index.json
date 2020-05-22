@@ -1415,6 +1415,13 @@
             "type": "string"
           },
           {
+            "name": "userDeviceId",
+            "in": "query",
+            "description": "设备信息ID",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "userId",
             "in": "query",
             "description": "用户ID",
