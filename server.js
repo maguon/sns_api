@@ -26,6 +26,7 @@ import {AboutController} from './controller';
 import {AppController} from './controller';
 import {SmsController} from './controller';
 import {InfoController} from './controller';
+import {PushMsgController} from './controller';
 
 /**
  * Returns a server with all routes defined on it
@@ -298,6 +299,11 @@ const createServer=()=>{
     server.post({path:'/api/phone/:phone/passwordSms',contentType: 'application/json'},SmsController.passwordSms);
     server.post({path:'/api/user/:userId/phone/:phone/resetSms',contentType: 'application/json'},SmsController.resetSms);
 
+    /**
+     * PushMsg Module
+     */
+    server.get('/api/user/:userId/pushMsgAndroid' , PushMsgController.pushMsgXinge);
+    server.get('/api/user/:userId/pushMsgIos' , PushMsgController.pushMsgApn);
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");

@@ -76,6 +76,10 @@
       "description": "Info version and url management api (消息提醒)"
     },
     {
+      "name": "pushMsg",
+      "description": "Info version and url management api (消息推送)"
+    },
+    {
       "name": "privacie",
       "description": "Privacie version and url management api (隐私设置)"
     },
@@ -4512,6 +4516,80 @@
           },
           "404": {
             "description": "UserId or type not found"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/pushMsgAndroid": {
+      "get": {
+        "tags": [
+          "pushMsg"
+        ],
+        "summary": "Select pushMsg Info",
+        "description": "get pushMsg info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceToken",
+            "in": "query",
+            "description": "设备标号",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "messageType",
+            "in": "query",
+            "description": "消息提醒类型(1.通知，2-透传消息 )",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/pushMsgIos": {
+      "get": {
+        "tags": [
+          "pushMsg"
+        ],
+        "summary": "Select pushMsg Info",
+        "description": "get pushMsg info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceToken",
+            "in": "query",
+            "description": "设备标号",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
           }
         }
       }
