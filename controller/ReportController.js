@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
+const moment = require('moment');
 const logger = serverLogger.createLogger('ReportController');
 
 const {ReportModel} = require('../modules');
@@ -78,6 +79,9 @@ const getReportByAdmin = (req, res, next) => {
     if (params.createDateStart && params.createDateEnd) {
         matchObj.created_at = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
+    if (params.reviewDateStart && params.reviewDateEnd) {
+        matchObj.review_time = {$gte: new Date(params.reviewDateStart), $lte: new Date(params.reviewDateEnd)};
+    }
     aggregate_limit.push({
         $project: {
             "user_detail_info.sex": 0,
@@ -133,6 +137,8 @@ const getReportByAdmin = (req, res, next) => {
 }
 const updateReportByAdmin = (req, res, next) =>{
     let bodyParams = req.body;
+    let today = new Date();
+
     let query = ReportModel.find();
     let path = req.params;
     if(path.reportId){
@@ -154,6 +160,7 @@ const updateReportByAdmin = (req, res, next) =>{
         }
     }
     bodyParams.status = Number(2);
+    bodyParams.review_time = today;
     if(bodyParams.validResults){
         bodyParams.valid_results = bodyParams.validResults;
     }

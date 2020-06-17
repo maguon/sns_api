@@ -4982,6 +4982,20 @@
             "type": "string"
           },
           {
+            "name": "reviewDateStart",
+            "in": "query",
+            "description": "处理时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "reviewDateEnd",
+            "in": "query",
+            "description": "处理时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
             "in": "query",
             "name": "start",
             "required": false,

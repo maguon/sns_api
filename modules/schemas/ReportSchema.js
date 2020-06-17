@@ -7,6 +7,7 @@ const reportSchema = new Schema({
         valid_results   : {type:Number,default:0,min:0,max:3,display: '处理结果（1-有效，2-无效）'},
         remarks         : {type:String,default:'',display: '说明'},
         review          : {type:String,default:'',display: '管理员处理说明'},
+        review_time     : {type:Date,display: '处理时间'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
