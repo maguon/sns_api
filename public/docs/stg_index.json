@@ -4961,7 +4961,7 @@
             "type": "integer"
           },
           {
-            "name": "result",
+            "name": "validResults",
             "in": "query",
             "description": "处理结果（1-有效，2-无效）",
             "required": false,
@@ -6323,11 +6323,15 @@
     "ReportResult": {
       "type": "object",
       "required": [
-        "result"
+        "validResults",
+        "review"
       ],
       "properties": {
-        "result": {
+        "validResults": {
           "type": "integer"
+        },
+        "review": {
+          "type": "String"
         }
       },
       "xml": {

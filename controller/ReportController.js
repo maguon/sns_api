@@ -56,8 +56,8 @@ const getReportByAdmin = (req, res, next) => {
     if (params.status) {
         matchObj.status = Number(params.status);
     }
-    if (params.result) {
-        matchObj.result = Number(params.result);
+    if (params.validResults) {
+        matchObj.valid_results = Number(params.validResults);
     }
     if (params.createDateStart && params.createDateEnd) {
         matchObj.created_at = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
@@ -110,6 +110,10 @@ const updateReportByAdmin = (req, res, next) =>{
         }
     }
     bodyParams.status = Number(2);
+    if(bodyParams.validResults){
+        bodyParams.valid_results = bodyParams.validResults;
+    }
+
     ReportModel.updateOne(query,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateReportByAdmin ' + error.message);
