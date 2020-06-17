@@ -4598,6 +4598,60 @@
         }
       }
     },
+    "/user/{userId}/pushMsgAll": {
+      "get": {
+        "tags": [
+          "pushMsg"
+        ],
+        "summary": "Select pushMsgAll Info",
+        "description": "get pushMsgAll info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "nickName",
+            "in": "query",
+            "description": "发送消息用户名称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "receivingUser",
+            "in": "query",
+            "description": "接收消息用户",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "msg",
+            "in": "query",
+            "description": "发送消息内容",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "msgType",
+            "in": "query",
+            "description": "推送消息类型 （1.文章评论 2.求助评论 3.评论回复 4.点赞 5.关注 6.投票结束）",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/privacie": {
       "get": {
