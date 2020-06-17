@@ -44,6 +44,22 @@ const getReportByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_id",
+            foreignField: "_user_id",
+            as: "user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from: "admin_users",
+            localField: "_admin_id",
+            foreignField: "_id",
+            as: "admin_info"
+        }
+    });
     if(params.reportId){
         if(params.reportId.length == 24){
             matchObj._id = mongoose.mongo.ObjectId(params.reportId);
@@ -62,6 +78,34 @@ const getReportByAdmin = (req, res, next) => {
     if (params.createDateStart && params.createDateEnd) {
         matchObj.created_at = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }
+    aggregate_limit.push({
+        $project: {
+            "user_detail_info.sex": 0,
+            "user_detail_info.intro": 0,
+            "user_detail_info.msg_num": 0,
+            "user_detail_info.msg_help_num": 0,
+            "user_detail_info.follow_num": 0,
+            "user_detail_info.attention_num": 0,
+            "user_detail_info.comment_num": 0,
+            "user_detail_info.comment_reply_num": 0,
+            "user_detail_info.vote_num": 0,
+            "user_detail_info.msg_coll_num": 0,
+            "user_detail_info.loca_coll_num": 0,
+            "user_detail_info.black_list": 0,
+            "user_detail_info._user_id": 0,
+            "user_detail_info.created_at": 0,
+            "user_detail_info.updated_at": 0,
+            "user_detail_info.__v": 0,
+
+            "admin_info.phone": 0,
+            "admin_info.password": 0,
+            "admin_info.gender": 0,
+            "admin_info.status": 0,
+            "admin_info.created_at": 0,
+            "admin_info.updated_at": 0,
+            "admin_info.__v": 0
+        }
+    });
     aggregate_limit.push({
         $match: matchObj
     });
