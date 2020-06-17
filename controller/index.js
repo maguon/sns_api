@@ -15,6 +15,7 @@ exports.VoteController = require('./VoteController');
 exports.SysMsgController = require('./SysMsgController');
 exports.PrivacieController = require('./PrivacieController');
 exports.NoticeController = require('./NoticeController');
+exports.ReportController = require('./ReportController');
 exports.AboutController = require('./AboutController');
 exports.AppController = require('./AppController');
 exports.SmsController = require('./SmsController');

@@ -22,6 +22,7 @@ import {VoteController} from  './controller';
 import {SysMsgController} from  './controller';
 import {PrivacieController} from  './controller';
 import {NoticeController} from  './controller';
+import {ReportController} from  './controller';
 import {AboutController} from './controller';
 import {AppController} from './controller';
 import {SmsController} from './controller';
@@ -273,6 +274,14 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/notice', NoticeController.getNoticeByAdmin);
 
     /**
+     report     - 举报设置
+     */
+    server.post({path:'/api/user/:userId/msg/:msgId/report',contentType: 'application/json'}, ReportController.createReport);
+
+    server.get('/api/admin/:adminId/report', ReportController.getReportByAdmin);
+    server.put({path:'/api/admin/:adminId/report/:reportId',contentType: 'application/json'} , ReportController.updateReportByAdmin);
+
+    /**
      about     - 关于我们
      */
     server.get('/api/user/:userId/about', AboutController.getAbout);
@@ -304,6 +313,7 @@ const createServer=()=>{
      */
     server.get('/api/user/:userId/pushMsgAndroid' , PushMsgController.pushMsgXinge);
     server.get('/api/user/:userId/pushMsgIos' , PushMsgController.pushMsgApn);
+    server.get('/api/user/:userId/pushMsgAll' , PushMsgController.pushMsgAll);
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");

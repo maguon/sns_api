@@ -88,6 +88,10 @@
       "description": "Notice version and url management api (通知设置)"
     },
     {
+      "name": "report",
+      "description": "Report version and url management api (举报信息)"
+    },
+    {
       "name": "about",
       "description": "About version and url management api (关于我们)"
     },
@@ -4821,6 +4825,172 @@
       }
     },
 
+    "/user/{userId}/msg/{msgId}/report": {
+      "post": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Add a new report info and update msg info",
+        "description": "",
+        "operationId": "addMsgComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "msgId",
+            "in": "path",
+            "description": "msgId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"msgCommentInfo",
+            "description": "msgComment object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/report": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Administrator select report Info",
+        "description": "Administrator get report info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repoetId",
+            "in": "query",
+            "description": "repoetId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "处理状态（1-未处理（默认），2-已处理）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "result",
+            "in": "query",
+            "description": "处理结果（1-有效，2-无效）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "举报时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "举报时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/report/{reportId}": {
+      "put": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Administrator finds report and update",
+        "description": "Administrator update report info",
+        "operationId": "Administrator update report info by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reportId",
+            "in": "path",
+            "description": "report unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Report object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReportResult"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid result value"
+          }
+        }
+      }
+    },
+
     "/user/{userId}/about": {
       "get": {
         "tags": [
@@ -6080,6 +6250,34 @@
       },
       "xml": {
         "name": "Notice"
+      }
+    },
+    "Report": {
+      "type": "object",
+      "required": [
+        "remarks"
+      ],
+      "properties": {
+        "remarks": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "Report"
+      }
+    },
+    "ReportResult": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "ReportResult"
       }
     },
     "City": {
