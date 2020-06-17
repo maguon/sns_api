@@ -4947,9 +4947,9 @@
             "type": "string"
           },
           {
-            "name": "repoetId",
+            "name": "reportId",
             "in": "query",
-            "description": "repoetId",
+            "description": "reportId",
             "required": false,
             "type": "string"
           },

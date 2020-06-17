@@ -44,7 +44,15 @@ const getReportByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
-
+    if(params.reportId){
+        if(params.reportId.length == 24){
+            matchObj._id = mongoose.mongo.ObjectId(params.reportId);
+        }else{
+            logger.info('updateReportByAdmin reportId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
     if (params.status) {
         matchObj.status = Number(params.status);
     }
@@ -83,9 +91,9 @@ const updateReportByAdmin = (req, res, next) =>{
     let bodyParams = req.body;
     let query = ReportModel.find();
     let path = req.params;
-    if(path.reportId ){
-        if(path.reportId .length == 24){
-            query.where('_id').equals(mongoose.mongo.ObjectId(path.reportId ));
+    if(path.reportId){
+        if(path.reportId.length == 24){
+            query.where('_id').equals(mongoose.mongo.ObjectId(path.reportId));
         }else{
             logger.info('updateReportByAdmin reportId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
