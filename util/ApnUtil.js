@@ -3,9 +3,9 @@
  */
 
 const serverLogger = require('../util/ServerLogger');
-var smsConfig = require('../config/SmsConfig.js');
-var logger = serverLogger.createLogger('ApnUtil.js');
-var apn = require('@parse/node-apn');
+const smsConfig = require('../config/SmsConfig.js');
+const logger = serverLogger.createLogger('ApnUtil.js');
+const apn = require('@parse/node-apn');
 
 
 function pushMsg(params, callback) {

@@ -37,7 +37,7 @@ const createAbout = (req, res, next) => {
         if(path.adminId .length == 24){
             aboutObj._admin_id = mongoose.mongo.ObjectId(path.adminId );
         }else{
-            logger.info('updateAbout aboutId format incorrect!');
+            logger.info('createAbout adminId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
             return next();
         }

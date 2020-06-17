@@ -2,6 +2,7 @@
  * Created by yym on 2020/5/21.
  */
 
+const mongoose = require('mongoose');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
 const smsConfig = require('../config/SmsConfig');
@@ -9,6 +10,8 @@ const xingeUtil = require('../util/XingeUtil');
 const ApnUtil = require('../util/ApnUtil');
 const apn = require('@parse/node-apn');
 const logger = serverLogger.createLogger('PushMsgController');
+
+const AllMsgPushUtil = require('../util/AllMsgPushUtil');
 
 function pushMsgXinge(req,res,next){
     let params = req.query;
@@ -23,7 +26,7 @@ function pushMsgXinge(req,res,next){
             resUtil.resetQueryRes(res,result,null);
             return next();
         }
-    })
+    });
 }
 
 function pushMsgApn(req,res,next){
@@ -47,7 +50,29 @@ function pushMsgApn(req,res,next){
     })
 }
 
+function pushMsgAll(req,res,next){
+    //走ALLMsgPushUtil
+    let params = req.query;
+    // params.userId ="5e4f43bde0d98903a7364113";
+    // params.nickName = "美少女战士";
+    // params.msg = "你真的很漂亮啊~~~你真的很漂亮啊~~~你真的很漂亮啊~~~你真的很漂亮啊~~~你真的很漂亮啊~~~";
+    // params.msgType = 1;
+
+    AllMsgPushUtil.mqPushMsg(params,function(error,result){
+        if (error) {
+            logger.error(' pushMsgXinge ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' pushMsgXinge ' + 'success');
+            console.log("mqPushMsg返回结果：result:",result);
+            resUtil.resetQueryRes(res,result,null);
+            return next();
+        }
+    });
+}
+
 module.exports={
     pushMsgXinge : pushMsgXinge,
-    pushMsgApn : pushMsgApn
+    pushMsgApn : pushMsgApn,
+    pushMsgAll : pushMsgAll
 }
