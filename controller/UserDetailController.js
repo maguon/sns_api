@@ -303,6 +303,32 @@ const getBlockList = (req, res, next) => {
             return next();
         }
     }
+    if(!(params.start && params.size)){
+        aggregate_limit.push({
+            $project: {
+                "_id": 0,
+                "sex": 0,
+                "nick_name": 0,
+                "real_name": 0,
+                "city_name": 0,
+                "intro": 0,
+                "avatar": 0,
+                "msg_num": 0,
+                "msg_help_num": 0,
+                "follow_num": 0,
+                "attention_num": 0,
+                "comment_num": 0,
+                "comment_reply_num": 0,
+                "vote_num": 0,
+                "msg_coll_num": 0,
+                "loca_coll_num": 0,
+                "created_at": 0,
+                "updated_at": 0,
+                "__v": 0,
+                "block_list": 0,
+            }
+        })
+    }
     aggregate_limit.push({
         $project: {
             "block_user_list._id": 0,
@@ -405,6 +431,32 @@ const getBlockListByAdmin = (req, res, next) => {
             resUtil.resetQueryRes(res,[],null);
             return next();
         }
+    }
+    if(!(params.start && params.size)){
+        aggregate_limit.push({
+            $project: {
+                "_id": 0,
+                "sex": 0,
+                "nick_name": 0,
+                "real_name": 0,
+                "city_name": 0,
+                "intro": 0,
+                "avatar": 0,
+                "msg_num": 0,
+                "msg_help_num": 0,
+                "follow_num": 0,
+                "attention_num": 0,
+                "comment_num": 0,
+                "comment_reply_num": 0,
+                "vote_num": 0,
+                "msg_coll_num": 0,
+                "loca_coll_num": 0,
+                "created_at": 0,
+                "updated_at": 0,
+                "__v": 0,
+                "block_list": 0,
+            }
+        })
     }
     aggregate_limit.push({
         $project: {
