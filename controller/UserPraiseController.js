@@ -123,7 +123,7 @@ const getUserBePraise = (req, res, next) => {
                     if (path.userId.length == 24) {
                         if(rows[i].type == sysConsts.COMMENT.level.firstCom){
                             //一级评论
-                            if(rows[i].msg_info.length > 0 ){
+                            if(rows[i].msg_info.length != 0 ){
                                 if(rows[i].msg_info[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
@@ -131,7 +131,7 @@ const getUserBePraise = (req, res, next) => {
                         }
                         if(rows[i].type == sysConsts.COMMENT.level.twoCom){
                             //二级评论
-                            if(rows[i].msg_comment.length > 0 ){
+                            if(rows[i].msg_comment.length != 0 ){
                                 if(rows[i].msg_comment[0]._user_id.equals(mongoose.mongo.ObjectId(path.userId))){
                                     arrAttributeSort.push(rows[i]);
                                 }
@@ -196,7 +196,9 @@ const createUserPraise = (req, res, next) => {
                     reject({err:error});
                 } else {
                     logger.info(' createUserPraise getPraise ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        resolve();
+                    }else{
                         if(bodyParams.type ==1){
                             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_MSG_CREATE_ERROR);
                             return next();
@@ -204,8 +206,6 @@ const createUserPraise = (req, res, next) => {
                             resUtil.resetUpdateRes(res,null,systemMsg.PRAISE_COM_CREATE_ERROR);
                             return next();
                         }
-                    }else{
-                        resolve();
                     }
                 }
             });
@@ -268,10 +268,10 @@ const createUserPraise = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createUserPraise getNickName ' + 'success');
-                    if(rows.length > 0){
-                        resolve(rows[0]._doc.nick_name);
-                    }else{
+                    if(rows.length == 0){
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }else{
+                        resolve(rows[0]._doc.nick_name);
                     }
                 }
             });

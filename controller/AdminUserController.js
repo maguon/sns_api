@@ -64,10 +64,10 @@ const createAdminUser = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createAdminUser getAdminUser ' + 'success');
-                    if(rows.length > 0){
-                        reject({msg:systemMsg.CUST_SIGNUP_REGISTERED});
-                    }else{
+                    if(rows.length == 0){
                         resolve();
+                    }else{
+                        reject({msg:systemMsg.CUST_SIGNUP_REGISTERED});
                     }
                 }
             });

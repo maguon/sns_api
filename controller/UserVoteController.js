@@ -133,11 +133,11 @@ const getUserVoteByAdmin = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' getUserVoteByAdmin getUserVoteId ' + 'success');
-                    if(rows.length>0){
-                        resolve(rows);
-                    }else{
+                    if(rows.length == 0){
                         resUtil.resetQueryRes(res, []);
                         return next();
+                    }else{
+                        resolve(rows);
                     }
                 }
             });
@@ -180,7 +180,7 @@ const getUserVoteByAdmin = (req, res, next) => {
             for(let i=0; i < userVoteIds.length; i++ ){
                 queryId[i] = mongoose.mongo.ObjectId(userVoteIds[i]._id);
             }
-            if(userVoteIds.length > 0){
+            if(userVoteIds.length != 0){
                 matchObjInfo._id = {$in : queryId};
             }
             aggregate_limit_info.push({
@@ -306,10 +306,10 @@ const createUserVote = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createUserVote getUserVoteInfo ' + 'success');
-                    if(rows.length > 0){
-                        reject({msg:systemMsg.USER_VOTE_CREATE_ERROR});
-                    }else{
+                    if(rows.length == 0){
                         resolve();
+                    }else{
+                        reject({msg:systemMsg.USER_VOTE_CREATE_ERROR});
                     }
                 }
             });
@@ -364,7 +364,7 @@ const createUserVote = (req, res, next) => {
                     resUtil.resInternalError(error, res);
                 } else {
                     logger.info(' createUserVote getVoteInfo ' + 'success');
-                    if(rows.length > 0 ){
+                    if(rows.length != 0 ){
                         resolve(rows[0]._doc);
                     }
                 }

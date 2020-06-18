@@ -308,11 +308,11 @@ const createUser = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createUser getUserPhone ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        resolve();
+                    }else{
                         logger.info(' createUser getUserPhone '+ bodyParams.phone+ " Phone is registered! ");
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
-                    }else{
-                        resolve();
                     }
                 }
             });
@@ -618,16 +618,16 @@ const updatePasswordByPhone = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' updatePasswordByPhone getUserPhone ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        logger.info(' updatePasswordByPhone getUserPhone '+ path.phone + " The user does not exist!");
+                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }else{
                         if(rows[0]._doc.status == sysConsts.USER.status.disable){
                             logger.info(' updatePasswordByPhone getUserPhone '+ path.phone + " The user has been deactivated!");
                             reject({msg:systemMsg.USER_STATUS_ERROR});
                         }else{
                             resolve(rows[0]._doc._id);
                         }
-                    }else{
-                        logger.info(' updatePasswordByPhone getUserPhone '+ path.phone + " The user does not exist!");
-                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
                     }
                 }
             });
@@ -688,11 +688,11 @@ const updatePhone = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' updatePhone getUserPhone ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        resolve();
+                    }else{
                         logger.info(' updatePhone  getUserPhone ' + bodyParams.phone + " Phone is registered!");
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
-                    }else{
-                        resolve();
                     }
                 }
             });

@@ -401,10 +401,10 @@ const createMsgComment = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createMsgComment getNickName ' + 'success');
-                    if(rows.length > 0){
-                        resolve(rows[0]._doc.nick_name);
-                    }else{
+                    if(rows.length == 0){
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }else{
+                        resolve(rows[0]._doc.nick_name);
                     }
                 }
             });
@@ -833,7 +833,18 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
                 return next();
             }else{
                 let resObj = [];
-                if(rows.length > 0){
+                if(rows.length == 0){
+                    //添加文章
+                    let articleObj = {};
+                    articleObj._id = 1;
+                    articleObj.count = 0;
+                    resObj.push(articleObj);
+                    //添加求助
+                    let help = {};
+                    help._id = 2;
+                    help.count = 0;
+                    resObj.push(help);
+                }else{
                     if(rows[0]._id == 1){
                         //添加求助
                         let help = {};
@@ -863,17 +874,6 @@ const getMsgCommentTodayCountByAdmin = (req, res, next) => {
                             resObj.push(help);
                         }
                     }
-                }else{
-                    //添加文章
-                    let articleObj = {};
-                    articleObj._id = 1;
-                    articleObj.count = 0;
-                    resObj.push(articleObj);
-                    //添加求助
-                    let help = {};
-                    help._id = 2;
-                    help.count = 0;
-                    resObj.push(help);
                 }
 
                 logger.info(' getMsgCommentTodayCountByAdmin getComment ' + 'success');

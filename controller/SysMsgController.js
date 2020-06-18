@@ -75,15 +75,15 @@ const createSysMsg = (req, res, next) => {
                         reject({err:error.message});
                     } else {
                         logger.info(' createSysMsg getUserId ' + 'success');
-                        if(rows.length > 0){
+                        if(rows.length == 0){
+                            reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                        }else{
                             if(rows[0]._doc.status == sysConsts.USER.status.disable){
                                 reject({msg:systemMsg.USER_STATUS_ERROR});
                             }else{
                                 sysMsgObj._user_id = rows[0]._doc._id;
                                 resolve();
                             }
-                        }else{
-                            reject({msg:systemMsg.CUST_ID_NULL_ERROR});
                         }
                     }
                 });
@@ -241,10 +241,10 @@ const getSysMsgByAdmin = (req, res, next) => {
                         reject({err:error.message});
                     } else {
                         logger.info(' getSysMsgByAdmin getUserId ' + 'success');
-                        if(rows.length > 0){
-                            matchObj._user_id = mongoose.mongo.ObjectId(rows[0]._doc._id);
+                        if(rows.length == 0){
                             resolve();
                         }else{
+                            matchObj._user_id = mongoose.mongo.ObjectId(rows[0]._doc._id);
                             resolve();
                         }
                     }

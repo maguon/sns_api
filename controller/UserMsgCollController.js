@@ -108,12 +108,12 @@ const createUserMsgColl = (req, res, next) => {
                     reject({err:error});
                 } else {
                     logger.info(' createUserMsgColl getMsgColl ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        resolve();
+                    }else{
                         logger.info('createUserMsgColl getMsgColl msgInfo Already created!');
                         resUtil.resetUpdateRes(res,null,systemMsg.MSG_COLL_CREATE_ERROR);
                         return next();
-                    }else{
-                        resolve();
                     }
                 }
             });

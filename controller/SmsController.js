@@ -87,10 +87,10 @@ const regSms = (req,res,next) =>{
                     reject({err:error.message});
                 } else {
                     logger.info(' regSms getUserPhone ' + 'success');
-                    if(rows.length > 0){
-                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
-                    }else{
+                    if(rows.length == 0){
                         resolve();
+                    }else{
+                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
                     }
                 }
             });
@@ -151,10 +151,10 @@ const passwordSms = (req,res,next) =>{
                     reject({err:error.message});
                 } else {
                     logger.info(' passwordSms getUserPhone ' + 'success');
-                    if(rows.length > 0){
-                        resolve();
-                    }else{
+                    if(rows.length == 0){
                         reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
+                    }else{
+                        resolve();
                     }
                 }
             });
@@ -224,10 +224,10 @@ const resetSms = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' resetSms getUserPhone ' + 'success');
-                    if(rows.length > 0){
-                        resolve();
-                    }else{
+                    if(rows.length == 0){
                         reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }else{
+                        resolve();
                     }
                 }
             });

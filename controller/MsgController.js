@@ -308,11 +308,11 @@ const getFollowUserMsg = (req, res, next) =>{
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info('getFollowUserMsg getFollowUserId ' + 'success');
-                    if(rows.length >0){
-                        resolve(rows);
-                    }else{
+                    if(rows.length == 0){
                         resUtil.resetQueryRes(res, [],null);
                         return next();
+                    }else{
+                        resolve(rows);
                     }
                 }
             });
@@ -360,7 +360,7 @@ const getFollowUserMsg = (req, res, next) =>{
             for(let i=0; i < followUserInfo.length; i++ ){
                 queryId[i] = mongoose.mongo.ObjectId(followUserInfo[i]._doc._user_by_id);
             }
-            if(followUserInfo.length > 0){
+            if(followUserInfo.length != 0){
                 matchObj._user_id = {$in : queryId};
             }
             //只查询文章
@@ -822,7 +822,18 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
                 return next();
             }else{
                 let resObj = [];
-                if(rows.length > 0){
+                if(rows.length == 0){
+                    //添加文章
+                    let articleObj = {};
+                    articleObj._id = 1;
+                    articleObj.count = 0;
+                    resObj.push(articleObj);
+                    //添加求助
+                    let help = {};
+                    help._id = 2;
+                    help.count = 0;
+                    resObj.push(help);
+                }else{
                     if(rows[0]._id == 1){
                         //添加求助
                         let help = {};
@@ -851,17 +862,6 @@ const getTodayMsgCountByAdmin = (req, res, next) => {
                             resObj.push(help);
                         }
                     }
-                }else{
-                    //添加文章
-                    let articleObj = {};
-                    articleObj._id = 1;
-                    articleObj.count = 0;
-                    resObj.push(articleObj);
-                    //添加求助
-                    let help = {};
-                    help._id = 2;
-                    help.count = 0;
-                    resObj.push(help);
                 }
 
                 logger.info(' getTodayMsgCountByAdmin ' + 'success');
