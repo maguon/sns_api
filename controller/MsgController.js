@@ -168,9 +168,9 @@ const getMsg = (req, res, next) =>{
 }
 const getPopularMsg = (req, res, next) =>{
     //文章热门
-    //48小时内发布文章
+    //48小时内发布文章  未修改
     //排序：根据点赞和评论数 之和
-    //Map-Reduce
+    //Map-Reduce   未修改
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
@@ -546,6 +546,7 @@ const createMsg = (req, res, next) => {
         })
 }
 const updateMsgStatus = (req, res, next) => {
+    let bodyParams = req.body;
     let path = req.params;
     let queryMessge = MsgModel.find({});
     if(path.userId){
@@ -566,7 +567,7 @@ const updateMsgStatus = (req, res, next) => {
             return next();
         }
     }
-    MsgModel.updateOne(queryMessge,{status:sysConsts.MSG.status.disable},function(error,result){
+    MsgModel.updateOne(queryMessge,bodyParams,function(error,result){
         if (error) {
             logger.error(' updateMsgStatus updateMsg ' + error.message);
             resUtil.resInternalError(error);
