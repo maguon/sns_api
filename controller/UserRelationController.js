@@ -488,10 +488,10 @@ const createUserRelation = (req, res, next) => {
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' createUserRelation getRelInfo ' + 'success');
-                    if(rows.length > 0){
-                        reject({msg:systemMsg.RELATION_ID_ERROR});
-                    }else{
+                    if(rows.length == 0){
                         resolve();
+                    }else{
+                        reject({msg:systemMsg.RELATION_ID_ERROR});
                     }
                 }
             });
@@ -594,11 +594,11 @@ const createUserRelation = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createUserRelation getNickName ' + 'success');
-                    if(rows.length > 0){
+                    if(rows.length == 0){
+                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
+                    }else{
                         nick_name = rows[0]._doc.nick_name;
                         resolve(relationInfo);
-                    }else{
-                        reject({msg:systemMsg.CUST_ID_NULL_ERROR});
                     }
                 }
             });
@@ -637,7 +637,9 @@ const createUserRelation = (req, res, next) => {
     //保存新关注信息
     const saveRelation = (relationInfo) =>{
         return new Promise((resolve, reject) => {
-            if(relationInfo.length > 0){
+            if(relationInfo.length == 0){
+                userRelationObj.type = 0;
+            }else{
                 userRelationObj.type = 1;
             }
             if(path.userId){
@@ -666,12 +668,12 @@ const createUserRelation = (req, res, next) => {
                     reject({err:error.message});
                 } else {
                     logger.info(' createUserRelation saveRelation ' + 'success');
-                    if(relationInfo.length > 0){
-                        returnMessage = result;
-                        resolve(relationInfo);
-                    }else{
+                    if(relationInfo.length == 0){
                         resUtil.resetCreateRes(res, result);
                         return next();
+                    }else{
+                        returnMessage = result;
+                        resolve(relationInfo);
                     }
                 }
             });
@@ -772,12 +774,12 @@ const deleteUserRelation = (req, res, next) => {
                     reject({err:error.message});
                 }else{
                     logger.info(' deleteUserRelation delRelation ' + 'success');
-                    if(relationInfo.length > 0){
-                        resolve(relationInfo);
-                        returnMessage = result;
-                    }else{
+                    if(relationInfo.length == 0){
                         resUtil.resetUpdateRes(res,result,null);
                         return next();
+                    }else{
+                        resolve(relationInfo);
+                        returnMessage = result;
                     }
                 }
             });

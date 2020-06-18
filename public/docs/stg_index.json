@@ -80,6 +80,10 @@
       "description": "Info version and url management api (消息推送)"
     },
     {
+      "name": "blockList",
+      "description": "blockList version and url management api (黑名单)"
+    },
+    {
       "name": "privacie",
       "description": "Privacie version and url management api (隐私设置)"
     },
@@ -4643,6 +4647,143 @@
             "description": "推送消息类型 （1.文章评论 2.求助评论 3.评论回复 4.点赞 5.关注 6.投票结束）",
             "required": false,
             "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+
+    "/user/{userId}/blockUser/{blockUserId}/add": {
+      "post": {
+        "tags": [
+          "blockList"
+        ],
+        "summary": "Add a new blockList info",
+        "description": "",
+        "operationId": "addMsgComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blockUserId",
+            "in": "path",
+            "description": "blockUserId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/user/{userId}/blockList": {
+      "get": {
+        "tags": [
+          "blockList"
+        ],
+        "summary": "Select blockList Info",
+        "description": "get blockList info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
+    "/user/{userId}/blockUser/{blockUserId}/del": {
+      "delete": {
+        "tags": [
+          "blockList"
+        ],
+        "summary": "Administrator delete blockList",
+        "description": "Administrator delete blockList",
+        "operationId": "Administrator delete blockList by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blockUserId",
+            "in": "path",
+            "description": "blockUserId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserId or blockList not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/user/{userId}/blockList": {
+      "get": {
+        "tags": [
+          "blockList"
+        ],
+        "summary": "Select blockList Info",
+        "description": "get blockList info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userID",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

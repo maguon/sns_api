@@ -258,6 +258,15 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/type/:type/status',contentType: 'application/json'} ,InfoController.updateStatus);
 
     /**
+     blockList     - 黑名单
+     */
+    server.post({path:'/api/user/:userId/blockUser/:blockUserId/add',contentType: 'application/json'}, UserDetailController.createBlockList);
+    server.get('/api/user/:userId/blockList', UserDetailController.getBlockList);
+    server.del({path:'/api/user/:userId/blockUser/:blockUserId/del',contentType: 'application/json'}, UserDetailController.delBlockList);
+
+    server.get('/api/admin/:adminId/user/:userId/blockList', UserDetailController.getBlockList);
+
+    /**
      privacie     - 隐私设置
      */
     server.get('/api/user/:userId/privacie', PrivacieController.getPrivacieByUser);

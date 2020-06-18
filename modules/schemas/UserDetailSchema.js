@@ -19,6 +19,7 @@ const userDetailSchema = new Schema({
         vote_num                : {type:Number,default:0,display: '参与投票数'},
         msg_coll_num            : {type:Number,default:0,display: '收藏文章数'},
         loca_coll_num           : {type:Number,default:0,display: '收藏位置数'},
+        block_list              : {type:Array,default:[],display: '黑名单'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
