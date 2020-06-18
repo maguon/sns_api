@@ -279,7 +279,8 @@ const createBlockList = (req, res, next) => {
         })
 }
 const getBlockList = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
+    let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
     aggregate_limit.push({
@@ -293,9 +294,9 @@ const getBlockList = (req, res, next) => {
         }
     });
 
-    if(params.userId){
-        if(params.userId.length == 24){
-            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
+    if(path.userId){
+        if(path.userId.length == 24){
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('getBlockList userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -304,27 +305,6 @@ const getBlockList = (req, res, next) => {
     }
     aggregate_limit.push({
         $project: {
-            "_id": 0,
-            "sex": 0,
-            "nick_name": 0,
-            "real_name": 0,
-            "city_name": 0,
-            "intro": 0,
-            "avatar": 0,
-            "msg_num": 0,
-            "msg_help_num": 0,
-            "follow_num": 0,
-            "attention_num": 0,
-            "comment_num": 0,
-            "comment_reply_num": 0,
-            "vote_num": 0,
-            "msg_coll_num": 0,
-            "loca_coll_num": 0,
-            "created_at": 0,
-            "updated_at": 0,
-            "__v": 0,
-            "block_list": 0,
-
             "block_user_list._id": 0,
             "block_user_list.sex": 0,
             "block_user_list.city_name": 0,
@@ -341,20 +321,28 @@ const getBlockList = (req, res, next) => {
             "block_user_list.created_at": 0,
             "block_user_list.updated_at": 0,
             "block_user_list.__v": 0,
-            "block_user_list.block_list": 0
-
+            "block_user_list.block_list": 0,
         }
     })
     aggregate_limit.push({
         $match: matchObj
     });
+    if (params.start && params.size) {
+        aggregate_limit.push({
+            $project: {
+                block_user_list: { $slice: [ "$block_user_list",Number(params.start), Number(params.size)] },
+            }
+        })
+    };
+
     UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getBlockList ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
             logger.info(' getBlockList ' + 'success');
-            resUtil.resetQueryRes(res, rows[0].block_user_list);
+            resUtil.resetQueryRes(res, rows);
+            // resUtil.resetQueryRes(res, rows[0].block_user_list);
         }
     });
 }
@@ -394,7 +382,8 @@ const delBlockList = (req, res, next) => {
     );
 }
 const getBlockListByAdmin = (req, res, next) => {
-    let params = req.params;
+    let path = req.params;
+    let params = req.query;
     let aggregate_limit = [];
     let matchObj = {};
     aggregate_limit.push({
@@ -408,9 +397,9 @@ const getBlockListByAdmin = (req, res, next) => {
         }
     });
 
-    if(params.userId){
+    if(path.userId){
         if(params.userId.length == 24){
-            matchObj._user_id = mongoose.mongo.ObjectId(params.userId);
+            matchObj._user_id = mongoose.mongo.ObjectId(path.userId);
         }else{
             logger.info('getBlockListByAdmin userId format incorrect!');
             resUtil.resetQueryRes(res,[],null);
@@ -419,27 +408,6 @@ const getBlockListByAdmin = (req, res, next) => {
     }
     aggregate_limit.push({
         $project: {
-            "_id": 0,
-            "sex": 0,
-            "nick_name": 0,
-            "real_name": 0,
-            "city_name": 0,
-            "intro": 0,
-            "avatar": 0,
-            "msg_num": 0,
-            "msg_help_num": 0,
-            "follow_num": 0,
-            "attention_num": 0,
-            "comment_num": 0,
-            "comment_reply_num": 0,
-            "vote_num": 0,
-            "msg_coll_num": 0,
-            "loca_coll_num": 0,
-            "created_at": 0,
-            "updated_at": 0,
-            "__v": 0,
-            "block_list": 0,
-
             "block_user_list._id": 0,
             "block_user_list.sex": 0,
             "block_user_list.city_name": 0,
@@ -456,13 +424,19 @@ const getBlockListByAdmin = (req, res, next) => {
             "block_user_list.created_at": 0,
             "block_user_list.updated_at": 0,
             "block_user_list.__v": 0,
-            "block_user_list.block_list": 0
-
+            "block_user_list.block_list": 0,
         }
     })
     aggregate_limit.push({
         $match: matchObj
     });
+    if (params.start && params.size) {
+        aggregate_limit.push({
+            $project: {
+                block_user_list: { $slice: [ "$block_user_list",Number(params.start), Number(params.size)] },
+            }
+        })
+    };
     UserDetailModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
             logger.error(' getBlockListByAdmin ' + error.message);

@@ -4714,6 +4714,18 @@
             "description": "userID",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -4784,6 +4796,18 @@
             "description": "userID",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
