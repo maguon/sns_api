@@ -367,8 +367,7 @@ const getBlockList = (req, res, next) => {
             resUtil.resInternalError(error,res);
         } else {
             logger.info(' getBlockList ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            // resUtil.resetQueryRes(res, rows[0].block_user_list);
+            resUtil.resetQueryRes(res, rows[0].block_user_list);
         }
     });
 }
