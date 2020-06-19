@@ -17,11 +17,42 @@ const getMsg = (req, res, next) =>{
     let params = req.query;
     let returnMessage;
 
+    //查询黑名单用户
+    const getBlockLis = () =>{
+        return new Promise((resolve, reject) => {
+            let queryBlockLis = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryBlockLis.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' getMsg getBlockLis appId format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
+            }
+            queryBlockLis.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getMsg getBlockLis ' + error.message);
+                    reject({err:error});
+                    // resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getMsg getBlockLis ' + 'success');
+                    if(rows.length == 0 ){
+                        resolve(rows);
+                    }else{
+                        resolve(rows[0]._doc.block_list);
+                    }
+                }
+            });
+        });
+    }
+
     //查询文章信息
-    const getMsgInfo = () =>{
+    const getMsgInfo = (blickList) =>{
         return new Promise((resolve, reject) => {
             let aggregate_limit = [];
             let matchObj = {};
+
             aggregate_limit.push({
                 $lookup: {
                     from: "user_details",
@@ -30,6 +61,7 @@ const getMsg = (req, res, next) =>{
                     as: "user_detail_info"
                 }
             });
+
             //用户关注记录
             aggregate_limit.push(
                 {
@@ -101,9 +133,46 @@ const getMsg = (req, res, next) =>{
             if (params.status) {
                 matchObj.status = Number(params.status);
             }
+            if(blickList.length !=0){
+                matchObj["_user_id"] = {$nin: blickList};
+            }
+            aggregate_limit.push({
+                $project: {
+                    "user_detail_info._id": 0,
+                    "user_detail_info.sex": 0,
+                    "user_detail_info.intro": 0,
+                    "user_detail_info.msg_num": 0,
+                    "user_detail_info.msg_help_num": 0,
+                    "user_detail_info.follow_num": 0,
+                    "user_detail_info.attention_num": 0,
+                    "user_detail_info.comment_num": 0,
+                    "user_detail_info.comment_reply_num": 0,
+                    "user_detail_info.vote_num": 0,
+                    "user_detail_info.msg_coll_num": 0,
+                    "user_detail_info.loca_coll_num": 0,
+                    "user_detail_info.created_at": 0,
+                    "user_detail_info.updated_at": 0,
+                    "user_detail_info.__v": 0,
+                    "user_detail_info.block_list": 0,
+                    "user_detail_info._user_id": 0,
+
+                    "user_relations.created_at": 0,
+                    "user_relations.updated_at": 0,
+                    "user_relations.__v": 0,
+                    "user_relations._user_id": 0,
+
+                    "user_praises.created_at": 0,
+                    "user_praises.updated_at": 0,
+                    "user_praises.__v": 0,
+                    "user_praises._user_id": 0,
+                }
+            });
+
+
             aggregate_limit.push({
                 $match: matchObj
             });
+
             aggregate_limit.push({
                 $sort: { "created_at": -1 }
             });
@@ -116,6 +185,7 @@ const getMsg = (req, res, next) =>{
                     }
                 );
             };
+
             MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
                 if (error) {
                     logger.error(' getMsg getMsgInfo ' + error.message);
@@ -155,7 +225,8 @@ const getMsg = (req, res, next) =>{
         });
     }
 
-    getMsgInfo()
+    getBlockLis()
+        .then(getMsgInfo)
         .then(updateMsgReadNum)
         .catch((reject)=>{
             if(reject.err){
@@ -581,98 +652,176 @@ const updateMsgStatus = (req, res, next) => {
 const getNearbyMsg = (req, res, next) => {
     let params = req.query;
     let path = req.params;
-    let aggregate_limit = [];
-    let matchObj = {};
-    let addArr =[];
-    let strAdd = params.address.slice(1,params.address.length-1);
-    addArr = (strAdd.split(',')).map(Number);
-    console.log(addArr);
-    aggregate_limit.push(
-        {
-            $lookup: {
-                from: "user_details",
-                localField: "_user_id",
-                foreignField: "_user_id",
-                as: "user_detail_info"
-            }
-        }
-    );
-    //用户关注记录
-    aggregate_limit.push(
-        {
-            $lookup: {
-                from: "user_relations",
-                let: { userId: "$_user_id"},
-                pipeline: [
-                    { $match:
-                            { $expr:
-                                    {$and:[
-                                            { $eq: [ "$_user_by_id",  "$$userId" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
-                                        ]}
-                            }
-                    },
-                    { $project: { _id: 0 } }
-                ],
-                as: "user_relations"
-            }
-        }
-    );
-    //用户点赞记录
-    aggregate_limit.push(
-        {
-            $lookup: {
-                from: "user_praises",
-                let: { id: "$_id"},
-                pipeline: [
-                    { $match:
-                            { $expr:
-                                    {$and:[
-                                            { $eq: [ "$_msg_id",  "$$id" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
-                                            { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
-                                        ]}
 
-                            }
-                    },
-                    { $project: { _id: 0 } }
-                ],
-                as: "user_praises"
+    //查询黑名单用户
+    const getUserBlockLis = () =>{
+        return new Promise((resolve, reject) => {
+            let queryBlockLis = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryBlockLis.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info(' getNearbyMsg getBlockLis appId format incorrect!');
+                    resUtil.resetQueryRes(res,[],null);
+                    return next();
+                }
             }
-        }
-    );
-    if (params.radius) {
-        console.log(params.radius);
-        matchObj.address = { $geoWithin: {$center: [addArr, Number(params.radius)]} };
+            queryBlockLis.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getNearbyMsg getBlockLis ' + error.message);
+                    reject({err:error});
+                    // resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getNearbyMsg getBlockLis ' + 'success');
+                    if(rows.length == 0 ){
+                        resolve(rows);
+                    }else{
+                        resolve(rows[0]._doc.block_list);
+                    }
+                }
+            });
+        });
     }
-    //只查询文章
-    matchObj.type = sysConsts.MSG.type.article;
-    matchObj.status = sysConsts.MSG.status.available;
-    aggregate_limit.push({
-        $match: matchObj
-    });
-    aggregate_limit.push({
-        $sort: { "created_at": -1}
-    });
-    if (params.start && params.size) {
-        aggregate_limit.push(
-            {
-                $skip : Number(params.start)
-            },{
-                $limit : Number(params.size)
+
+    const getMsg = (blickList) =>{
+        return new Promise((resolve, reject) => {
+            let aggregate_limit = [];
+            let matchObj = {};
+            let addArr =[];
+            let strAdd = params.address.slice(1,params.address.length-1);
+            addArr = (strAdd.split(',')).map(Number);
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_details",
+                        localField: "_user_id",
+                        foreignField: "_user_id",
+                        as: "user_detail_info"
+                    }
+                }
+            );
+            //用户关注记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_relations",
+                        let: { userId: "$_user_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_user_by_id",  "$$userId" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_relations"
+                    }
+                }
+            );
+            //用户点赞记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_praises",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_praises"
+                    }
+                }
+            );
+            if (params.radius) {
+                matchObj.address = { $geoWithin: {$center: [addArr, Number(params.radius)]} };
             }
-        );
-    };
-    MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getNearbyMsg ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getNearbyMsg ' + 'success');
-            resUtil.resetQueryRes(res, rows);
-            return next();
-        }
-    });
+            //只查询文章
+            matchObj.type = sysConsts.MSG.type.article;
+            matchObj.status = sysConsts.MSG.status.available;
+
+            if(blickList.length !=0){
+                matchObj["_user_id"] = {$nin: blickList};
+            }
+            aggregate_limit.push({
+                $project: {
+                    "user_detail_info._id": 0,
+                    "user_detail_info.sex": 0,
+                    "user_detail_info.intro": 0,
+                    "user_detail_info.msg_num": 0,
+                    "user_detail_info.msg_help_num": 0,
+                    "user_detail_info.follow_num": 0,
+                    "user_detail_info.attention_num": 0,
+                    "user_detail_info.comment_num": 0,
+                    "user_detail_info.comment_reply_num": 0,
+                    "user_detail_info.vote_num": 0,
+                    "user_detail_info.msg_coll_num": 0,
+                    "user_detail_info.loca_coll_num": 0,
+                    "user_detail_info.created_at": 0,
+                    "user_detail_info.updated_at": 0,
+                    "user_detail_info.__v": 0,
+                    "user_detail_info.block_list": 0,
+                    "user_detail_info._user_id": 0,
+
+                    "user_relations.created_at": 0,
+                    "user_relations.updated_at": 0,
+                    "user_relations.__v": 0,
+                    "user_relations._user_id": 0,
+
+                    "user_praises.created_at": 0,
+                    "user_praises.updated_at": 0,
+                    "user_praises.__v": 0,
+                    "user_praises._user_id": 0,
+                }
+            });
+            aggregate_limit.push({
+                $match: matchObj
+            });
+            aggregate_limit.push({
+                $sort: { "created_at": -1}
+            });
+            if (params.start && params.size) {
+                aggregate_limit.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+            MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getNearbyMsg ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getNearbyMsg ' + 'success');
+                    resUtil.resetQueryRes(res, rows);
+                    return next();
+                }
+            });
+        });
+    }
+
+    getUserBlockLis()
+        .then(getMsg)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
 }
 const deleteMsg = (req, res, next) => {
     let path = req.params;
