@@ -379,6 +379,7 @@ const getFollowUserMsg = (req, res, next) =>{
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info('getFollowUserMsg getFollowUserId ' + 'success');
+                    logger.info('getFollowUserMsg getFollowUserId ' + 'rows.length：' +rows.length);
                     if(rows.length == 0){
                         resUtil.resetQueryRes(res, [],null);
                         return next();
