@@ -379,7 +379,6 @@ const getFollowUserMsg = (req, res, next) =>{
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info('getFollowUserMsg getFollowUserId ' + 'success');
-                    logger.info('getFollowUserMsg getFollowUserId ' + 'rows.length:' +rows.length);
                     if(rows.length == 0){
                         resUtil.resetQueryRes(res, [],null);
                         return next();
@@ -394,7 +393,6 @@ const getFollowUserMsg = (req, res, next) =>{
     //根据用户编号数组查询文章
     const getMsgInfo =(followUserInfo)=>{
         return new Promise(()=>{
-            logger.info(' getFollowUserMsg getMsgInfo ' + 'followUserInfo:' + followUserInfo);
             let aggregate_limit = [];
             let matchObj = {};
             aggregate_limit.push({
@@ -435,9 +433,6 @@ const getFollowUserMsg = (req, res, next) =>{
             if(followUserInfo.length != 0){
                 matchObj._user_id = {$in : queryId};
             }
-            logger.info(' getFollowUserMsg getMsgInfo ' + 'matchObj._user_id:' + matchObj._user_id);
-            //只查询文章
-            matchObj.type = sysConsts.MSG.type.article;
             if (params.status) {
                 matchObj.status = Number(params.status);
             }
@@ -462,7 +457,6 @@ const getFollowUserMsg = (req, res, next) =>{
                     resUtil.resInternalError(error,res);
                 } else {
                     logger.info(' getFollowUserMsg getMsgInfo ' + 'success');
-                    logger.info(' getFollowUserMsg getMsgInfo ' + 'success' + rows);
                     resUtil.resetQueryRes(res, rows);
                     return next();
                 }
