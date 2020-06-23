@@ -239,9 +239,8 @@ const getMsg = (req, res, next) =>{
 }
 const getPopularMsg = (req, res, next) =>{
     //文章热门
-    //48小时内发布文章  未修改
+    //48小时内发布文章
     //排序：根据点赞和评论数 之和
-    //Map-Reduce   未修改
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
@@ -303,6 +302,13 @@ const getPopularMsg = (req, res, next) =>{
     );
     //只查询文章
     matchObj.type = sysConsts.MSG.type.article;
+
+    //只查询48小时内发布的文章
+    let today = new Date();
+    let startDay = new Date(moment(today).format('YYYY-MM-DD'));
+    let endDay = new Date(moment(today).add(2, 'days').format('YYYY-MM-DD'));
+    matchObj["created_at"] = {$gte: startDay, $lt: endDay};
+
     if (params.status) {
         matchObj.status = Number(params.status);
     }
