@@ -121,6 +121,8 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/userCount', UserController.getUserCountByAdmin);
     server.get('/api/admin/:adminId/userTodayCount', UserController.getUserTodayCountByAdmin);
     server.put({path:'/api/admin/:adminId/user/:userId/status',contentType: 'application/json'} ,UserController.updateUserStatus);
+    server.post({path:'/api/admin/:adminId/fakeUser',contentType: 'application/json'}, UserController.createFakeUserByAdmin);
+    server.get('/api/admin/:adminId/fakeUser', UserController.getFakeUserByAdmin);
 
     /**
      userDetail    -用户详细信息
@@ -128,6 +130,8 @@ const createServer=()=>{
     server.get('/api/user/:userId/userDetail', UserDetailController.getUserDetail);
     server.put({path:'/api/user/:userId/userDetail/:userDetailId',contentType: 'application/json'} ,UserDetailController.updateUserDetailInfo);
     server.put({path:'/api/user/:userId/avatarImage',contentType: 'application/json'},UserDetailController.updateAvatarImage);
+    server.put({path:'/api/admin/:adminId/fakeUser/:fakeUserId/fakeUserDetail',contentType: 'application/json'} ,UserDetailController.updateFakeUserDetailByAdmin);
+    server.put({path:'/api/admin/:adminId/fakeUser/:fakeUserId/avatarImage',contentType: 'application/json'},UserDetailController.updateFakeUserAvatarImageByAdmin);
 
     /**
      userDrive    -用户驾驶信息

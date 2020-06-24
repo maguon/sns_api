@@ -119,6 +119,63 @@ const updateAvatarImage = (req, res, next) => {
         }
     });
 }
+const updateFakeUserDetailByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserDetailModel.find({});
+    let path = req.params;
+    if(path.fakeUserId){
+        if(path.fakeUserId.length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.fakeUserId));
+        }else{
+            logger.info('updateFakeUserDetailByAdmin  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    if(bodyParams.nickName){
+        bodyParams.nick_name = bodyParams.nickName;
+    }
+    if(bodyParams.realName){
+        bodyParams.real_name = bodyParams.realName;
+    }
+    if(bodyParams.cityName){
+        bodyParams.city_name = bodyParams.cityName;
+    }
+    UserDetailModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateFakeUserDetailByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateFakeUserDetailByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
+const updateFakeUserAvatarImageByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let query = UserDetailModel.find({});
+    let path = req.params;
+    if(path.fakeUserId){
+        if(path.fakeUserId.length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.fakeUserId));
+        }else{
+            logger.info('updateFakeUserAvatarImageByAdmin  fakeUserId format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    UserDetailModel.updateOne(query,bodyParams,function(error,result){
+        if (error) {
+            logger.error(' updateFakeUserAvatarImageByAdmin ' + error.message);
+            resUtil.resInternalError(error);
+        } else {
+            logger.info(' updateFakeUserAvatarImageByAdmin ' + 'success');
+            resUtil.resetUpdateRes(res,result,null);
+            return next();
+        }
+    });
+}
 const createBlockList = (req, res, next) => {
     let path = req.params;
     let returnMsg = {};
@@ -502,7 +559,9 @@ const getBlockListByAdmin = (req, res, next) => {
 module.exports = {
     getUserDetail,
     updateUserDetailInfo,
+    updateFakeUserDetailByAdmin,
     updateAvatarImage,
+    updateFakeUserAvatarImageByAdmin,
     createBlockList,
     getBlockList,
     delBlockList,

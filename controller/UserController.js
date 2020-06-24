@@ -260,6 +260,94 @@ const getUserByAdmin = (req, res, next) => {
         }
     });
 }
+const getFakeUserByAdmin = (req, res, next) => {
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_user_detail_id",
+            foreignField: "_id",
+            as: "user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from:"user_drives",
+            localField:"_user_drive_id",
+            foreignField:"_id",
+            as:"user_drive_info"
+        }
+    });
+    if (params.userId) {
+        if (params.userId.length == 24) {
+            matchObj._id = mongoose.mongo.ObjectId(params.userId);
+        } else {
+            logger.info(' getFakeUserByAdmin userID format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
+    }
+    if (params.phone) {
+        if (params.phone.length == 11) {
+            matchObj.phone = params.phone;
+        } else {
+            logger.info('getFakeUserByAdmin phone format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
+    }
+    if (params.phoneReg) {
+        if (params.phoneReg.length >= 4) {
+            matchObj.phone = {"$regex": params.phoneReg, "$options": "$ig"};
+        } else {
+            logger.info('getFakeUserByAdmin phoneReg format incorrect!');
+            resUtil.resetQueryRes(res, [], null);
+            return next();
+        }
+    }
+    if (params.nickName) {
+        matchObj["user_detail_info.nick_name"] = {"$regex": params.nickName, "$options": "$ig"};
+    }
+    if (params.cityName) {
+        matchObj["user_detail_info.city_name"] = {"$regex": params.cityName, "$options": "$ig"};
+    }
+    if (params.sex) {
+        matchObj["user_detail_info.sex"] = Number(params.sex);
+    }
+    if (params.createDateStart && params.createDateEnd) {
+        matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
+    }
+    matchObj.fake_type = sysConsts.USER.fake_type.fakeUser;
+    aggregate_limit.push({
+        $project: {
+            "password": 0
+        }
+    });
+    aggregate_limit.push({
+        $match: matchObj
+    });
+    if (params.start && params.size) {
+        aggregate_limit.push(
+            {
+                $skip : Number(params.start)
+            },{
+                $limit : Number(params.size)
+            }
+        );
+    };
+    UserModel.aggregate(aggregate_limit).exec((error,rows)=> {
+        if (error) {
+            logger.error(' getFakeUserByAdmin ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getFakeUserByAdmin ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+            return next();
+        }
+    });
+}
 const getUserCountByAdmin = (req, res, next) => {
     let query = UserModel.find({});
     query.countDocuments().exec((error,rows)=> {
@@ -471,6 +559,197 @@ const createUser = (req, res, next) => {
     }
     getUserPhone()
         .then(getPhoneCode)
+        .then(createUserInfo)
+        .then(createUserDetail)
+        .then(createUserDrive)
+        .then(createUserPrivacie)
+        .then(createUserNotice)
+        .then(updateUserInfo)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        });
+}
+const createFakeUserByAdmin = (req, res, next) => {
+    let bodyParams = req.body;
+    let userId;
+    //判断该用户是否已创建
+    const getUserPhone = () =>{
+        return new Promise((resolve, reject) => {
+            let queryUserPhone = UserModel.find({},{password:0});
+            if(bodyParams.phone){
+                queryUserPhone.where('phone').equals(bodyParams.phone);
+            }
+            queryUserPhone.exec((error,rows)=> {
+                if (error) {
+                    logger.error(' createFakeUserByAdmin getUserPhone ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin getUserPhone ' + 'success');
+                    if(rows.length == 0){
+                        resolve();
+                    }else{
+                        logger.info(' createFakeUserByAdmin getUserPhone '+ bodyParams.phone+ " Phone is registered! ");
+                        reject({msg:systemMsg.USER_SIGNUP_PHONE_REGISTERED});
+                    }
+                }
+            });
+        });
+    }
+    //保存新用户
+    const createUserInfo = () =>{
+        return new Promise((resolve, reject) => {
+            if(bodyParams.password){
+                bodyParams.password = encrypt.encryptByMd5NoKey(bodyParams.password);
+            }
+            let userObj = bodyParams;
+            userObj.fake_type = sysConsts.USER.fake_type.fakeUser;
+            userObj.status = sysConsts.USER.status.available;
+            userObj.auth_status = sysConsts.USER.auth_status.certified;
+            userObj.auth_time = new Date();
+            let userModel = new UserModel(userObj);
+            userModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin createUserInfo ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin createUserInfo ' + 'success');
+                    if (result._doc) {
+                        userId = result._doc._id;
+                        resolve();
+                    }else{
+                        logger.info(' createFakeUserByAdmin createUserInfo '+ bodyParams.phone+ " Phone is registered! ");
+                        reject({msg:systemMsg.USER_CREATE_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    //创建用户详细信息
+    const createUserDetail = () =>{
+        return new Promise((resolve,reject)=>{
+            let userDetailModel = new UserDetailModel();
+            if(bodyParams.sex != undefined){
+                userDetailModel.sex = bodyParams.sex;
+            }
+            if(bodyParams.nickName){
+                userDetailModel.nick_name = bodyParams.nickName;
+            }
+            if(bodyParams.realName){
+                userDetailModel.real_name = bodyParams.realName;
+            }
+            if(bodyParams.cityName){
+                userDetailModel.city_name = bodyParams.cityName;
+            }
+            if(bodyParams.intro){
+                userDetailModel.intro = bodyParams.intro;
+            }
+            if(bodyParams.avatar){
+                userDetailModel.avatar = bodyParams.avatar;
+            }
+            userDetailModel._user_id = userId;
+            userDetailModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin createUserDetail ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin createUserDetail ' + 'success');
+                    if (result._doc) {
+                        resolve(result._doc._id);
+                    }else{
+                        reject({msg:systemMsg.USER_CREATE_DETAIL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    //创建用户驾驶信息
+    const createUserDrive = (userDetailId) =>{
+        return new Promise((resolve,reject)=>{
+            let userDriveModel = new UserDriveModel();
+            userDriveModel._user_id = userId;
+            userDriveModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin createUserDrive ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin createUserDrive ' + 'success');
+                    if (result._doc) {
+                        let updateInfo={
+                            userDetailId : userDetailId,
+                            userDriveId: result._doc._id
+                        }
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.USER_DRIVE_ID_NULL_ERROR});
+                    }
+                }
+            });
+        });
+    }
+    //创建用户隐私设置信息
+    const createUserPrivacie = (updateInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let userPrivacieModel = new PrivacieModel();
+            userPrivacieModel._user_id = userId;
+            userPrivacieModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin createUserPrivacie ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin createUserPrivacie ' + 'success');
+                    if (result._doc) {
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                    }
+                }
+            });
+        });
+    }
+    //创建用户通知设置信息
+    const createUserNotice = (updateInfo) =>{
+        return new Promise((resolve,reject)=>{
+            let userNoticeModel = new NoticeModel();
+            userNoticeModel._user_id = userId;
+            userNoticeModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin createUserNotice ' + error.message);
+                    reject({err:error.message});
+                } else {
+                    logger.info(' createFakeUserByAdmin createUserNotice ' + 'success');
+                    if (result._doc) {
+                        resolve(updateInfo);
+                    }else{
+                        reject({msg:systemMsg.SYS_INTERNAL_ERROR_MSG});
+                    }
+                }
+            });
+        });
+    }
+    //更新用户信息的关联ID
+    const updateUserInfo = (updateInfo) =>{
+        return new Promise(() => {
+            let query = UserModel.find({});
+            if(userId){
+                query.where('_id').equals(userId);
+            }
+            UserModel.updateOne(query,{_user_detail_id:updateInfo.userDetailId,_user_drive_id:updateInfo.userDriveId},function(error,result){
+                if (error) {
+                    logger.error(' createFakeUserByAdmin updateUserInfo ' + error.message);
+                    resUtil.resInternalError(error);
+                } else {
+                    logger.info(' createFakeUserByAdmin updateUserInfo ' + 'success');
+                    resUtil.resetUpdateRes(res,result,null);
+                    return next();
+                }
+            });
+        });
+    }
+    getUserPhone()
         .then(createUserInfo)
         .then(createUserDetail)
         .then(createUserDrive)
@@ -1014,9 +1293,11 @@ module.exports = {
     getUserToken,
     getUserInfoAndDetail,
     getUserByAdmin,
+    getFakeUserByAdmin,
     getUserCountByAdmin,
     getUserTodayCountByAdmin,
     createUser,
+    createFakeUserByAdmin,
     updateUserType,
     updatePassword,
     updatePasswordByPhone,

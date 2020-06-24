@@ -1138,6 +1138,113 @@
         }
       }
     },
+    "/admin/{adminId}/fakeUser": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrator add a new FakeUser info and null userDetail info",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"fakeUserInfo",
+            "description": "FakeUser object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FakeUser"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Administrator select user Info",
+        "description": "Administrator get user info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "用户电话",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（1-正常，2-禁言，4-停用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "用户类型（1-普通，2-会员）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/userDetail": {
       "get": {
@@ -1271,6 +1378,116 @@
           },
           "404": {
             "description": "UserId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/fakeUser/{fakeUserId}/fakeUserDetail": {
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Administrator finds fakeUser info and update",
+        "description": "Administrator update fakeUser info",
+        "operationId": "Administrator update fakeUser info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fakeUserId",
+            "in": "path",
+            "description": "fakeUser unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fakeUserInfo",
+            "in": "body",
+            "description": "fakeUser object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FakeUserDetail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDetail"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "UserDetailId not found"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/fakeUser/{fakeUserId}/avatarImage":{
+      "put": {
+        "tags": [
+          "userDetail"
+        ],
+        "summary": "Administrator finds userDetail avatarImage and update",
+        "description": "Administrator updates userDetail avatarImage",
+        "operationId": "Administrator update userDetail avatarImage",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fakeUserId",
+            "in": "path",
+            "description": "FakeUserr unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "avatarImage",
+            "in": "body",
+            "description": "UserDetail avatarImage that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AvatarImage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StatusResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "FakeUser not found"
           }
         }
       }
@@ -5889,6 +6106,49 @@
         "name": "User"
       }
     },
+    "FakeUser": {
+      "type": "object",
+      "required": [
+        "phone",
+        "password",
+        "sex",
+        "nick_name",
+        "real_name",
+        "city_name",
+        "intro",
+        "avatar"
+      ],
+      "properties": {
+        "phone": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "cityName": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "FakeUser"
+      }
+    },
     "UserType": {
       "type": "object",
       "required": [
@@ -5937,6 +6197,41 @@
       },
       "xml": {
         "name": "UserDetail"
+      }
+    },
+    "FakeUserDetail": {
+      "type": "object",
+      "required": [
+        "sex",
+        "nickName",
+        "realName",
+        "cityName",
+        "intro"
+      ],
+      "properties": {
+        "sex": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "realName": {
+          "type": "string"
+        },
+        "cityName": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "FakeUserDetail"
       }
     },
     "UserDrive": {

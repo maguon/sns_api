@@ -24,6 +24,9 @@ const ADMIN ={
     }
 }
 const USER ={
+    fake_type: {
+        fakeUser:1//假用户
+    },
     status: {
         available:1,//可用
         forbiddenWords:2,//禁言
