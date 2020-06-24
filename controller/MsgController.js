@@ -341,7 +341,7 @@ const getPopularMsg = (req, res, next) =>{
         }
     });
     aggregate_limit.push({
-        $sort: { "count" : -1}
+        $sort: { "count" : -1,"created_at": -1}
     });
     if (params.start && params.size) {
         aggregate_limit.push(
