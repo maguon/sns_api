@@ -290,13 +290,7 @@ const getFakeUserByAdmin = (req, res, next) => {
         }
     }
     if (params.phone) {
-        if (params.phone.length == 11) {
-            matchObj.phone = params.phone;
-        } else {
-            logger.info('getFakeUserByAdmin phone format incorrect!');
-            resUtil.resetQueryRes(res, [], null);
-            return next();
-        }
+        matchObj.phone = params.phone;
     }
     if (params.phoneReg) {
         if (params.phoneReg.length >= 4) {
