@@ -884,9 +884,9 @@ const createMsgByAdmin = (req, res, next) => {
     msgObj.comment_num = 0;
     msgObj.agree_num = 0;
     msgObj.read_num = 0;
-    if(path.userId){
-        if(path.userId.length == 24){
-            msgObj._user_id = mongoose.mongo.ObjectId(path.userId);
+    if(path.fakeUserId ){
+        if(path.fakeUserId .length == 24){
+            msgObj._user_id = mongoose.mongo.ObjectId(path.fakeUserId);
         }else{
             logger.info('createMsgByAdmin  userID format incorrect!');
             resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
@@ -910,9 +910,9 @@ const createMsgByAdmin = (req, res, next) => {
     const updateUserNumber =(returnMsg)=>{
         return new Promise(() => {
             let queryUser = UserDetailModel.find({});
-            if(path.userId){
-                if(path.userId.length == 24){
-                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+            if(path.fakeUserId){
+                if(path.fakeUserId.length == 24){
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.fakeUserId));
                 }else{
                     logger.info('createMsgByAdmin updateUserNumber _user_id format incorrect!');
                     return next();
