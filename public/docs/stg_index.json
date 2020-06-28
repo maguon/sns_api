@@ -3501,6 +3501,55 @@
         }
       }
     },
+    "/admin/{adminId}/fakeUser/{fakeUserId}/msg": {
+      "post": {
+        "tags": [
+          "msg"
+        ],
+        "summary": "Administrator add a new msg info",
+        "description": "",
+        "operationId": "addMsg",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "admin unique id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fakeUserId",
+            "in": "path",
+            "description": "fakeUserId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"fakeMsgInfo",
+            "description": "fakeMsg object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FakeMsg"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
 
     "/user/{userId}/msgComment": {
       "post": {
@@ -6567,6 +6616,70 @@
       },
       "xml": {
         "name": "Msg"
+      }
+    },
+    "FakeMsg": {
+      "type": "object",
+      "required": [
+        "type",
+        "carrier",
+        "info",
+        "address",
+        "addressName",
+        "addressReal",
+        "addressShow",
+        "label",
+        "media",
+        "location",
+        "locationName",
+        "locationReal"
+      ],
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "carrier": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "info": {
+          "type": "string"
+        },
+        "address": {
+          "type": "Array"
+        },
+        "addressName": {
+          "type": "string"
+        },
+        "addressReal": {
+          "type": "string"
+        },
+        "addressShow": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "label": {
+          "type": "string"
+        },
+        "media": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/MsgMedia"
+          }
+        },
+        "location": {
+          "type": "Array"
+        },
+        "locationName": {
+          "type": "string"
+        },
+        "locationReal": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "FakeMsg"
       }
     },
     "MsgMedia": {

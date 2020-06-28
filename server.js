@@ -217,6 +217,7 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/nearbyMsg', MsgController.getNearbyMsg);
     server.put({path:'/api/admin/:adminId/msg/:msgId/status',contentType: 'application/json'} ,MsgController.updateMsgStatus);
     server.del({path:'/api/admin/:adminId/msg/:msgId/del',contentType: 'application/json'},MsgController.deleteMsgByAdmin);
+    server.post({path:'/api/admin/:adminId/fakeUser/:fakeUserId/msg',contentType: 'application/json'}, MsgController.createMsgByAdmin);
 
      /**
      MsgComment   - 评论

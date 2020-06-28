@@ -240,7 +240,7 @@ const getMsg = (req, res, next) =>{
 const getPopularMsg = (req, res, next) =>{
     //文章热门
     //48小时内发布文章
-    //排序：根据点赞和评论数 之和
+    //排序：根据点赞和评论数 之和, 创建时间倒序
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
@@ -858,6 +858,102 @@ const deleteMsg = (req, res, next) => {
         }
     });
 }
+const createMsgByAdmin = (req, res, next) => {
+    let path = req.params;
+    let bodyParams = req.body;
+    let msgObj = bodyParams;
+    if(bodyParams.addressName){
+        msgObj.address_name = bodyParams.addressName ;
+    }
+    if(bodyParams.addressReal){
+        msgObj.address_real = bodyParams.addressReal ;
+    }
+    if(bodyParams.addressShow){
+        msgObj.address_show = bodyParams.addressShow ;
+    }
+    if(bodyParams.locationName){
+        msgObj.location_name = bodyParams.locationName ;
+    }
+    if(bodyParams.locationReal){
+        msgObj.location_real = bodyParams.locationReal ;
+    }
+    msgObj.fake_type = sysConsts.MSG.fake_type.fakeMsg;
+    msgObj.status = sysConsts.MSG.status.available;
+    msgObj.comment_status = sysConsts.MSG.com_status.visible;
+    msgObj.collect_num = 0;
+    msgObj.comment_num = 0;
+    msgObj.agree_num = 0;
+    msgObj.read_num = 0;
+    if(path.userId){
+        if(path.userId.length == 24){
+            msgObj._user_id = mongoose.mongo.ObjectId(path.userId);
+        }else{
+            logger.info('createMsgByAdmin  userID format incorrect!');
+            resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+            return next();
+        }
+    }
+    const saveMsg =()=>{
+        return new Promise((resolve, reject) => {
+            let msgModel = new MsgModel(msgObj);
+            msgModel.save(function(error,result){
+                if (error) {
+                    logger.error(' createMsgByAdmin saveMsg ' + error.message);
+                    reject({err:reject.message});
+                } else {
+                    logger.info(' createMsgByAdmin saveMsg ' + 'success');
+                    resolve(result);
+                }
+            });
+        });
+    }
+    const updateUserNumber =(returnMsg)=>{
+        return new Promise(() => {
+            let queryUser = UserDetailModel.find({});
+            if(path.userId){
+                if(path.userId.length == 24){
+                    queryUser.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+                }else{
+                    logger.info('createMsgByAdmin updateUserNumber _user_id format incorrect!');
+                    return next();
+                }
+            }
+            if(bodyParams.type == 1){
+                //文章字段加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { msg_num: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMsgByAdmin updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMsgByAdmin updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMsg);
+                        return next();
+                    }
+                });
+            }else{
+                //求助字段加一
+                UserDetailModel.findOneAndUpdate(queryUser,{ $inc: { msg_help_num: 1 } }).exec((error,rows)=> {
+                    if (error) {
+                        logger.error(' createMsgByAdmin updateUserNumber ' + error.message);
+                    } else {
+                        logger.info(' createMsgByAdmin updateUserNumber ' + 'success');
+                        resUtil.resetCreateRes(res, returnMsg);
+                        return next();
+                    }
+                });
+            }
+
+        });
+    }
+    saveMsg()
+        .then(updateUserNumber)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+}
 const getMsgByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
@@ -893,6 +989,9 @@ const getMsgByAdmin = (req, res, next) => {
     }
     if(params.type){
         matchObj.type = Number(params.type);
+    }
+    if(params.fakeType){
+        matchObj.fake_type = Number(params.fakeType);
     }
     if(params.carrier){
         matchObj.carrier = Number(params.carrier);
@@ -1055,6 +1154,7 @@ module.exports = {
     updateMsgStatus,
     getNearbyMsg,
     deleteMsg,
+    createMsgByAdmin,
     getMsgByAdmin,
     getMsgCountByAdmin,
     getTodayMsgCountByAdmin,

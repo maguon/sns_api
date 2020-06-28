@@ -25,7 +25,7 @@ const ADMIN ={
 }
 const USER ={
     fake_type: {
-        fakeUser:1//假用户
+        fakeUser:1//伪造用户
     },
     status: {
         available:1,//可用
@@ -73,7 +73,10 @@ const MSG ={
     status: {
         disable:0,//停用
         available:1//可用
-    }
+    },
+    fake_type: {
+        fakeMsg:1//伪造用户
+    },
 }
 const INFO = {
     type: {

@@ -21,6 +21,7 @@ const msgSchema = new Schema({
         location_real : {type:String,default:'',trim:true,display: '位置分享-真实地址'},
         status        : {type:Number,default:1,min:0,max:3,display: '文章状态（0-不可见，1-可见(默认)）'},
         comment_status: {type:Number,default:0,min:0,max:3,display: '评论状态(0-允许评论(默认)，1-不允许评论)'},
+        fake_type     : {type:Number,default:0,min:0,max:3,display: '伪造类型（1-伪造）'},
         _user_id: {
             type: Schema.Types.ObjectId,
             ref: 'user_info',
