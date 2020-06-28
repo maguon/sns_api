@@ -310,6 +310,12 @@ const getFakeUserByAdmin = (req, res, next) => {
     if (params.sex) {
         matchObj["user_detail_info.sex"] = Number(params.sex);
     }
+    if (params.status) {
+        matchObj["status"] = Number(params.status);
+    }
+    if (params.type) {
+        matchObj["type"] = Number(params.type);
+    }
     if (params.createDateStart && params.createDateEnd) {
         matchObj["created_at"] = {$gte: new Date(params.createDateStart), $lte: new Date(params.createDateEnd)};
     }

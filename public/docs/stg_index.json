@@ -1212,6 +1212,48 @@
             "type": "string"
           },
           {
+            "name": "phoneReg",
+            "in": "query",
+            "description": "电话(4位以上)",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sex",
+            "in": "query",
+            "description": "性别（0-女 1-男）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "nickName",
+            "in": "query",
+            "description": "用户昵称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cityName",
+            "in": "query",
+            "description": "城市",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateStart",
+            "in": "query",
+            "description": "注册时间（始）",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "createDateEnd",
+            "in": "query",
+            "description": "注册时间（终）",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "status",
             "in": "query",
             "description": "状态（1-正常，2-禁言，4-停用）",
