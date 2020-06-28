@@ -3259,6 +3259,13 @@
             "type": "integer"
           },
           {
+            "name": "fakeType",
+            "in": "query",
+            "description": "伪造类型（1-伪造）",
+            "required": false,
+            "type": "integer"
+          },
+          {
             "name": "carrier",
             "in": "query",
             "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
