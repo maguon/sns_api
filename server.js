@@ -291,6 +291,7 @@ const createServer=()=>{
      report     - 举报设置
      */
     server.post({path:'/api/user/:userId/msg/:msgId/report',contentType: 'application/json'}, ReportController.createReport);
+    server.get('/api/user/:userId/msg/:msgId/report', ReportController.getReport);
 
     server.get('/api/admin/:adminId/report', ReportController.getReportByAdmin);
     server.put({path:'/api/admin/:adminId/report/:reportId',contentType: 'application/json'} , ReportController.updateReportByAdmin);

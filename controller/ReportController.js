@@ -41,6 +41,38 @@ const createReport = (req, res, next) => {
         }
     });
 }
+const getReport = (req, res, next) => {
+    let path = req.params;
+    let query = ReportModel.find({});
+
+    if(path.userId){
+        if(path.userId.length == 24){
+            query.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
+        }else{
+            logger.info('getReport userId format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    if(path.msgId){
+        if(path.msgId .length == 24){
+            query.where('_msg_id').equals(mongoose.mongo.ObjectId(path.msgId ));
+        }else{
+            logger.info('getReport msgId  format incorrect!');
+            resUtil.resetQueryRes(res,[],null);
+            return next();
+        }
+    }
+    query.exec((error,rows)=> {
+        if (error) {
+            logger.error(' getReport ' + error.message);
+            resUtil.resInternalError(error,res);
+        } else {
+            logger.info(' getReport ' + 'success');
+            resUtil.resetQueryRes(res, rows);
+        }
+    });
+}
 const getReportByAdmin = (req, res, next) => {
     let params = req.query;
     let aggregate_limit = [];
@@ -179,6 +211,7 @@ const updateReportByAdmin = (req, res, next) =>{
 
 module.exports = {
     createReport,
+    getReport,
     getReportByAdmin,
     updateReportByAdmin
 };

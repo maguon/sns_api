@@ -5406,6 +5406,37 @@
             "description": "Validation exception"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "User select report Info",
+        "description": "User get report info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "msgId",
+            "in": "path",
+            "description": "msgId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
       }
     },
     "/admin/{adminId}/report": {
