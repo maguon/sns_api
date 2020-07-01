@@ -291,7 +291,6 @@ const getPopularMsg = (req, res, next) =>{
                                             { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                             { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                         ]}
-
                             }
                     },
                     { $project: { _id: 0 } }
@@ -337,7 +336,10 @@ const getPopularMsg = (req, res, next) =>{
             "read_num":1,
             "location_name":1,
             "location_real":1,
-            "comment_num":1
+            "comment_num":1,
+            "user_detail_info":1,
+            "user_relations":1,
+            "user_praises":1
         }
     });
     aggregate_limit.push({
