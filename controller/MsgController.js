@@ -301,10 +301,10 @@ const getPopularMsg = (req, res, next) =>{
     matchObj.type = sysConsts.MSG.type.article;
 
     //只查询48小时内发布的文章
-    let today = new Date();
-    let endDay = new Date(moment(today).format('YYYY-MM-DD'));
-    let startDay = new Date(moment(today).add(-2, 'days').format('YYYY-MM-DD'));
-    matchObj["created_at"] = {$gte: startDay, $lt: endDay};
+    // let today = new Date();
+    // let endDay = new Date(moment(today).format('YYYY-MM-DD'));
+    // let startDay = new Date(moment(today).add(-2, 'days').format('YYYY-MM-DD'));
+    // matchObj["created_at"] = {$gte: startDay, $lt: endDay};
 
     if (params.status) {
         matchObj.status = Number(params.status);
