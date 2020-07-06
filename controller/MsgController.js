@@ -239,8 +239,6 @@ const getMsg = (req, res, next) =>{
 }
 const getPopularMsg = (req, res, next) =>{
     //文章热门
-    //48小时内发布文章
-    //排序：根据点赞和评论数 之和, 创建时间倒序
     let path = req.params;
     let params = req.query;
     let aggregate_limit = [];
@@ -344,8 +342,16 @@ const getPopularMsg = (req, res, next) =>{
             "user_praises":1
         }
     });
+
+    //48小时内发布文章
+    //排序：根据点赞和评论数 之和, 创建时间倒序
+    // aggregate_limit.push({
+    //     $sort: { "count" : -1,"created_at": -1}
+    // });
+
+    //排序：最后更新数据，倒排序
     aggregate_limit.push({
-        $sort: { "count" : -1,"created_at": -1}
+        $sort: { "updated_at" : -1}
     });
     if (params.start && params.size) {
         aggregate_limit.push(
