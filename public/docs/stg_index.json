@@ -6307,9 +6307,16 @@
             "type": "string"
           },
           {
-            "name": "dayNum",
+            "name": "startDay",
             "in": "query",
-            "description": "dayNum(查询前几天内数据)",
+            "description": "startMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endDay",
+            "in": "query",
+            "description": "endMonth(格式：20200701)",
             "required": false,
             "type": "integer"
           }

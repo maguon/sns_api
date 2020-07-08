@@ -112,16 +112,11 @@ const getNewUserByWeek = (req, res, next) => {
 const getNewUserByDay = (req, res, next) => {
     let params = req.query;
 
-    //前几天计算
-    let today = new Date();
-    let endDay = Number(moment(today).format('YYYYMMDD'));
-    let startDay = Number(moment(today).add( (-params.dayNum), 'days').format('YYYYMMDD'));
-
     let aggregate_limit = [];
-    if(startDay && endDay){
+    if(params.startDay && params.endDay){
         aggregate_limit.push({
             $match: {
-                date :  {$gte: startDay, $lt: endDay}
+                date :  { $gte: Number(params.startDay), $lt: Number(params.endDay) }
             }
         });
     }
