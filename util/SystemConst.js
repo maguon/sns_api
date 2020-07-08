@@ -64,7 +64,7 @@ const MSG ={
         text:1,//文本
         pictures:2,//图片
         video:3,//视频
-        help:4//地理位置
+        position:4//地理位置
     },
     com_status:{
         visible:1,//可见的

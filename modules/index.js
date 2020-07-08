@@ -18,3 +18,6 @@ exports.ReportModel = require('./schemas/ReportSchema').ReportModel;
 exports.AboutModel = require('./schemas/AboutSchema').AboutModel;
 exports.AppModel = require('./schemas/AppSchema').AppModel;
 exports.InfoModel = require('./schemas/InfoSchema').InfoModel;
+exports.DateUserCountModel = require('./schemas/DateUserCountSchema').DateUserCountModel;
+exports.DateMsgCountModel = require('./schemas/DateMsgCountSchema').DateMsgCountModel;
+exports.DateComCountModel = require('./schemas/DateComCountSchema').DateComCountModel;

@@ -28,6 +28,7 @@ import {AppController} from './controller';
 import {SmsController} from './controller';
 import {InfoController} from './controller';
 import {PushMsgController} from './controller';
+import {DateCountController} from './controller';
 
 /**
  * Returns a server with all routes defined on it
@@ -329,6 +330,16 @@ const createServer=()=>{
     server.get('/api/user/:userId/pushMsgAndroid' , PushMsgController.pushMsgXinge);
     server.get('/api/user/:userId/pushMsgIos' , PushMsgController.pushMsgApn);
     server.get('/api/user/:userId/pushMsgAll' , PushMsgController.pushMsgAll);
+
+    /**
+     * Statistics Module
+     */
+    server.post({path:'/api/dateUserCount',contentType: 'application/json'},DateCountController.createDateUserCount);
+    server.post({path:'/api/dateMsgCount',contentType: 'application/json'},DateCountController.createDateMsgCount);
+    server.post({path:'/api/dateComCount',contentType: 'application/json'},DateCountController.createDateComCount);
+    server.get('/api/admin/:adminId/statisticsNewUserByMonth', DateCountController.getNewUserByMonth);
+    server.get('/api/admin/:adminId/statisticsNewUserByWeek', DateCountController.getNewUserByWeek);
+    server.get('/api/admin/:adminId/statisticsNewUserByDay', DateCountController.getNewUserByDay);
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");

@@ -102,6 +102,10 @@
     {
       "name": "app",
       "description": "App version and url management api (APP版本)"
+    },
+    {
+      "name": "statistics",
+      "description": "Statistics version and url management api (统计)"
     }
   ],
   "schemes": [
@@ -6104,6 +6108,221 @@
           },
           "404": {
             "description": "AdminId or appId not found"
+          }
+        }
+      }
+    },
+
+    "/dateUserCount": {
+      "post": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "DateUserCount a new report info",
+        "description": "",
+        "operationId": "addDateUserCount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/dateMsgCount": {
+      "post": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "DateMsgCount a new report info",
+        "description": "",
+        "operationId": "addDateMsgCount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/dateComCount": {
+      "post": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "DateComCount a new report info",
+        "description": "",
+        "operationId": "addDateComCount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewUserByMonth": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newUserCount info By Month",
+        "description": "Administrator query newUserCount info By Month",
+        "operationId": "Administrator query newUserCount info By Month",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "startMonth(格式：202007)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "endMonth(格式：202007)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewUserByWeek": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newUserCount info By Week",
+        "description": "Administrator query newUserCount info By Week",
+        "operationId": "Administrator query newUserCount info By Week",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "weekNum",
+            "in": "query",
+            "description": "weekNum(查询前几周内数据)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewUserByDay": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newUserCount info By Day",
+        "description": "Administrator query newUserCount info By Day",
+        "operationId": "Administrator query newUserCount info By Day",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dayNum",
+            "in": "query",
+            "description": "dayNum(查询前几天内数据)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
           }
         }
       }
