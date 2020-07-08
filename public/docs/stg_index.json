@@ -6264,11 +6264,18 @@
             "type": "string"
           },
           {
-            "name": "weekNum",
+            "name": "startDay",
             "in": "query",
-            "description": "weekNum(查询前几周内数据)",
+            "description": "startMonth(格式：2020-07-01)",
             "required": false,
-            "type": "integer"
+            "type": "string"
+          },
+          {
+            "name": "endDay",
+            "in": "query",
+            "description": "endMonth(格式：2020-07-01)",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -6317,6 +6324,70 @@
             "name": "endDay",
             "in": "query",
             "description": "endMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewMsgByDay": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newMsgCount info By Day",
+        "description": "Administrator query newMsgCount info By Day",
+        "operationId": "Administrator query newMsgCount info By Day",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDay",
+            "in": "query",
+            "description": "startMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endDay",
+            "in": "query",
+            "description": "endMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "carrier",
+            "in": "query",
+            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
           }

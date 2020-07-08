@@ -15,126 +15,262 @@ const {DateComCountModel} = require('../modules');
 
 const getNewUserByMonth = (req, res, next) => {
     let params = req.query;
-    let aggregate_limit = [];
+    let o = {};
     if(params.startMonth  && params.endMonth){
-        aggregate_limit.push({
-            $match: {
-                y_month :  {$gte: Number(params.startMonth), $lte: Number(params.endMonth)}
+        o.query = {y_month:{$gte: Number(params.startMonth), $lte: Number(params.endMonth)}};
+    }
+    o.map = function() { emit(this.y_month,this.new_user_num); };
+    o.reduce = function(key, values) {return Array.sum(values)};
+    o.out = "user_month_count";
+
+    DateUserCountModel.mapReduce(o, function (err, results) {
+        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+            if (err) {
+                logger.error(' getNewUserByMonth ' + err);
+                resUtil.resInternalError(err,res);
+            } else {
+                logger.info(' getNewUserByMonth ' + 'success');
+                resUtil.resetQueryRes(res, docs);
             }
         });
-    }
-
-    aggregate_limit.push({
-        $group: {
-            _id: { y_month : "$y_month"},
-            newUserMonthCount: { $sum: "$new_user_num" },
-        }
-    });
-    aggregate_limit.push({
-        $group: {
-            _id: null,
-            monthList: { $push: { y_month: "$_id.y_month" ,new_user_num: "$newUserMonthCount"} }
-        }
-    });
-
-    aggregate_limit.push({
-        $project: { _id: 0, monthList: 1}
-    });
-
-    DateUserCountModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getNewUserByMonth ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getNewUserByMonth ' + 'success');
-            if(rows.length == 0){
-                resUtil.resetQueryRes(res, rows);
-            }else{
-                resUtil.resetQueryRes(res, rows[0].monthList);
-            }
-        }
-    });
-
+    })
 }
 const getNewUserByWeek = (req, res, next) => {
     let params = req.query;
 
-    //前几周计算
     let today = new Date();
-    let date2 = today.getTime() - params.weekNum*7*24*60*60*1000;
-    let date3 = new Date(date2);
-
     let beginDate = new Date(today.getFullYear(), 0, 1);
-    let agoWeek = Math.ceil((parseInt((date3 - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
 
-    let aggregate_limit = [];
-    if(agoWeek){
-        aggregate_limit.push({
-            $match: {
-                week :  {$gte: Number(agoWeek)}
+    let dateStart = new Date(params.startDay);
+    let startWeek = Math.ceil((parseInt((dateStart - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
+
+    let dateEnd = new Date(params.endDay);
+    let endWeek = Math.ceil((parseInt((dateEnd - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
+
+    let o = {};
+    if( startWeek && endWeek ){
+        o.query = { u_week :  { $gte: Number(startWeek), $lte: Number(endWeek) }};
+    }
+    o.map = function() { emit(this.u_week,this.new_user_num); };
+    o.reduce = function(key, values) {return Array.sum(values)};
+    o.out = "user_day_count";
+
+    DateUserCountModel.mapReduce(o, function (err, results) {
+        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+            if (err) {
+                logger.error(' getNewUserByWeek ' + err);
+                resUtil.resInternalError(err,res);
+            } else {
+                logger.info(' getNewUserByWeek ' + 'success');
+                resUtil.resetQueryRes(res, docs);
             }
         });
-    }
+    })
 
-    aggregate_limit.push({
-        $group: {
-            _id: { week : "$week"},
-            newUserWeekCount: { $sum: "$new_user_num" },
-        }
-    });
-
-    aggregate_limit.push({
-        $group: {
-            _id: null,
-            weekList: { $push: { week: "$_id.week" ,new_user_num: "$newUserWeekCount"} }
-        }
-    });
-
-    aggregate_limit.push({
-        $project: { _id: 0, weekList: 1}
-    });
-
-    DateUserCountModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getNewUserByWeek ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getNewUserByWeek ' + 'success');
-            if(rows.length == 0){
-                resUtil.resetQueryRes(res, rows);
-            }else{
-                resUtil.resetQueryRes(res, rows[0].weekList);
-            }
-
-        }
-    });
 }
 const getNewUserByDay = (req, res, next) => {
-    let params = req.query;
+    let paramsDay = req.query;
+    let o = {};
+    if(paramsDay.startDay && paramsDay.endDay){
+        o.query = { u_date :  { $gte: Number(paramsDay.startDay), $lte: Number(paramsDay.endDay) }};
+    }
+    o.map = function() { emit(this.u_date,this.new_user_num); };
+    o.reduce = function(key, values) {return Array.sum(values)};
+    o.out = "user_day_count";
 
-    let aggregate_limit = [];
-    if(params.startDay && params.endDay){
-        aggregate_limit.push({
-            $match: {
-                date :  { $gte: Number(params.startDay), $lt: Number(params.endDay) }
+    DateUserCountModel.mapReduce(o, function (err, results) {
+        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+            if (err) {
+                logger.error(' getNewUserByDay ' + err);
+                resUtil.resInternalError(err,res);
+            } else {
+                logger.info(' getNewUserByDay ' + 'success');
+                resUtil.resetQueryRes(res, docs);
             }
         });
-    }
+    })
+}
+const getNewMsgByDay = (req, res, next) => {
+    let params = req.query;
+    let aggregate_limit = [];
+    let matchObj = {};
 
+    if(params.startDay && params.endDay){
+        matchObj.m_date =   { $gte: Number(params.startDay), $lte: Number(params.endDay) }
+    }
     aggregate_limit.push({
-        $project: { _id:0, date: 1, new_user_num: 1}
+        $match: matchObj
     });
 
-    DateUserCountModel.aggregate(aggregate_limit).exec((error,rows)=> {
+    if(params.type && params.carrier){
+        if(Number(params.type) == 1){
+            //文章
+            if(Number(params.carrier) == 1){
+                //文章-文本
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_text"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 2){
+                //文章-图片
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_picture"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 3){
+                //文章-视频
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_video"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 4){
+                //文章-地理位置
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_position"} }
+                    }
+                });
+            }
+        }
+        if(Number(params.type) == 2){
+            //求助
+            if(Number(params.carrier) == 1){
+                //求助-文本
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_text"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 2){
+                //求助-图片
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_picture"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 3){
+                //求助-视频
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_video"} }
+                    }
+                });
+            }
+            if(Number(params.carrier) == 4){
+                //求助-地理位置
+                aggregate_limit.push({
+                    $group: {
+                        _id: null,
+                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_position"} }
+                    }
+                });
+            }
+        }
+    }else{
+        if(Number(params.type) == 1){
+            //文章
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [{ $add: [ "$msg_art_text", "$msg_art_picture" ]} , { $add: ["$msg_art_video" , "$msg_art_position" ]} ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(Number(params.type) == 2){
+            //求助
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [{ $add: [ "$msg_help_text", "$msg_help_picture" ]} , { $add: ["$msg_help_video" , "$msg_help_position" ]} ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(Number(params.carrier) == 1){
+            //载体类型-文本
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [ "$msg_art_text", "$msg_help_text" ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(Number(params.carrier) == 2){
+            //载体类型-图片
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [ "$msg_art_picture", "$msg_help_picture" ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(Number(params.carrier) == 3){
+            //载体类型-视频
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [ "$msg_art_video", "$msg_help_video" ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(Number(params.carrier) == 4){
+            //载体类型-地理位置
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    new_msg_count:  { $add: [ "$msg_art_position", "$msg_help_position" ]},
+                    "m_date" : 1
+                }
+            });
+        }
+        if(!Number(params.carrier) && !Number(params.type)){
+            //只按天查询
+            aggregate_limit.push({
+                $project: {
+                    "_id":0,
+                    "new_msg_num": 1,
+                    "m_date" : 1
+                }
+            });
+        }
+    }
+    aggregate_limit.push({
+        $sort: { "m_date": -1 }
+    });
+
+    DateMsgCountModel.aggregate(aggregate_limit).exec((error,rows)=> {
         if (error) {
-            logger.error(' getNewUserByDay ' + error.message);
+            logger.error(' getNewMsgByDay ' + error.message);
             resUtil.resInternalError(error,res);
         } else {
-            logger.info(' getNewUserByDay ' + 'success');
+            logger.info(' getNewMsgByDay ' + 'success');
             if(rows.length == 0){
                 resUtil.resetQueryRes(res, rows);
             }else{
-                resUtil.resetQueryRes(res, rows);
+                if(params.type && params.carrier){
+                    resUtil.resetQueryRes(res, rows[0].msgCountList);
+                }else{
+                    resUtil.resetQueryRes(res, rows);
+                }
             }
 
         }
@@ -672,6 +808,7 @@ module.exports = {
     getNewUserByMonth,
     getNewUserByWeek,
     getNewUserByDay,
+    getNewMsgByDay,
     createDateUserCount,
     createDateMsgCount,
     createDateComCount
