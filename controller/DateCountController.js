@@ -354,31 +354,31 @@ const createDateUserCount = (req, res, next) => {
             //date
             let date = moment(today).format('YYYYMMDD');
             if(date){
-                dateUserCountObj.date  = Number(date);
+                dateUserCountObj.u_date  = Number(date);
             }
 
             //日
             let day = moment(today).format('D');
             if(day){
-                dateUserCountObj.day  = Number(day);
+                dateUserCountObj.u_day  = Number(day);
             }
 
             //周
             let week = Math.ceil((parseInt((today - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
             if(week){
-                dateUserCountObj.week  = Number(week);
+                dateUserCountObj.u_week  = Number(week);
             }
 
             //月
             let month = moment(today).format('M');
             if(month){
-                dateUserCountObj.month  = Number(month);
+                dateUserCountObj.u_month  = Number(month);
             }
 
             //年
             let year = moment(today).format('YYYY');
             if(year){
-                dateUserCountObj.year  = Number(year);
+                dateUserCountObj.u_year  = Number(year);
             }
 
             //年_月
@@ -403,7 +403,7 @@ const createDateUserCount = (req, res, next) => {
             //判断 date 是否唯一
             let queryDateUserCount = DateUserCountModel.find({});
             if(date){
-                queryDateUserCount.where('date').equals(date);
+                queryDateUserCount.where('u_date').equals(date);
             }
 
             //如果已存在 该日期，则更新信息
@@ -504,31 +504,31 @@ const createDateMsgCount = (req, res, next) => {
             //date
             let date = moment(today).format('YYYYMMDD');
             if(date){
-                dateMsgCountObj.date  = Number(date);
+                dateMsgCountObj.m_date  = Number(date);
             }
 
             //日
             let day = moment(today).format('D');
             if(day){
-                dateMsgCountObj.day  = Number(day);
+                dateMsgCountObj.m_day  = Number(day);
             }
 
             //周
             let week = Math.ceil((parseInt((today - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
             if(week){
-                dateMsgCountObj.week  = Number(week);
+                dateMsgCountObj.m_week  = Number(week);
             }
 
             //月
             let month = moment(today).format('M');
             if(month){
-                dateMsgCountObj.month  = Number(month);
+                dateMsgCountObj.m_month  = Number(month);
             }
 
             //年
             let year = moment(today).format('YYYY');
             if(year){
-                dateMsgCountObj.year  = Number(year);
+                dateMsgCountObj.m_year  = Number(year);
             }
 
             //年_月
@@ -622,7 +622,7 @@ const createDateMsgCount = (req, res, next) => {
             //判断 date 是否唯一
             let queryDateMsgCount = DateMsgCountModel.find({});
             if(date){
-                queryDateMsgCount.where('date').equals(date);
+                queryDateMsgCount.where('m_date').equals(date);
             }
 
             //如果已存在 该日期，则更新信息
@@ -723,31 +723,31 @@ const createDateComCount = (req, res, next) => {
             //date
             let date = moment(today).format('YYYYMMDD');
             if(date){
-                dateCountComObj.date  = Number(date);
+                dateCountComObj.c_date  = Number(date);
             }
 
             //日
             let day = moment(today).format('D');
             if(day){
-                dateCountComObj.day  = Number(day);
+                dateCountComObj.c_day  = Number(day);
             }
 
             //周
             let week = Math.ceil((parseInt((today - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
             if(week){
-                dateCountComObj.week  = Number(week);
+                dateCountComObj.c_week  = Number(week);
             }
 
             //月
             let month = moment(today).format('M');
             if(month){
-                dateCountComObj.month  = Number(month);
+                dateCountComObj.c_month  = Number(month);
             }
 
             //年
             let year = moment(today).format('YYYY');
             if(year){
-                dateCountComObj.year  = Number(year);
+                dateCountComObj.c_year  = Number(year);
             }
 
             //年_月
@@ -817,7 +817,7 @@ const createDateComCount = (req, res, next) => {
             //判断 date 是否唯一
             let queryDateComCount = DateComCountModel.find({});
             if(date){
-                queryDateComCount.where('date').equals(date);
+                queryDateComCount.where('c_date').equals(date);
             }
 
             //如果已存在 该日期，则更新信息
