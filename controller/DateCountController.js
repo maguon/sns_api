@@ -90,191 +90,233 @@ const getNewUserByDay = (req, res, next) => {
         });
     })
 }
+const getNewMsgByMonth = (req, res, next) => {
+    let params = req.query;
+    let o = {};
+    if(params.startMonth && params.endMonth){
+        o.query = { y_month :  { $gte: Number(params.startMonth), $lte: Number(params.endMonth) }};
+    }
+    if(params.type == undefined && params.carrier == undefined){
+        //只按天查询
+        o.map = function() { emit(this.y_month,this.new_msg_num); };
+    }else{
+        if(params.type == undefined){
+            if(Number(params.carrier) == 1){
+                //载体类型-文本
+                o.map = function() {
+                    emit( this.y_month, ( this.msg_art_text + this.msg_help_text ) );
+                };
+            }
+
+            if(Number(params.carrier) == 2){
+                //载体类型-图片
+                o.map = function() {
+                    emit( this.y_month, ( this.msg_art_picture + this.msg_help_picture ) );
+                };
+            }
+
+            if(Number(params.carrier) == 3){
+                //载体类型-视频
+                o.map = function() {
+                    emit( this.y_month, ( this.msg_art_video + this.msg_help_video ) );
+                };
+            }
+
+            if(Number(params.carrier) == 4){
+                //载体类型-地理位置
+                o.map = function() {
+                    emit( this.y_month, ( this.msg_art_position + this.msg_help_position ) );
+                };
+            }
+        }
+
+        if(params.carrier == undefined){
+            if(Number(params.type) == 1) {
+                //文章
+                o.map = function () {
+                    emit(this.y_month, (this.msg_art_text + this.msg_art_picture + this.msg_art_video + this.msg_art_position));
+                };
+            }
+
+            if(Number(params.type) == 2){
+                //求助
+                o.map = function() {
+                    emit( this.y_month, (this.msg_help_text + this.msg_help_picture + this.msg_help_video + this.msg_help_position) );
+                };
+            }
+        }
+
+        if(params.type != undefined && params.carrier != undefined){
+            if(Number(params.type) == 1){
+                //文章
+                if(Number(params.carrier) == 1){
+                    //文章-文本
+                    o.map = function() { emit(this.y_month,this.msg_art_text); };
+                }
+                if(Number(params.carrier) == 2){
+                    //文章-图片
+                    o.map = function() { emit(this.y_month,this.msg_art_picture); };
+                }
+                if(Number(params.carrier) == 3){
+                    //文章-视频
+                    o.map = function() { emit(this.y_month,this.msg_art_video); };
+                }
+                if(Number(params.carrier) == 4){
+                    //文章-地理位置
+                    o.map = function() { emit(this.y_month,this.msg_art_position); };
+                }
+            }
+            if(Number(params.type) == 2){
+                //求助
+                if(Number(params.carrier) == 1){
+                    //求助-文本
+                    o.map = function() { emit(this.y_month,this.msg_help_text); };
+                }
+                if(Number(params.carrier) == 2){
+                    //求助-图片
+                    o.map = function() { emit(this.y_month,this.msg_help_picture); };
+                }
+                if(Number(params.carrier) == 3){
+                    //求助-视频
+                    o.map = function() { emit(this.y_month,this.msg_help_video); };
+                }
+                if(Number(params.carrier) == 4){
+                    //求助-地理位置
+                    o.map = function() { emit(this.y_month,this.msg_help_position); };
+                }
+            }
+        }
+    }
+
+    o.reduce = function(key, values) {return Array.sum(values)};
+    o.out = "user_msg_mongth_count";
+
+    DateMsgCountModel.mapReduce(o, function (err, results) {
+        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+            if (err) {
+                logger.error(' getNewMsgByMonth ' + err);
+                resUtil.resInternalError(err,res);
+            } else {
+                logger.info(' getNewMsgByMonth ' + 'success');
+                resUtil.resetQueryRes(res, docs);
+            }
+        });
+    })
+
+}
 const getNewMsgByDay = (req, res, next) => {
     let params = req.query;
-    let aggregate_limit = [];
-    let matchObj = {};
-
+    let o = {};
     if(params.startDay && params.endDay){
-        matchObj.m_date =   { $gte: Number(params.startDay), $lte: Number(params.endDay) }
+        o.query = { m_date :  { $gte: Number(params.startDay), $lte: Number(params.endDay) }};
     }
-    aggregate_limit.push({
-        $match: matchObj
-    });
-
-    if(params.type && params.carrier){
-        if(Number(params.type) == 1){
-            //文章
-            if(Number(params.carrier) == 1){
-                //文章-文本
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_text"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 2){
-                //文章-图片
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_picture"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 3){
-                //文章-视频
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_video"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 4){
-                //文章-地理位置
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_art_position"} }
-                    }
-                });
-            }
-        }
-        if(Number(params.type) == 2){
-            //求助
-            if(Number(params.carrier) == 1){
-                //求助-文本
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_text"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 2){
-                //求助-图片
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_picture"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 3){
-                //求助-视频
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_video"} }
-                    }
-                });
-            }
-            if(Number(params.carrier) == 4){
-                //求助-地理位置
-                aggregate_limit.push({
-                    $group: {
-                        _id: null,
-                        msgCountList: { $push: { m_date: "$m_date" ,new_msg_count: "$msg_help_position"} }
-                    }
-                });
-            }
-        }
+    if(params.type == undefined && params.carrier == undefined){
+        //只按天查询
+        o.map = function() { emit(this.m_date,this.new_msg_num); };
     }else{
-        if(Number(params.type) == 1){
-            //文章
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [{ $add: [ "$msg_art_text", "$msg_art_picture" ]} , { $add: ["$msg_art_video" , "$msg_art_position" ]} ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(Number(params.type) == 2){
-            //求助
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [{ $add: [ "$msg_help_text", "$msg_help_picture" ]} , { $add: ["$msg_help_video" , "$msg_help_position" ]} ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(Number(params.carrier) == 1){
-            //载体类型-文本
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [ "$msg_art_text", "$msg_help_text" ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(Number(params.carrier) == 2){
-            //载体类型-图片
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [ "$msg_art_picture", "$msg_help_picture" ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(Number(params.carrier) == 3){
-            //载体类型-视频
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [ "$msg_art_video", "$msg_help_video" ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(Number(params.carrier) == 4){
-            //载体类型-地理位置
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    new_msg_count:  { $add: [ "$msg_art_position", "$msg_help_position" ]},
-                    "m_date" : 1
-                }
-            });
-        }
-        if(!Number(params.carrier) && !Number(params.type)){
-            //只按天查询
-            aggregate_limit.push({
-                $project: {
-                    "_id":0,
-                    "new_msg_num": 1,
-                    "m_date" : 1
-                }
-            });
-        }
-    }
-    aggregate_limit.push({
-        $sort: { "m_date": -1 }
-    });
-
-    DateMsgCountModel.aggregate(aggregate_limit).exec((error,rows)=> {
-        if (error) {
-            logger.error(' getNewMsgByDay ' + error.message);
-            resUtil.resInternalError(error,res);
-        } else {
-            logger.info(' getNewMsgByDay ' + 'success');
-            if(rows.length == 0){
-                resUtil.resetQueryRes(res, rows);
-            }else{
-                if(params.type && params.carrier){
-                    resUtil.resetQueryRes(res, rows[0].msgCountList);
-                }else{
-                    resUtil.resetQueryRes(res, rows);
-                }
+        if(params.type == undefined){
+            if(Number(params.carrier) == 1){
+                //载体类型-文本
+                o.map = function() {
+                    emit( this.m_date, ( this.msg_art_text + this.msg_help_text ) );
+                };
             }
 
+            if(Number(params.carrier) == 2){
+                //载体类型-图片
+                o.map = function() {
+                    emit( this.m_date, ( this.msg_art_picture + this.msg_help_picture ) );
+                };
+            }
+
+            if(Number(params.carrier) == 3){
+                //载体类型-视频
+                o.map = function() {
+                    emit( this.m_date, ( this.msg_art_video + this.msg_help_video ) );
+                };
+            }
+
+            if(Number(params.carrier) == 4){
+                //载体类型-地理位置
+                o.map = function() {
+                    emit( this.m_date, ( this.msg_art_position + this.msg_help_position ) );
+                };
+            }
         }
-    });
+
+        if(params.carrier == undefined){
+            if(Number(params.type) == 1) {
+                //文章
+                o.map = function () {
+                    emit(this.m_date, (this.msg_art_text + this.msg_art_picture + this.msg_art_video + this.msg_art_position));
+                };
+            }
+
+            if(Number(params.type) == 2){
+                //求助
+                o.map = function() {
+                    emit( this.m_date, (this.msg_help_text + this.msg_help_picture + this.msg_help_video + this.msg_help_position) );
+                };
+            }
+        }
+
+        if(params.type != undefined && params.carrier != undefined){
+            if(Number(params.type) == 1){
+                //文章
+                if(Number(params.carrier) == 1){
+                    //文章-文本
+                    o.map = function() { emit(this.m_date,this.msg_art_text); };
+                }
+                if(Number(params.carrier) == 2){
+                    //文章-图片
+                    o.map = function() { emit(this.m_date,this.msg_art_picture); };
+                }
+                if(Number(params.carrier) == 3){
+                    //文章-视频
+                    o.map = function() { emit(this.m_date,this.msg_art_video); };
+                }
+                if(Number(params.carrier) == 4){
+                    //文章-地理位置
+                    o.map = function() { emit(this.m_date,this.msg_art_position); };
+                }
+            }
+            if(Number(params.type) == 2){
+                //求助
+                if(Number(params.carrier) == 1){
+                    //求助-文本
+                    o.map = function() { emit(this.m_date,this.msg_help_text); };
+                }
+                if(Number(params.carrier) == 2){
+                    //求助-图片
+                    o.map = function() { emit(this.m_date,this.msg_help_picture); };
+                }
+                if(Number(params.carrier) == 3){
+                    //求助-视频
+                    o.map = function() { emit(this.m_date,this.msg_help_video); };
+                }
+                if(Number(params.carrier) == 4){
+                    //求助-地理位置
+                    o.map = function() { emit(this.m_date,this.msg_help_position); };
+                }
+            }
+        }
+    }
+
+    o.reduce = function(key, values) {return Array.sum(values)};
+    o.out = "user_msg_day_count";
+
+    DateMsgCountModel.mapReduce(o, function (err, results) {
+        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+            if (err) {
+                logger.error(' getNewMsgByDay ' + err);
+                resUtil.resInternalError(err,res);
+            } else {
+                logger.info(' getNewMsgByDay ' + 'success');
+                resUtil.resetQueryRes(res, docs);
+            }
+        });
+    })
+
 }
 const createDateUserCount = (req, res, next) => {
     let today = new Date();
@@ -808,6 +850,7 @@ module.exports = {
     getNewUserByMonth,
     getNewUserByWeek,
     getNewUserByDay,
+    getNewMsgByMonth,
     getNewMsgByDay,
     createDateUserCount,
     createDateMsgCount,
