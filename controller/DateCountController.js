@@ -339,7 +339,7 @@ const getNewMsgByDay = (req, res, next) => {
             }
             if(params.type == 0 && params.type != undefined) {
                 //文章类型为0
-                //按照载体类型分组 并统计
+                //按照 载体类型分组 并统计
                 o.map = function() { emit( {m_date : this.m_date, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
                 o.reduce = function(key, values) {
                     var con = 0;
@@ -383,7 +383,7 @@ const getNewComByMonth = (req, res, next) => {
     let params = req.query;
     let queryObj = {};
     let o = {};
-    //日期查询条件
+    //月查询条件
     if(params.startMonth  && params.endMonth){
         queryObj.y_month = {$gte: Number(params.startMonth), $lte: Number(params.endMonth)};
     }
@@ -391,7 +391,7 @@ const getNewComByMonth = (req, res, next) => {
     if(params.type != undefined && params.level != undefined){
 
         if(params.type == 0 && params.level !=0){
-            //按照载体类型分组 并统计
+            //按照 评论类型分组 并统计
             queryObj.c_level = params.level;
             o.map = function() { emit( {y_month : this.y_month, c_level:this.c_level}, { c_count: this.c_count}); };
             o.reduce = function(key, values) {
@@ -404,7 +404,7 @@ const getNewComByMonth = (req, res, next) => {
         }
 
         if(params.type != 0 && params.level ==0){
-            //按照载体类型分组 并统计
+            //按照 文章类型分组 并统计
             queryObj.c_type = params.type;
             o.map = function() { emit( {y_month : this.y_month, c_type:this.c_type}, { c_count: this.c_count}); };
             o.reduce = function(key, values) {
@@ -417,7 +417,7 @@ const getNewComByMonth = (req, res, next) => {
         }
 
         if(params.type != 0 && params.level !=0){
-            //根据 文章类型 + 载体类型 查询  不等于O的情况
+            //根据 文章类型 + 评论类型 查询  不等于O的情况
             queryObj.c_level = params.level;
             queryObj.c_type = params.type;
             o.map = function() { emit( {y_month : this.y_month, c_type:this.c_type, c_level:this.c_level }, { c_count: this.c_count}); };
@@ -443,7 +443,7 @@ const getNewComByMonth = (req, res, next) => {
     }else{
         if(params.type == undefined ){
             if(params.level != 0 && params.level != undefined) {
-                //载体类型不为0
+                //评论类型不为0
                 queryObj.c_level = params.level;
                 o.map = function() { emit( {y_month : this.y_month,c_type:this.c_type, c_level:this.c_level}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
@@ -455,8 +455,8 @@ const getNewComByMonth = (req, res, next) => {
                 };
             }
             if(params.level == 0 && params.level != undefined) {
-                //载体类型为0
-                //按照载体类型分组 并统计
+                //评论类型为0
+                //按照 文章类型分组 并统计
                 o.map = function() { emit( {y_month : this.y_month, c_type:this.c_type}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
                     var con = 0;
@@ -483,7 +483,7 @@ const getNewComByMonth = (req, res, next) => {
             }
             if(params.type == 0 && params.type != undefined) {
                 //文章类型为0
-                //按照载体类型分组 并统计
+                //按照评论类型分组 并统计
                 o.map = function() { emit( {y_month : this.y_month, c_level:this.c_level}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
                     var con = 0;
@@ -494,7 +494,7 @@ const getNewComByMonth = (req, res, next) => {
                 };
             }
         }
-        //都为空时，根据日期查询
+        //都为空时，根据月查询
         if(params.level == undefined && params.type == undefined){
             o.map = function() { emit( {y_month : this.y_month,c_type:this.c_type, c_level:this.c_level}, { c_count: this.c_count}); };
             o.reduce = function(key, values) {
@@ -535,7 +535,7 @@ const getNewComByDay = (req, res, next) => {
     if(params.type != undefined && params.level != undefined){
 
         if(params.type == 0 && params.level !=0){
-            //按照载体类型分组 并统计
+            //按照 评论类型分组 并统计
             queryObj.c_level = params.level;
             o.map = function() { emit( {c_date : this.c_date, c_level:this.c_level}, { c_count: this.c_count}); };
             o.reduce = function(key, values) {
@@ -548,7 +548,7 @@ const getNewComByDay = (req, res, next) => {
         }
 
         if(params.type != 0 && params.level ==0){
-            //按照载体类型分组 并统计
+            //按照 文章类型分组 并统计
             queryObj.c_type = params.type;
             o.map = function() { emit( {c_date : this.c_date, c_type:this.c_type}, { c_count: this.c_count}); };
             o.reduce = function(key, values) {
@@ -561,7 +561,7 @@ const getNewComByDay = (req, res, next) => {
         }
 
         if(params.type != 0 && params.level !=0){
-            //根据 文章类型 + 载体类型 查询  不等于O的情况
+            //根据 文章类型 + 评论类型 查询  不等于O的情况
             queryObj.c_level = params.level;
             queryObj.c_type = params.type;
             o.map = function() { emit( {c_date : this.c_date, c_type:this.c_type, c_level:this.c_level }, { c_count: this.c_count}); };
@@ -587,7 +587,7 @@ const getNewComByDay = (req, res, next) => {
     }else{
         if(params.type == undefined ){
             if(params.level != 0 && params.level != undefined) {
-                //载体类型不为0
+                //评论类型不为0
                 queryObj.c_level = params.level;
                 o.map = function() { emit( {c_date : this.c_date,c_type:this.c_type, c_level:this.c_level}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
@@ -599,8 +599,8 @@ const getNewComByDay = (req, res, next) => {
                 };
             }
             if(params.level == 0 && params.level != undefined) {
-                //载体类型为0
-                //按照载体类型分组 并统计
+                //评论类型为0
+                //按照文章类型分组 并统计
                 o.map = function() { emit( {c_date : this.c_date, c_type:this.c_type}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
                     var con = 0;
@@ -627,7 +627,7 @@ const getNewComByDay = (req, res, next) => {
             }
             if(params.type == 0 && params.type != undefined) {
                 //文章类型为0
-                //按照载体类型分组 并统计
+                //按照 评论类型分组 并统计
                 o.map = function() { emit( {c_date : this.c_date, c_level:this.c_level}, { c_count: this.c_count}); };
                 o.reduce = function(key, values) {
                     var con = 0;
