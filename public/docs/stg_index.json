@@ -6468,7 +6468,136 @@
           }
         }
       }
+    },
+    "/admin/{adminId}/statisticsNewComByMonth": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newComCount info By Month",
+        "description": "Administrator query newComCount info By Month",
+        "operationId": "Administrator query newComCount info By Month",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "startMonth(格式：202007)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "endMonth(格式：202007)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(0.不考虑 1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "评论类型(0.不考虑 1.一级评论 2.二级评论)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "NewComCount not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/admin/{adminId}/statisticsNewComByDay": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Administrator query newComCount info By Day",
+        "description": "Administrator query newComCount info By Day",
+        "operationId": "Administrator query newComCount info By Day",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "adminID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDay",
+            "in": "query",
+            "description": "startMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "endDay",
+            "in": "query",
+            "description": "endMonth(格式：20200701)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "消息类型(0.不考虑 1.文章 2.求助 )",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "评论类型(0.不考虑 1.一级评论 2.二级评论)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "NewComCount not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
     }
+
   },
   "definitions": {
     "AdminLogin": {

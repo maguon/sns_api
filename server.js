@@ -342,6 +342,8 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsNewUserByDay', DateCountController.getNewUserByDay);
     server.get('/api/admin/:adminId/statisticsNewMsgByMonth', DateCountController.getNewMsgByMonth);
     server.get('/api/admin/:adminId/statisticsNewMsgByDay', DateCountController.getNewMsgByDay);
+    server.get('/api/admin/:adminId/statisticsNewComByMonth', DateCountController.getNewComByMonth);
+    server.get('/api/admin/:adminId/statisticsNewComByDay', DateCountController.getNewComByDay);
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");
