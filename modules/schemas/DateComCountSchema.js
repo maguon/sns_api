@@ -11,11 +11,9 @@ const dateComCountSchema = new Schema({
         y_month             : {type:Number,default:0,display: '年_月'},
         y_week              : {type:Number,default:0,display: '年_周'},
 
-        new_com_num         : {type:Number,default:0,display: '新增评论'},
-        com_art_first       : {type:Number,default:0,display: '评论-文章-一级'},
-        com_art_two         : {type:Number,default:0,display: '评论-文章-二级'},
-        com_help_first      : {type:Number,default:0,display: '评论-求助-一级'},
-        com_help_two        : {type:Number,default:0,display: '评论-求助-二级'}
+        c_type              : {type:Number,default:0,display: '消息类型(1.文章 2.求助 )'},
+        c_level             : {type:Number,default:0,display: '评论类型(1.一级评论 2.二级评论)'},
+        c_count             : {type:Number,default:0,display: '统计'}
     },
         { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }
     });

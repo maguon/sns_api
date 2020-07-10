@@ -120,6 +120,25 @@ const APP = {
         available:1//可用
     }
 }
+const DateCount ={
+    u_type:{
+        newUser:1//新增
+    },
+    m_type:{
+        article:1,//文章
+        help:2//求助
+    },
+    m_carrier:{
+        text:1,//文本
+        pictures:2,//图片
+        video:3,//视频
+        position:4//地理位置
+    },
+    c_level:{
+        firstCom:1,//一级评论
+        twoCom:2//二级评论
+    }
+}
 module.exports = {
     DRIVE_TYPE,
     ADMIN,
@@ -132,5 +151,6 @@ module.exports = {
     VOTE,
     SYSMSG,
     INFO,
-    APP
+    APP,
+    DateCount
 }

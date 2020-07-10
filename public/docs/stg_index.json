@@ -6380,14 +6380,14 @@
           {
             "name": "type",
             "in": "query",
-            "description": "消息类型(1.文章 2.求助 )",
+            "description": "消息类型(0.不考虑 1.文章 2.求助 )",
             "required": false,
             "type": "integer"
           },
           {
             "name": "carrier",
             "in": "query",
-            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
+            "description": "载体类型(0.不考虑 1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
           }
@@ -6444,14 +6444,14 @@
           {
             "name": "type",
             "in": "query",
-            "description": "消息类型(1.文章 2.求助 )",
+            "description": "消息类型(0.不考虑 1.文章 2.求助 )",
             "required": false,
             "type": "integer"
           },
           {
             "name": "carrier",
             "in": "query",
-            "description": "载体类型(1.文本 2.图片 3.视频 4.位置分享 )",
+            "description": "载体类型(0.不考虑 1.文本 2.图片 3.视频 4.位置分享 )",
             "required": false,
             "type": "integer"
           }
@@ -6469,7 +6469,6 @@
         }
       }
     }
-
   },
   "definitions": {
     "AdminLogin": {

@@ -11,7 +11,8 @@ const dateUserCountSchema = new Schema({
         y_month             : {type:Number,default:0,display: '年_月'},
         y_week              : {type:Number,default:0,display: '年_周'},
 
-        new_user_num        : {type:Number,default:0,display: '新增用户'}
+        u_type              : {type:Number,default:0,display: '类型（1.新增）'},
+        u_count             : {type:Number,default:0,display: '统计'}
 
     },
         { timestamps: { createdAt: 'created_at',updatedAt : 'updated_at' }

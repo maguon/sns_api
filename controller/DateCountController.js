@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
+const systemConst = require('../util/SystemConst');
 const logger = serverLogger.createLogger('DateCountController');
 
 const {UserModel} = require('../modules');
@@ -92,107 +93,139 @@ const getNewUserByDay = (req, res, next) => {
 }
 const getNewMsgByMonth = (req, res, next) => {
     let params = req.query;
+    let queryObj = {};
     let o = {};
-    if(params.startMonth && params.endMonth){
-        o.query = { y_month :  { $gte: Number(params.startMonth), $lte: Number(params.endMonth) }};
+    //日期查询条件
+    if(params.startMonth  && params.endMonth){
+        queryObj.y_month = {$gte: Number(params.startMonth), $lte: Number(params.endMonth)};
     }
-    if(params.type == undefined && params.carrier == undefined){
-        //只按天查询
-        o.map = function() { emit(this.y_month,this.new_msg_num); };
+
+    if(params.type != undefined && params.carrier != undefined){
+
+        if(params.type == 0 && params.carrier !=0){
+            //按照载体类型分组 并统计
+            queryObj.m_carrier = params.carrier;
+            o.map = function() { emit( {y_month : this.y_month, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
+
+        if(params.type != 0 && params.carrier ==0){
+            //按照载体类型分组 并统计
+            queryObj.m_type = params.type;
+            o.map = function() { emit( {y_month : this.y_month, m_type:this.m_type}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
+
+        if(params.type != 0 && params.carrier !=0){
+            //根据 文章类型 + 载体类型 查询  不等于O的情况
+            queryObj.m_carrier = params.carrier;
+            queryObj.m_type = params.type;
+            o.map = function() { emit( {y_month : this.y_month, m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = {};
+                for(var i=0;i< values.length ; i++){
+                    con = values[i];
+                }
+                return con
+            };
+        }
+
+        if(params.carrier == 0 && params.type == 0){
+            o.map = function() { emit( {y_month : this.y_month}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
     }else{
-        if(params.type == undefined){
-            if(Number(params.carrier) == 1){
-                //载体类型-文本
-                o.map = function() {
-                    emit( this.y_month, ( this.msg_art_text + this.msg_help_text ) );
+        if(params.type == undefined ){
+            if(params.carrier != 0 && params.carrier != undefined) {
+                //载体类型不为0
+                queryObj.m_carrier = params.carrier;
+                o.map = function() { emit( {y_month : this.y_month,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = {};
+                    for(var i=0;i< values.length ; i++){
+                        con = values[i];
+                    }
+                    return con
                 };
             }
-
-            if(Number(params.carrier) == 2){
-                //载体类型-图片
-                o.map = function() {
-                    emit( this.y_month, ( this.msg_art_picture + this.msg_help_picture ) );
-                };
-            }
-
-            if(Number(params.carrier) == 3){
-                //载体类型-视频
-                o.map = function() {
-                    emit( this.y_month, ( this.msg_art_video + this.msg_help_video ) );
-                };
-            }
-
-            if(Number(params.carrier) == 4){
-                //载体类型-地理位置
-                o.map = function() {
-                    emit( this.y_month, ( this.msg_art_position + this.msg_help_position ) );
+            if(params.carrier == 0 && params.carrier != undefined) {
+                //载体类型为0
+                //按照载体类型分组 并统计
+                o.map = function() { emit( {y_month : this.y_month, m_type:this.m_type}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = 0;
+                    for(var i=0;i< values.length ; i++){
+                        con  += values[i].m_count;
+                    }
+                    return con
                 };
             }
         }
 
-        if(params.carrier == undefined){
-            if(Number(params.type) == 1) {
-                //文章
-                o.map = function () {
-                    emit(this.y_month, (this.msg_art_text + this.msg_art_picture + this.msg_art_video + this.msg_art_position));
+        if(params.carrier == undefined ){
+            if(params.type != 0 && params.type != undefined) {
+                //文章类型不为0
+                queryObj.m_type = params.type;
+                o.map = function() { emit( {y_month : this.y_month,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = {};
+                    for(var i=0;i< values.length ; i++){
+                        con = values[i];
+                    }
+                    return con
                 };
             }
-
-            if(Number(params.type) == 2){
-                //求助
-                o.map = function() {
-                    emit( this.y_month, (this.msg_help_text + this.msg_help_picture + this.msg_help_video + this.msg_help_position) );
+            if(params.type == 0 && params.type != undefined) {
+                //文章类型为0
+                //按照载体类型分组 并统计
+                o.map = function() { emit( {y_month : this.y_month, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = 0;
+                    for(var i=0;i< values.length ; i++){
+                        con  += values[i].m_count;
+                    }
+                    return con
                 };
             }
         }
-
-        if(params.type != undefined && params.carrier != undefined){
-            if(Number(params.type) == 1){
-                //文章
-                if(Number(params.carrier) == 1){
-                    //文章-文本
-                    o.map = function() { emit(this.y_month,this.msg_art_text); };
+        //都为空时，根据日期查询
+        if(params.carrier == undefined && params.type == undefined){
+            o.map = function() { emit( {y_month : this.y_month,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = {};
+                for(var i=0;i< values.length ; i++){
+                    con = values[i];
                 }
-                if(Number(params.carrier) == 2){
-                    //文章-图片
-                    o.map = function() { emit(this.y_month,this.msg_art_picture); };
-                }
-                if(Number(params.carrier) == 3){
-                    //文章-视频
-                    o.map = function() { emit(this.y_month,this.msg_art_video); };
-                }
-                if(Number(params.carrier) == 4){
-                    //文章-地理位置
-                    o.map = function() { emit(this.y_month,this.msg_art_position); };
-                }
-            }
-            if(Number(params.type) == 2){
-                //求助
-                if(Number(params.carrier) == 1){
-                    //求助-文本
-                    o.map = function() { emit(this.y_month,this.msg_help_text); };
-                }
-                if(Number(params.carrier) == 2){
-                    //求助-图片
-                    o.map = function() { emit(this.y_month,this.msg_help_picture); };
-                }
-                if(Number(params.carrier) == 3){
-                    //求助-视频
-                    o.map = function() { emit(this.y_month,this.msg_help_video); };
-                }
-                if(Number(params.carrier) == 4){
-                    //求助-地理位置
-                    o.map = function() { emit(this.y_month,this.msg_help_position); };
-                }
-            }
+                return con
+            };
         }
+
+
     }
 
-    o.reduce = function(key, values) {return Array.sum(values)};
-    o.out = "user_msg_mongth_count";
+    o.query = queryObj;
+    o.out = "msg_month_count";
 
     DateMsgCountModel.mapReduce(o, function (err, results) {
-        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+        results.model.find().sort({"_id.y_month": -1}).exec(function (err, docs) {
             if (err) {
                 logger.error(' getNewMsgByMonth ' + err);
                 resUtil.resInternalError(err,res);
@@ -206,107 +239,139 @@ const getNewMsgByMonth = (req, res, next) => {
 }
 const getNewMsgByDay = (req, res, next) => {
     let params = req.query;
+    let queryObj = {};
     let o = {};
+    //日期查询条件
     if(params.startDay && params.endDay){
-        o.query = { m_date :  { $gte: Number(params.startDay), $lte: Number(params.endDay) }};
+        queryObj.m_date = { $gte: Number(params.startDay), $lte: Number(params.endDay) };
     }
-    if(params.type == undefined && params.carrier == undefined){
-        //只按天查询
-        o.map = function() { emit(this.m_date,this.new_msg_num); };
+
+    if(params.type != undefined && params.carrier != undefined){
+
+        if(params.type == 0 && params.carrier !=0){
+            //按照载体类型分组 并统计
+            queryObj.m_carrier = params.carrier;
+            o.map = function() { emit( {m_date : this.m_date, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
+
+        if(params.type != 0 && params.carrier ==0){
+            //按照载体类型分组 并统计
+            queryObj.m_type = params.type;
+            o.map = function() { emit( {m_date : this.m_date, m_type:this.m_type}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
+
+        if(params.type != 0 && params.carrier !=0){
+            //根据 文章类型 + 载体类型 查询  不等于O的情况
+            queryObj.m_carrier = params.carrier;
+            queryObj.m_type = params.type;
+            o.map = function() { emit( {m_date : this.m_date, m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = {};
+                for(var i=0;i< values.length ; i++){
+                    con = values[i];
+                }
+                return con
+            };
+        }
+
+        if(params.carrier == 0 && params.type == 0){
+            o.map = function() { emit( {m_date : this.m_date}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = 0;
+                for(var i=0;i< values.length ; i++){
+                    con  += values[i].m_count;
+                }
+                return con
+            };
+        }
     }else{
-        if(params.type == undefined){
-            if(Number(params.carrier) == 1){
-                //载体类型-文本
-                o.map = function() {
-                    emit( this.m_date, ( this.msg_art_text + this.msg_help_text ) );
+        if(params.type == undefined ){
+            if(params.carrier != 0 && params.carrier != undefined) {
+                //载体类型不为0
+                queryObj.m_carrier = params.carrier;
+                o.map = function() { emit( {m_date : this.m_date,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = {};
+                    for(var i=0;i< values.length ; i++){
+                        con = values[i];
+                    }
+                    return con
                 };
             }
-
-            if(Number(params.carrier) == 2){
-                //载体类型-图片
-                o.map = function() {
-                    emit( this.m_date, ( this.msg_art_picture + this.msg_help_picture ) );
-                };
-            }
-
-            if(Number(params.carrier) == 3){
-                //载体类型-视频
-                o.map = function() {
-                    emit( this.m_date, ( this.msg_art_video + this.msg_help_video ) );
-                };
-            }
-
-            if(Number(params.carrier) == 4){
-                //载体类型-地理位置
-                o.map = function() {
-                    emit( this.m_date, ( this.msg_art_position + this.msg_help_position ) );
+            if(params.carrier == 0 && params.carrier != undefined) {
+                //载体类型为0
+                //按照载体类型分组 并统计
+                o.map = function() { emit( {m_date : this.m_date, m_type:this.m_type}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = 0;
+                    for(var i=0;i< values.length ; i++){
+                        con  += values[i].m_count;
+                    }
+                    return con
                 };
             }
         }
 
-        if(params.carrier == undefined){
-            if(Number(params.type) == 1) {
-                //文章
-                o.map = function () {
-                    emit(this.m_date, (this.msg_art_text + this.msg_art_picture + this.msg_art_video + this.msg_art_position));
+        if(params.carrier == undefined ){
+            if(params.type != 0 && params.type != undefined) {
+                //文章类型不为0
+                queryObj.m_type = params.type;
+                o.map = function() { emit( {m_date : this.m_date,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = {};
+                    for(var i=0;i< values.length ; i++){
+                        con = values[i];
+                    }
+                    return con
                 };
             }
-
-            if(Number(params.type) == 2){
-                //求助
-                o.map = function() {
-                    emit( this.m_date, (this.msg_help_text + this.msg_help_picture + this.msg_help_video + this.msg_help_position) );
+            if(params.type == 0 && params.type != undefined) {
+                //文章类型为0
+                //按照载体类型分组 并统计
+                o.map = function() { emit( {m_date : this.m_date, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+                o.reduce = function(key, values) {
+                    var con = 0;
+                    for(var i=0;i< values.length ; i++){
+                        con  += values[i].m_count;
+                    }
+                    return con
                 };
             }
         }
-
-        if(params.type != undefined && params.carrier != undefined){
-            if(Number(params.type) == 1){
-                //文章
-                if(Number(params.carrier) == 1){
-                    //文章-文本
-                    o.map = function() { emit(this.m_date,this.msg_art_text); };
+        //都为空时，根据日期查询
+        if(params.carrier == undefined && params.type == undefined){
+            o.map = function() { emit( {m_date : this.m_date,m_type:this.m_type, m_carrier:this.m_carrier}, { m_count: this.m_count}); };
+            o.reduce = function(key, values) {
+                var con = {};
+                for(var i=0;i< values.length ; i++){
+                    con = values[i];
                 }
-                if(Number(params.carrier) == 2){
-                    //文章-图片
-                    o.map = function() { emit(this.m_date,this.msg_art_picture); };
-                }
-                if(Number(params.carrier) == 3){
-                    //文章-视频
-                    o.map = function() { emit(this.m_date,this.msg_art_video); };
-                }
-                if(Number(params.carrier) == 4){
-                    //文章-地理位置
-                    o.map = function() { emit(this.m_date,this.msg_art_position); };
-                }
-            }
-            if(Number(params.type) == 2){
-                //求助
-                if(Number(params.carrier) == 1){
-                    //求助-文本
-                    o.map = function() { emit(this.m_date,this.msg_help_text); };
-                }
-                if(Number(params.carrier) == 2){
-                    //求助-图片
-                    o.map = function() { emit(this.m_date,this.msg_help_picture); };
-                }
-                if(Number(params.carrier) == 3){
-                    //求助-视频
-                    o.map = function() { emit(this.m_date,this.msg_help_video); };
-                }
-                if(Number(params.carrier) == 4){
-                    //求助-地理位置
-                    o.map = function() { emit(this.m_date,this.msg_help_position); };
-                }
-            }
+                return con
+            };
         }
+
+
     }
 
-    o.reduce = function(key, values) {return Array.sum(values)};
-    o.out = "user_msg_day_count";
+    o.query = queryObj;
+    o.out = "msg_day_count";
 
     DateMsgCountModel.mapReduce(o, function (err, results) {
-        results.model.find().sort({"_id": -1}).exec(function (err, docs) {
+        results.model.find().sort({"_id.m_date": -1}).exec(function (err, docs) {
             if (err) {
                 logger.error(' getNewMsgByDay ' + err);
                 resUtil.resInternalError(err,res);
@@ -393,11 +458,14 @@ const createDateUserCount = (req, res, next) => {
                 dateUserCountObj.y_week  = Number(y_week);
             }
 
+            //新增用户类型-新建
+            dateUserCountObj.u_type  = systemConst.DateCount.u_type.newUser;
+
             //新增用户统计
             if(returnMsg.user){
-                dateUserCountObj.new_user_num  = Number(returnMsg.user);
+                dateUserCountObj.u_count  = Number(returnMsg.user);
             }else{
-                dateUserCountObj.new_user_num  = 0;
+                dateUserCountObj.u_count  = 0;
             }
 
             //判断 date 是否唯一
@@ -435,213 +503,222 @@ const createDateMsgCount = (req, res, next) => {
     let today = new Date();
     let startDay = new Date(moment(today).add(-1, 'days').format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).format('YYYY-MM-DD'));
-    let returnMsg = {};
+    let insterDate = new Date(startDay);
+    let returnMsg = [];
 
-    const getMsgCount = () =>{
+    //删除所有前一天数据
+    const delCountInfo = () =>{
         return new Promise((resolve, reject) => {
-            let aggregate_limit = [];
-            if(startDay && endDay){
-                aggregate_limit.push({
-                    $match: {
-                        created_at :  {$gte: startDay,$lt: endDay}
-                    }
-                });
+            let query = DateMsgCountModel.find({});
+            if(insterDate){
+                let date = moment(insterDate).format('YYYYMMDD');
+                query.where('m_date').equals(date);
             }
 
-            aggregate_limit.push({
-                $group: {
-                    _id: { type : "$type", carrier : "$carrier"},
-                    msgList: { $push: { address_show: "$address_show", status: "$status" } }
-                }
-            });
-            aggregate_limit.push({
-                $group: {
-                    _id: { type: "$_id.type", carrier: "$_id.carrier" },
-                    msgCount: { $sum: { $size: "$msgList" } }
-                }
-            });
-            aggregate_limit.push({
-                $group: {
-                    _id: { type: "$_id.type" },
-                    newMsgCount: { $sum: "$msgCount"},
-                    carrierList: { $push: { carrier: "$_id.carrier", msgCount: "$msgCount"} }
-                }
-            });
-            aggregate_limit.push({
-                $group: {
-                    _id: null,
-                    newMsgCount: { $sum: "$newMsgCount"},
-                    typeList: { $push: { type: "$_id.type", carrier : "$_id.carrier", carrierList: "$carrierList" } }
-                }
-            });
-            aggregate_limit.push({
-                $project: { _id: 0, typeList: 1,newMsgCount:1}
-            });
-
-            aggregate_limit.push({
-                $sort: { "type": 1 }
-            });
-            MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
-                if (error) {
-                    logger.error(' createDateMsgCount getMsgCount ' + error.message);
+            DateMsgCountModel.deleteMany(query,function(error,result){
+                if(error){
+                    logger.error(' createDateMsgCount delCountInfo ' + error.message);
                     reject({err:error});
-                } else {
-                    logger.info(' createDateMsgCount getMsgCount ' + 'success');
-                    returnMsg.msg = rows ;
+                }else{
+                    logger.info(' createDateMsgCount delCountInfo ' + 'success');
                     resolve();
                 }
             });
+
         });
     }
 
+    //创建全部类型数据为0
     const createCountInfo = () =>{
         return new Promise((resolve, reject) => {
-            let dateMsgCountObj = {};
+            let dateMsgCountArr = [];
+            for(let type_i=1; type_i<3; type_i++) {
+                for (let carrier_j = 1; carrier_j < 5; carrier_j++) {
+                    let dateMsgCountObj = {};
 
-            //JS获取日期周数
-            let beginDate = new Date(today.getFullYear(), 0, 1);
+                    //JS获取日期周数
+                    let beginDate = new Date(insterDate.getFullYear(), 0, 1);
 
-            //date
-            let date = moment(today).format('YYYYMMDD');
-            if(date){
-                dateMsgCountObj.m_date  = Number(date);
-            }
+                    //date
+                    let date = moment(insterDate).format('YYYYMMDD');
+                    if(date){
+                        dateMsgCountObj.m_date  = Number(date);
+                    }
 
-            //日
-            let day = moment(today).format('D');
-            if(day){
-                dateMsgCountObj.m_day  = Number(day);
-            }
+                    //日
+                    let day = moment(insterDate).format('D');
+                    if(day){
+                        dateMsgCountObj.m_day  = Number(day);
+                    }
 
-            //周
-            let week = Math.ceil((parseInt((today - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
-            if(week){
-                dateMsgCountObj.m_week  = Number(week);
-            }
+                    //周
+                    let week = Math.ceil((parseInt((insterDate - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
+                    if(week){
+                        dateMsgCountObj.m_week  = Number(week);
+                    }
 
-            //月
-            let month = moment(today).format('M');
-            if(month){
-                dateMsgCountObj.m_month  = Number(month);
-            }
+                    //月
+                    let month = moment(insterDate).format('M');
+                    if(month){
+                        dateMsgCountObj.m_month  = Number(month);
+                    }
 
-            //年
-            let year = moment(today).format('YYYY');
-            if(year){
-                dateMsgCountObj.m_year  = Number(year);
-            }
+                    //年
+                    let year = moment(insterDate).format('YYYY');
+                    if(year){
+                        dateMsgCountObj.m_year  = Number(year);
+                    }
 
-            //年_月
-            let y_month = today.getFullYear().toString() +  moment(today).format('MM');
-            if(y_month){
-                dateMsgCountObj.y_month  = Number(y_month);
-            }
+                    //年_月
+                    let y_month = insterDate.getFullYear().toString() +  moment(insterDate).format('MM');
+                    if(y_month){
+                        dateMsgCountObj.y_month  = Number(y_month);
+                    }
 
-            //年_星期
-            let y_week = today.getFullYear().toString() + ('0' + week).substr(-2);
-            if(y_week){
-                dateMsgCountObj.y_week  = Number(y_week);
-            }
+                    //年_星期
+                    let y_week = insterDate.getFullYear().toString() + ('0' + week).substr(-2);
+                    if(y_week){
+                        dateMsgCountObj.y_week  = Number(y_week);
+                    }
 
-            //文章统计数
-            if(returnMsg.msg.length != 0 ){
-                let msgCountInfo = returnMsg.msg;
-                dateMsgCountObj.new_msg_num  = Number(msgCountInfo[0].newMsgCount);
+                    //文章类型
+                    dateMsgCountObj.m_type = type_i;
+                    //载体类型
+                    dateMsgCountObj.m_carrier = carrier_j;
+                    //文章统计数
+                    dateMsgCountObj.m_count = 0;
 
-                if(msgCountInfo[0].typeList != undefined){
-                    let msgTypeList = msgCountInfo[0].typeList;
-                    msgTypeList.forEach(function (v,i) {
-                        if(v.type == 1){
-                            //文章
-                            let msgCarrierArtList = v.carrierList;
-                            msgCarrierArtList.forEach(function (carrierArtInfo,item) {
-                                if(carrierArtInfo.carrier == 1){
-                                    //文章-文本
-                                    dateMsgCountObj.msg_art_text = carrierArtInfo.msgCount;
-                                }
-                                if(carrierArtInfo.carrier == 2){
-                                    //文章-图片
-                                    dateMsgCountObj.msg_art_picture = carrierArtInfo.msgCount;
-                                }
-                                if(carrierArtInfo.carrier == 3){
-                                    //文章-视频
-                                    dateMsgCountObj.msg_art_video = carrierArtInfo.msgCount;
-                                }
-                                if(carrierArtInfo.carrier == 4){
-                                    //文章-地理位置
-                                    dateMsgCountObj.msg_art_position = carrierArtInfo.msgCount;
-                                }
-                            })
-                        }
 
-                        if(v.type == 2){
-                            //求助
-                            let msgCarrierHelpList = v.carrierList;
-                            msgCarrierHelpList.forEach(function (carrierHelpInfo,item) {
-                                if(carrierHelpInfo.carrier == 1){
-                                    //求助-文本
-                                    dateMsgCountObj.msg_help_text = carrierHelpInfo.msgCount;
-                                }
-                                if(carrierHelpInfo.carrier == 2){
-                                    //求助-图片
-                                    dateMsgCountObj.msg_help_picture = carrierHelpInfo.msgCount;
-                                }
-                                if(carrierHelpInfo.carrier == 3){
-                                    //求助-视频
-                                    dateMsgCountObj.msg_help_video = carrierHelpInfo.msgCount;
-                                }
-                                if(carrierHelpInfo.carrier == 4){
-                                    //求助-地理位置
-                                    dateMsgCountObj.msg_help_position = carrierHelpInfo.msgCount;
-                                }
-                            })
-                        }
-                    })
-
-                }
-            }else{
-                dateMsgCountObj.new_msg_num = 0;
-                //文章-文本
-                dateMsgCountObj.msg_art_text = 0;
-                //文章-图片
-                dateMsgCountObj.msg_art_picture = 0;
-                //文章-视频
-                dateMsgCountObj.msg_art_video = 0;
-                //文章-地理位置
-                dateMsgCountObj.msg_art_position = 0;
-                //求助-文本
-                dateMsgCountObj.msg_help_text = 0;
-                //求助-图片
-                dateMsgCountObj.msg_help_picture = 0;
-                //求助-视频
-                dateMsgCountObj.msg_help_video = 0;
-                //求助-地理位置
-                dateMsgCountObj.msg_help_position = 0;
-            }
-
-            //判断 date 是否唯一
-            let queryDateMsgCount = DateMsgCountModel.find({});
-            if(date){
-                queryDateMsgCount.where('m_date').equals(date);
-            }
+                    dateMsgCountArr.push(dateMsgCountObj);
+                }//for-j
+            }//for-i
 
             //如果已存在 该日期，则更新信息
             //如果不存在，新建数据
-            DateMsgCountModel.findOneAndUpdate(queryDateMsgCount,dateMsgCountObj,{new: true, upsert: true}).exec((error,rows)=> {
+            DateMsgCountModel.insertMany(dateMsgCountArr,function(error,result){
                 if (error) {
                     logger.error(' createDateMsgCount createCountInfo ' + error.message);
                     reject({err:error});
                 } else {
                     logger.info(' createDateMsgCount createCountInfo ' + 'success');
-                    resUtil.resetCreateRes(res, rows);
-                    return next();
+                    returnMsg.push(result);
+                    resolve();
                 }
+
             });
+
         });
     }
 
-    getMsgCount()
+    //根据文章类型 载体类型 查询统计数
+    const getMsgCount = () =>{
+        return new Promise((resolve, reject) => {
+            let o = {};
+            let queryObj = {};
+            if(startDay && endDay){
+                queryObj.created_at = { $gte: Number(startDay), $lte: Number(endDay) };
+            }
+
+            o.map = function() { emit({type:this.type,carrier:this.carrier}, this.status);},
+                o.reduce = function(key, values) {
+                    let count = 0;
+                    for (let i=0;i<values.length;i++){
+                        count+=1;
+                    }
+                    return count;
+
+                },
+                o.query = queryObj;
+            o.out = "msg_query_count";
+
+            MsgModel.mapReduce(o, function (err, results) {
+                results.model.find().sort({"_id": -1}).exec(function (error, docs) {
+                    if (err) {
+                        logger.error(' createDateMsgCount getMsgCount ' + err);
+                        reject({err:error});
+                    } else {
+                        logger.info(' createDateMsgCount getMsgCount ' + 'success');
+                        resolve(docs);
+                    }
+                });
+            })
+
+        });
+    }
+
+    const PromiseForEach = (arr, callback)=>{
+        let realResult = [];
+        let result = Promise.resolve();
+        arr.forEach((item, index) => {
+            result = result.then(() => {
+                return callback(item).then((res) => {
+                    realResult.push(res);
+                })
+            })
+        });
+
+        return result.then(() => {
+            return realResult
+        });
+    };
+
+    //根据查询结果更新数据
+    const UpdateCountInfo = (msgQueryCount) =>{
+        return new Promise((resolve, reject) => {
+
+            if(msgQueryCount.length == 0){
+                logger.info(' createDateMsgCount UpdateCountInfo returnMsgLength=0 ' + 'success');
+                return resolve({});
+            }else{
+                PromiseForEach(msgQueryCount, (item) => {
+                    return new Promise((resolve, reject) => {
+                        let dateMsgCountObj = {};
+                        let queryDateMsg = DateMsgCountModel.find({});
+
+                        dateMsgCountObj.m_count = item.value;
+                        //添加更新条件
+                        queryDateMsg.where('m_type').equals(item._id.type);
+                        queryDateMsg.where('m_carrier').equals(item._id.carrier);
+                        if(insterDate){
+                            let date = moment(insterDate).format('YYYYMMDD');
+                            queryDateMsg.where('m_date').equals(date);
+                        }
+
+                        //如果已存在 该日期，则更新信息
+                        //如果不存在，新建数据
+                        DateMsgCountModel.findOneAndUpdate(queryDateMsg,dateMsgCountObj,{new: true, upsert: true}).exec((error,rows)=> {
+                            if (error) {
+                                reject({err:error});
+                            } else {
+                                return resolve(rows);
+                            }
+                        });
+
+                    })
+                }).then((data) => {
+                    resolve(data);
+                }).catch((err) => {
+                    console.log("失败");
+                    console.log(err)
+                });
+            }
+
+
+        });
+    }
+
+    const returnPushMsg = (result)=>{
+        return new Promise(()=>{
+            logger.info(' createDateMsgCount UpdateCountInfo ' + 'success');
+            resUtil.resetQueryRes(res,result,null);
+        });
+    }
+
+    delCountInfo()
         .then(createCountInfo)
+        .then(getMsgCount)
+        .then(UpdateCountInfo)
+        .then(returnPushMsg)
         .catch((reject) =>{
             if(reject.err) {
                 resUtil.resetFailedRes(res, reject.err);
