@@ -1,6 +1,9 @@
 "use strict"
-
+/**
+ * Created by yym on 2020/7/10.
+ */
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
@@ -667,10 +670,11 @@ const getNewComByDay = (req, res, next) => {
     })
 
 }
-const createDateUserCount = (req, res, next) => {
+const createDateUserCount = (params, callback) => {
     let today = new Date();
     let startDay = new Date(moment(today).add(-1, 'days').format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).format('YYYY-MM-DD'));
+    let insterDate = new Date(startDay);
     let returnMsg = {};
 
     const getUserCount = () =>{
@@ -701,43 +705,43 @@ const createDateUserCount = (req, res, next) => {
             let beginDate = new Date(today.getFullYear(), 0, 1);
 
             //date
-            let date = moment(today).format('YYYYMMDD');
+            let date = moment(insterDate).format('YYYYMMDD');
             if(date){
                 dateUserCountObj.u_date  = Number(date);
             }
 
             //日
-            let day = moment(today).format('D');
+            let day = moment(insterDate).format('D');
             if(day){
                 dateUserCountObj.u_day  = Number(day);
             }
 
             //周
-            let week = Math.ceil((parseInt((today - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
+            let week = Math.ceil((parseInt((insterDate - beginDate) / (24 * 60 * 60 * 1000)) + 1 + beginDate.getDay()) / 7);
             if(week){
                 dateUserCountObj.u_week  = Number(week);
             }
 
             //月
-            let month = moment(today).format('M');
+            let month = moment(insterDate).format('M');
             if(month){
                 dateUserCountObj.u_month  = Number(month);
             }
 
             //年
-            let year = moment(today).format('YYYY');
+            let year = moment(insterDate).format('YYYY');
             if(year){
                 dateUserCountObj.u_year  = Number(year);
             }
 
             //年_月
-            let y_month = today.getFullYear().toString() + moment(today).format('MM');
+            let y_month = insterDate.getFullYear().toString() + moment(insterDate).format('MM');
             if(y_month){
                 dateUserCountObj.y_month  = Number(y_month);
             }
 
             //年_星期
-            let y_week = today.getFullYear().toString() + ('0' + week).substr(-2);
+            let y_week = insterDate.getFullYear().toString() + ('0' + week).substr(-2);
             if(y_week){
                 dateUserCountObj.y_week  = Number(y_week);
             }
@@ -766,24 +770,25 @@ const createDateUserCount = (req, res, next) => {
                     reject({err:error});
                 } else {
                     logger.info(' createDateUserCount createCountInfo ' + 'success');
-                    resUtil.resetCreateRes(res, rows);
-                    return next();
+                    resolve(rows);
                 }
             });
         });
     }
-
+    const returnPushMsg = (result)=>{
+        return new Promise(()=>{
+            callback(null, result);
+        });
+    }
     getUserCount()
         .then(createCountInfo)
+        .then(returnPushMsg)
         .catch((reject) =>{
-            if(reject.err) {
-                resUtil.resetFailedRes(res, reject.err);
-            }else{
-                resUtil.resetFailedRes(res, reject.msg);
-            }
+            callback(null,null);
+            return null;
         })
 }
-const createDateMsgCount = (req, res, next) => {
+const createDateMsgCount = (params, callback) => {
     let today = new Date();
     let startDay = new Date(moment(today).add(-1, 'days').format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).format('YYYY-MM-DD'));
@@ -994,7 +999,7 @@ const createDateMsgCount = (req, res, next) => {
     const returnPushMsg = (result)=>{
         return new Promise(()=>{
             logger.info(' createDateMsgCount UpdateCountInfo ' + 'success');
-            resUtil.resetQueryRes(res,result,null);
+            callback(null, result);
         });
     }
 
@@ -1004,14 +1009,11 @@ const createDateMsgCount = (req, res, next) => {
         .then(UpdateCountInfo)
         .then(returnPushMsg)
         .catch((reject) =>{
-            if(reject.err) {
-                resUtil.resetFailedRes(res, reject.err);
-            }else{
-                resUtil.resetFailedRes(res, reject.msg);
-            }
+            callback(null,null);
+            return null;
         })
 }
-const createDateComCount = (req, res, next) => {
+const createDateComCount = (params, callback) => {
     let today = new Date();
     let startDay = new Date(moment(today).add(-1, 'days').format('YYYY-MM-DD'));
     let endDay = new Date(moment(today).format('YYYY-MM-DD'));
@@ -1221,7 +1223,7 @@ const createDateComCount = (req, res, next) => {
     const returnPushMsg = (result)=>{
         return new Promise(()=>{
             logger.info(' createDateComCount UpdateCountInfo ' + 'success');
-            resUtil.resetQueryRes(res,result,null);
+            callback(null, result);
         });
     }
 
@@ -1231,11 +1233,8 @@ const createDateComCount = (req, res, next) => {
         .then(UpdateCountInfo)
         .then(returnPushMsg)
         .catch((reject) =>{
-            if(reject.err) {
-                resUtil.resetFailedRes(res, reject.err);
-            }else{
-                resUtil.resetFailedRes(res, reject.msg);
-            }
+            callback(null,null);
+            return null;
         })
 }
 

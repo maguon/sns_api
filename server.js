@@ -334,9 +334,6 @@ const createServer=()=>{
     /**
      * Statistics Module
      */
-    server.post({path:'/api/dateUserCount',contentType: 'application/json'},DateCountController.createDateUserCount);
-    server.post({path:'/api/dateMsgCount',contentType: 'application/json'},DateCountController.createDateMsgCount);
-    server.post({path:'/api/dateComCount',contentType: 'application/json'},DateCountController.createDateComCount);
     server.get('/api/admin/:adminId/statisticsNewUserByMonth', DateCountController.getNewUserByMonth);
     server.get('/api/admin/:adminId/statisticsNewUserByWeek', DateCountController.getNewUserByWeek);
     server.get('/api/admin/:adminId/statisticsNewUserByDay', DateCountController.getNewUserByDay);
