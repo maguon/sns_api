@@ -4,10 +4,15 @@ const mongoose = require('../../db/connections/MongoCon.js').getMongo();
 const Schema = mongoose.Schema;
 const userPraiseSchema = new Schema({
             type           : {type:Number,default:0,min:0,max:3,display: '点赞类型(1.动态 2.评论)'},
-            _user_id: {
+            praise_user_id: {
                 type: Schema.Types.ObjectId,
                 ref: 'user_info',
-                display: '用户信息ID'
+                display: '点赞用户信息ID'
+            },
+            be_praised_user_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'user_info',
+                display: '被赞用户信息ID'
             },
             _msg_id: {
                 type: Schema.Types.ObjectId,

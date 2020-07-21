@@ -6931,6 +6931,7 @@
     "UserPraise": {
       "type": "object",
       "required": [
+        "bePraisedUserId",
         "type",
         "msgId",
         "msgUserId",
@@ -6938,6 +6939,9 @@
         "msgComUserId"
       ],
       "properties": {
+        "bePraisedUserId": {
+          "type": "string"
+        },
         "type": {
           "type": "integer",
           "format": "int64"
