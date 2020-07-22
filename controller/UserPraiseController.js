@@ -81,7 +81,15 @@ const getUserBePraise = (req, res, next) => {
             from: "user_details",
             localField: "praise_user_id",
             foreignField: "_user_id",
-            as: "user_detail_info"
+            as: "praise_user_detail_info"
+        }
+    });
+    aggregate_limit.push({
+        $lookup: {
+            from: "user_details",
+            localField: "_msg_user_id",
+            foreignField: "_user_id",
+            as: "msg_user_detail_info"
         }
     });
     aggregate_limit.push({
