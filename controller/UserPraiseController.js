@@ -79,7 +79,7 @@ const getUserBePraise = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_user_id",
+            localField: "praise_user_id",
             foreignField: "_user_id",
             as: "user_detail_info"
         }
@@ -396,7 +396,7 @@ const getUserPraiseByAdmin = (req, res, next) => {
     aggregate_limit.push({
         $lookup: {
             from: "user_details",
-            localField: "_user_id",
+            localField: "praise_user_id",
             foreignField: "_user_id",
             as: "user_detail_info"
         }
