@@ -34,7 +34,7 @@ const getApp = (req, res, next) => {
     if(params.start && params.size){
         query.skip(parseInt(params.start)).limit(parseInt(params.size));
     }
-    query.exec((error,rows)=> {
+    query.sort({"created_at": -1}).exec((error,rows)=> {
         if (error) {
             logger.error(' getApp ' + error.message);
             resUtil.resInternalError(error,res);

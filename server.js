@@ -310,7 +310,9 @@ const createServer=()=>{
     /**
      app
      */
+    server.get('/api/app', AppController.getApp);
     server.get('/api/user/:userId/app', AppController.getApp);
+
     server.get('/api/admin/:adminId/app', AppController.getApp);
     server.post({path:'/api/admin/:adminId/app',contentType: 'application/json'}, AppController.createApp);
     server.put({path:'/api/admin/:adminId/app/:appId',contentType: 'application/json'} ,AppController.updateApp);

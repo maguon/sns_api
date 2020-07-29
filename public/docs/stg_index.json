@@ -5777,6 +5777,75 @@
       }
     },
 
+    "/app": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Query app info",
+        "description": "Query app info",
+        "operationId": "get App",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "appID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "appType",
+            "description": "app类型(1-司机之家)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "deviceType",
+            "description": "系统类型(1-安卓 2-苹果)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态（0-停用，1-启用）",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "404": {
+            "description": "App not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
     "/user/{userId}/app": {
       "get": {
         "tags": [
