@@ -40,7 +40,8 @@ const createServer=()=>{
     const server = restify.createServer({
 
         name: 'SNS-API',
-        version: '0.0.1'
+        version: '0.0.1',
+        maxParamLength: 500
     });
 
     server.pre(restify.pre.sanitizePath());
