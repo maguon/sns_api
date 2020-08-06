@@ -15,8 +15,8 @@ const AllMsgPushUtil = require('../util/AllMsgPushUtil');
 
 function pushMsgXinge(req,res,next){
     let params = req.query;
-    params.title = "任务消息";
-    params.content ="你有新的路线任务";
+    params.title = "新消息";
+    params.content ="您有新消息提醒！";
     xingeUtil.pushMsg(params,function(error,result){
         if (error) {
             logger.error(' pushMsgXinge ' + error.message);
@@ -34,8 +34,9 @@ function pushMsgApn(req,res,next){
     // let deviceTokens = ["834c8b48e6254e47435d74720b1d4a13e3e57d0bf318333c284c1db8ce8ddc58"];
 
     let notification = new apn.Notification();
-    notification.alert = "Hello, world!";
+    notification.alert = "您有新消息提醒!";
     notification.badge = 1;
+    notification.sound = "default";
     notification.topic = "log-sns-ios";
     params.notification = notification;
     ApnUtil.pushMsg(params,function(error,result){

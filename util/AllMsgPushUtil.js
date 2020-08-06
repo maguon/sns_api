@@ -33,59 +33,59 @@ function getUserPushMsg(nickName,msg,msgType) {
         case 1:
             //msgType 1.文章评论
             //消息推送标题
-            msgTitle = nickName + "评论了你";
+            msgContent = nickName + "评论了你";
             //消息内容推送以30位为准 后面加...
-            if(msg.length >= 30){
-                let infoMsg = msg.substring(0,30);
-                msgContent = infoMsg;
-                msgContent += "...";
-            }else{
-                msgContent = infoMsg;
-            }
+            // if(msg.length >= 30){
+            //     let infoMsg = msg.substring(0,30);
+            //     msgContent = infoMsg;
+            //     msgContent += "...";
+            // }else{
+            //     msgContent = infoMsg;
+            // }
 
             break;
 
         case 2:
             //msgType 2.求助评论
             //消息推送标题
-            msgTitle = nickName + "评论了你";
+            msgContent = nickName + "评论了你";
             //消息内容推送以30位为准 后面加...
-            if(msg.length >= 30){
-                let infoHelp = msg.substring(0,30);
-                msgContent.push(infoHelp);
-                msgContent.push("...");
-            }else{
-                msgContent = infoMsg;
-            }
+            // if(msg.length >= 30){
+            //     let infoHelp = msg.substring(0,30);
+            //     msgContent.push(infoHelp);
+            //     msgContent.push("...");
+            // }else{
+            //     msgContent = infoMsg;
+            // }
             break;
 
         case 3:
             //msgType 3.评论回复
             //消息推送标题
-            msgTitle = nickName + "评论中回复了你";
+            msgContent = nickName + "评论中回复了你";
             //消息内容推送以30位为准 后面加...
-            if(msg.length >= 30){
-                let infoCom = msg.substring(0,30);
-                msgContent.push(infoCom);
-                msgContent.push("...");
-            }else{
-                msgContent = infoMsg;
-            }
+            // if(msg.length >= 30){
+            //     let infoCom = msg.substring(0,30);
+            //     msgContent.push(infoCom);
+            //     msgContent.push("...");
+            // }else{
+            //     msgContent = infoMsg;
+            // }
             break;
         case 4:
             //msgType 4.点赞
-            msgTitle = nickName + "点赞了你";
+            msgContent = nickName + "点赞了你";
             break;
         case 5:
             //msgType 5.关注
-            msgTitle = nickName + "关注了你";
+            msgContent = nickName + "关注了你";
             break;
         case 6:
             //msgType 6.投票结束
-            msgTitle = "投票结束";
+            msgContent = "投票结束";
             break;
         default:
-            msgTitle = "您有一条新动态！";
+            msgContent = "您有一条新动态！";
 
     }
 
@@ -187,6 +187,7 @@ function mqPushMsg(params, callback) {
                             let notification = new apn.Notification();
                             notification.alert = pushMsg.msg;
                             notification.badge = 1;
+                            notification.sound = "default";
                             notification.topic = "log-sns-ios";
 
                             let newParams = {
