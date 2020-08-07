@@ -1,6 +1,6 @@
 "use strict"
 /**
- * Created by yym on 2020/7/10.
+ * Created by yym on 20-7-10.
  */
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
@@ -909,15 +909,15 @@ const createDateMsgCount = (params, callback) => {
             }
 
             o.map = function() { emit({type:this.type,carrier:this.carrier}, this.status);},
-                o.reduce = function(key, values) {
-                    let count = 0;
-                    for (let i=0;i<values.length;i++){
-                        count+=1;
-                    }
-                    return count;
+            o.reduce = function(key, values) {
+                let count = 0;
+                for (let i=0;i<values.length;i++){
+                    count+=1;
+                }
+                return count;
 
-                },
-                o.query = queryObj;
+            },
+            o.query = queryObj;
             o.out = "msg_query_count";
 
             MsgModel.mapReduce(o, function (err, results) {

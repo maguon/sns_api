@@ -1,9 +1,9 @@
 /**
- * Created by yym xue on 20-5-25.
+ * Created by yym on 20-5-25.
  */
 
 const serverLogger = require('../util/ServerLogger');
-const systemConfig = require('../config/Stg_SystemConfig.js');
+const systemConfig = require('../config/SystemConfig.js');
 const logger = serverLogger.createLogger('ApnUtil.js');
 const apn = require('@parse/node-apn');
 

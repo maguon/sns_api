@@ -1,5 +1,5 @@
 /**
- * Created by yym xue on 20-5-28.
+ * Created by yym on 20-5-28.
  */
 
 const mongoose = require('mongoose');

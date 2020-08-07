@@ -1,10 +1,10 @@
 /**
- * Created by yym xue on 20-5-22.
+ * Created by yym on 20-5-22.
  */
 
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
-const systemConfig = require('../config/Stg_SystemConfig.js');
+const systemConfig = require('../config/SystemConfig.js');
 const logger = serverLogger.createLogger('XingeUtil.js');
 const xinge = require('xinge');
 const xingeApp = new xinge.XingeApp(systemConfig.xingeOptions.accessId, systemConfig.xingeOptions.secretKey);
