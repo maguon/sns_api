@@ -3,13 +3,13 @@
  */
 
 const serverLogger = require('../util/ServerLogger');
-const smsConfig = require('../config/SmsConfig.js');
+const systemConfig = require('../config/Stg_SystemConfig.js');
 const logger = serverLogger.createLogger('ApnUtil.js');
 const apn = require('@parse/node-apn');
 
 
 function pushMsg(params, callback) {
-    let provider = new apn.Provider(smsConfig.apnOptions);
+    let provider = new apn.Provider(systemConfig.apnOptions);
 
     provider.send(params.notification, params.deviceToken).then( (response) => {
         callback(null, response);

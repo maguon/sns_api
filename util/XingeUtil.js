@@ -4,10 +4,10 @@
 
 const resUtil = require('../util/ResponseUtil');
 const serverLogger = require('../util/ServerLogger');
-const smsConfig = require('../config/SmsConfig.js');
+const systemConfig = require('../config/Stg_SystemConfig.js');
 const logger = serverLogger.createLogger('XingeUtil.js');
 const xinge = require('xinge');
-const xingeApp = new xinge.XingeApp(smsConfig.xingeOptions.accessId, smsConfig.xingeOptions.secretKey);
+const xingeApp = new xinge.XingeApp(systemConfig.xingeOptions.accessId, systemConfig.xingeOptions.secretKey);
 
 function getBaseStyle() {
     var style = new xinge.Style();
