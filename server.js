@@ -29,6 +29,7 @@ import {SmsController} from './controller';
 import {InfoController} from './controller';
 import {PushMsgController} from './controller';
 import {DateCountController} from './controller';
+import {AppLog} from './controller';
 
 /**
  * Returns a server with all routes defined on it
@@ -344,6 +345,12 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsNewMsgByDay', DateCountController.getNewMsgByDay);
     server.get('/api/admin/:adminId/statisticsNewComByMonth', DateCountController.getNewComByMonth);
     server.get('/api/admin/:adminId/statisticsNewComByDay', DateCountController.getNewComByDay);
+
+    /**
+     * APP LOG
+     */
+    server.post({path:'/api/printLog',contentType: 'application/json'}, AppLog.printLog);
+
 
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");
