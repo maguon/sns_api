@@ -74,7 +74,7 @@ const getVote = (req, res, next) => {
         }
     });
     aggregate_limit.push({
-        $sort: { "created_at": -1 }
+        $sort: { "status" : 1,"created_at": -1 }
     });
     if (params.start && params.size) {
         aggregate_limit.push(
