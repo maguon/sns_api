@@ -23,7 +23,7 @@ const getNewUserByMonth = (req, res, next) => {
     if(params.startMonth  && params.endMonth){
         o.query = {y_month:{$gte: Number(params.startMonth), $lte: Number(params.endMonth)}};
     }
-    o.map = function() { emit(this.y_month,this.new_user_num); };
+    o.map = function() { emit(this.y_month,this.u_count); };
     o.reduce = function(key, values) {return Array.sum(values)};
     o.out = "user_month_count";
 
@@ -55,7 +55,7 @@ const getNewUserByWeek = (req, res, next) => {
     if( startWeek && endWeek ){
         o.query = { u_week :  { $gte: Number(startWeek), $lte: Number(endWeek) }};
     }
-    o.map = function() { emit(this.u_week,this.new_user_num); };
+    o.map = function() { emit(this.u_week,this.u_count); };
     o.reduce = function(key, values) {return Array.sum(values)};
     o.out = "user_day_count";
 
@@ -78,7 +78,7 @@ const getNewUserByDay = (req, res, next) => {
     if(paramsDay.startDay && paramsDay.endDay){
         o.query = { u_date :  { $gte: Number(paramsDay.startDay), $lte: Number(paramsDay.endDay) }};
     }
-    o.map = function() { emit(this.u_date,this.new_user_num); };
+    o.map = function() { emit(this.u_date,this.u_count); };
     o.reduce = function(key, values) {return Array.sum(values)};
     o.out = "user_day_count";
 
