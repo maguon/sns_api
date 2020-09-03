@@ -237,6 +237,197 @@ const getMsg = (req, res, next) =>{
         })
 
 }
+const getUserMsg = (req, res, next) =>{
+    let path = req.params;
+    let params = req.query;
+    let returnMessage;
+
+    //查询文章信息
+    const getUserMsgInfo = () =>{
+        return new Promise((resolve, reject) => {
+            let aggregate_limit = [];
+            let matchObj = {};
+
+            aggregate_limit.push({
+                $lookup: {
+                    from: "user_details",
+                    localField: "_user_id",
+                    foreignField: "_user_id",
+                    as: "user_detail_info"
+                }
+            });
+
+            //用户关注记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_relations",
+                        let: { userId: "$_user_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_user_by_id",  "$$userId" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_relations"
+                    }
+                }
+            );
+            //用户点赞记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_praises",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_praises"
+                    }
+                }
+            );
+            if(params.sendMsgUserId){
+                if(params.sendMsgUserId.length == 24){
+                    matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
+                }else{
+                    logger.info('getUserMsg getUserMsgInfo sendMsgUserId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.CUST_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(params.msgId){
+                if(params.msgId.length == 24){
+                    matchObj._id = mongoose.mongo.ObjectId(params.msgId);
+                }else{
+                    logger.info('getUserMsg getUserMsgInfo msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            if(params.type){
+                matchObj.type = Number(params.type);
+            }
+            if(params.carrier){
+                matchObj.carrier = Number(params.carrier);
+            }
+            if (params.status) {
+                matchObj.status = Number(params.status);
+            }
+            aggregate_limit.push({
+                $project: {
+                    "user_detail_info._id": 0,
+                    "user_detail_info.sex": 0,
+                    "user_detail_info.intro": 0,
+                    "user_detail_info.msg_num": 0,
+                    "user_detail_info.msg_help_num": 0,
+                    "user_detail_info.follow_num": 0,
+                    "user_detail_info.attention_num": 0,
+                    "user_detail_info.comment_num": 0,
+                    "user_detail_info.comment_reply_num": 0,
+                    "user_detail_info.vote_num": 0,
+                    "user_detail_info.msg_coll_num": 0,
+                    "user_detail_info.loca_coll_num": 0,
+                    "user_detail_info.created_at": 0,
+                    "user_detail_info.updated_at": 0,
+                    "user_detail_info.__v": 0,
+                    "user_detail_info.block_list": 0,
+                    "user_detail_info._user_id": 0,
+
+                    "user_relations.created_at": 0,
+                    "user_relations.updated_at": 0,
+                    "user_relations.__v": 0,
+                    "user_relations._user_id": 0,
+
+                    "user_praises.created_at": 0,
+                    "user_praises.updated_at": 0,
+                    "user_praises.__v": 0,
+                    "user_praises._user_id": 0,
+                }
+            });
+
+
+            aggregate_limit.push({
+                $match: matchObj
+            });
+
+            aggregate_limit.push({
+                $sort: { "created_at": -1 }
+            });
+            if (params.start && params.size) {
+                aggregate_limit.push(
+                    {
+                        $skip : Number(params.start)
+                    },{
+                        $limit : Number(params.size)
+                    }
+                );
+            };
+
+            MsgModel.aggregate(aggregate_limit).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserMsg getUserMsgInfo ' + error.message);
+                    reject({err:error});
+                } else {
+                    logger.info(' getUserMsg getUserMsgInfo ' + 'success');
+                    returnMessage = rows;
+                    resolve();
+                }
+            });
+        });
+    }
+
+    //更新文章的阅读数
+    const updateMsgReadNum = () =>{
+        return new Promise(() => {
+            let query = MsgModel.find({});
+            if(params.msgId){
+                if(params.msgId.length == 24){
+                    query.where('_id').equals(mongoose.mongo.ObjectId(params.msgId));
+                }else{
+                    logger.info('getUserMsg updateMsgReadNum msgId format incorrect!');
+                    resUtil.resetUpdateRes(res,null,systemMsg.MSG_ID_NULL_ERROR);
+                    return next();
+                }
+            }
+            MsgModel.findOneAndUpdate(query,{ $inc: { read_num: 1 } }).exec((error,rows)=> {
+                if (error) {
+                    logger.error(' getUserMsg updateMsgReadNum ' + error.message);
+                    resUtil.resInternalError(error,res);
+                } else {
+                    logger.info(' getUserMsg updateMsgReadNum ' + 'success');
+                    resUtil.resetQueryRes(res, returnMessage);
+                    return next();
+                }
+            });
+        });
+    }
+
+    getUserMsgInfo()
+        .then(updateMsgReadNum)
+        .catch((reject)=>{
+            if(reject.err){
+                resUtil.resetFailedRes(res,reject.err);
+            }else{
+                resUtil.resetFailedRes(res,reject.msg);
+            }
+        })
+
+}
 const getPopularMsg = (req, res, next) =>{
     //文章热门
     let path = req.params;
@@ -1157,6 +1348,7 @@ const deleteMsgByAdmin = (req, res, next) => {
 }
 module.exports = {
     getMsg,
+    getUserMsg,
     getPopularMsg,
     getFollowUserMsg,
     getMsgCount,

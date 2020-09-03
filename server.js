@@ -207,6 +207,7 @@ const createServer=()=>{
      */
     server.post({path:'/api/user/:userId/msg',contentType: 'application/json'}, MsgController.createMsg);
     server.get('/api/user/:userId/msg', MsgController.getMsg);
+    server.get('/api/user/:userId/userMsg', MsgController.getUserMsg);
     server.get('/api/user/:userId/popularMsg', MsgController.getPopularMsg);
     server.get('/api/user/:userId/followUserMsg', MsgController.getFollowUserMsg);
     server.get('/api/user/:userId/msgCount', MsgController.getMsgCount);
