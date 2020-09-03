@@ -106,6 +106,28 @@ const getMsg = (req, res, next) =>{
                     }
                 }
             );
+            //用户文章收藏记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_msg_colls",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_msg_colls"
+                    }
+                }
+            );
             if(params.sendMsgUserId){
                 if(params.sendMsgUserId.length == 24){
                     matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
@@ -165,6 +187,11 @@ const getMsg = (req, res, next) =>{
                     "user_praises.updated_at": 0,
                     "user_praises.__v": 0,
                     "user_praises._user_id": 0,
+
+                    "user_msg_colls.created_at": 0,
+                    "user_msg_colls.updated_at": 0,
+                    "user_msg_colls.__v": 0,
+                    "user_msg_colls._user_id": 0
                 }
             });
 
@@ -301,6 +328,28 @@ const getUserMsg = (req, res, next) =>{
                     }
                 }
             );
+            //用户文章收藏记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_msg_colls",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_msg_colls"
+                    }
+                }
+            );
             if(params.sendMsgUserId){
                 if(params.sendMsgUserId.length == 24){
                     matchObj._user_id = mongoose.mongo.ObjectId(params.sendMsgUserId);
@@ -357,6 +406,11 @@ const getUserMsg = (req, res, next) =>{
                     "user_praises.updated_at": 0,
                     "user_praises.__v": 0,
                     "user_praises._user_id": 0,
+
+                    "user_msg_colls.created_at": 0,
+                    "user_msg_colls.updated_at": 0,
+                    "user_msg_colls.__v": 0,
+                    "user_msg_colls._user_id": 0
                 }
             });
 
@@ -485,6 +539,28 @@ const getPopularMsg = (req, res, next) =>{
                     { $project: { _id: 0 } }
                 ],
                 as: "user_praises"
+            }
+        }
+    );
+    //用户文章收藏记录
+    aggregate_limit.push(
+        {
+            $lookup: {
+                from: "user_msg_colls",
+                let: { id: "$_id"},
+                pipeline: [
+                    { $match:
+                            { $expr:
+                                    {$and:[
+                                            { $eq: [ "$_msg_id",  "$$id" ] },
+                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                        ]}
+
+                            }
+                    },
+                    { $project: { _id: 0 } }
+                ],
+                as: "user_msg_colls"
             }
         }
     );
@@ -630,6 +706,28 @@ const getFollowUserMsg = (req, res, next) =>{
                             { $project: { _id: 0 } }
                         ],
                         as: "user_praises"
+                    }
+                }
+            );
+            //用户文章收藏记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_msg_colls",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 0 } }
+                        ],
+                        as: "user_msg_colls"
                     }
                 }
             );
