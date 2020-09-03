@@ -259,7 +259,7 @@ const getAllMsgComment = (req, res, next) => {
                             { $expr:
                                     {$and:[
                                             { $eq: [ "$_msg_com_id",  "$$id" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                            { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                             { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.comment) ] }
                                         ]}
 

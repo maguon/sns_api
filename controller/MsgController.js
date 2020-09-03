@@ -94,7 +94,7 @@ const getMsg = (req, res, next) =>{
                                     { $expr:
                                             {$and:[
                                                     { $eq: [ "$_msg_id",  "$$id" ] },
-                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                                     { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                                 ]}
 
@@ -289,7 +289,7 @@ const getUserMsg = (req, res, next) =>{
                                     { $expr:
                                             {$and:[
                                                     { $eq: [ "$_msg_id",  "$$id" ] },
-                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                                     { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                                 ]}
 
@@ -477,7 +477,7 @@ const getPopularMsg = (req, res, next) =>{
                             { $expr:
                                     {$and:[
                                             { $eq: [ "$_msg_id",  "$$id" ] },
-                                            { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                            { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                             { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                         ]}
                             }
@@ -621,7 +621,7 @@ const getFollowUserMsg = (req, res, next) =>{
                                     { $expr:
                                             {$and:[
                                                     { $eq: [ "$_msg_id",  "$$id" ] },
-                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                                     { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                                 ]}
 
@@ -936,7 +936,7 @@ const getNearbyMsg = (req, res, next) => {
                                     { $expr:
                                             {$and:[
                                                     { $eq: [ "$_msg_id",  "$$id" ] },
-                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
+                                                    { $eq: [ "$praise_user_id",  mongoose.mongo.ObjectId(path.userId) ] },
                                                     { $eq: [ "$type",  Number(sysConsts.USERPRAISE.type.msg) ] }
                                                 ]}
 
