@@ -558,7 +558,7 @@ const getPopularMsg = (req, res, next) =>{
 
                             }
                     },
-                    { $project: { _id: 0 } }
+                    { $project: { __v: 0 } }
                 ],
                 as: "user_msg_colls"
             }
@@ -606,7 +606,8 @@ const getPopularMsg = (req, res, next) =>{
             "_user_id":1,
             "user_detail_info":1,
             "user_relations":1,
-            "user_praises":1
+            "user_praises":1,
+            "user_msg_colls":1
         }
     });
 
