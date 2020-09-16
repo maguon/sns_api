@@ -25,7 +25,7 @@ const getMsg = (req, res, next) =>{
                 if(path.userId.length == 24){
                     queryBlockLis.where('_user_id').equals(mongoose.mongo.ObjectId(path.userId));
                 }else{
-                    logger.info(' getMsg getBlockLis appId format incorrect!');
+                    logger.info(' getMsg getBlockLis userId format incorrect!');
                     resUtil.resetQueryRes(res,[],null);
                     return next();
                 }
@@ -122,7 +122,7 @@ const getMsg = (req, res, next) =>{
 
                                     }
                             },
-                            { $project: { _id: 0 } }
+                            { $project: { _id: 1 } }
                         ],
                         as: "user_msg_colls"
                     }
@@ -726,7 +726,7 @@ const getFollowUserMsg = (req, res, next) =>{
 
                                     }
                             },
-                            { $project: { _id: 0 } }
+                            { $project: { _id: 1 } }
                         ],
                         as: "user_msg_colls"
                     }
@@ -1044,6 +1044,28 @@ const getNearbyMsg = (req, res, next) => {
                             { $project: { _id: 0 } }
                         ],
                         as: "user_praises"
+                    }
+                }
+            );
+            //用户文章收藏记录
+            aggregate_limit.push(
+                {
+                    $lookup: {
+                        from: "user_msg_colls",
+                        let: { id: "$_id"},
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            {$and:[
+                                                    { $eq: [ "$_msg_id",  "$$id" ] },
+                                                    { $eq: [ "$_user_id",  mongoose.mongo.ObjectId(path.userId) ] }
+                                                ]}
+
+                                    }
+                            },
+                            { $project: { _id: 1 } }
+                        ],
+                        as: "user_msg_colls"
                     }
                 }
             );
