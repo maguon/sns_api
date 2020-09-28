@@ -6840,12 +6840,7 @@
       ],
       "properties": {
         "type": {
-          "type": "integer",
-          "format": "int64",
-          "enum": [
-            0,
-            1
-          ]
+          "type": "String"
         },
         "menu_list": {
           "type": "array",
