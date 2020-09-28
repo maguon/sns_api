@@ -1,5 +1,6 @@
 require('events').EventEmitter.defaultMaxListeners = 1000;
 exports.AdminUserController = require('./AdminUserController');
+exports.AdminMenuListController = require('./AdminMenuListController');
 exports.UserController = require('./UserController');
 exports.UserDetailController = require('./UserDetailController');
 exports.UserDriveController = require('./UserDriveController');

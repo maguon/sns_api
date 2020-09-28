@@ -1,3 +1,4 @@
+exports.AdminMenuListModel = require('./schemas/AdminMenuListSchema').AdminMenuListModel;
 exports.AdminUserModel = require('./schemas/AdminUserSchema').AdminUserModel;
 exports.UserModel = require('./schemas/UserSchema').UserModel;
 exports.UserDetailModel = require('./schemas/UserDetailSchema').UserDetailModel;

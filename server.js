@@ -7,6 +7,7 @@ const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
 import {AdminUserController} from './controller';
+import {AdminMenuListController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
 import {UserDriveController} from './controller';
@@ -104,6 +105,12 @@ const createServer=()=>{
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId',contentType: 'application/json'} ,AdminUserController.updateAdminUserInfo);
     server.put({path:'/api/admin/:adminId/adminUser/:adminUserId/status',contentType: 'application/json'} ,AdminUserController.updateAdminUserStatus);
     server.post({path:'/api/adminLogin',contentType: 'application/json'}, AdminUserController.adminUserLogin);
+
+    /**
+     adminUserList   -管理员目录
+     */
+    server.post({path:'/api/admin/:adminId/menuList',contentType: 'application/json'}, AdminMenuListController.createMenuList);
+    server.get('/api/admin/:adminId/menuList', AdminMenuListController.getMenuList);
 
     /**
      userInfo   -用户管理

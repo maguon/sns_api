@@ -20,6 +20,10 @@
       "description": "AdminUser version and url management api (操作员)"
     },
     {
+      "name": "adminMenuList",
+      "description": "AdminMenuList version and url management api (操作员目录)"
+    },
+    {
       "name": "user",
       "description": "User version and url management api (用户基本信息)"
     },
@@ -366,6 +370,81 @@
             "description": "AdminUserId not found"
           }
         }
+      }
+    },
+
+    "/admin/{adminId}/menuList": {
+      "get": {
+        "tags": [
+          "adminMenuList"
+        ],
+        "summary": "Select menuList info",
+        "description": "Get menuList info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "description": "当前登录管理员ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "管理员类型",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "adminMenuList"
+        ],
+        "summary": "Add a new adminMenuList info",
+        "description": "",
+        "operationId": "addAdminMenuList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "admin",
+            "in": "path",
+            "description": "adminId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name":"adminMenuInfo",
+            "description": "AdminMenuList object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminMenuList"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid params "
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+
       }
     },
 
@@ -6751,6 +6830,79 @@
       },
       "xml": {
         "name": "AdminUser"
+      }
+    },
+    "AdminMenuList": {
+      "type": "object",
+      "required": [
+        "type",
+        "menu_list"
+      ],
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int64",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "menu_list": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/MenuListArray"
+          }
+        }
+      },
+      "xml": {
+        "name": "AdminUser"
+      }
+    },
+    "MenuListArray": {
+      "type": "object",
+      "required": [
+        "label",
+        "icon",
+        "link",
+        "children"
+      ],
+      "properties": {
+        "label": {
+          "type": "String"
+        },
+        "icon": {
+          "type": "String"
+        },
+        "link": {
+          "type": "String"
+        },
+        "children": {
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/ChildrenArray"
+          }
+        }
+      },
+      "xml": {
+        "name": "MenuListArray"
+      }
+    },
+    "ChildrenArray": {
+      "type": "object",
+      "required": [
+        "link",
+        "name"
+      ],
+      "properties": {
+        "link": {
+          "type": "String"
+        },
+        "name": {
+          "type": "String"
+        }
+      },
+      "xml": {
+        "name": "ChildrenArray"
       }
     },
     "UserLogin": {
