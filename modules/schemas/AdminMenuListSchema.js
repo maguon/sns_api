@@ -7,7 +7,7 @@ const adminMenuListSchema = new Schema({
         menu_list     : [{
             label    : {type:String,default:'',trim:true,display: '标签'},
             icon     : {type:String,default:'',trim:true,display: '图标'},
-            link     : {type:String,default:'',trim:true,display: '链接'},
+            link     : {type:String,trim:true,display: '链接'},
             children : {type:Array,default:'',trim:true,display: ''}
         }],
     },
