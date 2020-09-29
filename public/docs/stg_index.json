@@ -6859,7 +6859,8 @@
         "label",
         "icon",
         "link",
-        "children"
+        "children",
+        "usable"
       ],
       "properties": {
         "label": {
@@ -6876,6 +6877,9 @@
           "items":{
             "$ref": "#/definitions/ChildrenArray"
           }
+        },
+        "usable": {
+          "type": "String"
         }
       },
       "xml": {
@@ -6886,13 +6890,17 @@
       "type": "object",
       "required": [
         "link",
-        "name"
+        "name",
+        "usable"
       ],
       "properties": {
         "link": {
           "type": "String"
         },
         "name": {
+          "type": "String"
+        },
+        "usable": {
           "type": "String"
         }
       },
