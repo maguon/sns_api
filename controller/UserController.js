@@ -1,5 +1,7 @@
 "use strict"
 const mongoose = require('mongoose');
+const axios = require('axios');
+const ObjectID64 = require('objectid64')('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
 const moment = require('moment');
 const resUtil = require('../util/ResponseUtil');
 const encrypt = require('../util/Encrypt.js');
@@ -7,6 +9,7 @@ const oAuthUtil = require('../util/OAuthUtil');
 const serverLogger = require('../util/ServerLogger');
 const systemMsg = require('../util/SystemMsg');
 const sysConsts = require('../util/SystemConst');
+const systemConfig = require('../config/SystemConfig');
 const logger = serverLogger.createLogger('UserController');
 
 const {UserModel} = require('../modules');
@@ -381,8 +384,12 @@ const getUserTodayCountByAdmin = (req, res, next) => {
     });
 }
 const createUser = (req, res, next) => {
+    const query= req.query;
     let bodyParams = req.body;
-    let userId;
+    let imUserInfo = {
+        "user": "",
+        "password": ""
+    };
     //判断该用户是否已创建
     const getUserPhone = () =>{
         return new Promise((resolve, reject) => {
@@ -442,8 +449,7 @@ const createUser = (req, res, next) => {
                 } else {
                     logger.info(' createUser createUserInfo ' + 'success');
                     if (result._doc) {
-                        userId = result._doc._id;
-                        resolve();
+                        resolve(result._doc._id);
                     }else{
                         logger.info(' createUser createUserInfo '+ bodyParams.phone+ " Phone is registered! ");
                         reject({msg:systemMsg.USER_CREATE_ERROR});
@@ -453,11 +459,11 @@ const createUser = (req, res, next) => {
         });
     }
     //创建用户详细信息
-    const createUserDetail = () =>{
+    const createUserDetail = (resUserId) =>{
         return new Promise((resolve,reject)=>{
             let newName = encrypt.randomString(5); //随机生成5个字符，为昵称初始化
             let userDetailModel = new UserDetailModel();
-            userDetailModel._user_id = userId;
+            userDetailModel._user_id = resUserId;
             userDetailModel.nick_name = newName;
             userDetailModel.save(function(error,result){
                 if (error) {
@@ -466,7 +472,12 @@ const createUser = (req, res, next) => {
                 } else {
                     logger.info(' createUser createUserDetail ' + 'success');
                     if (result._doc) {
-                        resolve(result._doc._id);
+
+                        let updateInfo= {
+                            userId: resUserId,
+                            userDetailId: result._doc._id,
+                        };
+                        resolve(updateInfo);
                     }else{
                         reject({msg:systemMsg.USER_CREATE_DETAIL_ERROR});
                     }
@@ -475,10 +486,10 @@ const createUser = (req, res, next) => {
         });
     }
     //创建用户驾驶信息
-    const createUserDrive = (userDetailId) =>{
+    const createUserDrive = (updateInfo) =>{
         return new Promise((resolve,reject)=>{
             let userDriveModel = new UserDriveModel();
-            userDriveModel._user_id = userId;
+            userDriveModel._user_id = updateInfo.userId;
             userDriveModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserDrive ' + error.message);
@@ -486,10 +497,7 @@ const createUser = (req, res, next) => {
                 } else {
                     logger.info(' createUser createUserDrive ' + 'success');
                     if (result._doc) {
-                        let updateInfo={
-                            userDetailId : userDetailId,
-                            userDriveId: result._doc._id
-                        }
+                        updateInfo.userDriveId = result._doc._id;
                         resolve(updateInfo);
                     }else{
                         reject({msg:systemMsg.USER_DRIVE_ID_NULL_ERROR});
@@ -502,7 +510,7 @@ const createUser = (req, res, next) => {
     const createUserPrivacie = (updateInfo) =>{
         return new Promise((resolve,reject)=>{
             let userPrivacieModel = new PrivacieModel();
-            userPrivacieModel._user_id = userId;
+            userPrivacieModel._user_id = updateInfo.userId;
             userPrivacieModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserPrivacie ' + error.message);
@@ -522,7 +530,7 @@ const createUser = (req, res, next) => {
     const createUserNotice = (updateInfo) =>{
         return new Promise((resolve,reject)=>{
             let userNoticeModel = new NoticeModel();
-            userNoticeModel._user_id = userId;
+            userNoticeModel._user_id = updateInfo.userId;
             userNoticeModel.save(function(error,result){
                 if (error) {
                     logger.error(' createUser createUserNotice ' + error.message);
@@ -538,14 +546,41 @@ const createUser = (req, res, next) => {
             });
         });
     }
+    //IM请求创建用户
+    const addImUser =(updateInfo)=>{
+        return new Promise((resolve, reject) => {
+            //IM-jid
+            imUserInfo.user = ObjectID64.encode(updateInfo.userId.toString());
+            //IM-pwd(jin-md5加密)
+            if(imUserInfo.user){
+                imUserInfo.password = encrypt.md5(imUserInfo.user,16);
+            }
+            imUserInfo.host = systemConfig.ejabberdIM.xmppHost;
+            const imurl = '/api/server/register';
+            axios({
+                method: 'post',
+                baseURL: systemConfig.ejabberdIM.admin,
+                url: imurl,
+                params:query,
+                data: imUserInfo
+            }).then(function (response) {
+                resolve(updateInfo);
+                logger.info(' createUser addImUser ' + 'success');
+            }).catch(function (error) {
+                resolve(updateInfo);
+                logger.error(' createUser addImUser ' + error.stack);
+            });
+        })
+    }
     //更新用户信息的关联ID
     const updateUserInfo = (updateInfo) =>{
         return new Promise(() => {
             let query = UserModel.find({});
-            if(userId){
-                query.where('_id').equals(userId);
+            if(updateInfo.userId){
+                query.where('_id').equals(updateInfo.userId);
             }
-            UserModel.updateOne(query,{_user_detail_id:updateInfo.userDetailId,_user_drive_id:updateInfo.userDriveId},function(error,result){
+            UserModel.updateOne(query,{_user_detail_id:updateInfo.userDetailId, _user_drive_id:updateInfo.userDriveId, jid:imUserInfo.user, im_pwd:imUserInfo.password},
+                function(error,result){
                 if (error) {
                     logger.error(' createUser updateUserInfo ' + error.message);
                     resUtil.resInternalError(error);
@@ -557,6 +592,7 @@ const createUser = (req, res, next) => {
             });
         });
     }
+
     getUserPhone()
         .then(getPhoneCode)
         .then(createUserInfo)
@@ -564,6 +600,7 @@ const createUser = (req, res, next) => {
         .then(createUserDrive)
         .then(createUserPrivacie)
         .then(createUserNotice)
+        .then(addImUser)
         .then(updateUserInfo)
         .catch((reject)=>{
             if(reject.err){
@@ -1190,6 +1227,9 @@ const userLogin = (req, res, next) => {
             user.userName = userInfo.user_detail_info[0].nick_name;
             user.status = userInfo.status;
             user.type = userInfo.type;
+            //添加返回jid
+            user.jid = userInfo.jid;
+            user.impwd = userInfo.im_pwd;
             user.accessToken = oAuthUtil.createAccessToken(oAuthUtil.clientType.user,user.userId,user.status);
             oAuthUtil.saveToken(user,function(error,result){
                 if(error){

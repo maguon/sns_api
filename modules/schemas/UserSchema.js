@@ -11,6 +11,8 @@ const userSchema = new Schema({
         auth_status   : {type:Number,default:0,min:0,max:3,display: '认证状态(0-未认证,1-已认证)'},
         auth_time     : {type:Date,default:new Date(),display: '验证时间'},
         last_login_on : {type:Date,default:new Date(),display: '最后登录时间'},
+        jid           : {type:String,default:'',trim:true,display: 'IM账号'},
+        im_pwd        : {type:String,default:'',trim:true,display: 'IM密码'},
         _user_detail_id : {
             type: Schema.Types.ObjectId,
             ref: 'user_detail',

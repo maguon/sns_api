@@ -13,7 +13,6 @@ const loggerConfig = {
     categories: { default: { appenders: ['console','file'], level: 'debug' } }
 }
 
-
 const mongoConfig = {
     connect : 'mongodb://127.0.0.1:27017/driver_sns',
     debug : true
@@ -43,4 +42,11 @@ var apnOptions  = {
     production: false
 }
 
-module.exports = { loggerConfig, logLevel , mongoConfig,hosts,xingeOptions,apnOptions}
+const ejabberdIM = {
+    xmppHost : 'im.myxxjs.com',
+    admin :'http://localhost:5000',
+    client :'http://localhost:5000'
+}
+
+
+module.exports = { loggerConfig, logLevel , mongoConfig,hosts,xingeOptions,apnOptions,ejabberdIM}

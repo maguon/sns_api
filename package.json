@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "dependencies": {
     "@parse/node-apn": "^3.1.0",
+    "axios": "^0.21.0",
     "later": "^1.2.0",
     "log4js": "4.5.1",
     "moment": "2.24.0",
     "mongoose": "5.6.4",
+    "objectid64": "^1.0.3",
     "posix-getopt": "1.2.0",
     "restify": "8.3.3",
     "restify-cors-middleware": "1.1.1",
