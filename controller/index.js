@@ -23,4 +23,5 @@ exports.SmsController = require('./SmsController');
 exports.InfoController = require('./InfoController');
 exports.PushMsgController = require('./PushMsgController');
 exports.DateCountController = require('./DateCountController');
+exports.CommonController = require('./CommonController');
 exports.AppLog = require('./AppLog');

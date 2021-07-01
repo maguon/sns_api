@@ -6,7 +6,7 @@ const corsMiddleware = require('restify-cors-middleware')
 const serverLogger = require('./util/ServerLogger');
 const logger = serverLogger.createLogger('Server');
 
-import {AdminUserController} from './controller';
+import {AdminUserController,CommonController} from './controller';
 import {AdminMenuListController} from './controller';
 import {UserController} from './controller';
 import {UserDetailController} from './controller';
@@ -336,6 +336,7 @@ const createServer=()=>{
     server.post({path:'/api/phone/:phone/passwordSms',contentType: 'application/json'},SmsController.passwordSms);
     server.post({path:'/api/user/:userId/phone/:phone/resetSms',contentType: 'application/json'},SmsController.resetSms);
 
+
     /**
      * PushMsg Module
      */
@@ -353,6 +354,11 @@ const createServer=()=>{
     server.get('/api/admin/:adminId/statisticsNewMsgByDay', DateCountController.getNewMsgByDay);
     server.get('/api/admin/:adminId/statisticsNewComByMonth', DateCountController.getNewComByMonth);
     server.get('/api/admin/:adminId/statisticsNewComByDay', DateCountController.getNewComByDay);
+
+    /**
+     * Third Party Api
+     */
+    server.get('/api/user/:userId/regeo' , CommonController.getAmapRegeo);
 
     /**
      * APP LOG

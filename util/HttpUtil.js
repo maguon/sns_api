@@ -45,6 +45,7 @@ const httpRequest = (host,url,req,params,callback,method) => {
 
 const httpsRequest = (host,port,url,params,callback,method) => {
     let paramStr = JSON.stringify(params);
+
     let options = {
         host: host,
         port : port || 443,
@@ -55,6 +56,7 @@ const httpsRequest = (host,port,url,params,callback,method) => {
             'Content-Length' : Buffer.byteLength(paramStr, 'utf8')
         }
     }
+    console.log(options);
     try{
         let req = https.request(options, (res) => {
             let data = "";
